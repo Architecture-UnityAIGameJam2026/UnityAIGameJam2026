@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56fbbd82110a5e043ba0c666067c6a8c, type: 3}
+  m_Name: OYM_HitFXLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::OYM.HitFXLibrary
+  entries:
+  - kind: 0
+    prefab: {fileID: 6060491437282637503, guid: 3793c7b3392b3974c8db9fe983a7a7f7, type: 3}
+    overlayColor: {r: 6, g: 3.4, b: 1.6, a: 1}
+    overlaySize: 0.6
+    overlayFlash: 0.45
+    shake: 0.18
+    shakeRange: 25
+    hitStop: 0.035
+    screenFlash: 0
+  - kind: 1
+    prefab: {fileID: 2391099133820836053, guid: ac076b54052899d4188e8cc9122bf012, type: 3}
+    overlayColor: {r: 8, g: 3.6, b: 1.2, a: 1}
+    overlaySize: 1.6
+    overlayFlash: 0.9
+    shake: 0.7
+    shakeRange: 45
+    hitStop: 0.06
+    screenFlash: 0.6
+  - kind: 2
+    prefab: {fileID: 6263466276054897198, guid: 376180984b925fe4983080acdfefd84e, type: 3}
+    overlayColor: {r: 6, g: 0.5, b: 1.8, a: 1}
+    overlaySize: 0.55
+    overlayFlash: 0.2
+    shake: 0.05
+    shakeRange: 15
+    hitStop: 0
+    screenFlash: 0
+  - kind: 3
+    prefab: {fileID: 8255397278493531247, guid: da7e66b8d2ca932429bf8c0e09b307eb, type: 3}
+    overlayColor: {r: 7, g: 0.6, b: 2.4, a: 1}
+    overlaySize: 0.8
+    overlayFlash: 0.6
+    shake: 0.35
+    shakeRange: 20
+    hitStop: 0.05
+    screenFlash: 0
+  overlayMaterial: {fileID: 2100000, guid: 1231b4076027f4d498e5c8ebf998e3b7, type: 2}

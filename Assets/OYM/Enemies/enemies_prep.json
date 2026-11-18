@@ -1,0 +1,50 @@
+{
+ "wick_body": {
+  "emissive": true,
+  "emissive_strength": 4.0
+ },
+ "wick_open": {
+  "emissive": true,
+  "emissive_strength": 4.0
+ },
+ "prism_body": {
+  "emissive": true,
+  "emissive_strength": 4.0
+ },
+ "prism_charge": {
+  "emissive": true,
+  "emissive_strength": 8.0
+ },
+ "citadel_dart": {
+  "emissive": true,
+  "emissive_strength": 8.0
+ },
+ "citadel_body": {
+  "emissive": false,
+  "emissive_strength": 0.0
+ },
+ "citadel_claw": {
+  "emissive": true,
+  "emissive_strength": 8.0
+ },
+ "citadel_engine": {
+  "emissive": false,
+  "emissive_strength": 0.0
+ },
+ "citadel_head": {
+  "emissive": true,
+  "emissive_strength": 8.0
+ },
+ "citadel_launcher": {
+  "emissive": false,
+  "emissive_strength": 0.0
+ },
+ "citadel_launcher_damaged": {
+  "emissive": true,
+  "emissive_strength": 8.0
+ },
+ "citadel_plate": {
+  "emissive": false,
+  "emissive_strength": 0.0
+ }
+}
