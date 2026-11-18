@@ -1,0 +1,34 @@
+﻿no,file,id,category,tone,english,korean,seconds
+1,01_heal_now.wav,heal_now,상대 HUD 읽어주기,급함,"Your health's dropping fast! Press E, use your heal pack!","체력 빠르게 빠지고 있어! E 눌러, 힐팩 써!",3.57
+2,02_heal_crit.wav,heal_crit,상대 HUD 읽어주기,외침,"You're in the red! Heal right now, hit E!","빨간불이야! 당장 회복해, E 눌러!",3.04
+3,03_heal_ok.wav,heal_ok,상대 HUD 읽어주기,안도,"Okay, you're good. Health's back up.","좋아, 이제 괜찮아. 체력 돌아왔어.",2.56
+4,04_shield_down.wav,shield_down,상대 HUD 읽어주기,급함,Your shield's down! Get behind cover!,보호막 깨졌어! 엄폐해!,2.41
+5,05_shield_up.wav,shield_up,상대 HUD 읽어주기,차분,Shield's back online. You're covered.,보호막 다시 켜졌어. 이제 버틸 수 있어.,2.54
+6,06_fuel_low.wav,fuel_low,상대 HUD 읽어주기,단호,Your booster fuel is almost empty. Stop boosting!,부스터 연료 거의 바닥이야. 부스터 그만 써!,2.87
+7,07_fuel_full.wav,fuel_full,상대 HUD 읽어주기,차분,Fuel's full. You're clear to dash.,연료 꽉 찼어. 대시해도 돼.,2.78
+8,08_ammo_low.wav,ammo_low,상대 HUD 읽어주기,급함,"You're almost out of ammo. Reload, press R!","탄약 거의 없어. 재장전해, R 눌러!",3.5
+9,09_ammo_empty.wav,ammo_empty,상대 HUD 읽어주기,외침,"Your mag's empty! Reload, reload!","탄창 비었어! 장전, 장전!",2.48
+10,10_rail_ready.wav,rail_ready,상대 HUD 읽어주기,단호,Railgun's fully charged. Take the shot!,레일건 충전 완료. 쏴!,2.47
+11,11_overheat.wav,overheat,상대 HUD 읽어주기,차분,Your gun's overheating. Ease off the trigger.,총 과열이야. 방아쇠 좀 떼.,2.73
+12,12_skill_ready.wav,skill_ready,상대 HUD 읽어주기,급함,Your Q is ready. Use it now!,Q 준비됐어. 지금 써!,2.19
+13,13_skill_cd.wav,skill_cd,상대 HUD 읽어주기,차분,Q's still on cooldown. Five more seconds.,Q 아직 쿨타임이야. 5초 남았어.,2.62
+14,14_ask_hp.wav,ask_hp,내 상태 물어보기,긴장,How's my health? Read it to me.,내 체력 어때? 읽어줘.,1.63
+15,15_ask_fuel.wav,ask_fuel,내 상태 물어보기,긴장,How much fuel do I have left?,나 연료 얼마나 남았어?,1.74
+16,16_ask_ammo.wav,ask_ammo,내 상태 물어보기,차분,Check my ammo for me.,내 탄약 좀 봐줘.,1.28
+17,17_ask_map.wav,ask_map,내 상태 물어보기,차분,Where's the objective? You've got my map.,목표 어디야? 내 지도 너한테 있잖아.,2.45
+18,18_ask_again.wav,ask_again,내 상태 물어보기,차분,Say again? I didn't catch that.,"다시 말해줘, 못 들었어.",2.24
+19,19_enemy_behind.wav,enemy_behind,적 · 레이더,외침,Contact behind you! Turn around!,뒤에 적! 돌아봐!,2.03
+20,20_enemy_above.wav,enemy_above,적 · 레이더,외침,Incoming from above!,위에서 온다!,1.26
+21,21_enemy_big.wav,enemy_big,적 · 레이더,급함,Big one on your radar. It's closing in!,네 레이더에 큰 놈 있어. 다가오고 있어!,2.32
+22,22_enemy_clear.wav,enemy_clear,적 · 레이더,차분,Radar's clear. We're safe for now.,레이더 깨끗해. 일단 안전해.,2.52
+23,23_weak_point.wav,weak_point,적 · 레이더,단호,Hit the glowing spot. That's its weak point!,빛나는 데 쏴. 거기가 약점이야!,2.42
+24,24_go.wav,go,팀플,외침,"Go, go, go! I've got your back.","가, 가, 가! 뒤는 내가 맡을게.",3.1
+25,25_hold.wav,hold,팀플,단호,Hold up. Wait for my call.,잠깐. 내 신호 기다려.,1.67
+26,26_stay_close.wav,stay_close,팀플,단호,Stay on me. Don't drift off.,나한테 붙어. 떠내려가지 마.,1.92
+27,27_downed.wav,downed,팀플,외침,I'm down! Get over here and pick me up!,나 쓰러졌어! 와서 일으켜줘!,2.57
+28,28_reviving.wav,reviving,팀플,급함,"Hang on, I'm coming to get you.","버텨, 지금 구하러 갈게.",1.96
+29,29_thanks.wav,thanks,팀플,안도,Thanks. That was close.,고마워. 큰일 날 뻔했어.,2.34
+30,30_copy.wav,copy,팀플,차분,Copy that.,알았어.,0.74
+31,31_negative.wav,negative,팀플,단호,Negative. Not yet.,"아니, 아직이야.",1.57
+32,32_nice_shot.wav,nice_shot,팀플,신남,Nice shot!,나이스 샷!,0.97
+33,33_my_bad.wav,my_bad,팀플,머쓱,My bad. That one's on me.,"미안, 내 실수야.",2.41
