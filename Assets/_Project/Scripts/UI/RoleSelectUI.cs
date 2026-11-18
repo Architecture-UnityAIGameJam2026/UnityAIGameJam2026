@@ -42,9 +42,9 @@ namespace OnYourMark
                 labels[i].text = $"{role.displayName}\n<size=60%>{state}</size>";
             }
             status.text = chosen ? "Waiting for your partner..." : "Choose your position";
-            // Host는 상대가 Join할 주소를 알려 준다
+            // Host는 상대가 Join할 방 코드를 알려 준다 (IP를 base64로 바꾼 값, IP는 화면에 보이지 않는다)
             if (NetworkManager.Singleton.IsServer)
-                status.text += $"\n<size=60%>Partner joins: <color=#F08045>{LocalAddress.Get()}</color></size>";
+                status.text += $"\n<size=60%>Room code: <color=#F08045>{RoomCode.Encode(LocalAddress.Get())}</color></size>";
         }
     }
 }

@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace OnYourMark
 {
-    /// <summary>S0 접속 화면: Host 시작 또는 IP로 Join. 내 클라이언트가 연결되면 패널을 닫는다.</summary>
+    /// <summary>
+    /// S0 접속 화면: Host 시작 또는 방 코드로 Join. 내 클라이언트가 연결되면 패널을 닫는다.
+    /// 방 코드는 Host IP를 base64로 바꾼 값이다 (RoomCode). 화면에는 IP를 보여 주지 않는다.
+    /// </summary>
     public class ConnectionMenu : MonoBehaviour
     {
         [SerializeField] GameObject panel;
@@ -22,7 +25,7 @@ namespace OnYourMark
             Net.OnClientDisconnectCallback += OnDisconnected;
 
             if (LaunchArgs.Has("-host")) Host();
-            else if (LaunchArgs.Get("-join") is { } ip) { address.text = ip; Join(); }
+            else if (LaunchArgs.Get("-join") is { } code) { address.text = code; Join(); }
         }
 
         void OnDestroy()
@@ -38,14 +41,23 @@ namespace OnYourMark
             Show(Net.StartHost() ? "Hosting..." : "Could not start host. Is the port in use?");
         }
 
-        string joiningAddress;
+        string joiningCode;
 
         public void Join()
         {
-            joiningAddress = string.IsNullOrWhiteSpace(address.text) ? "127.0.0.1" : address.text.Trim();
-            Transport.SetConnectionData(joiningAddress, port);
-            Show(Net.StartClient() ? $"Connecting to {joiningAddress}..." : "Could not start client.");
+            // 비워 두면 같은 PC의 Host로 접속 (테스트용)
+            joiningCode = address.text.Trim();
+            string ip = "127.0.0.1";
+            if (joiningCode.Length > 0 && !RoomCode.TryDecode(joiningCode, out ip))
+            {
+                Show("That room code is not valid.\nCheck the code shown on the host's screen (case-sensitive).");
+                return;
+            }
+            Transport.SetConnectionData(ip, port);
+            Show(Net.StartClient() ? $"Connecting to room {Label}..." : "Could not start client.");
         }
+
+        string Label => joiningCode.Length > 0 ? joiningCode : "on this PC";
 
         bool wasConnected;
 
@@ -64,7 +76,7 @@ namespace OnYourMark
             Debug.Log($"[OnYourMark] Disconnected (connected before: {wasConnected}, reason: {Net.DisconnectReason})");
             if (!wasConnected)
                 // 한 번도 연결되지 못함: 대부분 주소, 같은 네트워크 여부, Host 방화벽 문제
-                Show($"Could not reach {joiningAddress}:{port}.\nCheck the host is running, both PCs are on the same network,\nand the host's firewall allows the game.");
+                Show($"Could not reach room {Label}.\nCheck the code, that the host is running, both PCs are on the same network,\nand the host's firewall allows the game.");
             else Show(string.IsNullOrEmpty(Net.DisconnectReason) ? "Disconnected." : Net.DisconnectReason);
             wasConnected = false;
         }
