@@ -27,6 +27,10 @@ namespace OnYourMark
         public float dashCooldown = 3.5f;
         public int dashMaxStacks = 2;
 
+        [Header("소모품 자원 (P1 검기 칸 / P2 탄창)")]
+        public int resourceCapacity = 4;
+        public bool resourceStartsFull;
+
         public float JumpVelocity => Mathf.Sqrt(2f * -gravity * jumpHeight);
         public float DashSpeed => dashDistance / dashDuration;
         public bool CanZoom => zoomMagnification > 1f;

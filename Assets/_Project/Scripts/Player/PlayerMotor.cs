@@ -33,7 +33,13 @@ namespace OnYourMark
             DashStacks = stats.dashMaxStacks;
         }
 
-        void OnEnable() => move.action.actionMap.Enable();
+        void OnEnable()
+        {
+            move.action.actionMap.Enable();
+            // 네트워크 스폰은 transform만 스폰 위치로 옮긴다. CharacterController가 생성 위치(원점)를
+            // 기억한 채 첫 Move를 하면 원점으로 되돌아가므로, 켜질 때 물리 위치를 맞춰 준다
+            Physics.SyncTransforms();
+        }
 
         void Update()
         {

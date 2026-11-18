@@ -23,3 +23,5 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 3.5
   dashMaxStacks: 2
+  resourceCapacity: 4
+  resourceStartsFull: 0
