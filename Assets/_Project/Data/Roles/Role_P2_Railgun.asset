@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a159675efc8f947d98508a3d011b286e, type: 3}
+  m_Name: Role_P2_Railgun
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.RoleDefinition
+  displayName: "P2 \xB7 RAILGUN"
+  description: Ranged
+  playerPrefab: {fileID: 6253472360144793190, guid: f8a84e1f942014c79bb092c48e23e940, type: 3}

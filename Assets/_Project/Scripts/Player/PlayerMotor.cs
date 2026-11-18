@@ -20,8 +20,12 @@ namespace OnYourMark
 
         public PlayerStats Stats => stats;
         public int DashStacks { get; private set; }
-        public bool IsZooming => stats.CanZoom && zoom.action.IsPressed();
+        public bool IsZooming => stats.CanZoom && Held(zoom);
         public float HoverLeft01 => 1f - hoverTime / stats.hoverMaxTime;
+
+        // 커서가 풀려 있으면(Esc) 조작 입력을 무시한다. 중력은 계속 적용된다
+        static bool Pressed(InputActionReference a) => CursorLock.IsLocked && a.action.WasPressedThisFrame();
+        static bool Held(InputActionReference a) => CursorLock.IsLocked && a.action.IsPressed();
 
         void Awake()
         {
@@ -29,22 +33,17 @@ namespace OnYourMark
             DashStacks = stats.dashMaxStacks;
         }
 
-        void OnEnable()
-        {
-            move.action.actionMap.Enable();
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
-        void OnDisable() => Cursor.lockState = CursorLockMode.None;
+        void OnEnable() => move.action.actionMap.Enable();
 
         void Update()
         {
             if (cam == null) cam = Camera.main.transform;
             float dt = Time.deltaTime;
 
-            Vector3 input = CameraRelative(move.action.ReadValue<Vector2>());
+            Vector2 stick = CursorLock.IsLocked ? move.action.ReadValue<Vector2>() : Vector2.zero;
+            Vector3 input = CameraRelative(stick);
             RechargeDash(dt);
-            if (dash.action.WasPressedThisFrame()) TryDash(input);
+            if (Pressed(dash)) TryDash(input);
 
             Vector3 step;
             if (dashTimeLeft > 0f)
@@ -71,7 +70,7 @@ namespace OnYourMark
             if (body.isGrounded)
             {
                 hoverTime = 0f;
-                if (!jump.action.WasPressedThisFrame()) { verticalSpeed = -2f; return verticalSpeed * dt; }
+                if (!Pressed(jump)) { verticalSpeed = -2f; return verticalSpeed * dt; }
                 verticalSpeed = stats.JumpVelocity;
             }
 
@@ -79,7 +78,7 @@ namespace OnYourMark
             verticalSpeed += stats.gravity * dt;
 
             // 호버링: 공중에서 Space를 누르고 있으면 낙하 속도를 hoverFallSpeed로 제한
-            bool hovering = jump.action.IsPressed()
+            bool hovering = Held(jump)
                             && verticalSpeed < -stats.hoverFallSpeed
                             && hoverTime < stats.hoverMaxTime;
             if (hovering)

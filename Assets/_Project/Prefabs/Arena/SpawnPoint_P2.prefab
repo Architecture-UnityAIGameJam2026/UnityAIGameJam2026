@@ -99,6 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1876425109380488978}
+  - component: {fileID: 2213462245274776202}
   m_Layer: 0
   m_Name: SpawnPoint_P2
   m_TagString: Untagged
@@ -122,3 +123,16 @@ Transform:
   - {fileID: 8099554922705875096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2213462245274776202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2210766425483593990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae587eb3c7555442c923672410e34186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.SpawnPoint
+  role: {fileID: 11400000, guid: e9f1162dcb7e7430985e6acacb5118b4, type: 2}
