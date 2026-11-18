@@ -71,6 +71,11 @@ namespace OnYourMark
             return angle > 60f ? HudPart.Map : HudPart.Consumable;
         }
 
+        public void Request(HudPart part)
+        {
+            if (IsSpawned && IsOwner && (int)part >= 0 && (int)part < 3) RequestRpc((int)part);
+        }
+
         [Rpc(SendTo.Server)]
         void RequestRpc(int part)
         {

@@ -27,7 +27,9 @@ namespace OnYourMark
         void Update()
         {
             if (unlock.action.WasPressedThisFrame()) SetLocked(false);
-            else if (!IsLocked && relock.action.WasPressedThisFrame()) SetLocked(true);
+            else if (!IsLocked && relock.action.WasPressedThisFrame()
+                     && !(UnityEngine.EventSystems.EventSystem.current?.IsPointerOverGameObject() ?? false))
+                SetLocked(true);
         }
 
         void SetLocked(bool locked)

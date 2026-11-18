@@ -33,13 +33,31 @@ namespace OnYourMark
 
             if (Player.Local == null || !CursorLock.IsLocked) return;
             for (int i = 0; i < swapKeys.Length; i++)
-                if (swapKeys[i].action.WasPressedThisFrame()) OfferRpc(i);
+                if (swapKeys[i].action.WasPressedThisFrame()) Offer((HudPart)i);
+        }
+
+        public void Offer(HudPart part)
+        {
+            if (IsSpawned && Player.Local != null && (int)part >= 0 && (int)part < 3)
+                OfferRpc((int)part);
+        }
+
+        public void CancelOffer()
+        {
+            if (IsSpawned && Player.Local != null) CancelOfferRpc();
+        }
+
+        [Rpc(SendTo.Server)]
+        void CancelOfferRpc(RpcParams rpc = default)
+        {
+            if (HasOffer && offerFrom.Value == rpc.Receive.SenderClientId) offerPart.Value = -1;
         }
 
         [Rpc(SendTo.Server)]
         void OfferRpc(int part, RpcParams rpc = default)
         {
             ulong sender = rpc.Receive.SenderClientId;
+            if (part < 0 || part >= 3) return;
             if (state.IsReturned((HudPart)part)) return;
 
             bool partnerOfferedSame = HasOffer && offerPart.Value == part && offerFrom.Value != sender;
