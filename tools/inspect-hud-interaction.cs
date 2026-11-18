@@ -1,0 +1,16 @@
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+var hud=Object.FindFirstObjectByType<OnYourMark.UI.OnYourMarkHud>();
+var canvas=hud.GetComponent<Canvas>();
+var rect=hud.transform.Find("ToggleChannels").GetComponent<RectTransform>();
+var point=RectTransformUtility.WorldToScreenPoint(canvas.worldCamera,rect.TransformPoint(rect.rect.center));
+var cg=rect.GetComponent<CanvasGroup>();
+var es=EventSystem.current;
+var raycasts=new List<RaycastResult>();es.RaycastAll(new PointerEventData(es){position=point},raycasts);
+var input=es.GetComponent<InputSystemUIInputModule>();
+return new {screen=new[]{Screen.width,Screen.height},position=point.ToString(),alpha=cg.alpha,cg.interactable,cg.blocksRaycasts,hits=raycasts.Select(r=>r.gameObject.name).ToArray(),inputModule=input.enabled,actionAsset=input.actionsAsset?.name,pointEnabled=input.point?.action?.enabled,clickEnabled=input.leftClick?.action?.enabled,update=InputSystem.settings.updateMode.ToString(),keyboard=Keyboard.current.deviceId};
