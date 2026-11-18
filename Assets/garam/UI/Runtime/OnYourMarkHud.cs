@@ -27,6 +27,8 @@ namespace OnYourMark.UI
         public System.Action<int> ExchangeRequested;
         public System.Action<int> SupportRequested;
         public System.Action<int> HudReturned;
+        /// <summary>채널이 주인을 바꾸기 직전(화면에는 아직 이전 데이터). (channel, 이제 내 정보를 보는지). HudSwapGlitch가 구독한다.</summary>
+        public System.Action<int,bool> ChannelSwapping;
         public bool PartnerNeedsSupport=>partnerHealth<=.15f||partnerAmmo<=1;
         readonly Dictionary<string,Text> texts=new Dictionary<string,Text>();
         readonly Dictionary<string,CanvasGroup> groups=new Dictionary<string,CanvasGroup>();
@@ -146,6 +148,7 @@ namespace OnYourMark.UI
         {
             if(channel!=pendingChannel||channel<0||channel>2)return;
             if(Time.unscaledTime-requestAt>10){CancelExchange();return;}
+            ChannelSwapping?.Invoke(channel,!returned[channel]);
             returned[channel]=!returned[channel];pendingChannel=-1;state=PartnerNeedsSupport?PreviewState.Critical:PreviewState.Field;
             RefreshOwnership();Toast();
         }
@@ -159,6 +162,7 @@ namespace OnYourMark.UI
         public bool ReturnHud(int channel)
         {
             if(!sectorComplete||channel<0||channel>2)return false;
+            if(!returned[channel])ChannelSwapping?.Invoke(channel,true);
             returned[channel]=true;pendingChannel=-1;openPanel=Panel.Closed;state=PreviewState.Awakened;noticeUntil=Time.unscaledTime+4;
             SetIcon("Awakened/Restored channel",new[]{"heart","map","ammo"}[channel]);
             RefreshOwnership();HudReturned?.Invoke(channel);return true;
