@@ -1,8 +1,4 @@
-# ON YOUR MARK: 통합 테스트 결과 (P12)
-
-테스트 환경: Unity 6000.3.28f1, macOS (Apple M1), Netcode for GameObjects 2.14.
-에디터 테스트는 Multiplayer Play Mode 시나리오 `TwoPlayers` (메인 에디터 + 가상 플레이어 1),
-빌드 테스트는 같은 Mac에서 Development 빌드 두 개를 띄워 진행했다.
+# On Your Mark 협동 플레이 검증 기록
 
 ## 현재 HDRP 협동 미션 검증
 
@@ -21,7 +17,15 @@ Windows의 Unity 6000.3.28f1, Multiplayer Play Mode의 `TwoPlayers`에서 호스
 
 Jev 선택기는 로컬 HTTP 응답으로 검증했다. 상태와 대사 후보를 보낸 뒤 선택 ID `heal_crit`, 초점 대상 `melee`, 신뢰도 `0.91`을 해석했다.
 
+같은 버전을 로컬 `main`에 적용하고 락온 조준점과 자막 PlayMode 테스트 12개를 다시 실행했다. 12개 모두 통과했다. Windows x64 빌드도 성공했다. 독립 실행 파일 두 개를 같은 PC에서 실행해 P1 호스트가 P2 클라이언트를 관측하고, P2 클라이언트가 자신의 파일럿을 인계받는 것까지 확인했다. 전체 미션은 위의 두 에디터로 검사했다.
+
 무기와 타이밍 링은 Input System 이벤트로 조작했다. 긴 구간 이동은 체크포인트로 옮기고 웨이브 적은 서버 피해 판정으로 처치해 전환을 반복했다. 외부 Jev와 ElevenLabs 서비스에는 요청을 보내지 않았다. 네트워크는 같은 PC의 루프백 연결을 사용했다.
+
+## 프로토타입 P12 당시 검증 환경
+
+테스트 환경: Unity 6000.3.28f1, macOS (Apple M1), Netcode for GameObjects 2.14.
+에디터 테스트는 Multiplayer Play Mode 시나리오 `TwoPlayers` (메인 에디터 + 가상 플레이어 1),
+빌드 테스트는 같은 Mac에서 Development 빌드 두 개를 띄워 진행했다.
 
 ## 1. 빌드를 바로 접속시켜 테스트하기
 
