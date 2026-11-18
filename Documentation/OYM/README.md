@@ -40,7 +40,7 @@
 | `Scripts/Editor/OYMMainTitle.cs` | OYM ▸ Title ▸ … / `OYMMainTitle.BuildAndCapture`, `OpenAndPlay` | 메인 타이틀 씬(`MainTitle.unity`) 빌드, 음악 임포트(스트리밍 Vorbis), BGM 라우트, 빌드 세팅 첫 씬 등록, 스틸 캡처(아래 "메인 타이틀") |
 | `Scripts/Runtime/TitleDirector.cs`, `TitleCharacter.cs`, `TitleUI.cs`, `TitleIcons.cs`, `GameSettings.cs` | — | 타이틀 연출: 오프닝 → 선택 캐릭터 포커스·교대, 카메라 스프링·마우스 패럴랙스, 심도, UI Toolkit 오버레이(`Title/MainTitle.uxml/.uss`: 로고·메뉴·옵션·파일럿 카드·친구 코드·Discord), 설정 저장 |
 | `Scripts/Runtime/BgmPlayer.cs`, `BgmRoutes.cs` | — | 씬 이름 → BGM(`Resources/OYM_BgmRoutes.asset`), 씬 전환 시 크로스페이드, 음소거 기억 |
-| `Scripts/Runtime/GameSession.cs` | — | 타이틀에서 고른 파일럿과 참가할 방 코드를 협동 아레나에 전달 |
+| `Scripts/Runtime/GameSession.cs` | — | 타이틀과 아레나 씬 전환 및 타이틀로 돌려보낼 접속 오류 관리 |
 | `Scripts/Editor/OYMDepthFade.cs` | OYM ▸ Look ▸ … / `OYMDepthFade.BatchCompare` | 원거리 감쇠(`Runtime/DepthFocusFade.cs` 글로벌 커스텀 패스 + `Shaders/DepthFocusFade.shader`)를 볼륨 프로필에 넣음, 끔/켬 비교 캡처 |
 | `Scripts/Runtime/FreeFlyCamera.cs` | — | 무중력 미리보기 카메라 |
 | `Scripts/Runtime/Spin.cs` | — | 잔해·운석의 일정 각속도 회전 |
@@ -186,20 +186,20 @@ Unity에서 **OYM ▸ Enemies ▸ Build + Capture Enemy Test** (배치: `OYMEnem
 | 왼쪽 위 | 이미지젠 로고(`Title/Logo/oym_logo_b.png`, 스텐실 2단 + 해저드 스트라이프). 와이프 + 스캔 라인으로 등장 |
 | 왼쪽 아래 | GAME START / OPTION / EXIT. 마우스 호버나 W·S로 커서 바가 스냅, 선택 항목이 오른쪽으로 밀려남 |
 | 오른쪽 아래 | 파일럿 박스(이름만). 선택한 캐릭터가 위에 크게, 다른 캐릭터는 아래에 작게 오른쪽으로 붙음. 클릭하면 교대 |
-| 오른쪽 | CO-OP 원형 버튼(F)으로 내 방 코드를 복사하거나 방장 코드를 입력해 JOIN |
+| 오른쪽 | GAME START → MULTIPLAYER에서 위쪽 COPY로 내 6글자 코드를 공유하거나, 아래 입력칸에 받은 코드를 넣고 JOIN |
 | 오른쪽 위 | Discord 버튼(`OYMMainTitle.DiscordUrl`, 비어 있으면 "링크 미설정" 토스트) |
 | 아래 가운데 | 가는 선 + 마크(장식) |
 
 | 입력 | 동작 |
 |---|---|
 | A·D·←→ / Tab / 카드 클릭 / 뒤 캐릭터 클릭 | 캐릭터 교대(점화 플래시, 도착 시 스냅). UI 강조색이 KESTREL 시안 ↔ ORBIT FRAME 앰버로 바뀜 |
-| W·S·↑↓ + Enter/Space | 메뉴. GAME START로 `Arena`에 방을 열고 선택한 파일럿 역할을 요청 |
+| W·S·↑↓ + Enter/Space | 메뉴. GAME START로 싱글·멀티 선택창 열기 |
 | OPTION | 마스터 볼륨, 음악 볼륨, 음악 켜기/끄기, 전체 화면, 마우스 감도(W·S 선택, A·D 조절, 드래그). `GameSettings`(PlayerPrefs)에 저장 |
 | Esc | 열린 패널 닫기 / 메인에서는 종료 확인 창(기본 선택 CANCEL) |
 | 마우스 이동 | 카메라가 살짝 따라 움직이는 패럴랙스 |
 
 - **로고**: `design/prompts/title/`의 프롬프트로 Codex 이미지젠 4안(`design/title/logo_a~d.png`) → `pipeline/title/logo_alpha.py`로 검정 배경을 알파로 → `Title/Logo/`. 바꾸려면 `OYMMainTitle.LogoVariant`.
-- 같은 LAN에서 방장의 대소문자 구분 방 코드를 입력하면 Unity Transport로 접속합니다. 역할이 이미 선점된 경우 아레나에서 남은 역할을 선택합니다.
+- 같은 LAN에서 대소문자를 구분하는 방장의 6글자 코드를 입력하고 JOIN을 누르면 타이틀에서 접속한 뒤 함께 아레나로 이동합니다. 두 사람이 같은 파일럿을 골랐다면 참가자에게 남은 역할을 자동 배정합니다.
 - **연출** (`TitleCharacter` 이벤트 + `TitleFX`, 카메라 오프셋은 디렉터 뒤 LateUpdate에서 얹음):
   - 오프닝: 카메라가 3 m 뒤 우주에서 2.2초 동안 밀고 들어옴
   - 교대: 들어오는 캐릭터는 바깥쪽으로 휘는 궤적으로 부스트(점화 HDR 플래시), 카메라가 그쪽으로 휩(요·롤 펀치, FOV가 벌어졌다 스냅), 모션 블러·블룸·색수차·렌즈 왜곡 펄스. 나가는 캐릭터는 역추진 + 살짝 돌며 뒤로 밀림

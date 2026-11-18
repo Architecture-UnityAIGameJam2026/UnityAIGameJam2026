@@ -63,11 +63,11 @@ namespace OYM
             yield return Wait(2.8f); yield return Still("ui_02_switch");
 
             Log("friend code: open, type, join");
-            ui.ToggleFriend(); yield return Wait(0.9f);
-            ui.SetFriendInput("7KQ4M2XD"); yield return Wait(0.5f);
+            ui.SelectMenuItem(0); ui.Submit(); ui.ToggleFriend(); yield return Wait(0.9f);
+            ui.SetFriendInput(OnYourMark.TitleMatch.Active?.RoomCode ?? ""); yield return Wait(0.5f);
             ui.Submit(); yield return Wait(0.4f); yield return Still("ui_03_friend");
             yield return Wait(1.6f); yield return Still("ui_03b_friend_status");
-            ui.Cancel(); yield return Wait(0.7f);
+            ui.Cancel(); ui.Cancel(); yield return Wait(0.7f);
 
             Log("options: music volume down 3 steps");
             ui.SelectMenuItem(1); yield return Wait(0.35f);
@@ -91,6 +91,7 @@ namespace OYM
             ui.SelectMenuItem(0); yield return Wait(0.6f);
             Log($"GAME START as {d.pilots[d.Focus].displayName}");
             ui.Submit();
+            d.Deploy();
             float t = 0f;
             while (SceneManager.GetActiveScene().name == title && t < 30f) { yield return null; t += Time.unscaledDeltaTime; }
             t = 0f;

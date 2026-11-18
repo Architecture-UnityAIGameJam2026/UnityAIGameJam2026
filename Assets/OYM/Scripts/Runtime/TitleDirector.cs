@@ -12,7 +12,7 @@ namespace OYM
     /// right of the frame) and the menu comes in around it: logo top left, menu bottom left, pilot cards bottom right,
     /// Discord top right, co-op friend code on the right (TitleUI). A / D, Tab, a pilot card or a click on the pilot in
     /// the back swaps pilots (the other one is pushed back into the depth of field); W / S + ENTER drive the menu;
-    /// GAME START launches the selected pilot and loads the game scene (GameSession). The camera drifts a little with
+    /// GAME START opens the mode menu. A solo launch or a matched pair deploys into Arena. The camera drifts a little with
     /// the mouse. Music comes from BgmPlayer's scene routes.
     [DefaultExecutionOrder(-20)]
     public class TitleDirector : MonoBehaviour
@@ -71,12 +71,6 @@ namespace OYM
 
         void Start()
         {
-            if (OnYourMark.LaunchArgs.Has("-host") || OnYourMark.LaunchArgs.Get("-join") != null)
-            {
-                enabled = false;
-                GameSession.LoadArena();
-                return;
-            }
             if (!cam) cam = Camera.main;
             if (dofVolume && dofVolume.profile && dofVolume.profile.TryGet(out DepthOfField d)) _dof = d;   // .profile = runtime copy
             foreach (var p in pilots) if (p) { p.lookTarget = cam ? cam.transform : null; p.Snap(TitleCharacter.Slot.Home); }
@@ -86,7 +80,8 @@ namespace OYM
             {
                 ui.Bind(this);
                 ui.DeployClicked += Deploy;
-                ui.JoinClicked += DeployToRoom;
+                ui.HostClicked += () => OpenRoom(OnYourMark.TitleMatch.Mode.Host);
+                ui.JoinClicked += code => OpenRoom(OnYourMark.TitleMatch.Mode.Join, code);
                 ui.PilotClicked += SetFocus;
                 ui.FadeIn(1.6f);
             }
@@ -103,13 +98,24 @@ namespace OYM
             while (Time.time - t0 < uiIntro) yield return null;
             if (ui && !_deploying) ui.PlayIntro();
             _introDone = true;
+            if (!GameSession.LaunchArgsUsed)
+            {
+                GameSession.LaunchArgsUsed = true;
+                string join = OnYourMark.LaunchArgs.Get("-join");
+                if (join != null || OnYourMark.LaunchArgs.Has("-host") || OnYourMark.LaunchArgs.Has("-bot"))
+                {
+                    if (int.TryParse(OnYourMark.LaunchArgs.Get("-role"), out int role)) SetFocus(Mathf.Clamp(role, 0, 1));
+                    OpenRoom(join != null ? OnYourMark.TitleMatch.Mode.Join : OnYourMark.LaunchArgs.Has("-bot") ?
+                        OnYourMark.TitleMatch.Mode.Solo : OnYourMark.TitleMatch.Mode.Host, join == null ? null : OnYourMark.RoomCode.FromLaunchArgument(join));
+                }
+            }
         }
 
         // ------------------------------------------------------------------------------------------------ input
         void Update()
         {
             float dt = Time.deltaTime;
-            if (!scripted && !_deploying) HandleInput();
+            if (!scripted && !_deploying && Application.isFocused) HandleInput();
             if (scripted) _hover = scriptedHover;
             for (int i = 0; i < pilots.Length; i++) if (pilots[i]) pilots[i].Hovered = i == _hover && !_deploying;
             UpdateCamera(dt);
@@ -126,6 +132,7 @@ namespace OYM
             if (m != null) { mouse = m.position.ReadValue(); click = m.leftButton.wasPressedThisFrame; }
             if (k != null)
             {
+                friend = k.fKey.wasPressedThisFrame;
                 left = k.aKey.wasPressedThisFrame || k.leftArrowKey.wasPressedThisFrame;
                 right = k.dKey.wasPressedThisFrame || k.rightArrowKey.wasPressedThisFrame;
                 up = k.wKey.wasPressedThisFrame || k.upArrowKey.wasPressedThisFrame;
@@ -133,9 +140,10 @@ namespace OYM
                 tab = k.tabKey.wasPressedThisFrame;
                 enter = k.enterKey.wasPressedThisFrame || k.numpadEnterKey.wasPressedThisFrame || k.spaceKey.wasPressedThisFrame;
                 esc = k.escapeKey.wasPressedThisFrame || k.backspaceKey.wasPressedThisFrame;
-                friend = k.fKey.wasPressedThisFrame;
+
             }
 #else
+            friend = Input.GetKeyDown(KeyCode.F);
             mouse = Input.mousePosition; click = Input.GetMouseButtonDown(0);
             left = Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow);
             right = Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow);
@@ -144,7 +152,7 @@ namespace OYM
             tab = Input.GetKeyDown(KeyCode.Tab);
             enter = Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Space);
             esc = Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace);
-            friend = Input.GetKeyDown(KeyCode.F);
+
 #endif
             if (Screen.width > 0 && Screen.height > 0)
                 _mouseN = new Vector2(Mathf.Clamp(mouse.x / Screen.width * 2f - 1f, -1f, 1f), Mathf.Clamp(mouse.y / Screen.height * 2f - 1f, -1f, 1f));
@@ -156,17 +164,32 @@ namespace OYM
             if (click && _hover >= 0 && _hover != _focus) SetFocus(_hover);
             if (!ui) { if (left) Cycle(-1); if (right || tab) Cycle(1); if (enter) Deploy(); return; }
 
-            // a click on the empty scene closes the friend-code flyout
-            if (click && !overUi && ui.CurrentMode == TitleUI.Mode.Friend) ui.Cancel();
+            if (ui.CurrentMode == TitleUI.Mode.Friend || ui.CurrentMode == TitleUI.Mode.SelectMode)
+            {
+                if (ui.IsTyping) return;
+                if (KeyboardEscape()) ui.Cancel();
+                else if (friend) ui.ToggleFriend();
+                return;
+            }
             if (ui.IsTyping) return;                                             // the friend-code field has the keys
             if (up) ui.Navigate(0, -1);
             if (down) ui.Navigate(0, 1);
             if (left && !ui.Navigate(-1, 0)) Cycle(-1);
             if (right && !ui.Navigate(1, 0)) Cycle(1);
             if (tab && ui.CurrentMode == TitleUI.Mode.Main) Cycle(1);
+
             if (friend) ui.ToggleFriend();
             if (enter) ui.Submit();
             if (esc) ui.Cancel();
+        }
+
+        static bool KeyboardEscape()
+        {
+#if ENABLE_INPUT_SYSTEM
+            return Keyboard.current?.escapeKey.wasPressedThisFrame == true;
+#else
+            return Input.GetKeyDown(KeyCode.Escape);
+#endif
         }
 
         int PickPilot(Vector2 screen)
@@ -198,31 +221,31 @@ namespace OYM
         {
             if (_deploying || i == _focus || i >= pilots.Length) return;
             _focus = i;
+            if (i >= 0 && OnYourMark.TitleMatch.Active) OnYourMark.TitleMatch.Active.PreferPilot(i);
             for (int j = 0; j < pilots.Length; j++)
                 if (pilots[j]) pilots[j].SetSlot(i < 0 ? TitleCharacter.Slot.Home : j == i ? TitleCharacter.Slot.Front : TitleCharacter.Slot.Back);
             if (i >= 0) { _kick = 1f; GameSettings.TitlePilot = i; }               // small push-in with the ignition
             if (ui) ui.ShowFocus(i);
         }
 
-        public void Deploy() => DeployToRoom(null);
+        public void Deploy() => OpenRoom(OnYourMark.TitleMatch.Mode.Solo);
 
-        void DeployToRoom(string joinCode)
+        void OpenRoom(OnYourMark.TitleMatch.Mode mode, string code = null)
         {
             if (_deploying || _focus < 0) return;
+            OnYourMark.TitleMatch.Begin(this, mode, _focus, code);
+        }
+
+        public void AnimateDeployment()
+        {
+            if (_deploying) return;
             _deploying = true;
             var p = pilots[_focus];
             GameSettings.Save();
             p.SetSlot(TitleCharacter.Slot.Launch);
             _kick = 2.2f;
-            if (ui) { ui.ShowDeploy(p.displayName); ui.FadeOut(deployDelay * 0.9f); }
-            BgmPlayer.FadeOut(deployDelay + 0.3f);
-            StartCoroutine(LoadGame(joinCode));
-        }
-
-        IEnumerator LoadGame(string joinCode)
-        {
-            yield return new WaitForSecondsRealtime(deployDelay);
-            GameSession.Deploy(_focus, joinCode);
+            if (ui) { ui.ShowDeploy(p.displayName); ui.FadeOut(deployDelay * .9f); }
+            BgmPlayer.FadeOut(deployDelay + .3f);
         }
 
         // ------------------------------------------------------------------------------------------------ camera

@@ -85,9 +85,7 @@ namespace OnYourMark
         {
             // Give the host transport a tick to deliver the transition before shutting it down.
             yield return new WaitForSecondsRealtime(IsServer ? .35f : .1f);
-            NetworkManager.Shutdown();
-            OYM.GameSession.ClearDeployment();
-            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(OYM.GameSession.TitleScene);
+            if (TitleMatch.Active) TitleMatch.Active.Close();
         }
 
         void ShowResult()

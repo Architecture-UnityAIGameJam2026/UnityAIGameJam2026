@@ -7,8 +7,9 @@ Unity **6000.3.28f1** / High Definition Render Pipeline (**HDRP 17.3.0**).
 1. Unity Hub에서 이 저장소 폴더를 프로젝트로 추가합니다.
 2. Unity 6000.3.28f1로 열고 패키지 설치와 셰이더 임포트가 끝날 때까지 기다립니다.
 3. `Assets/OYM/Scenes/MainTitle.unity`를 열고 Play를 누릅니다. 빌드도 이 타이틀에서 시작합니다.
-4. 방장은 파일럿을 고르고 **GAME START**로 방을 엽니다. 같은 LAN의 파트너는 타이틀의 **CO-OP → JOIN**에 방장의 방 코드를 입력합니다. 코드는 대소문자를 구분하며, 방장의 역할 대기 화면에도 표시됩니다.
-5. KESTREL은 P1 검, ORBIT FRAME은 P2 레일건입니다. 같은 역할을 골랐다면 나중에 들어온 사람이 남은 역할을 선택합니다. 혼자 방을 열면 5초 뒤 AI가 빈 역할을 맡습니다. 대기 중 **B**로 바로 시작할 수 있고, 사람이 합류하면 AI의 자리를 이어받습니다.
+4. 파일럿을 고른 뒤 **GAME START**를 누릅니다. 기존 타이틀 메뉴가 왼쪽으로 밀려나고 같은 자리에 **SINGLE PLAYER / MULTIPLAYER / BACK**이 나타납니다.
+5. **SINGLE PLAYER**는 AI 동료와 바로 출격합니다. **MULTIPLAYER**는 타이틀에서 LAN 방을 엽니다. 방장은 위쪽 **COPY**를 눌러 내 6글자 코드를 공유합니다. 참가자는 같은 Wi-Fi 또는 LAN에서 아래쪽에 상대 코드를 입력하고 **JOIN**이나 Enter를 누릅니다. 대소문자를 구분합니다.
+6. 두 사람이 연결되면 같은 아레나로 함께 이동합니다. 같은 파일럿을 골랐다면 방장이 선택한 역할을 맡고 참가자는 다른 역할로 출격합니다. **BACK**은 이전 선택으로 돌아갑니다.
 
 ## 협동 미션
 
@@ -40,7 +41,7 @@ HDRP 설정과 시작 씬은 Unity 공식 `com.unity.template.hdrp-blank` 17.1.1
 ### 구성
 
 - `Assets/OYM/`: OnYourMark 아트·연출(데브리 필드 아레나, KESTREL / ORBIT FRAME, HUSK 적 6종 + CITADEL, 프랍 44종, 타격 FX, 메인 타이틀, CITADEL 시네마틱, BGM). 자세한 내용과 병합 때 바뀐 점은 [Documentation/OYM/README.md](Documentation/OYM/README.md)에 있습니다.
-- 협동 맵은 HDRP `Showcase_DebrisField`의 시작 선체·징검다리·부유 잔해를 사용하며 높은 선체 길과 낮은 트러스 길이 합류합니다. 에디터에서 `Arena`를 직접 열면 Host/Join을 선택할 수 있습니다. 원본 아트 씬도 개별적으로 열 수 있습니다.
+- 협동 맵은 HDRP `Showcase_DebrisField`의 시작 선체·징검다리·부유 잔해를 사용하며 높은 선체 길과 낮은 트러스 길이 합류합니다. 에디터에서 `Arena`를 직접 재생해도 타이틀의 모드 선택을 거칩니다. 원본 아트 씬도 개별적으로 열 수 있습니다.
 - ProjectSettings(중력, 레이어, 품질, HDRP High Fidelity, 입력)는 팀 설정을 그대로 씁니다. OYM 장애물은 `Environment`(10) 레이어입니다.
 - 백업: OYM 병합 직전 `main`은 `backup/main-20261118-pre-oym`, `feature/prototype`(P7~P21) 병합 직전 `main`은 `backup/main-20261119-pre-prototype` 브랜치에 있습니다.
 - `feature/prototype`(URP)은 HDRP로 맞춰 합쳤습니다: 새 FX 머티리얼 8종은 HDRP 투명 Lit, 다운 비네트 볼륨은 HDRP Vignette/ColorAdjustments, URP 카메라·라이트 데이터는 제거. `Arena`의 SenseLink HUD는 네트워크 교환에 연결된 prototype 쪽 하나만 남겼습니다.

@@ -3,29 +3,20 @@ using UnityEngine.SceneManagement;
 
 namespace OYM
 {
-    /// One deployment from the title to the network lobby. Opening Arena directly keeps its connection menu.
     public static class GameSession
     {
         public const string TitleScene = "MainTitle";
         public const string GameScene = "Arena";
-
-        public static int? PreferredRole { get; private set; }
-        public static string JoinCode { get; private set; }
+        public static string ReturnMessage { get; set; }
+        public static bool LaunchArgsUsed { get; set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        public static void ClearDeployment()
+        static void Reset()
         {
-            PreferredRole = null;
-            JoinCode = null;
+            ReturnMessage = null;
+            LaunchArgsUsed = false;
         }
 
-        public static void Deploy(int role, string joinCode)
-        {
-            PreferredRole = role;
-            JoinCode = joinCode;
-            LoadArena();
-        }
-
-        public static void LoadArena() => SceneManager.LoadSceneAsync(GameScene);
+        public static void ReturnToTitle() => SceneManager.LoadSceneAsync(TitleScene);
     }
 }

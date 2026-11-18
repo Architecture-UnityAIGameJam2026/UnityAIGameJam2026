@@ -14,46 +14,44 @@ namespace OnYourMark
         [SerializeField] RoleDefinition[] roles;
         [Tooltip("두 플레이어가 모두 스폰되면 Raise (웨이브 시작 등)")]
         [SerializeField] GameEvent playersSpawned;
-        [Tooltip("재시작 시 Raise: 포지션을 다시 고른다")]
+        [Tooltip("재시작 시 배정된 포지션으로 다시 스폰")]
         [SerializeField] GameEvent roundReset;
 
         readonly NetworkList<ulong> owners = new();
         bool spawnDone;
         Player[] pilots;
-        [SerializeField, Min(0)] float soloWaitSeconds = 5f;
-        float soloFillAt = float.PositiveInfinity;
-        public int SoloSecondsLeft => Mathf.Max(0, Mathf.CeilToInt(soloFillAt-Time.unscaledTime));
-
-        void Update()
-        {
-            if (IsHost && !spawnDone && Time.unscaledTime >= soloFillAt &&
-                NetworkManager.ConnectedClients.Count == 1) FillWithBot();
-        }
-
         public RoleDefinition[] Roles => roles;
         public ulong OwnerOf(int role) => role < owners.Count ? owners[role] : Nobody;
         public bool HasChosen(ulong clientId) => owners.Contains(clientId);
         /// <summary>두 역할이 모두 정해짐 (진행 중이거나 결과 화면). 재시작하면 다시 false.</summary>
         public bool AllChosen => owners.Count > 0 && !owners.Contains(Nobody);
 
+        void Start()
+        {
+            if (!TitleMatch.Active) OYM.GameSession.ReturnToTitle();
+        }
+
         public override void OnNetworkSpawn()
         {
             if (!IsServer) return;
             owners.Clear();
-            soloFillAt = float.PositiveInfinity;
             pilots = new Player[roles.Length];
             spawnDone = false;
             foreach (var _ in roles) owners.Add(Nobody);
             NetworkManager.OnClientDisconnectCallback += ReleaseRole;
             NetworkManager.OnClientConnectedCallback += TakeBotSeat;
-            roundReset.Raised += ClearRoles;
+            roundReset.Raised += RestartRound;
         }
 
-        void ClearRoles()
+        void RestartRound() => StartCoroutine(RespawnAfterReset());
+
+        System.Collections.IEnumerator RespawnAfterReset()
         {
-            for (int i = 0; i < owners.Count; i++) owners[i] = Nobody;
+            // Let the other round-reset listeners stop the previous wave before spawning the new pair.
+            yield return null;
+            if (!IsSpawned || !TitleMatch.Active) yield break;
             spawnDone = false;
-            soloFillAt = float.PositiveInfinity;
+            StartMatchedPlayers(TitleMatch.Active.HostRole, TitleMatch.Active.Guest);
         }
 
         public override void OnNetworkDespawn()
@@ -64,31 +62,16 @@ namespace OnYourMark
                 NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
                 NetworkManager.OnClientConnectedCallback -= TakeBotSeat;
             }
-            roundReset.Raised -= ClearRoles;
-        }
-
-        public void Choose(int role) => ChooseRpc(role);
-
-        [Rpc(SendTo.Server)]
-        void ChooseRpc(int role, RpcParams rpc = default)
-        {
-            ulong sender = rpc.Receive.SenderClientId;
-            // 먼저 도착한 요청만 인정: 이미 찼거나, 이미 고른 사람이면 무시
-            if (spawnDone || role < 0 || role >= roles.Length) return;
-            if (OwnerOf(role) != Nobody || HasChosen(sender)) return;
-
-            owners[role] = sender;
-            if (IsHost && sender == NetworkManager.LocalClientId) soloFillAt = Time.unscaledTime+soloWaitSeconds;
-            if (!owners.Contains(Nobody)) SpawnPlayers();
+            roundReset.Raised -= RestartRound;
         }
 
         public const ulong BotSlot = ulong.MaxValue - 1;
 
-        public void FillWithBot()
+        public void StartMatchedPlayers(int hostRole, ulong? guest)
         {
-            if (!IsHost || spawnDone || NetworkManager.ConnectedClients.Count != 1 || !HasChosen(NetworkManager.LocalClientId)) return;
-            for (int i = 0; i < owners.Count; i++)
-                if (owners[i] == Nobody) owners[i] = BotSlot;
+            if (!IsServer || spawnDone) return;
+            owners[hostRole] = Unity.Netcode.NetworkManager.ServerClientId;
+            owners[1 - hostRole] = guest ?? BotSlot;
             SpawnPlayers();
         }
 
