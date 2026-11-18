@@ -12,7 +12,7 @@ namespace OnYourMark
     /// </summary>
     public class GameFlow : NetworkBehaviour
     {
-        enum Result { Playing, GameOver, MissionClear }
+        enum Result { Playing, GameOver, MissionClear, PartnerLeft }
 
         [SerializeField] WaveManager waves;
 
@@ -32,12 +32,26 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer) allWavesCleared.Raised += OnAllWavesCleared;
+            if (!IsServer) return;
+            result.Value = Result.Playing;
+            allWavesCleared.Raised += OnAllWavesCleared;
+            NetworkManager.OnClientDisconnectCallback += OnClientLeft;
         }
 
         public override void OnNetworkDespawn()
         {
-            if (IsServer) allWavesCleared.Raised -= OnAllWavesCleared;
+            panel.SetActive(false);
+            if (!IsServer) return;
+            allWavesCleared.Raised -= OnAllWavesCleared;
+            NetworkManager.OnClientDisconnectCallback -= OnClientLeft;
+        }
+
+        void OnClientLeft(ulong clientId)
+        {
+            if (NetworkManager.ShutdownInProgress || result.Value != Result.Playing) return;
+            // NGO removes the departing player object before this callback. The role table still owns the two seats.
+            var roles = FindFirstObjectByType<RoleSelection>();
+            if (roles && roles.AllChosen && roles.HasChosen(clientId)) End(Result.PartnerLeft);
         }
 
         void OnAllWavesCleared() => End(Result.MissionClear);
@@ -80,9 +94,19 @@ namespace OnYourMark
             if (!show) return;
 
             bool clear = result.Value == Result.MissionClear;
-            title.text = clear ? "MISSION CLEAR" : "GAME OVER";
+            title.text = result.Value switch
+            {
+                Result.MissionClear => "MISSION CLEAR",
+                Result.PartnerLeft => "PARTNER DISCONNECTED",
+                _ => "GAME OVER"
+            };
             title.color = clear ? new Color(0.5f, 0.95f, 0.6f) : new Color(1f, 0.4f, 0.4f);
-            detail.text = clear ? $"All {waves.TotalWaves} waves cleared" : $"Reached wave {reachedWave.Value} / {waves.TotalWaves}";
+            detail.text = result.Value switch
+            {
+                Result.MissionClear => $"All {waves.TotalWaves} waves cleared",
+                Result.PartnerLeft => "Restart to choose roles and wait for a partner.",
+                _ => $"Reached wave {reachedWave.Value} / {waves.TotalWaves}"
+            };
             restartButton.interactable = IsServer;
             restartLabel.text = IsServer ? "RESTART" : "WAITING FOR HOST";
         }

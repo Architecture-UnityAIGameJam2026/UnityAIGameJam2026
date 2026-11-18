@@ -35,6 +35,8 @@ namespace OnYourMark.UI
         /// <summary>채널이 주인을 바꾸기 직전(화면에는 아직 이전 데이터). (channel, 이제 내 정보를 보는지). HudSwapGlitch가 구독한다.</summary>
         public System.Action<int,bool> ChannelSwapping;
         static readonly string[] ChannelIcons={"heart","map","ammo"};
+        static readonly string[] PartIcons={"heart","ammo","bolt"};
+        string ExchangeIcon(int index) => demoInput ? ChannelIcons[index] : PartIcons[index];
         static readonly string[] TwoDigits=BuildTwoDigits();
         static string[] BuildTwoDigits(){var a=new string[101];for(int i=0;i<a.Length;i++)a[i]=i.ToString("00");return a;}
         static string Two(int v)=>(uint)v<(uint)TwoDigits.Length?TwoDigits[v]:v.ToString("00");
@@ -117,6 +119,8 @@ namespace OnYourMark.UI
             foreach(var t in GetComponentsInChildren<Text>(true))texts[t.transform.parent.name+"/"+t.name]=t;
             foreach(var cg in GetComponentsInChildren<CanvasGroup>(true))groups[cg.name]=cg;
             foreach(var g in layout.groups)visibility[g.name]=g.state;
+            for (int i = 0; i < PartIcons.Length; i++)
+                SetIcon($"Channel{i}/Action icon", ExchangeIcon(i));
             healthBar=transform.Find("Vitals/Health bar")?.GetComponent<Graphic>();
             var healthTrack=transform.Find("Vitals/Health track") as RectTransform;
             healthBarWidth=healthTrack?healthTrack.sizeDelta.x:0;
@@ -143,7 +147,7 @@ namespace OnYourMark.UI
         public void SetPartnerTelemetry(float health01,int ammo,int capacity=8,bool isDash=false)
         {
             partnerHealth=Mathf.Clamp01(health01);partnerAmmoCapacity=Mathf.Max(0,capacity);
-            partnerAmmo=Mathf.Clamp(ammo,0,partnerAmmoCapacity);partnerResourceIsDash=isDash;
+            partnerAmmo=Mathf.Max(0,ammo);partnerResourceIsDash=isDash;
             if(state==PreviewState.Field||state==PreviewState.Critical)state=PartnerNeedsSupport?PreviewState.Critical:PreviewState.Field;
         }
         // Live games take ownership and pending offers from the server, including round resets.
@@ -162,7 +166,7 @@ namespace OnYourMark.UI
             {
                 if(pendingChannel!=offer)requestAt=Time.unscaledTime;
                 pendingChannel=offer;state=PreviewState.Request;
-                SetIcon("Exchange/Channel icon",ChannelIcons[offer]);
+                SetIcon("Exchange/Channel icon",ExchangeIcon(offer));
             }
             else if(pendingChannel>=0)CancelExchange();
         }
@@ -170,7 +174,7 @@ namespace OnYourMark.UI
         {
             if(channel<0||channel>2)return;
             openPanel=Panel.Closed;pendingChannel=channel;requestAt=Time.unscaledTime;state=PreviewState.Request;
-            SetIcon("Exchange/Channel icon",ChannelIcons[channel]);
+            SetIcon("Exchange/Channel icon",ExchangeIcon(channel));
             ExchangeRequested?.Invoke(channel);
         }
         // Invoke only after authoritative same-channel consent from both players.

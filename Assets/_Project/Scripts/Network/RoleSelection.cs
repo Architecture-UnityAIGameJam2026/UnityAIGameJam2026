@@ -30,6 +30,7 @@ namespace OnYourMark
         {
             if (!IsServer) return;
             owners.Clear();
+            spawnDone = false;
             foreach (var _ in roles) owners.Add(Nobody);
             NetworkManager.OnClientDisconnectCallback += ReleaseRole;
             roundReset.Raised += ClearRoles;
