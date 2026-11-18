@@ -226,16 +226,12 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 106c15b7482b2493c9eaaa302236f758, type: 2}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: disableWhileDowned.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'disableWhileDowned.Array.data[3]'
       value: 
       objectReference: {fileID: 2190906338374099456}
-    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
-      propertyPath: 'disableWhileDowned.Array.data[4]'
-      value: 
-      objectReference: {fileID: 406361086558353182}
     - target: {fileID: 3063893716798316700, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -309,21 +305,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2190906338374099456}
-    - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 406361086558353182}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
---- !u!114 &3458197122310157491 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 784904537766462124, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
-  m_PrefabInstance: {fileID: 2673292585622746655}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8933298920196258270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4544fc08e0ac144f190b9f4287b73f51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.AmmoPool
 --- !u!4 &8172877579876022444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085090604175920819, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
@@ -349,21 +331,5 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 985581c4e73134711906822a1a006a7c, type: 2}
   attack: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
-  gauge: {fileID: 3458197122310157491}
+  gauge: {fileID: 0}
   slashEffect: {fileID: 192420115872336486}
---- !u!114 &406361086558353182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8933298920196258270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27ffa15030e20483a8bdc9f07f8eaa0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ProjectileWeapon
-  ShowTopMostFoldoutHeaderGroup: 1
-  data: {fileID: 11400000, guid: 8008463855b6e4af48244e9c1269246b, type: 2}
-  fire: {fileID: -1726813000163922418, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
-  resource: {fileID: 3458197122310157491}

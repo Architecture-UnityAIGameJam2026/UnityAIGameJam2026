@@ -19,7 +19,6 @@ namespace OnYourMark
         public Health Health { get; private set; }
         public AmmoPool Ammo { get; private set; }
         public PlayerBuffs Buffs { get; private set; }
-        public SupportRequests Requests { get; private set; }
         public PlayerStats Stats => Motor.Stats;
         public int DashStacks => IsOwner ? Motor.DashStacks : dashStacks.Value;
 
@@ -29,7 +28,6 @@ namespace OnYourMark
             Health = GetComponent<Health>();
             Ammo = GetComponent<AmmoPool>();
             Buffs = GetComponent<PlayerBuffs>();
-            Requests = GetComponent<SupportRequests>();
         }
 
         public override void OnNetworkSpawn()

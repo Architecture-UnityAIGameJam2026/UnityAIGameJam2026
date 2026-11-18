@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace OnYourMark
 {
-    /// <summary>자원을 소모해 투사체를 쏜다. P1은 R로 원격 검기(검기 1칸 소모).</summary>
+    /// <summary>자원을 소모해 투사체를 쏜다. (P13에서 P1 검기 발사는 제거됨. 투사체 무기 틀로 남겨 둔다)</summary>
     public class ProjectileWeapon : NetworkBehaviour
     {
         [SerializeField] ProjectileData data;

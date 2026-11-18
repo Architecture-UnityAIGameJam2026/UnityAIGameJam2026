@@ -38,7 +38,7 @@ namespace OnYourMark
         public bool resourceStartsFull;
 
         [Header("원격 지원")]
-        [Tooltip("상대가 내 파츠를 들고 있을 때, 상대가 나를 지원하는 효과 (파츠당 하나)")]
+        [Tooltip("상대가 내 1번 파츠를 들고 있을 때, 상대가 나를 조준해 주는 지원 효과 (현재는 체력 지원만)")]
         public SupportEffect[] supportEffects;
 
         [Header("각성")]

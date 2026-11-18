@@ -29,14 +29,12 @@ namespace OnYourMark
         {
             hud.ExchangeRequested += RequestExchange;
             hud.ExchangeCancelled += CancelExchange;
-            hud.SupportRequested += RequestSupport;
         }
 
         void OnDisable()
         {
             hud.ExchangeRequested -= RequestExchange;
             hud.ExchangeCancelled -= CancelExchange;
-            hud.SupportRequested -= RequestSupport;
         }
 
         void Update()
@@ -72,9 +70,5 @@ namespace OnYourMark
 
         void RequestExchange(int channel) => exchange.Offer((HudPart)channel);
         void CancelExchange() => exchange.CancelOffer();
-        void RequestSupport(int channel)
-        {
-            if (Player.Local) Player.Local.Requests.Request((HudPart)channel);
-        }
     }
 }

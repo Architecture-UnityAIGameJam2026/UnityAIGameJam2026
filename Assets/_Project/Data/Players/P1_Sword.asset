@@ -30,9 +30,4 @@ MonoBehaviour:
   resourceStartsFull: 1
   supportEffects:
   - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
-  - {fileID: 11400000, guid: c08fce3330d0a4425ae30947e50b987d, type: 2}
-  - {fileID: 11400000, guid: 93594536cee3245e7ae23a196a9d57a6, type: 2}
-  awakenings:
-  - {fileID: 11400000, guid: bf4cb81738eee49bca1b21fa24bbd111, type: 2}
-  - {fileID: 11400000, guid: 8e252b442df8e439ba2f58d04d1268ba, type: 2}
-  - {fileID: 11400000, guid: f445db3da5def4cc0ae8542797a6e1c1, type: 2}
+  awakenings: []

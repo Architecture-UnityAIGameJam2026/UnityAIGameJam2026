@@ -8,13 +8,11 @@ namespace OnYourMark
 {
     /// <summary>
     /// P1 근접 참격. 내 클라이언트는 입력과 쿨타임만 보고, 선딜 후 범위 판정은 서버가 한다.
-    /// 적중한 적 수만큼 검기 칸(AmmoPool)이 찬다.
     /// </summary>
     public class MeleeWeapon : NetworkBehaviour
     {
         [SerializeField] MeleeData data;
         [SerializeField] InputActionReference attack;
-        [SerializeField] AmmoPool gauge;
         [SerializeField] GameObject slashEffect;
 
         float readyTime;
@@ -48,7 +46,6 @@ namespace OnYourMark
                 if (Health.Of(c) is { IsDead: false } h) targets.Add(h);
 
             foreach (var h in targets) h.Damage(data.damage, me);
-            gauge.Add(targets.Count * data.gaugePerHit);
             awakening.NotifyBasicAttack();
             ShowSlashRpc();
         }

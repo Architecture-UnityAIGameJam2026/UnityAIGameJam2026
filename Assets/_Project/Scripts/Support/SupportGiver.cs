@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 namespace OnYourMark
 {
     /// <summary>
-    /// 원격 지원. 요청을 켠 팀원을 조준한 채 트리거(P1 우클릭 / P2 좌클릭)를 누르면,
-    /// 내가 들고 있는 팀원 파츠 중 요청된 것의 지원 효과를 서버가 적용한다.
+    /// 원격 체력 지원. 팀원을 조준한 채 트리거(P1 우클릭 / P2 좌클릭)를 누르면 바로 회복시켜 준다.
+    /// 요청 아이콘 같은 조건은 없고, 팀원의 1번 파츠를 아직 들고 있을 때(반환 전)만, 쿨타임마다 쓸 수 있다.
     /// 팀원을 조준하지 않았으면 원래 동작(P1 월드 핑 / P2 사격)으로 처리된다.
     /// </summary>
     [DefaultExecutionOrder(-10)]   // 같은 프레임에 무기보다 먼저 입력을 가져간다
@@ -17,7 +17,7 @@ namespace OnYourMark
         [Tooltip("팀원을 조준하지 않았을 때 트리거로 월드 핑을 찍는다 (P1)")]
         [SerializeField] bool pingWhenIdle;
 
-        readonly NetworkList<double> readyAt = new();   // 파츠별 쿨타임 종료 시각 (서버 시간)
+        readonly NetworkVariable<double> readyAt = new();   // 쿨타임 종료 시각 (서버 시간)
 
         Player me;
         CrossHudState hud;
@@ -25,14 +25,15 @@ namespace OnYourMark
         /// <summary>이번 프레임 트리거 입력을 지원으로 썼는지. 무기는 true면 쏘지 않는다.</summary>
         public bool ConsumedTrigger { get; private set; }
 
-        public float CooldownLeft(HudPart part) =>
-            readyAt.Count > (int)part ? Mathf.Max(0f, (float)(readyAt[(int)part] - NetworkManager.ServerTime.Time)) : 0f;
+        public float CooldownLeft => IsSpawned ? Mathf.Max(0f, (float)(readyAt.Value - NetworkManager.ServerTime.Time)) : 0f;
+
+        /// <summary>지금 체력 지원을 줄 수 있는 상태인지 (파트너 파츠를 들고 있음).</summary>
+        public bool CanSupport => hud != null && !hud.IsReturned(HudPart.Bio) && me.Partner != null;
 
         public override void OnNetworkSpawn()
         {
             me = GetComponent<Player>();
             hud = FindFirstObjectByType<CrossHudState>();
-            if (IsServer) for (int i = 0; i < 3; i++) readyAt.Add(0);
         }
 
         void Update()
@@ -41,7 +42,7 @@ namespace OnYourMark
             if (!IsOwner || !CursorLock.IsLocked || !trigger.action.WasPressedThisFrame()) return;
 
             var partner = me.Partner;
-            if (partner != null && partner.Requests.Any && IsAimedAt(partner))
+            if (CanSupport && !partner.Health.IsDead && IsAimedAt(partner))
             {
                 ConsumedTrigger = true;
                 SupportRpc();
@@ -74,20 +75,12 @@ namespace OnYourMark
         void SupportRpc()
         {
             var target = me.Partner;
-            if (target == null) return;
-            double now = NetworkManager.ServerTime.Time;
+            if (!CanSupport || target.Health.IsDead || CooldownLeft > 0f) return;
 
-            for (int i = 0; i < 3; i++)
-            {
-                var part = (HudPart)i;
-                // 요청이 켜져 있고, 내가 그 파츠를 아직 들고 있고(반환 전), 쿨타임이 끝났을 때만
-                if (!target.Requests.Has(part) || hud.IsReturned(part) || now < readyAt[i]) continue;
-
-                var effect = target.Stats.SupportFor(part);
-                effect.Apply(me, target);
-                readyAt[i] = now + effect.cooldown;
-                target.Requests.Fulfill(part);
-            }
+            var effect = target.Stats.SupportFor(HudPart.Bio);
+            if (effect == null) return;
+            effect.Apply(me, target);
+            readyAt.Value = NetworkManager.ServerTime.Time + effect.cooldown;
         }
 
         [Rpc(SendTo.Server)]
