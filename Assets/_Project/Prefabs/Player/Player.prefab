@@ -489,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineOrbitalFollow
-  TargetOffset: {x: 0.7, y: 0.2, z: 0}
+  TargetOffset: {x: 0, y: 0, z: 0}
   TrackerSettings:
     BindingMode: 4
     PositionDamping: {x: 1, y: 1, z: 1}
@@ -497,17 +497,17 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 4.5
+  Radius: 0
   Orbits:
     Top:
-      Radius: 2
-      Height: 5
+      Radius: 0
+      Height: 0
     Center:
-      Radius: 4
-      Height: 2.25
+      Radius: 0
+      Height: 0
     Bottom:
-      Radius: 2.5
-      Height: 0.1
+      Radius: 0
+      Height: 0
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
@@ -531,9 +531,9 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   RadialAxis:
-    Value: 1
-    Center: 1
-    Range: {x: 1, y: 1}
+    Value: 0
+    Center: 0
+    Range: {x: 0, y: 0}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -562,7 +562,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0.7, y: 0.2, z: 0}
+  TargetOffset: {x: 0, y: 0, z: 0}
   Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
@@ -1227,6 +1227,9 @@ MonoBehaviour:
   - {fileID: 7231271412042941267}
   objects:
   - {fileID: 3932742846200892361}
+  ownerHiddenRenderers:
+  - {fileID: 3063893716798316700}
+  - {fileID: 1952256803166358351}
 --- !u!114 &7231271412042941267
 MonoBehaviour:
   m_ObjectHideFlags: 0
