@@ -69,7 +69,6 @@ namespace OnYourMark
             }
 
             body.Move(step);
-            transform.rotation = Quaternion.LookRotation(Flat(cam.forward));
         }
 
         /// <summary>이번 프레임의 수직 이동량. 프레임 간격이 길어도 점프 높이가 변하지 않도록 평균 속도로 적분한다.</summary>

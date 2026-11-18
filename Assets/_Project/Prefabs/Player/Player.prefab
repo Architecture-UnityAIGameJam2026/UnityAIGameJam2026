@@ -394,7 +394,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5211623569082213171}
   m_Father: {fileID: 6085090604175920819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3932742846200892361
@@ -432,7 +433,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 95204794926180360}
-  m_Father: {fileID: 6085090604175920819}
+  m_Father: {fileID: 6459491305238272278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4309553507808904614
 MonoBehaviour:
@@ -484,7 +485,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3932742846200892361}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
@@ -547,7 +548,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3932742846200892361}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
   m_Name: 
@@ -576,7 +577,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3932742846200892361}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
   m_Name: 
@@ -1052,6 +1053,7 @@ GameObject:
   - component: {fileID: 6085090604175920819}
   - component: {fileID: 5867066549178033434}
   - component: {fileID: 4704712806841285971}
+  - component: {fileID: 8723415091114972345}
   - component: {fileID: 1735128930256846095}
   - component: {fileID: 5356814897949020683}
   - component: {fileID: 2647592666559458333}
@@ -1088,7 +1090,6 @@ Transform:
   - {fileID: 1127727046097662596}
   - {fileID: 2637365678778342995}
   - {fileID: 6459491305238272278}
-  - {fileID: 5211623569082213171}
   - {fileID: 6819237444967757836}
   - {fileID: 6911822869296209675}
   - {fileID: 2413865904750215437}
@@ -1136,6 +1137,23 @@ MonoBehaviour:
   jump: {fileID: -457368213462708081, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   dash: {fileID: -3792413512703870773, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   zoom: {fileID: -6883469628129619336, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+--- !u!114 &8723415091114972345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836470251196452801}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bdb1d788bc4d84b643bcf8fede9667, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.FirstPersonLook
+  look: {fileID: 6859320629865395398, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+  pitchTarget: {fileID: 6459491305238272278}
+  sensitivity: 0.12
+  minPitch: -75
+  maxPitch: 75
 --- !u!114 &1735128930256846095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1225,6 +1243,7 @@ MonoBehaviour:
   components:
   - {fileID: 4704712806841285971}
   - {fileID: 7231271412042941267}
+  - {fileID: 8723415091114972345}
   objects:
   - {fileID: 3932742846200892361}
   ownerHiddenRenderers:
@@ -1245,7 +1264,7 @@ MonoBehaviour:
   unlock: {fileID: 4125261286405167765, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   relock: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   lookInputs:
-  - {fileID: 6749988806725877175}
+  - {fileID: 8723415091114972345}
 --- !u!114 &2793954284330394450
 MonoBehaviour:
   m_ObjectHideFlags: 0
