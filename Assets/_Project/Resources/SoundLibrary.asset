@@ -15,7 +15,7 @@ MonoBehaviour:
   entries:
   - id: 1
     clip: {fileID: 8300000, guid: 16553c8e5d1e84073b3ef142d11f6333, type: 3}
-    volume: 0.35
+    volume: 0.15
     spatial: 1
     minDistance: 3
     maxDistance: 30
@@ -31,7 +31,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 102
     clip: {fileID: 8300000, guid: 991e8bdbc1ae34f1c830b172582acfed, type: 3}
-    volume: 0.6
+    volume: 0.75
     spatial: 1
     minDistance: 3
     maxDistance: 35
@@ -47,7 +47,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 4
     clip: {fileID: 8300000, guid: 2cb30b4bfda7c418a8333f901af57c14, type: 3}
-    volume: 0.7
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 45
@@ -55,7 +55,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 5
     clip: {fileID: 8300000, guid: 02c1789af2e31487ba86bc3fdfc2e3f7, type: 3}
-    volume: 0.8
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 45
@@ -63,7 +63,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 6
     clip: {fileID: 8300000, guid: f6f2248fb00dc420e8b202b092c00cb0, type: 3}
-    volume: 0.7
+    volume: 0.55
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -71,7 +71,10 @@ MonoBehaviour:
     minInterval: 0.5
   - id: 7
     clip: {fileID: 8300000, guid: f68ecc5c99afe4dbb8ccb12a49f8c111, type: 3}
-    volume: 0.75
+    variations:
+    - {fileID: 8300000, guid: 56e701e822c74a63a738fec06345957c, type: 3}
+    - {fileID: 8300000, guid: b6b8baa1e3bd49e387775b6ffac35d1e, type: 3}
+    volume: 0.6
     spatial: 1
     minDistance: 3
     maxDistance: 40
@@ -79,7 +82,10 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 8
     clip: {fileID: 8300000, guid: e233ce285cba34434b54608ebb63027d, type: 3}
-    volume: 0.85
+    variations:
+    - {fileID: 8300000, guid: 3c78d02148604ff1ab07f09b554369d0, type: 3}
+    - {fileID: 8300000, guid: 7ecf4c3f83fe49d5a603bc8c5d133e9b, type: 3}
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 45
@@ -87,7 +93,7 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 9
     clip: {fileID: 8300000, guid: 8afa4c107d98f4b728c77d575ad0a3c2, type: 3}
-    volume: 0.7
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 40
@@ -95,7 +101,9 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 10
     clip: {fileID: 8300000, guid: daa906bd45bd84c1ea67588debe33cd1, type: 3}
-    volume: 0.9
+    variations:
+    - {fileID: 8300000, guid: 4633d80f0c794b71936e6e2a55f9bc12, type: 3}
+    volume: 0.68
     spatial: 1
     minDistance: 3
     maxDistance: 60
@@ -103,7 +111,7 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 11
     clip: {fileID: 8300000, guid: 4902de001ea3d40c58e3a0981ecc486c, type: 3}
-    volume: 0.9
+    volume: 0.64
     spatial: 1
     minDistance: 3
     maxDistance: 60
@@ -111,7 +119,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 12
     clip: {fileID: 8300000, guid: 7767137cc51a142e5a285962c0175eba, type: 3}
-    volume: 0.8
+    volume: 0.58
     spatial: 1
     minDistance: 3
     maxDistance: 50
@@ -119,7 +127,7 @@ MonoBehaviour:
     minInterval: 0.2
   - id: 13
     clip: {fileID: 8300000, guid: 3a3f3be5b910c417ea49476122282be9, type: 3}
-    volume: 0.6
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 70
@@ -127,7 +135,9 @@ MonoBehaviour:
     minInterval: 0.28
   - id: 14
     clip: {fileID: 8300000, guid: e3ec2973871cf41b6be1939611749ada, type: 3}
-    volume: 0.9
+    variations:
+    - {fileID: 8300000, guid: 0ebd29ff7c534be498717a5a2818c3c2, type: 3}
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 90
@@ -135,7 +145,7 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 15
     clip: {fileID: 8300000, guid: 9715071559b9945c5b36829729c4e28d, type: 3}
-    volume: 0.7
+    volume: 0.55
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -143,7 +153,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 16
     clip: {fileID: 8300000, guid: 11227e35f2e154e0ca3eca61b2d52082, type: 3}
-    volume: 0.9
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 90
@@ -151,7 +161,7 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 17
     clip: {fileID: 8300000, guid: afc2661ab60994ad08fbf197da19ba09, type: 3}
-    volume: 0.75
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 40
@@ -159,7 +169,7 @@ MonoBehaviour:
     minInterval: 0.2
   - id: 18
     clip: {fileID: 8300000, guid: 0303bd058d8614b799751728312aea57, type: 3}
-    volume: 0.5
+    volume: 1
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -167,7 +177,7 @@ MonoBehaviour:
     minInterval: 0.15
   - id: 19
     clip: {fileID: 8300000, guid: 4d49e6b111f3f4f9f9a6bf58132e3719, type: 3}
-    volume: 0.9
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 70
@@ -183,7 +193,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 21
     clip: {fileID: 8300000, guid: f6cb52b25147b4d2a9a4b41fe22e58d3, type: 3}
-    volume: 0.8
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 50
@@ -191,7 +201,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 22
     clip: {fileID: 8300000, guid: caff7e3fbf5f741bebeddba2b122a063, type: 3}
-    volume: 0.35
+    volume: 0.51
     spatial: 1
     minDistance: 3
     maxDistance: 25
@@ -199,7 +209,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 23
     clip: {fileID: 8300000, guid: 1bf5ef824bbde443d9a5aa220e6c27cc, type: 3}
-    volume: 0.8
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 50
@@ -207,7 +217,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 24
     clip: {fileID: 8300000, guid: c584847891679476986dbc0f78395c4d, type: 3}
-    volume: 0.7
+    volume: 0.24
     spatial: 1
     minDistance: 3
     maxDistance: 40
@@ -215,7 +225,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 25
     clip: {fileID: 8300000, guid: 1ba6ad83296dc463e8145a08a344b63c, type: 3}
-    volume: 0.7
+    volume: 0.64
     spatial: 1
     minDistance: 3
     maxDistance: 40
@@ -223,7 +233,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 26
     clip: {fileID: 8300000, guid: ae522c5bc0dbb46718b547882af86cf7, type: 3}
-    volume: 0.6
+    volume: 0.54
     spatial: 1
     minDistance: 3
     maxDistance: 70
@@ -231,7 +241,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 27
     clip: {fileID: 8300000, guid: 03d68b35f422042089c2f9e6082e537a, type: 3}
-    volume: 0.35
+    volume: 0.44
     spatial: 1
     minDistance: 3
     maxDistance: 30
@@ -239,7 +249,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 28
     clip: {fileID: 8300000, guid: 47e406cf0df00481f960c1838323cb27, type: 3}
-    volume: 0.9
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 45
@@ -247,7 +257,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 29
     clip: {fileID: 8300000, guid: 635546b103823468a9af4979b0a4172c, type: 3}
-    volume: 1
+    volume: 0.85
     spatial: 1
     minDistance: 3
     maxDistance: 90
@@ -255,7 +265,7 @@ MonoBehaviour:
     minInterval: 0.03
   - id: 30
     clip: {fileID: 8300000, guid: b8bdbd32161fa4f2eb55a54f63671711, type: 3}
-    volume: 0.8
+    volume: 0.63
     spatial: 1
     minDistance: 3
     maxDistance: 70
@@ -263,7 +273,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 31
     clip: {fileID: 8300000, guid: 9eca800c51d51478cbbd6f6df9304045, type: 3}
-    volume: 0.9
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 80
@@ -271,7 +281,9 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 32
     clip: {fileID: 8300000, guid: 4d8d9fade625b46f287dc3c802f1aa10, type: 3}
-    volume: 0.55
+    variations:
+    - {fileID: 8300000, guid: 8b2473dd9b0d42fdbeec6a51e99a5e3c, type: 3}
+    volume: 0.39
     spatial: 1
     minDistance: 3
     maxDistance: 50
@@ -279,7 +291,7 @@ MonoBehaviour:
     minInterval: 0.06
   - id: 33
     clip: {fileID: 8300000, guid: 0f4adefc91ed74e64a2086731c098012, type: 3}
-    volume: 0.8
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 70
@@ -287,7 +299,7 @@ MonoBehaviour:
     minInterval: 0.05
   - id: 34
     clip: {fileID: 8300000, guid: 30ca32efcbdde4f6592304167cdede5e, type: 3}
-    volume: 0.8
+    volume: 0.39
     spatial: 1
     minDistance: 3
     maxDistance: 40
@@ -295,7 +307,7 @@ MonoBehaviour:
     minInterval: 0.15
   - id: 35
     clip: {fileID: 8300000, guid: 0843878bc24044b62b428a2612df12e0, type: 3}
-    volume: 0.5
+    volume: 0.19
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -303,7 +315,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 36
     clip: {fileID: 8300000, guid: faa736efa329f46d7be5df77aeaabab7, type: 3}
-    volume: 0.6
+    volume: 0.83
     spatial: 1
     minDistance: 3
     maxDistance: 35
@@ -311,7 +323,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 37
     clip: {fileID: 8300000, guid: 70f247daf464c429ba512ec6f2d8b02a, type: 3}
-    volume: 0.9
+    volume: 1
     spatial: 1
     minDistance: 3
     maxDistance: 50
@@ -327,7 +339,7 @@ MonoBehaviour:
     minInterval: 0
   - id: 39
     clip: {fileID: 8300000, guid: 62f7becb96d504e2f8398fee30bd9376, type: 3}
-    volume: 0.8
+    volume: 0.33
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -335,7 +347,7 @@ MonoBehaviour:
     minInterval: 0.5
   - id: 40
     clip: {fileID: 8300000, guid: 0ee9e7458978646d19d2b58786772bcc, type: 3}
-    volume: 0.9
+    volume: 0.96
     spatial: 1
     minDistance: 3
     maxDistance: 80
@@ -343,7 +355,7 @@ MonoBehaviour:
     minInterval: 0.3
   - id: 41
     clip: {fileID: 8300000, guid: e05756f33329b4d209abe7baf60dcef5, type: 3}
-    volume: 0.7
+    volume: 0.32
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -351,7 +363,7 @@ MonoBehaviour:
     minInterval: 0.1
   - id: 42
     clip: {fileID: 8300000, guid: 2546f1d7f979342218bc56524e771d18, type: 3}
-    volume: 0.7
+    volume: 0.67
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -359,7 +371,7 @@ MonoBehaviour:
     minInterval: 0.3
   - id: 43
     clip: {fileID: 8300000, guid: 5e91484f172684391877ff43e9e4ed0b, type: 3}
-    volume: 0.8
+    volume: 1
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -367,7 +379,9 @@ MonoBehaviour:
     minInterval: 0.5
   - id: 44
     clip: {fileID: 8300000, guid: f045e84583d2941b48f7011689c45c24, type: 3}
-    volume: 0.5
+    variations:
+    - {fileID: 8300000, guid: fb94862e78484a4280930812dfd56c94, type: 3}
+    volume: 0.51
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -375,7 +389,7 @@ MonoBehaviour:
     minInterval: 0.15
   - id: 45
     clip: {fileID: 8300000, guid: 3d17b7bbb67a14457a17b28006ff56bd, type: 3}
-    volume: 0.9
+    volume: 0.75
     spatial: 0
     minDistance: 3
     maxDistance: 500
@@ -383,7 +397,7 @@ MonoBehaviour:
     minInterval: 1
   - id: 46
     clip: {fileID: 8300000, guid: 6e93532d18c624906a1799dcffcfe8c6, type: 3}
-    volume: 0.5
+    volume: 0.62
     spatial: 0
     minDistance: 3
     maxDistance: 500

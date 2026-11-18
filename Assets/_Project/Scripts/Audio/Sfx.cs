@@ -35,7 +35,7 @@ namespace OnYourMark
             src.transform.position = position;
             Apply(src, e);
             src.pitch = 1f + Random.Range(-e.pitchJitter, e.pitchJitter);
-            src.PlayOneShot(e.clip, e.volume * volumeScale);
+            src.PlayOneShot(e.PickClip(), e.volume * volumeScale);
         }
 
         /// <summary>target에 붙는 반복 재생 AudioSource. 처음엔 멈춘 상태다.</summary>

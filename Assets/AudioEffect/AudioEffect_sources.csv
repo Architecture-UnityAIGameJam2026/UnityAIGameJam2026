@@ -1,0 +1,54 @@
+﻿file,event,source (game sound collection),processing
+01_player_footsteps_loop.wav,발소리 (달리기),Foley & Impact/FootStep_girl_metal_01.wav + Foley & Impact/FootStep_girl_metal_03.wav,2개 발소리를 0.4s 간격 6보 루프로 합성
+02_player_landing_dust.wav,착지 (먼지),Foley & Impact/FootStep_Metal_Landing.wav,원본 길이 그대로
+03_jetpack_thrust_loop.wav,제트팩 추진 루프,Sci-Fi Sound Pack Vol.1/Ability/A_PK_HD_BoosterMove.wav,"루프: 원본 길이 유지, 이음매 5ms 크로스페이드"
+04_dash_jet_ignite.wav,대시 점화,Sci-Fi Sound Pack Vol.Bonus/Bot_Dash_Whoosh.wav,"원본 길이 그대로, 피크 리미트 2.2dB"
+05_infinite_step_activate.wav,무한 스텝 발동,Spell/Spell_Electric_Spark_10.wav,"뒤 무음 97ms 자름, 피크 리미트 1.6dB"
+06_out_of_bounds_return.wav,장외 복귀 워프,Sci-Fi Sound Pack Vol.3/Unit/U_TE_AR_Warp_Switch.wav,앞 무음 2ms 자름
+07_sword_swing.wav,검 휘두르기,Weapon & Whoosh/SharpBlade_swing_03.wav,뒤 무음 14ms 자름
+07_sword_swing_v2.wav,검 휘두르기,Weapon & Whoosh/SharpBlade_swing_01.wav,앞 무음 44ms 자름
+07_sword_swing_v3.wav,검 휘두르기,Weapon & Whoosh/SharpBlade_swing_02.wav,앞 무음 44ms 자름
+08_sword_hit_kinetic.wav,검 타격,Damage/Damage_Sword_Spark_03.wav,"뒤 무음 3ms 자름, 피크 리미트 0.8dB"
+08_sword_hit_kinetic_v2.wav,검 타격,Damage/Damage_Sword_Spark_02.wav,"원본 길이 그대로, 피크 리미트 0.8dB"
+08_sword_hit_kinetic_v3.wav,검 타격,Damage/Damage_Sword_Spark_01.wav,"원본 길이 그대로, 피크 리미트 0.8dB"
+09_parry_start_shield.wav,패리 시작 (실드 전개),Warfare_Casual/WC_Item_Shield.wav,"뒤 무음 40ms 자름, 피크 리미트 1.3dB"
+10_parry_success_ping.wav,패리 성공 핑,Gun/Gun_SuppressedRicochet_1Shot_02.wav,뒤 무음 15ms 자름
+10_parry_success_ping_v2.wav,패리 성공 핑,Gun/Gun_SuppressedRicochet_1Shot_03.wav,뒤 무음 98ms 자름
+11_nano_boost_activate.wav,나노 부스트 발동,Sci-Fi Sound Pack Vol.1/Ability/A_PK_HD_BoosterStart.wav,뒤 무음 18ms 자름
+12_nano_boost_mini.wav,나노 부스트 (미니),Spell/Spell_Electric_Spark_03.wav,"앞 무음 86ms 자름, 뒤 무음 370ms 자름"
+13_railgun_rapid_fire.wav,레일건 연사,Sci-Fi Sound Pack Vol.1/Weapon/P_PK_FT_BasicGun3.wav,"원본 길이 그대로, 피크 리미트 1.0dB"
+14_railgun_fire.wav,레일건 단발,Gun_Bio_3.Android/Bio_Weapon_Shot_Android_DS-36.wav,"뒤 무음 16ms 자름, 피크 리미트 1.1dB"
+14_railgun_fire_v2.wav,레일건 단발,Gun_Bio_3.Android/Bio_Weapon_Shot_Android_DS-34.wav,"원본 길이 그대로, 피크 리미트 1.1dB"
+15_railgun_dry_fire.wav,레일건 빈 격발,UI & Jingles/UI_Metal_Click_02.wav,"앞 무음 2ms 자름, 뒤 무음 159ms 자름"
+16_railgun_overcharge_fire.wav,레일건 과충전 사격,Sci-Fi Sound Pack Vol.3/Ability/A_TE_AR_WaveCannonStart2.wav,"앞 무음 6ms 자름, 뒤 무음 512ms 자름, 피크 리미트 4.0dB"
+17_weapon_transform.wav,무기 변형,UI & Jingles/UI_Item_Equipment.wav,"원본 길이 그대로, 피크 리미트 0.2dB"
+18_zoom_focus.wav,줌 포커스,UI & Jingles/UI_Whoosh_Zoom_02.wav,"앞 무음 60ms 자름, 뒤 무음 29ms 자름, 피크 리미트 0.4dB"
+19_smart_lockon_fire.wav,스마트 락온 발사,Sci-Fi Sound Pack Vol.1/Weapon/P_PK_ML_MissileToAir1.wav,"원본 길이 그대로, 피크 리미트 0.1dB"
+20_awakened_railgun_laser_explosion.wav,각성 레일건 (Q) 레이저+폭발,Sci-Fi Sound Pack Vol.3/Ability/A_TE_AR_WaveCannonStart2.wav,"앞 무음 6ms 자름, 뒤 무음 512ms 자름, 피크 리미트 4.0dB"
+21_heal_shield_cast.wav,힐 + 실드 시전,"Magic/Magic_Shield,.wav","뒤 무음 242ms 자름, 피크 리미트 0.1dB"
+22_shield_hold_loop.wav,실드 유지 루프,Foley & Impact/Turbine_Ggenerator_1.wav,"루프: 원본 길이 유지, 이음매 5ms 크로스페이드"
+23_remote_reload.wav,원격 재장전,Gun_Casual/Gun_Casual_Rifle_Reload.wav,"앞 무음 3ms 자름, 뒤 무음 37ms 자름, 피크 리미트 0.0dB"
+24_health_absorb.wav,체력 흡수,RPG/2DRPG_soul_shadow_01.wav,앞 무음 2ms 자름
+25_dash_charge_reload.wav,대시 충전 재장전,Sci-Fi Sound Pack Vol.1/Unit/U_PK_GT_BasicGunCharge.wav,앞 무음 112ms 자름
+26_enemy_spawn.wav,적 스폰,Sci-Fi Sound Pack Vol.2/Unit/U_KA_PR_Drop.wav,뒤 무음 50ms 자름
+27_rusher_move_loop.wav,러셔 이동 루프,Foley & Impact/Cart_Run_Loop_10.wav,"루프: 원본 길이 유지, 이음매 5ms 크로스페이드"
+28_rusher_countdown_beep.wav,러셔 자폭 카운트다운,Warfare_Casual/WC_Submarine_TorpedoAlarm.wav,"원본 길이 그대로, 피크 리미트 4.0dB"
+29_rusher_explosion.wav,러셔 폭발,Explosions 1942 Style/Explode_ShootingGame_Medium_02.wav,뒤 무음 496ms 자름
+30_laser_enemy_charge.wav,레이저 적 충전,Sci-Fi Sound Pack Vol.1/Unit/U_PK_GT_BasicGunCharge.wav,앞 무음 112ms 자름
+31_enemy_laser_fire_hit.wav,적 레이저 발사·피격,Sci-Fi Sound Pack Vol.1/Weapon/P_PK_RS_LaserBeam.wav,"뒤 무음 194ms 자름, 피크 리미트 3.0dB"
+32_enemy_hit.wav,적 피격,Sci-Fi Sound Pack Vol.2/Common/C_KA_AG_MeleeDamage2.wav,"앞 무음 2ms 자름, 뒤 무음 109ms 자름"
+32_enemy_hit_v2.wav,적 피격,Sci-Fi Sound Pack Vol.2/Common/C_KA_AG_MeleeDamage3.wav,뒤 무음 8ms 자름
+33_enemy_death.wav,적 사망,Sci-Fi Sound Pack Vol.1/Unit/U_PK_ML_Die.wav,"뒤 무음 81ms 자름, 피크 리미트 4.0dB"
+34_player_hit_body.wav,플레이어 피격,Sci-Fi Sound Pack Vol.2/Common/C_KA_BM_MeleeDamage.wav,"앞 무음 1ms 자름, 뒤 무음 139ms 자름"
+35_downed_warning_loop.wav,다운 경고 루프,Sci-Fi Sound Pack Vol.1/Building/B_PK_ConstructSiren.wav,"루프: 원본 길이 유지, 이음매 5ms 크로스페이드"
+36_revive_progress_loop.wav,소생 진행 루프,Sci-Fi Sound Pack Vol.1/Unit/U_PK_NK_AttackRepairGather2.wav,"루프: 원본 길이 유지, 이음매 5ms 크로스페이드"
+37_revive_complete.wav,소생 완료,UI & Jingles/Magice_Blessing_02.wav,"앞 무음 16ms 자름, 뒤 무음 133ms 자름, 피크 리미트 1.7dB"
+39_wave_alert.wav,웨이브 알림,Warfare_Casual/WC_GunneryExercise_Hostage_Alarm.wav,원본 길이 그대로
+40_terminal_unlock.wav,터미널 해제,UI & Jingles/UI_Power_On_02.wav,앞 무음 9ms 자름
+41_hud_swap_glitch.wav,HUD 스왑 글리치,Robot_Error/Robot_Error_Signal_Design-19.wav,원본 길이 그대로
+42_trade_offer_notify.wav,거래 제안 알림,UI & Jingles/UI_RPG_Pop_Up.wav,앞 무음 20ms 자름
+43_q_gauge_ready.wav,Q 게이지 준비,UI & Jingles/Magice_Blessing_02.wav,"앞 무음 16ms 자름, 뒤 무음 133ms 자름"
+44_jev_callout_radio_chirp.wav,JEV 무전 칩,Sci-Fi_SpaceShip/SF_SpaceShip_Signal_0.wav,원본 길이 그대로
+44_jev_callout_radio_chirp_v2.wav,JEV 무전 칩,Sci-Fi_SpaceShip/SF_SpaceShip_Signal_12.wav,앞 무음 3ms 자름
+45_result_jingle.wav,결과 징글,UI & Jingles/UI_Complete_01.wav,원본 길이 그대로
+46_ui_click.wav,UI 클릭,UI & Jingles/UI_Metal_Click_01.wav,뒤 무음 197ms 자름
