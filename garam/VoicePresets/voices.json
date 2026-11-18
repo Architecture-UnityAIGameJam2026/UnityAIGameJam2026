@@ -1,0 +1,48 @@
+{
+  "source_main": "a8513474beab31601988273b826d3f6a481299f4",
+  "provider": "ElevenLabs",
+  "design_model": "eleven_ttv_v3",
+  "speech_model": "eleven_v3",
+  "language_code": "en",
+  "synthesis": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "text_format": "{tts_tags} {english}",
+    "output_format": "pcm_24000"
+  },
+  "delivered_format": {
+    "container": "WAV",
+    "codec": "PCM signed 16-bit little-endian",
+    "channels": 1,
+    "sample_rate_hz": 24000
+  },
+  "roles": [
+    {
+      "role": "ranged",
+      "role_ko": "원거리 플레이어 AI",
+      "voice_name": "ON YOUR MARK - Railgun",
+      "voice_id": "m56ei2ASROq0i3E0dTB4",
+      "design_prompt": "Dry close studio mic. A woman around thirty with a clear mid-register voice, native American English. A focused observer speaking to the one teammate she trusts. Measured, economical delivery, fine precise consonants, a hint of a smile when relieved. Let the important word land, then drop the pitch at the end. Calm even when tracking a fast target, with an intimate, human sound.",
+      "approved_sample_id": "ranged_laser_tracks_partner",
+      "mix": "OF-04 helmet radio, 350–4350 Hz main band, thin hiss, higher key tone"
+    },
+    {
+      "role": "melee",
+      "role_ko": "근거리 플레이어 AI",
+      "voice_name": "ON YOUR MARK - Sword",
+      "voice_id": "Kg7I0pjdmXpjHKBzLPBw",
+      "design_prompt": "Dry close studio mic. A man in his early thirties with a compact, chesty mid-low speaking voice, native American English. He's the teammate at the front who turns to talk over his shoulder. The voice catches a little on the first consonant; a little breath escapes after a hard stop. Short, physical phrases, restless energy, warmth under pressure. Clearly articulated at conversational volume, with space for an urgent call to cut through.",
+      "approved_sample_id": "melee_draw_rushers",
+      "mix": "OF-04 helmet radio, 240–3450 Hz main band, stronger squelch, low key tone"
+    },
+    {
+      "role": "control",
+      "role_ko": "아군 중재 AI",
+      "voice_name": "ON YOUR MARK - Control",
+      "voice_id": "eQiZMTqYZnIRMKvRQQnq",
+      "design_prompt": "Clean studio sound. A resonant, low-pitched androgynous contralto with a light standard southern British accent. The friendly onboard tactical operator of a science fiction arena. Even pulses of speech, small precise pauses at clause boundaries, a restrained pitch contour and a soft downward cadence. Cool, lucid, reassuring authority. Intelligible pure speech with a subtle almost synthetic regularity.",
+      "approved_sample_id": "control_first_wave_inbound",
+      "mix": "14-band vocoder, 112/168 Hz carriers, 41 Hz ring modulation blended with clean speech; two-tone link cue"
+    }
+  ]
+}

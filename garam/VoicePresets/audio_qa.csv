@@ -1,0 +1,301 @@
+﻿id,asr_english,words_match,seconds,peak_dbfs,cue_rms_dbfs,wav_sha256
+ranged_on_comms,"I hear you, Sword. Where's your light?",yes,3.025208,-3.68,-35.84,494b61af3b492ae81f40efe9391510d86ec5af255739450b4f12223894e2628f
+ranged_platform,I've got the platform. I can see the floor.,yes,2.873375,-2.1,-36.2,b2c9fb36b4fda47b2260a0129f477e90a29e56950553a212fee1452875d5cf77
+ranged_below_me,"There you are, just below me.",yes,2.340625,-2.66,-36.3,9abb42a2d1dfad2f5466ca068f5a6890a49ca63751b0c2525e64931320a13df9
+ranged_lost_behind,That block hides you from here. Still moving?,yes,2.754167,-3.55,-35.72,ca0814bfc0af4096a40c6450be6fd72fd08e826e7754456657d1c97ddac7e3e8
+ranged_voice_only,I've got your voice. Waiting for a visual.,yes,2.827542,-4.56,-36.75,b1fd74067675cb89a5004a7269d213bcbcc1273f2e7b2e7f991e6255ea91ebdc
+ranged_sight_again,I see the blade again. You're clear of the block.,yes,5.245000,-3.41,-36.27,ca3c23d1cf3f25d14d0e8269c1bd46eb58298213dd6f4c42e7c776a689831e74
+ranged_floor_check,Can you check the floor under my platform?,yes,2.045000,-6.1,-36.57,dcdfd7dcdcab46043dda8bb364f56333c95b2c3ad07a50b33b52ac0373b54aaf
+ranged_sightline,You crossed my scope. I held the shot.,yes,3.277667,-2.98,-36.46,65dc2dd26d59c7e25dccba704d3f6cf819e1a48cc8580b33a375da031a07340d
+ranged_room_again,Lane's clear again. Thank you.,yes,1.769917,-5.17,-36.56,a29103f3a71faf153701f0c7dfb9804f84e22cd0d4cec11cddb963ee5ec9e531
+ranged_ramp_top,"At the top of the ramp, look up.",yes,2.445000,-1.78,-36.07,5249c4676a3609f750578bd6678d11c66f2cb94a1f183dc88741c3ac717eeff9
+ranged_scope_air,Going tight on the hover unit.,yes,1.885000,-4.66,-35.68,fef9f05d8ff7941144b2a54b773b1bd2390fbb5d4b96ce3f6e7cd1f3867d543e
+ranged_scope_ground,Scoping the floor. Call anything above me.,yes,3.143833,-2.78,-36.3,4e7169a14e6528935bee2ef5d1c002c48b63d65df9f5cc13017e9e69770feb23
+ranged_scope_far,Zooming in. I want a better look at that light.,yes,3.165000,-2.28,-36.36,29cccd5ff9ea54a362b5b7f4199e853a6ab409921afd31f2a68172549d5f8114
+ranged_scope_lost,Target left the scope. Which side did it take?,yes,2.845000,-2.75,-36.61,6ed43a582457525decbb7d3f0d0f5c264c6e4f0e476a511120b78f120da33def
+ranged_scope_off,Coming out of zoom. I need the whole floor.,yes,2.925000,-2.98,-35.75,8e023404828573980a3c12209abcf25c1cc2ad772a59c63b23e73671822df328
+ranged_lock_air,Reticle's on the flyer. I see it.,yes,2.310875,-3.24,-36.27,af707b37e07b7e0eed09360289a753019be2d04ecb43d73fb7c2bff0a863add2
+ranged_lock_ground,Ground target in the brackets.,yes,1.826417,-4.92,-36.32,b74d2c75f1dc4435aad75ea83aeba4eec820589800411f258cc5e663e18ffa02
+ranged_lock_switch,My sight jumped to the closer one.,yes,1.986917,-3.45,-36.73,811a2140ff8596dd6628854d521786689f1673b28161bc1ead592479ee76df10
+ranged_lock_lost,Lost the lock behind my shoulder.,yes,2.125000,-3.41,-36.62,74aee7b7a76f2d69df76fec8e727d6ef896e152333f69112f39ff6600fc39b19
+ranged_far_range,I can see it. It's outside rail range.,yes,2.674125,-3.77,-36.47,9d90e67b5d68274a6d9871f7cff6a2538568ec1eed9123e0b83b0efd4cce75af
+ranged_shot_air,Taking the air target.,yes,1.565000,-5.88,-36.46,e708d3a34c3a7e44819bee9b34929b5642a60ffe1ffafa42ba49fb5e3397ed50
+ranged_shot_ground,I've got the lead rusher.,yes,1.417917,-4.11,-36.11,88d1905db10e6b9ee6494d5ceec8d287a1332485e4d754922475c53fef405f47
+ranged_shot_pursuit,Firing on the one behind you.,yes,1.649875,-5.63,-36.44,7c4fd1e33c8e15109f4378e9b4bd4a3bca39fc421503f97eb3321489c2f33d07
+ranged_shot_high,Taking the higher of the two,yes,1.885000,-6.08,-36.22,a6b156dcb889d2d5b2f113aec1e4064215d7997f71b52b938c3ab11cb81606c3
+ranged_hit_air,One hit on the flyer. It's still up.,yes,2.556500,-3.01,-35.96,b7605d9c30c6e37de618c5997c430539b99cfaf6d9c963936d7e8d11574f8cce
+ranged_hit_air_down,Hover unit down. Sky's clear on my side.,yes,2.649000,-3.84,-36.55,4c0eb1d3b908439d5d463f8fd6801a89b1cd4f0ad52b774c4b288cf2af0bbaad
+ranged_hit_rusher,Rusher down before the fuse.,yes,2.063042,-2.79,-36.55,fa285eb06e09a6bb642b6fe95235c2201870c23d3163c0662852023dbd663033
+ranged_shot_wall,I hit the wall. Target is still moving.,yes,2.803542,-2.97,-36.62,35250ed39d3998be001ebc51f98a0529d32a7562ded36bae22e6cba914a93bf4
+ranged_shot_wide,Missed it. Keep your eyes on that light.,yes,3.203750,-3.56,-36.07,c50622c62c745aefc5b1bbad9f9dfc0a0ee1862f4462d2a313b29b4bf9579121
+ranged_partner_finish,That was your blade. Clean finish.,yes,3.005000,-3.83,-36.55,c9de6f5eda6bc5b3e124178efca0c74f107201b759ddb1a9bc7753b2474f9e98
+ranged_reload_cover,Reloading. Cover me.,yes,1.645000,-5.02,-36.52,d1e2a4c61ab7d59ed44245335da25df8ec2eb9a8ddc7b298c544c0d995ffb5bd
+ranged_reload_early,Topping off while the floor's clear.,yes,2.121125,-5.3,-35.79,a732c4ce3b26e3778f8475c0df52813ad95d7ddc4fa9312eb2b61cf2c5c3d73d
+ranged_reload_dry,Empty click. Changing mags.,yes,3.382792,-2.25,-36.15,33956ab9843f5f274f20ad706c2086ba938542c4b216e6f53de233fe99b728ba
+ranged_reload_above,New mag going in. Watch the platform.,yes,2.360000,-4.9,-36.3,591a2d82e26018fe4e94e87450be4598af62572f85884f2c5c8f6a616f9490b6
+ranged_reload_full,Fresh mag. Back on you.,yes,1.901375,-4.52,-36.11,55b4b8fc313f7b9e538b20946e2f9b39e66802da799e1a0c0461e189001cc3ca
+ranged_reload_done,Reload complete. I can cover the landing.,yes,2.765000,-4.93,-36.16,eb8f94cc95467f333524830d933871ddcdd92ad8acf97170347fc50fce97a160
+ranged_reload_air,Loaded. Where's the second flyer?,yes,2.445000,-5.96,-36.04,e3a68ca64b2443bf743c6c8ffdd5709e8d59d10c9770614a7878ae748e9a2abb
+ranged_click,Just a click. I can't fire.,yes,2.914958,-1.8,-36.44,573415ab31a5b9682cb5de91006e4f41615cf9eb9c1da07650c3b93f76554972
+ranged_reload_gap,Still changing mags. Give me a beat.,yes,2.261625,-3.76,-36.1,def08b89e0491481bb2ef57b6f9a3c8a0330173491c4b4de83b251878d6929ba
+ranged_ammo_check,Can you read my mag from there?,yes,1.916125,-5.04,-36.74,93cdacf6dbf866f3b3dc69f4015a12cb2b245bcfcd4101c482cf1645741f6966
+ranged_laser_tracks_partner,The laser's tracking you. Move sideways.,yes,2.280250,-6.31,-36.23,c017c4e30d0184aa102a2911a364ac3ff2088fd18e2c24feb643e3d4d123be50
+ranged_laser_tracks_me,That line's on me. I'll move.,yes,1.935792,-3.3,-36.82,d61baf3f08d260ea26081e6966edc8dddb1d5cd88eddcdfbd6fbdfe743e84624
+ranged_laser_floor,Beam across the ramp. Wait a beat.,yes,2.374708,-6.14,-36.79,b7b2d7a288ead8f8a5bce83a09df4460166e560b6cf507c3f44e3d136aaf736f
+ranged_laser_done,It fired. You've got a window.,yes,1.877583,-5.88,-36.37,69c4a0d7ab5fc158b07e9f704e9949e339c1983b7321cd9ae4a17d41748b9e60
+ranged_laser_second,Second beam above the first.,yes,2.007583,-6.21,-35.46,a2114944666ed45337529a8c9f81d6c79fb504940de8aa3b88c4693a20d5319f
+ranged_rusher_left,"Rusher on your left, right at the block.",yes,2.000792,-5.79,-36.1,759534a6c148267c2753d8e9867fdb4c9c0c985680876db1c22555b019d954d3
+ranged_rusher_tail,You've still got one on your heels.,yes,1.905708,-3.05,-35.96,f54b9f7fac73e6fbcba31a7669e56e148be259bf7284ad55efb6690d193bdab8
+ranged_rusher_still,It stopped moving. That's the fuse.,yes,2.720667,-2.46,-36.5,c006e78de4d6fc8f05ba58d6a26c0216d73dfb40936e1bf0a1b51b24e4ca3a65
+ranged_rusher_blast,The explosion is over. You can cross now.,yes,2.811083,-4.59,-36.2,49da9749108a544a5de4f016f8551fdbda73e20783ab7c76530889e04c04eee3
+ranged_rusher_ramp,Something's climbing my ramp. Ground contact.,yes,2.525000,-5.01,-36.55,ef693776fac96cc80e636043a09122131b7bb3a584d78db7d69d07a5e444dff2
+ranged_dash_beam,Breaking the beam. Dashing now.,yes,2.605000,-3.38,-35.64,a43fef304fe5f99fa3423cb187560cece56835e198fbd78e3faabcc0af82b764
+ranged_dash_cover,Dashing to cover. Losing sight for a second.,yes,2.598375,-3.2,-36.54,f65fae15a8599f4906d9e881d4822451667f7059130fc8ca0ae86deec9b48439
+ranged_hover_angle,Holding in the air. I've got the angle.,yes,3.325000,-1.91,-36.17,521f5b0bf7f837ceaf8f297151721f4e63dd183f77b6ef66175ed0a6a834091a
+ranged_hover_land,I'll hang here until you clear the landing.,yes,2.285000,-5.0,-36.19,5ca50a51c169d88d1ac784fbf19d3fe658bcd8d2e3d27d51a3f9bef0981cf84b
+ranged_jump_ramp,Jumping off the ramp to reach you.,yes,1.965000,-6.31,-36.63,c38ea89927ddd05d1f0347d7f8a91e5e2698a9b63501fa25b15e5e017a0ffd05
+ranged_cover_block,Dropping behind the low wall.,yes,1.965000,-3.5,-36.12,6f94019f6da12ca98c314842ddd7a4c1d1b3ded7267af3a9a38061b8cd190e2e
+ranged_regroup_foot,Coming down to meet you at the foot of the ramp.,yes,2.285000,-5.78,-36.12,016e6a31930c87f23a0e208219e1b87e948032f46cbc2250b3e107e7c98f2faa
+ranged_hold_perch,Keeping this perch. I can see you from here.,yes,2.925000,-4.68,-36.42,139911691313278dae7dd3ff2740669f988fb9a7e22ba37d7ad423386d588360
+ranged_dash_cool,Dash is spent. I'm staying behind cover.,yes,3.033542,-3.05,-36.38,1e398c3bf2113c5f9110010dea5291e84d66d265b90737ece5e0203d2c3e8b70
+ranged_landed,Feet down. I've got a steadier shot.,yes,2.577042,-3.62,-36.38,23af73265c3db34d0c772ac1a3028580eaa974612b8ac1a3e494743843ce0df1
+ranged_vitals_fall,Your pulse just dropped. Still with me?,yes,2.906125,-3.97,-36.26,d2f60b08d71182bd0a7eb46791fac5f33ee9046ea7d83e2368ebbdbd1f03a735
+ranged_gauge_empty,Your blade gauge reads empty.,yes,1.918917,-6.22,-35.72,41b2dfc1719cfe26f100ee2324268bcebb4e84f9004da0bdb5b13e6f62f625a0
+ranged_gauge_full,You've built a full blade charge.,yes,2.205000,-5.8,-35.85,834502c44c7a0054ebf187d26af2ed6f2809a4b67191dbe4b3f0e2af38f414cd
+ranged_ask_shield,Requesting a shield. They found my perch.,yes,2.525000,-3.19,-35.97,27b0c9d94021eb0de28bbba38530beed071c994948201a4e796cf7ac884c5acf
+ranged_ask_scan,Can you mark the one I lost?,yes,1.834250,-2.5,-35.74,7123ea324e6cb2ee2385f06a039fad91b1e0ec5bdf3114a2dc5e3ebd1d8dac49
+ranged_ask_ammo,Supply request is up. I need rounds.,yes,3.085000,-3.21,-36.11,e55351daa4d9c220265ad3f5344a7f5edb32adc7100e246c44cf32d7c2bf1d3e
+ranged_heal_sent,Shield delivered. You're covered.,yes,2.045000,-3.54,-36.25,ce5899eeee705feb53847d77b447c22feb92603afd39af89a377286e706b6e32
+ranged_charge_sent,I'll send a charge for your blade.,yes,1.910958,-3.58,-35.98,558c6239c8179ab7b5d48f9c0a773a56728f3ebe70ed20d97d1bddb7b559a1e3
+ranged_rail_ready,Your speed rail is live. Follow the line.,yes,2.912917,-4.37,-36.04,5485542ab56b9e74aa6cd4382c96b327953387ac3aed972c721bd10fc0e17256
+ranged_ammo_thanks,Got the rounds. That's exactly what I needed.,yes,2.840000,-4.23,-36.5,d12784d89d13f4dbb53419833603fb84aa46f204c38cd4c9e7865d677ee2d01d
+ranged_ask_bio,Trade vitals? I'd like to see my own readings.,yes,2.845000,-4.06,-36.37,3031b4fd12e3a943464e278563fe6bb8566c2ee97998b188f30557c0fbf54805
+ranged_ask_map,Can we trade maps before I change perches?,yes,2.525000,-4.61,-36.27,60af2536b6343f8ece49cf6840ff92206c484ef6fbcc2e50831f861932f7a6de
+ranged_ask_supply,Supply channel offered. Do you want it?,yes,2.605000,-4.17,-36.64,06b034cdcf275811ea23ff9b76d2884c9f935fdf16df308ca69601345e4040a6
+ranged_bio_ok,Yes. Let's swap our health displays.,yes,2.510250,-3.51,-35.74,25271c9d087857decbde18d65045b2a09de80748673a2d83e53a32e30b092fb0
+ranged_map_ok,Map exchanged. Your side should have updated.,yes,2.563250,-4.89,-36.48,88996bbf903e04d4161b0664b9bd55c280765ec6a67fd1c5d008170f0037f3e4
+ranged_supply_ok,Supply trade complete. I see my rounds again.,yes,3.805000,-2.9,-36.29,ed38f0b011a3e791efaf65660adaf81311a12e8d176c81064802ca9a9309b9af
+ranged_cancel_map,I canceled the map trade. Keep tracking for me.,yes,3.303875,-3.98,-36.08,c35dc3960e49a868100978b6130318037f8bede8e2f62668bade236bbd1f2daa
+ranged_consent_wait,Your turn to confirm if that works for you.,yes,2.525000,-4.91,-36.39,70d5033174c67ec4fad1e6be7f7df261ab09d7522cdca05f4c36157bacaad4c5
+ranged_timeout,The swap window closed. Still on the old channel.,yes,3.085000,-3.94,-36.08,2172cd3b7c4e035e8d89aa39f301bb0acaf764f84e4bed51b82187ec298472fd
+ranged_return_blocked,That terminal is locked. Let's finish the wave.,yes,2.754500,-4.11,-36.01,72901fdbf860405750be2c0d058a85f3c0f1d62de1c110dcbcb291b4acd238c8
+ranged_down_perch,I'm down on the platform. Can you reach me?,yes,3.485000,-6.57,-36.19,b5746ce3bdd3035aee5e048dc3cca1c14fb78d009997e09f0f5ae20fb3ef61fe
+ranged_down_floor,I'm on the floor. My rail gun's quiet.,yes,3.939792,-4.33,-36.31,148010c50c1fbe825439dac7bde10370a9e9ae8df6faa10a3422d3765382f0bf
+ranged_down_voice,Still receiving. Follow my voice.,yes,2.685000,-3.42,-36.24,6c7750490a95f9da7c97777610a9ff3c0b5819e737566d131ae2f32fbe8a0d45
+ranged_incoming_revive,Contact. I feel the link coming back.,yes,3.005000,-3.93,-36.88,d15e53592d830ee10c454b6fbddd09ebc16b9e0160be180518564fe6ea9f69af
+ranged_interrupted,Link slipped. I'm still here.,yes,3.865708,-3.62,-36.43,6dd395853157c51cd4b40901c8fc9473c076144261c4cd76fe7a99cb1e919392
+ranged_revive_start,I'm beside you. Starting the link.,yes,2.314083,-2.87,-36.61,90c5e325608f645f2f6cdab3bab419d6f7d8d795dbbf9800274466772574c21f
+ranged_revive_done,There you are. I've got your pulse back.,yes,2.445000,-3.58,-36.63,07d72d631be12d9d9ca3b2d92307e260b4289e4c5b18ceea12d71d7d6f592009
+ranged_see_downed,I see where you fell. Keep the channel open.,yes,3.085000,-4.57,-36.09,6f22187aea0c41a8ce3482bdea21d3bcfb9c054bfd37b7a70ee92d52607c5596
+ranged_approach_wait,There's a live fuse between us. One moment.,yes,4.034208,-2.63,-36.15,ad66ea3cd4442eafd0c0141f03b2e3ebe8be2ee4b3707da8b210e1f881bb91a3
+ranged_back_online,"I'm back. Thanks for the lift, Sword.",yes,2.555833,-5.06,-36.73,bb862414525151910c3f62b33c19896f02d8b04cb657a8da5c392125b615e20d
+ranged_first_wave,First contacts are all on the ground.,yes,2.765000,-4.87,-36.37,3d0e6101666d6d29ee48468bfdf78edcddb2915279b98ff89f27e81f886f1e0a
+ranged_second_wave,One airborne contact above the new wave.,yes,2.365000,-4.47,-36.28,0b49a1ea18a557c6215579383707196604a81ac68e2c52854d6b71e7a69d1697
+ranged_third_wave,Two airborne contacts this time. I see both.,yes,2.680333,-4.05,-36.17,35123e8007985455d25246e2d7de08a3cfaa0f62333e4c9de6888ba1fde3a41d
+ranged_first_clear,First wave clear. Checking my mag.,yes,2.685000,-4.09,-36.42,b604bc620a3f36fd82c042c3248c305617e1cc49ee7dc0c10312451f5eae67d4
+ranged_second_clear,Second wave clear. Take a breath.,yes,2.741708,-3.73,-35.99,370291d5bfa5b2f9e57a7d63df8c31bd150cb292231715d62d287f4c788dab5f
+ranged_end_clear,All three waves. You can lower the blade.,yes,2.655958,-4.55,-35.69,fb4aba121f77739b92f0ebcbafe4e197cacccb65d5fc4922e6d774404e45f6bc
+ranged_blade_save,Saw that swing. You kept it off my ramp.,yes,3.034542,-5.2,-36.17,065778ca51958208520ea6da48a4d477afe3c55b15bd6981a806d835969b621f
+ranged_wave_save,Your blade wave finished my flyer. Beautiful.,yes,3.241958,-4.44,-36.54,4907280f356dcbe3bed1544ee3e492f301e43d7068862fe439e727b109e2756d
+ranged_where_last,One contact left. I've lost the angle.,yes,2.970333,-3.43,-36.61,6cb6e011d84ccfad663a7b2f529751ac869064af8259ca61205174f4115f1266
+ranged_wait_next,Floor's clear for now. I'll watch for the next group,yes,2.916417,-3.55,-36.16,20aa8f9bc1ac7e2264e675307b8f44cfa3e763521b329d72580f25aa7883855e
+melee_spawn_voice,There you are. I can hear you now.,yes,3.085000,-5.5,-32.63,b6b2e97a361b77ded1cfa49e005eba5e914ff48c7842adf962627d1040221c5f
+melee_front_lane,I'll take the floor. Can you see over me?,yes,2.125000,-7.01,-32.48,5a12e38d704b0eea140038a8357648f1c95ecc8bcb24861c37e7dbd6f14fcd7a
+melee_lost_sight,Lost you behind the cover. Talk to me.,yes,2.365000,-5.86,-32.29,b16160cb87da8914f2e6ab003ffa8a05a0ac35a3a21eefef5360850480c19b90
+melee_found_again,Got eyes on you again.,yes,2.013750,-6.57,-32.83,9698e55a8449168fe466ed235d35343c01879d34ece215393e26d42bcd6ac84e
+melee_draw_rushers,I'm drawing the rushers. Watch the sky.,yes,2.269333,-6.57,-32.08,d8e3f78ff52b95ad2fe6308562e568d32d09e4ee9b4cace73be7f215a74fee08
+melee_low_route,I'm below the ramp. Look down.,yes,2.031750,-7.27,-33.02,4eb0e83d1a270e02ed40951275bae2e7407b27135c2d0920354a9afe4f31afa5
+melee_partner_high,I see you on the platform. Good perch.,yes,2.844833,-5.82,-32.04,b52ec29cc667d337263a1e03851f26e7455e6f1bfaa0c6ae4821c041cda6a87d
+melee_crossing_view,Crossing your sight line. Give me a beat.,yes,2.422792,-5.75,-32.38,2c09e69dc698ed64bc1d790a469947a2ef913aba5e4069202d804d7b90a21c75
+melee_clear_view,I'm out of your way. All yours.,yes,2.445000,-5.18,-32.82,697c63dd07b608fa2c4283a6537628b8d05cb1ca64fa7ab0b1c314514a0123a7
+melee_blind_corner,Can't see past this block. What's above me?,yes,3.245000,-4.97,-32.93,9e0e2314084a2c53a975de75fb45c07be0636b59998f8dbe56a124842bc44a33
+melee_dash_in,Dashing in. Keep me in sight.,yes,2.205000,-4.98,-32.75,84a856fed1383f98730303af3a4e6e47e5a1f5e08712831fcd2851e68be64549
+melee_dash_out,Pulling out of the blast.,yes,1.805000,-8.26,-32.8,2706a095cb4277db8c19a7c5d93f0798077bb617666e423082229df8da5c788b
+melee_dash_across,Going across the beam.,yes,1.684458,-7.22,-32.76,ff0c08f17cb42f12b264a0685b616f19180508d1f3a95daea679add88fe8eb84
+melee_dash_spent,Both dashes spent. I need a second.,yes,2.765000,-5.73,-32.65,87c30e47ccc81c540de2f83f0b379df575cf9b2894b1e8a2f889ca047e1c9c23
+melee_dash_back,I've got a dash back. I can move.,yes,3.325000,-5.51,-32.15,d6e4d4c15ec81cc4f3452d9b6085cbaef490455518e1090ccfc5d06ff27f1dca
+melee_jump_lip,Jumping the ledge. Meet you up there.,yes,2.445000,-6.14,-31.78,304d8f8640ee4a6853ea8d72896f9b50ffc9ac5a36e0d88df29128f5507fd18d
+melee_jump_away,I'm off the ground. Watch my landing.,yes,2.365000,-5.95,-32.37,a8d041ffc0303789dce210bbc2698fe37c4beed05f757158e00579cff699ac6e
+melee_hover_gap,Hanging over the gap. See a way down?,yes,2.885833,-5.98,-32.49,d0013a5413b62b77a9b4ddfdca710997a74a79408943951f9a151ea7de9302fb
+melee_hover_over,I'll hang above them for a moment.,yes,2.053125,-6.67,-32.35,232c017ed65155721934bcc06517d6e1d1d1260db1a3980862eb7bbbee011af9
+melee_hover_ending,Losing lift. Coming down now.,yes,2.125000,-7.03,-32.59,d606edc77fa9386d7af7f963828ff89c1ad681ecdcafcb5fbb75d6a88416854b
+melee_blade_first,He's in reach. My swing.,yes,2.445000,-6.19,-33.15,1a2ed375df1c3a3c6079be0e45d2dcaeaadc5c884e573125e23f43b9df898ff3
+melee_blade_pair,Two in reach. One swing.,yes,2.365000,-6.46,-33.03,b6e32c7963c9b5df1fe252074d3598bf5d79f04eb79fa90ef56a6e38d1d3d9dc
+melee_blade_last,Last one on the floor. I've got it.,yes,2.125000,-6.27,-31.73,86455b02c558ad8a8a84ddbf81df1054948a83c541e6fdd8927b38e4c0784d9b
+melee_blade_charge,That hit fed my blade.,yes,2.600083,-5.3,-32.21,0b0df2e4d8decc67b55e800f6103fbb9c7535d406476a17bceb4e5485263c70b
+melee_blade_double,Felt both hits. Two charges back.,yes,3.948375,-4.89,-32.63,00cd221abc7f52d55e78a7bd218ee61c4878d39e89b55dd699c7ae14a6b40b4c
+melee_blade_drop,Ground contact down. That was my hit.,yes,2.365000,-6.04,-33.28,66ffc4e654f8fd3829eb0e8cd7c541e79e4b980a45cb60b375ffb68db78420ea
+melee_blade_short,Just out of reach. Bring it closer.,yes,3.005000,-5.71,-32.64,635c590ae86c085c38f919a3f65462776a8f95cb7fb0512487f245d8d40cee30
+melee_blade_miss,Missed the swing. It's still coming.,yes,2.445000,-4.56,-32.7,f96224f2f31ce19a004f7b037c443cd0ca5ac24582ea06ef86841ceedf6bdc90
+melee_blade_empty,Blade's dry. I need a clean hit.,yes,2.605000,-5.93,-32.7,5124b1b11f5f9cb544b60b15b1c13563ff6bd9ef08ccb29dc6bf2fdf316a39df
+melee_blade_full,Blade's humming. I'm ready to throw a wave.,yes,2.525000,-7.48,-32.35,8d3151ef10df675b7b579af75bbe21cb70589a4a0fb66dcc0e51b238b2bc4e46
+melee_wave_air,Sending a blade wave up.,yes,2.247000,-5.59,-32.14,ec68b0c687a6c2ea72761cffc43d2e3b98f4b59f190f0806c521bd954e2b7e3e
+melee_wave_ground,Wave going low. Mind the floor.,yes,2.285000,-6.94,-31.88,8ac69fc96299ff341c458a228074ed29727898e0054101a70d05b5f76527dc3f
+melee_wave_chase,It's running. Sending a wave after it.,yes,2.658792,-5.82,-32.1,fb03c98f8fb3f4166b7a4133582d6624b1bb93d08e9bdb2c4e324d1587d7552d
+melee_wave_partner,Wave incoming on your target.,yes,1.645000,-6.96,-32.54,77e74789c5d380118e92d6626440711e232a7b2ef0a3561555c109f2b12c1f3d
+melee_wave_hit,My wave clipped the hover unit.,yes,2.125000,-6.7,-33.29,fd159a33afbff26dc5798345293e88b0c9499284e1e878d3df4aab04505048bc
+melee_wave_missed,Wave went wide. It's still up.,yes,2.445000,-7.89,-32.72,c745590fa71ef718235cddab7336ea1d86045106f70c46c448f07ff5ee718fa8
+melee_wave_blocked,Hit the cover. I need another angle.,yes,2.285000,-6.69,-32.03,a48f0927482f39221c82c872523c9079217096a1eb8dd630e274a8999d7e04eb
+melee_wave_finish,That wave brought it down.,yes,2.445000,-6.75,-32.69,bf450a1237de339bf26cf7a3f30b50815aa5eadcd776d52a1beea6f3d8d5a61f
+melee_wave_far,My wave won't reach. Is it in your range?,yes,2.785208,-6.52,-32.57,a5ee2bc5e33aa6619fe11ca776c7479edd8a15b1cc620eecb5a1169cf26f8301
+melee_wave_hold,Saving this charge for the one above us.,yes,2.445000,-6.64,-32.34,b2de1845d2f6525d18a55aad2be06c819676861fffadbb28a90d04cc37dacc8a
+melee_rusher_stop,It stopped at my feet. Back up.,yes,2.365000,-6.72,-32.36,b8a93862cbef3b40dfc7eb16d2021560defab7d250f7c0366d99cfaaa44f6538
+melee_rusher_partner,Behind you. Rusher at the ramp.,yes,2.045000,-7.62,-33.0,21fdd3374c439459d17233e37bef230146c75d119692d5ee174abd5a8b2c2f78
+melee_rusher_pair,Two rushers split. One's coming your way.,yes,2.303042,-7.39,-32.23,b2a5f923acdddd48179b8b9da64996b9ec7f047fb4b24279a6bfb3985b4f13a3
+melee_rusher_fuse,That glow means it's about to blow.,yes,2.116417,-7.69,-32.92,24ecd041f6980f62ce1ba0a70c540175d2662311f1eec194d996cbf4951756df
+melee_rusher_clear,Blast is over. You can cross.,yes,2.247042,-6.65,-32.16,ad930db49b7386e4842a8567e95b8ee7f6225e2e6de383b8541880f1115a1e57
+melee_laser_line,Line on the floor. Don't step into it.,yes,2.457792,-7.2,-32.15,90784fbe611ab53c85b4e3ee429f771b4ffa0f5af1cbb602caa5b39ca70d0078
+melee_laser_me,It's got the beam on me. You have an opening.,yes,3.286333,-5.42,-32.57,d8bf35e30868e2b01e5c7859fd0dc9b6601e13c8e7fad6d45db0fdfcf0e40f7e
+melee_laser_pass,Beam passed. Move while it's quiet.,yes,2.445000,-6.01,-32.55,2b164ee063f97c6ce68a61eece72502f7679c2a71ee35049143a5a14a036fbc8
+melee_air_two,Two lights overhead. They're both awake.,yes,2.285000,-7.27,-31.89,3eb8c3db87666e0082b488ca647810416555b0b4562f4f6cec626891f4ef024d
+melee_rusher_past,One slipped past my blade. Your side.,yes,2.572792,-6.49,-32.36,ccc887b05abdaeba8434bd8fcaeb61ff8bf074ee8b42080b57c39857f384f8a3
+melee_cover_low,Taking the low block. Can you see my side?,yes,2.445000,-7.07,-32.75,9fd7fe5943fdb0c735c17145bcffb008fce32b5ada52a2b768eaf0846e55fe5d
+melee_cover_laser,Getting behind cover until that beam passes.,yes,2.365000,-6.25,-32.8,d0aabb0402968d2ff52bbdf37e68d73c646884af0054b66f96abd7f182313234
+melee_regroup_ramp,Coming back to your ramp.,yes,1.634208,-6.36,-33.19,9c2f506fa191a87acb859892a24c48bf1b5a43844aa3abab368021e813ff4574
+melee_regroup_gap,We got split. I'm closing the gap.,yes,2.524750,-5.96,-32.33,4890e8fd8b6abb0a73888707e81598ccc69961fdef559984bc01aac39dcefb28
+melee_hold_edge,I'll hold this edge. Take your time.,yes,2.285000,-6.42,-32.65,7383678e5b93eb925763484e042e988c96a54e7cce854a484765b3fc896cbf38
+melee_hold_reload,I'll stay here while you reload,yes,2.087375,-7.13,-31.94,9393848860ee28e9eaef3908dfe22874b411b2388bc753e35ab9d694b32165c5
+melee_cover_reached,Made it behind the block. Still with you.,yes,2.472083,-5.56,-32.95,1633bcfabc5818feb6093da42256331940b36c3041026a5b9f1403f674de0303
+melee_regroup_done,Back at your shoulder.,yes,1.279875,-7.17,-32.69,a909a5e7b978afeda740d498c91681025631533ec4ef7c3ace96cf4adc6c02b1
+melee_hold_release,You're moving. I'll move with you.,yes,2.182042,-6.46,-32.43,b8a641559bda007b0a63917ef5140c9eed562f228bd53ed4738fecc2b8425004
+melee_scope_back,You watch the sky. I'll watch your feet.,yes,2.582917,-5.62,-32.56,38ffd411e66585b9b3a0c1f9ef659988d3fb574a3ae5bcdd30a2b99fe2479494
+melee_partner_health,Your vitals just dipped. Are you hit?,yes,2.365000,-6.68,-33.23,15b000c40c8b0b80d0b1894cfa753b4cf40affb91b6f6954db0b020954b53fbd
+melee_partner_ammo,Your mag's almost empty. Make this one count.,yes,2.682458,-5.49,-32.74,a2714f40dd63f3c3c43ee9e2158b7a55dd6638a04a0ae9e7b482ae47020a9e3e
+melee_partner_empty,Your mag reads empty. I've got the floor.,yes,3.383083,-5.5,-32.53,3d022dd789d2b08e5b8aacecb01cfb250511dbe8097c50e8ceda5e8de5c5a90e
+melee_need_heal,My vision's going red. I need a shield,yes,3.587458,-8.41,-32.42,a5465a4c590de57a377f7548de5292f0555c9c67ec5396d8c02a07e84e3bc935
+melee_need_scan,Can't see what's up there. Send a scan.,yes,3.548667,-6.03,-32.19,bad28d9f78520aa94a0f1e9eec891324971358c4c2762779d5ec0b89ef9dc9f3
+melee_need_charge,Can you spare a charge for my blade?,yes,2.967958,-5.87,-32.86,c6fbc243e196585d94616793775fd9e2a7b9a9064b70375f78459bf9f4e0cee5
+melee_shield_given,I'll send the shield. Keep the link open.,yes,2.316625,-6.56,-33.0,a09b8bd04c75c056a798a3a7b2ee4b04b34db86cd50dd0d0acd16b3cd89e2b72
+melee_ammo_given,"There, your mag's full again.",yes,2.125000,-5.12,-32.33,423422a821a8e603a44d28aae698ccabec0dacbdad423a006903468178046128
+melee_mark_shared,I'll mark the weak spot. Watch your scope.,yes,2.685000,-5.85,-32.1,e888ced15d8ead57c35e9ba946a579e7943234b7214312945e173bb85d2c3bf6
+melee_shield_received,I felt the shield land. Thanks.,yes,2.227250,-5.62,-32.23,eaa5c5a96eeb1bd6386f042d538a32b47b06631d73a48ade20ce3df1c79207e9
+melee_ask_bio,Can we swap vitals? I want my pulse back.,yes,3.084167,-5.59,-31.77,32286f0ad65490ec14b06a7ac59777ea4bda8f6619b7f4def681c6c922e2c555
+melee_ask_map,Swap maps with me. I keep losing the turn.,yes,3.245000,-5.91,-32.54,ef19acd47d2d8b7e3ddc9f4dc4c35a07e448db93b633367a2226329ee776795e
+melee_ask_items,Want to trade supply readouts?,yes,1.987583,-6.14,-32.78,95d69a05b33c427e3aa2eda23970edf906cb2b5174ea075eb92debe5865262e3
+melee_confirm_bio,Agreed. Our health displays just switched.,yes,3.085000,-6.56,-32.97,34c1e1e2c9d2a6cef725623eb0b97a2c7f93130eb786f95470150e02bb3e4855
+melee_confirm_map,Map trade went through. I see my route.,yes,3.485000,-6.27,-33.1,d60d0d57858743bb9f9509d73187b191f4bcf6854418fd85dc5dc2bc98aa4b69
+melee_confirm_items,That's my blade gauge again. Trade confirmed.,yes,3.165000,-5.78,-32.69,d2a6fa5a7500620d52b161e8f013189a7603158940dcb997feeeb04aab270905
+melee_cancel_offer,I'm calling off the swap. Keep your screen.,yes,2.760333,-6.2,-32.39,0dd013372b24063acb0991579d501f8e1f886e415b6101ca176181bf63c7a8bc
+melee_wait_consent,I sent the offer. Your call.,yes,2.101250,-5.67,-32.43,cfb5658e678404221e08ef2c820f44b9db0db45f1f80573258308ae8a5278d95
+melee_offer_elapsed,Offer timed out. We can try again later.,yes,2.912750,-6.04,-31.81,e68b733ac93feee4e42fc76b2025b2b1633db340e534cfe63e075b44dc807abc
+melee_other_channel,Different channel. Which one did you want?,yes,2.685000,-5.99,-32.09,f3eb889a464e88b3becf50b67a0e18dbbdc68c69ed9726a674c27cc1682d9928
+melee_down_now,I'm down. I can still hear you.,yes,3.207833,-5.55,-32.21,2912ed328b97cd34f8eedc63565f208b615f902510037d56d8cffefb6f84c163
+melee_down_ramp,I'm down by the ramp. Can you see me?,yes,2.836125,-6.5,-32.72,5964c5a5fe572faf8b97d3b0c7f67df170d06acd12bbf90caf20c06309e0051b
+melee_down_wait,I'm not going anywhere. Get here safe.,yes,3.005000,-5.56,-32.68,e2b50fad8809d91ce3d98dc9e1cb9808f56e7637c06c9beca1c2b27c94aa1d0b
+melee_down_contact,I feel your hand. Stay with me.,yes,2.765000,-5.6,-32.17,6f32bbab7fe08ffa782a708fb98ba57aa2d7400cb1a0ed5119ca678444ddfdaf
+melee_down_break,Lost contact. I'm still down.,yes,4.103333,-5.71,-32.21,2fdaccf056af1c036a240f3303639d12c3d9715db3e67491c9d83d8d4009625b
+melee_revive_partner,I'm right here. Starting the revive.,yes,2.285042,-6.8,-32.35,8de5e3258f19238e960077c714bc1789895e1c00c50940fdc12ca412fd8d4a03
+melee_revive_success,You're back. Take a breath.,yes,2.738083,-4.87,-32.57,5586c4aa20660a5d042f7b176e128c0267a81a6a4a388f02eec9875ef8d39d55
+melee_revived,I'm on my feet. You got me back.,yes,2.365000,-6.64,-32.12,54ef590d40381998a01f161bd26057ce2e4a926e128180d800707fa2664045fe
+melee_down_partner,I see you down there. Keep talking.,yes,2.285000,-5.48,-33.59,a6a01bfd815a94a69c819afce10a2958c3fc076d1a513d2b4c2ed1b68e5e05f2
+melee_revive_block,I can't reach you through that blast.,yes,1.957792,-6.31,-32.68,2a3a477c1c5218809ef0b4db67b73126e9da8f00726925130359a6c8f2bd8ee7
+melee_wave_one,Four on the floor. Let's keep them together.,yes,3.437833,-5.7,-32.14,77617121bd1ec68a60f70cc59ddaff27a112271c93856e3cdd105f2f61244269
+melee_wave_two,There's a light above this pack. I see it now.,yes,3.005000,-6.7,-32.67,104da221677aff83730ef738c2246c264f793d6c33c075ab508c492cc4573222
+melee_wave_three,More on the floor this time. Stay in touch.,yes,2.685000,-5.98,-32.47,e0e9b1c9ea4e3c9fb12b6d647928bca6d2bd7194b258970c3babfd778cca6ef9
+melee_wave_one_clear,First wave clear. You still up there?,yes,2.285000,-6.55,-32.33,fbe94c962f8f1322df0c8fd5b6886fc0f4b1f0fcf2f816b23b9da04c42c19cb7
+melee_wave_two_clear,Second wave's gone. One more together.,yes,2.685000,-7.23,-32.6,47b66e70d7589ba84ecc249e91a6c8167f14cc9d8f36d3640fe1250104807698
+melee_wave_all,That was the last of them. Come down when you're ready.,yes,4.181417,-5.25,-32.31,f8503215374526979630c4d729738035905d43459b20ef1b2fb00f7e08c4963b
+melee_good_air,Nice shot. You took the heat off me.,yes,2.386875,-5.61,-32.31,02b40ca15c4a026326c4c5da2229e38de5cb6577ccc91cc0614a5263c1a108da
+melee_good_ground,That one was on my heels. Thanks.,yes,2.365000,-6.4,-32.9,9b5ecc0ba033b0acc079656eeb9ceb247b8c76b9b6def0e774cd2c686e22fb00
+melee_last_alive,One signal left. Do you see it?,yes,2.511042,-5.97,-31.92,4bf690e1d78ae06a869378dc181f3fccedbfabc47bda003855203d5483185fb8
+melee_quiet,It's quiet down here. How's it look up top?,yes,3.085000,-4.61,-32.22,c3118fb43d762db954e3f1b012c024da01936233ab70e83809edaf1355df18a4
+control_first_wave_inbound,Both signals confirmed. Wave one is inbound.,yes,3.543083,-3.3,-30.57,1361b64cad97625ca028e825952f998be428a29e67dce5d132523fd5d82f0d76
+control_both_present,"Sword, railgun, your partner is on this channel.",yes,4.205000,-3.76,-30.55,23b9f1b7a4af8c3d8f738f15a5624d7f070ad639cfa80595373d258c98549993
+control_ground_pair,Four ground contacts. Which lane will each of you take?,yes,4.190083,-3.91,-30.41,2ee2cf9aca798f4d32c7b4205f0cf1a9bae60f4e473a137664d896f7fc9e784e
+control_split_wave,"Sword has the floor. Railgun, can you take the flyer?",yes,3.485000,-4.44,-30.54,5914f4b5f1e9072a951f2068fc83f37ac52677e39deb7e8f9001511e1e5b6801
+control_third_wave,Two airborne signals. Agree on the first target.,yes,3.945125,-4.8,-30.62,3eab9c7e708e63d3a14378aa13c1609631087cab70b7f629b1ec4ee522ef350b
+control_first_pause,First wave clear. Does either of you need a moment?,yes,4.029292,-5.0,-30.53,0350d0231a8d883855476e6273dbfea93f4b1a7ab8e6082a0a21220e19e23e67
+control_last_interval,One wave remains. Check what your partner needs.,yes,3.539292,-4.65,-30.65,36d7484bdd680d31f7ef455e34566d23ba6077af36c837a359af6721da3d81f0
+control_end,All waves clear. Both of you made it through.,yes,3.515708,-4.52,-30.44,ee4f33172832c9058481cfe1aff0fb6029022efe5ed203a4ed7057599a968317
+control_both_target,Both sights are on the same unit. Is that deliberate?,yes,3.603875,-4.95,-30.68,1fc11f1106dce3709d99a59d4e778caeaa7e695d6831bdd0e4bc2a4ac37cce84
+control_last_hidden,One contact remains. Who has a visual?,yes,3.171625,-4.51,-30.52,12d5106b35df84174e8bcc11575d8af919525a57b03d36b4c20484a42f053f9e
+control_beam_partner,Sword has the beam. Railgun has the clearer view.,yes,3.565000,-4.36,-30.3,2b2340f043c5729a6ed4e1608b16965e55fc8e7203ad47813d5518bf14839ecf
+control_beam_gunner,"Laser on railgun. Sword, your partner is moving.",yes,4.285000,-5.26,-30.75,3bb224fb0c539f534fe4521ef5c35639cd25e5f33a41504ae9f8585e61017548
+control_beam_both,"Two beams, two targets. Call yours before crossing.",yes,3.965000,-5.53,-30.55,3de89951fa3f8d70b9ee4f85ed9cfeef6773be2bd8e72309a06ec438a900d7ac
+control_beam_release,"The beam has passed. Railgun, Sword can cross now.",yes,4.045000,-4.14,-30.67,4c2c08d8fff59fe45b3ef7e5ad8ff1e475fe53784fa0b5ee6b0b79791bc5970b
+control_fuse_near,"Live fuse by Sword. Railgun, keep that landing clear.",yes,4.285000,-3.81,-30.1,87359ffc8a841b9c025a5f04472313c24e5ef88a0b0aeabbb8c60a53e4398753
+control_fuse_split,A fuse separates you. Wait for the flash to pass.,yes,3.911667,-3.68,-30.33,1b420430d6049f436571cb2a0b78a7334f3ca67b5e8108e2a31d19db02985345
+control_ramp_report,Sword reports a rusher behind the platform.,yes,2.845000,-4.45,-30.55,abc3cf18fd2a7d07c1d6d93887d20c238f41ade3cd9560047c76ad748f1c3d0f
+control_ground_report,"Railgun sees a second rusher behind you, Sword.",yes,3.725000,-4.08,-30.62,73420d34c4c05d2245bdaf80650644494bced8ad9f4cf494697ff91196338c2c
+control_air_lost,"Railgun lost the flyer. Sword, can you see it?",yes,3.245000,-4.39,-30.36,ff33edf4aef73aaef647f885d4620c342ed1ab786d23332937d062853bdccb02
+control_air_found,Visual restored. You are tracking the same flyer.,yes,3.842208,-5.04,-30.38,44b52383cc08b90c68d8eb4678a543c9a4a8d816a86268c59dc28f88de8e0165
+control_separated,You are out of each other's sight. Call your positions.,yes,3.412917,-3.84,-30.54,3592c54af00526cb6d32c4840b9381286ed2b6287c5566c125849930d5e6a190
+control_above_below,Railgun is above the ramp. Sword is directly below.,yes,4.470333,-4.35,-30.35,0efe03b090120e9f3fccf6278390be072b316b8763585b06ee49f2940cd6f582
+control_crossed,Your paths cross at the block. Who goes first?,yes,3.885000,-4.26,-30.31,1a0e987f9b6a5188f66b79d15ee5819444b6e00d698d03ad82a9d0044130fbe2
+control_regroup_seen,Visual contact restored on both sides.,yes,3.024125,-5.07,-30.6,19fbc5a157d15f64a0fef3a61625e75a4e2c071c672772d44b1fe439bba0e4ea
+control_reload_notice,"Railgun is reloading. Sword, can you hold the lane?",yes,3.891750,-5.04,-30.37,7d838873fb77d82e7a3950767338d2748a129313871da50dd90b4504bf2c57cc
+control_reload_clear,"Reload complete. Sword, your cover is back.",yes,3.234417,-4.28,-30.38,56929825cbc2049202d15dece1e64647012d9ef13165be7cf426d67e4a5fe760
+control_blade_no_reach,"Outside blade range. Railgun, do you have an angle?",yes,3.525875,-3.53,-30.77,e5e41318d8b8efe5b605a518e01b1a69df1001198c5259939773dbb297799461
+control_gun_blocked,Railgun's view is blocked. Sword has the nearer angle.,yes,4.399500,-3.44,-30.56,cf5ebf5eeaa3dc344582c168819063d78685d8bb54faf24bd35acb5960d40f26
+control_landing,"Sword is coming down. Railgun, confirm the landing is clear.",yes,4.357250,-5.82,-30.46,02ad779d1551632a66f2159f5dee7d5c18ee1833d46cac776ed856ada159b376
+control_wait_pair,"Sword is holding. Railgun, call when you're ready.",yes,3.530292,-4.78,-30.28,39be76ab82bad8cc1a3361a3cf924ce0d3b5755c53f5d200b4c436c755c6daa4
+control_shield_asked,"Sword requests a shield. Railgun, did you copy?",yes,3.645000,-3.49,-30.41,def19867939d0aedf8eb932e30988b428ad65798c48c9e1b1fbe5220dbf3c4dc
+control_gun_shield,Railgun requests protection. Sword can see the warning.,yes,4.285000,-4.92,-30.55,4fd872b6453478b575333e9c564fa52e4530349745d6ee66489a371238fecc7a
+control_crit_pulse,Critical pulse on your partner's display. Check in.,yes,3.481292,-4.06,-30.65,8be55e6aee7f10a1ee97ae7137c6245bd102c78b33da66fb032a506b0f8b2e5d
+control_shield_overlap,Two shield requests. Who needs the first response?,yes,3.405000,-4.14,-30.65,9e8be11ef6f632a6497174eb3a454b0f7d715c05debc5eac8745ef207d3af6f6
+control_shield_ammo,"One shield request, one supply request. Confirm priority.",yes,4.549875,-4.61,-30.62,4699651bfa3bf3d590ff96cf9c3430ac085b2ba2a221c661b73acc5149f60e34
+control_sword_shield,"Shield delivered to Sword. Railgun, receipt confirmed.",yes,4.372125,-3.94,-30.42,45145efe6c28f7166953ee1ad5ef6290f36032db07a3f8d1cb7e2806689e1e43
+control_gun_protected,"Railgun has protection. Thank you for the shield, Sword.",yes,3.593500,-4.39,-30.41,745dccdc88ec60a91b041388b173175bc7938e886270dca4cbd5fb726e62a498
+control_cool_bio,Bio support is recharging. Can your partner wait in cover?,yes,4.196375,-3.47,-30.4,eae6f52a12cb8967265bf813c58a5f6d707434fbf8348cb2d05cac117dcb980a
+control_miss_bio,Shield did not connect. The original request is still open.,yes,4.739333,-4.3,-30.74,c75ac2959e831c6fc26206f29e85940464e3eec05a93292704b8075a89f46bd8
+control_no_request,No support request is open. Ask your partner what they need.,yes,4.441167,-4.43,-30.35,4936898b63f72022211ff406a6191efa38f93aa672f6d1d030ebb4c60f1d8709
+control_mag_dry,"Railgun is empty. Sword, did you hear the click?",yes,3.565000,-4.42,-30.53,e41c27248ae4bd61a74977ead353f86a15634de00c4093513cbfc1e11f78f1fe
+control_blade_dry,Sword has no wave charge. Railgun still has a shot.,yes,4.125000,-4.38,-30.37,a45a163103ddd412b23a19e697ca87ade7a7628ce2cb4a21a5a695583d5010f8
+control_blade_gained,"Sword's last hit restored a charge. Railgun, pass it on.",yes,4.205000,-4.3,-30.29,6035fafc100948ae81b100144d90a6dc65ddfeb648b18591c7d9e5841fe950ad
+control_mag_last,"One round remains. Sword, relay the count to Railgun.",yes,4.125000,-4.37,-30.43,3653c49321d1cb065bb816c39f1d7a401e0734ca4e2244c93c437a1026a97cdf
+control_sword_supply,Sword needs blade charge. Railgun has the supply request.,yes,4.265042,-3.51,-30.43,248c56b48b43debab89e8bbee7ee3a5c2084551c541bd4ffd1758b7eb3198500
+control_gun_supply,"Rounds requested by Railgun. Sword, please acknowledge.",yes,3.987667,-4.6,-30.7,f83112e2c338441c62f6e1dd98477c5b7ff81f2c5f686ecb15fd92f4a6d2405a
+control_mag_refill,Transfer complete. Railgun's magazine is full.,yes,3.896458,-3.17,-30.45,517e793d6c23fb0df7a9617f0bcc3ef26125cf48ed6c355d6041869826953354
+control_blade_refill,Charge received. Sword can use a blade wave again,yes,3.405000,-5.02,-30.51,08ebcd18c6b816ce4095ac8fd6e210d91adce228dbb3260d0165e33c45ec3466
+control_supply_wait,Supply is recharging. Your partner's request is queued.,yes,4.202667,-4.83,-30.41,0b3d820b0c3213f469f5ba94536842acb78ca706af431e32d48ff2f26f801c98
+control_need_changed,The magazine is full now. Does anyone still need supply?,yes,4.035083,-4.31,-30.38,79b36e5e80c5652ee48d3783830c9868a636f5fbf6a54e876554f2205c827d03
+control_scan_asked,Sword is asking for a scan of the upper lane.,yes,2.925000,-4.77,-30.31,2fb943ce347408335bc776565ce406f1eaa1d2fdb2b75b39de23fd732bf1593c
+control_mark_asked,Railgun lost a target and is asking Sword for a mark.,yes,4.125000,-4.15,-30.41,61513e3d572257378ad34d42cda7fd4f9f7a7d043e4fc534c302a6f38c1beb0d
+control_weak_mark,Sword's weak point mark is visible to Railgun.,yes,3.485000,-4.64,-30.6,791e4832fc34afe363f74cb16b52499a06e360495109b3869c8dce581a72e64a
+control_speed_rail,Railgun's speed rail is ready for Sword.,yes,3.183292,-3.96,-30.46,e9ba7fccb5017033ae5cf39496f8e8ae32116b5017f0c4f13d3c1127840aa799
+control_rail_end,"The speed rail has faded. Sword, update your route.",yes,3.645000,-4.79,-30.48,3da67058649df834316cdb298472fc408572dd5146ffe5c4ceee0ed555a69833
+control_mark_end,Shared mark expired. Who still has visual contact?,yes,3.941458,-3.67,-30.77,9692ef611211f6239703547d62d9da55fa654f84e72761ac604031cf9980037e
+control_two_marks,"Two targets in view. Railgun, which one needs a mark?",yes,4.200750,-4.0,-30.44,0ebc508a06b780e28b1ff957eeaac2c86a5d215649a4187ec810a76c23ef1fa2
+control_rail_route,"Sword requested a route. Railgun, confirm the destination.",yes,3.965000,-4.98,-30.61,d11063a330961fd81de6a92f2ac2c70d8bfa8f5f53b06ec24b38bf7e817cba4d
+control_rail_blocked,That route is obstructed. Agree on a new endpoint.,yes,3.865583,-5.71,-30.29,2d849a78aedb564e3e3102db80ccd81c226172b90b0e4dcf6a38ff8b91f7ab24
+control_mark_ack,Both of you see the mark. You may coordinate on it.,yes,3.805000,-4.15,-30.52,0993b356a116819b788800ec3c42097eb3b9e8b33bf3b3ea6682a2bd511e761c
+control_bio_offer,"Sword offers a health display exchange. Railgun, do you accept?",yes,5.405000,-4.11,-30.56,85cac08ba1fc92e3892d1c80f86c46715412fae778c82c89f494cf5673efdaa5
+control_map_offer,"Railgun offers the map channel. Sword, your choice.",yes,3.858417,-4.52,-30.45,b28e5b70b7aa35c757397be6ae70c688d4cf5f24c1735719008568842af8c421
+control_item_offer,Supply swap requested. Both sides must choose supply.,yes,4.181583,-2.84,-30.39,2e9b5400496ab54206ffc46fb397ab966369495f94af31865dc65a8fd6f26138
+control_bio_wait,Vitals offer pending. Only Sword has agreed.,yes,3.563458,-4.5,-30.56,33e79c6da3eccdef180dbf5f30ed239d03e6ca2085b2ea7f7477fad0a1beb0a1
+control_map_wait,Map offer pending. Only Railgun has agreed.,yes,3.371792,-4.96,-30.65,0a022cabf5448272e1e1310c6b54b85076c4f494bb8d1e08566c9e1e0b271cb3
+control_offer_cross,You selected different channels. Which did you intend?,yes,4.405500,-5.24,-30.56,bbaef063d20812ce6bf1b32e188195415e70957ba5e6fcc4258c1b9e9e5587df
+control_confirm_prompt,Ready to trade. Confirm the same channel together.,yes,3.511583,-3.61,-30.66,80c244c52ec33021c2ad52f09d6670bf28141b4299d69ed2f728db5c72ecad3f
+control_ask_why,"Sword, what do you need Railgun to see after the swap?",yes,4.038667,-4.96,-30.59,0c60d9d3fec0e3f4eb8b43bfe430bb98bb84e8b9725700a69addece9eb386cfe
+control_keep_readout,You can keep the current readouts. Both of you decide.,yes,3.723750,-3.99,-30.56,7a6fc5caf490a0dc0cda2d0de34949c6e879409a21ceb8c339195e0fe0e5ef6c
+control_deadline,The offer is still open. Your partner is waiting.,yes,3.485000,-3.68,-30.7,00779a3d4094797a99d86d2b40fb1f3e289e5277d1e698cd5465e50c44168fcb
+control_bio_complete,Both agreed on vitals. The displays have switched.,yes,3.797625,-3.61,-30.43,49c72b61e95a7066a157c927ae0d69eed3580d3abc11dc76bd2be4667d02f714
+control_map_complete,Agreement confirmed. Your maps have changed hands.,yes,3.405000,-3.67,-30.64,0bc3f4e1afaf32ca75e178fea32c0106277780367e6bc18bea6878b00f7e2031
+control_items_complete,Supply readouts exchanged. Check whose gauge you see.,yes,4.205000,-3.62,-30.51,b30b3eac47b95c176e9c1e1408431151704abbf92c30cd7349e9543a163d9e34
+control_bio_only,Only vitals changed. Your map agreement still stands.,yes,3.880958,-4.45,-30.44,28bc815719c44e046e78f9ff21308d2153e8f204c2740a1ed7719520c8b6cc1e
+control_map_only,Only your maps moved. Supplies are still where they were.,yes,4.039542,-4.15,-30.5,0ef5e55d843a828b14167c74ba8169d733f0543ce28dcb31a1537179e4648e41
+control_bio_cancel,Sword withdrew the vitals offer. No transfer occurred.,yes,4.365000,-4.32,-30.58,f1726309e6cfabee679f4872e7002bfb8c4a093ae45c68444f77b235a378f87d
+control_map_cancel,Railgun withdrew the map offer. Keep your current screens.,yes,3.948250,-4.12,-30.65,010883ce554855f656b27b2b9a82ca2a1aaeb308e81b44828607b10378fb5fff
+control_expired,The offer expired without agreement. Ownership is unchanged.,yes,4.445000,-3.17,-30.41,b3ba549f6bf5b1c90e806455e6fc86bd635d9443a3c826ca6c50bebd250264e7
+control_try_later,You can revisit the supply swap after this wave.,yes,3.365875,-4.94,-30.55,2953535c3e4e7bb8b88a29a9fa2722cde666c26aec5dea2aa5ce6d0ea17b8753
+control_partner_ack,Both confirmations received. The exchange is settled.,yes,3.762583,-4.48,-30.62,a160bbfd48fd9bcec70de6c206bb068ddc8b5ab676236f7f3dcfef1ea4f941e8
+control_terminal_locked,The sector is still active. The return must wait.,yes,3.885000,-3.69,-30.41,4a335cb05013315b91069d54bb107d531c0403004898280f7d7c102cb6000f09
+control_terminal_available,"Sword has agreed to return the display. Railgun, stand by.",yes,4.925000,-4.08,-30.56,aadd05a701ecd9f5f5367dcf15562ca75241126690adeaaaaa7696c0bcf37a09
+control_terminal_bio,"Vitals display returned. Railgun, check your own pulse.",yes,4.479542,-2.78,-30.28,dbf4076806c4399272c86c043bf410e8b67577a5fcd4468b6cebac5e67bd9257
+control_terminal_sword,Return confirmed. Sword can read their own vitals again.,yes,4.136083,-5.2,-30.4,53127068e24a6ad7cdb563cc70bd4735078becc697a111d3d4cd8be775d74708
+control_terminal_pair,Both of you are at the terminal. Ready to begin the hold?,yes,3.518917,-4.05,-30.51,eaaa49056d76117b8200e388d35f781b5bde19f9f6c3e4e280ad80bfe0db7603
+control_terminal_one,"Sword is at the terminal. Railgun, can you join?",yes,3.245000,-4.91,-30.61,9c55e7ae2e1f168cfb70644470b19701e708e191bffaafde8866ec385e146951
+control_terminal_missing,Railgun is ready. Sword's input is still needed.,yes,4.445000,-4.0,-30.66,1b066de580baa08e72fa9d94ae6c798ea24bcc13e589e1fd70348d425ae6e6e2
+control_terminal_break,The shared hold was interrupted. Ready to try together?,yes,4.036792,-4.28,-30.58,fc6ede447291bfbfadccc9ef689dfa22304c7a4e12798f27d03903d89f5690bd
+control_terminal_map,Map returned. Each of you can check your own route.,yes,3.286750,-4.62,-30.87,99909a075c36a53a924b5dcbeb2ce732ecfb8e531258c6a9057f232b9f2111ed
+control_terminal_items,Supplies returned. Both players can read their own reserves.,yes,4.445000,-3.62,-30.41,d8e9da442ad819155d481979a34d34f785ba7cc0fd972100eb4a75610ad912f3
+control_sword_down,"Sword is down. Railgun, are you able to reach them?",yes,3.485000,-4.94,-30.21,0e318931e980ebfa987e59d5d5d8d5f9c3bf041b104707d1ed4b84f40796879a
+control_gun_down,Railgun is down. Sword has the revive signal.,yes,3.805000,-3.76,-30.48,f666e63ea65c9208330e9b81a80e8c7ef88b6be328a7440c015a29ac99fef8de
+control_safe_route,The direct route is blocked. Tell your partner where you are.,yes,4.125000,-5.51,-30.55,16879147fceeaaa4ed10ad5819bf08ac48633b572a47b601b9bc1b25c00b94ab
+control_near_revive,You are in reach. The survivor can start the link.,yes,3.352875,-4.81,-30.61,1fd6838557d91c5ee5fc60c20692ff88d99411727983fce424b54a1dfa5eca02
+control_link_start,Revive link active. Stay within reach of each other.,yes,3.848542,-4.76,-30.38,aa11cdd299499a9b59cd88c111461b176eea9106e9d6f7f1b12f1869c9e4694a
+control_link_break,Revive link lost. Your partner still needs contact.,yes,3.965000,-4.04,-30.44,4d2c863039f897ed9d47b68a31e87e533b030cb9407d890e724a3c1e67231a37
+control_sword_up,Sword is back on their feet. Railgun link confirmed.,yes,4.518625,-5.16,-30.51,34f70ee5962aa3f5c0185518555ac43900499616c49cc2848f1ed729506a8a2e
+control_gun_up,"Railgun is responding again. Sword, your link held.",yes,4.306500,-4.47,-30.53,c616622e505d1e76f0b9099f37c7b6e007e238bf5f7b39a6a7cf76fd1e60fee0
+control_both_down,Both signals are down. This run has ended.,yes,3.542250,-4.1,-30.28,3d21c3d87bf2cb69a2dd02d496314f2b493d17809318256c005d44babff78235
+control_after_revive,Both voices are back. Take a moment to regroup.,yes,3.485000,-3.45,-30.31,6073c6b4ae0897155f394dbda4880f87642a8e1374d0d0fd8fd90235944625f1

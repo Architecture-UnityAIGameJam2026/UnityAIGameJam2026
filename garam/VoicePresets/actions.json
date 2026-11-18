@@ -1,0 +1,779 @@
+{
+  "version": 1,
+  "reference_scope": {
+    "speaker": "current line speaker",
+    "self": "acting character",
+    "partner": "the other player relative to the acting character",
+    "enemy": "selected enemy instance",
+    "destination": "validated movement or rail endpoint",
+    "cover": "validated arena cover position",
+    "melee": "P1 Sword",
+    "ranged": "P2 Railgun"
+  },
+  "actions": [
+    {
+      "id": "dash",
+      "implementation_status": "arena",
+      "intent_en": "Dash along the agreed movement vector.",
+      "name_ko": "대시",
+      "preconditions_ko": "생존한 실행자에게 대시 스택이 있고 유효한 방향이 있다.",
+      "started_when_ko": "PlayerMotor가 스택 하나를 소모하고 대시를 시작한다.",
+      "completed_when_ko": "대시 시간이 끝나고 실제 도착 위치가 기록된다.",
+      "failure_cancel_ko": "스택 소진이나 중복 대시는 수락 거절. 다운되면 진행 중 의도를 해제한다.",
+      "unity_source": "PlayerMotor.TryDash / DashStacks",
+      "bindings": [
+        {
+          "line_id": "melee_dash_in",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_dash_out",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_dash_across",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_dash_beam",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_dash_cover",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "hover",
+      "implementation_status": "arena",
+      "intent_en": "Hold lift during descent.",
+      "name_ko": "호버링",
+      "preconditions_ko": "실행자가 공중 하강 중이며 호버 시간이 남았다.",
+      "started_when_ko": "하강 속도 제한이 실제 적용된다.",
+      "completed_when_ko": "착지 또는 정상 해제로 제한이 종료된다.",
+      "failure_cancel_ko": "체공 시간 소진·다운·유효하지 않은 이동 상태면 종료하고 해당 원인을 구분한다.",
+      "unity_source": "PlayerMotor.VerticalStep / HoverLeft01",
+      "bindings": [
+        {
+          "line_id": "melee_hover_gap",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_hover_over",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_hover_angle",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_hover_land",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "jump",
+      "implementation_status": "arena",
+      "intent_en": "Jump toward the referenced landing area.",
+      "name_ko": "점프",
+      "preconditions_ko": "실행자가 접지 상태이며 착지 방향이 유효하다.",
+      "started_when_ko": "점프 수직 속도가 적용되고 지면을 벗어난다.",
+      "completed_when_ko": "착지를 관측하고 실제 착지 위치를 기록한다.",
+      "failure_cancel_ko": "입력 거절·다운·착지 지점 무효화는 성공 보고를 막는다.",
+      "unity_source": "PlayerMotor.VerticalStep / CharacterController.isGrounded",
+      "bindings": [
+        {
+          "line_id": "melee_jump_lip",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_jump_away",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_jump_ramp",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "slash",
+      "implementation_status": "arena",
+      "intent_en": "Perform a sword slash at an enemy in reach.",
+      "name_ko": "근접 참격",
+      "preconditions_ko": "P1이 생존 상태이며 근접 쿨다운과 대상을 확인한다.",
+      "started_when_ko": "서버가 참격 선딜을 시작한다.",
+      "completed_when_ko": "서버 범위 판정으로 적중 대상을 확정하고 적중 수만큼 검기를 반영한다.",
+      "failure_cancel_ko": "빗나간 참격은 적중 수 0. 처치·충전 보고는 실제 결과에만 허용한다.",
+      "unity_source": "MeleeWeapon.SlashRpc / Slash / AmmoPool.Add",
+      "bindings": [
+        {
+          "line_id": "melee_blade_first",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_blade_pair",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_blade_last",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_blade_charge",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "melee_blade_double",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "melee_blade_drop",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "blade_wave",
+      "implementation_status": "arena",
+      "intent_en": "Launch a charged blade wave at the selected enemy.",
+      "name_ko": "검기 발사",
+      "preconditions_ko": "P1에게 검기 한 칸 이상과 발사 가능한 상태가 있다.",
+      "started_when_ko": "서버가 자원을 소모하고 투사체를 생성한다.",
+      "completed_when_ko": "투사체가 실제 표적에 명중한 경우 해당 표적의 결과를 기록한다.",
+      "failure_cancel_ko": "자원 부족이면 발사 거절. 장애물 충돌이나 사거리 만료면 표적 명중 실패로 처리한다.",
+      "unity_source": "ProjectileWeapon.LaunchRpc / Projectile",
+      "bindings": [
+        {
+          "line_id": "melee_wave_air",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_wave_ground",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_wave_chase",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_wave_partner",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "implementation_status": "arena",
+      "intent_en": "Zoom the railgun view onto the selected contact.",
+      "name_ko": "스코프 조준",
+      "preconditions_ko": "P2가 생존하며 확대 가능한 장비를 갖고 시선 방향이 유효하다.",
+      "started_when_ko": "줌 입력이 수락되어 CameraZoom의 FOV가 변하기 시작한다.",
+      "completed_when_ko": "줌 상태에서 지정 접촉을 시야에 확보한다.",
+      "failure_cancel_ko": "확대 해제·시야 이탈·대상 소멸 시 추적 종료. 사격은 별도 행동이다.",
+      "unity_source": "CameraZoom / PlayerMotor.IsZooming",
+      "bindings": [
+        {
+          "line_id": "ranged_scope_air",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_scope_ground",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_scope_far",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "rail_shot",
+      "implementation_status": "arena",
+      "intent_en": "Fire the railgun at the agreed target.",
+      "name_ko": "레일건 사격",
+      "preconditions_ko": "P2 생존, 재장전 중이 아니며 탄약과 발사 간격을 충족한다.",
+      "started_when_ko": "서버가 탄약을 소모하고 레이캐스트를 실행한다.",
+      "completed_when_ko": "실제 충돌 결과와 피격 여부를 기록한다.",
+      "failure_cancel_ko": "빈 탄창은 공발음. 벽 또는 빗나감은 탄약을 되돌리지 않고 명중 보고를 막는다.",
+      "unity_source": "HitscanWeapon.FireRpc / AmmoPool.TrySpend",
+      "bindings": [
+        {
+          "line_id": "ranged_shot_air",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_shot_ground",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_shot_pursuit",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_shot_high",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "reload",
+      "implementation_status": "arena",
+      "intent_en": "Refill the railgun magazine.",
+      "name_ko": "레일건 재장전",
+      "preconditions_ko": "P2 생존, 탄창이 비어 있거나 일부 소모됐고 재장전 중이 아니다.",
+      "started_when_ko": "Reload 코루틴이 재장전 상태로 진입한다.",
+      "completed_when_ko": "대기 시간이 지난 후 서버의 AmmoPool.Fill과 재장전 종료가 확인된다.",
+      "failure_cancel_ko": "이미 장전 중이거나 탄창이 꽉 찼으면 중복 요청 거절. 중단 시 완료 대사를 폐기한다.",
+      "unity_source": "HitscanWeapon.ReloadRpc / Reload / AmmoPool.Fill",
+      "bindings": [
+        {
+          "line_id": "ranged_reload_cover",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_reload_early",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_reload_dry",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_reload_above",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_reload_full",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "ranged_reload_done",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "ranged_reload_air",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "take_cover",
+      "implementation_status": "arena",
+      "intent_en": "Move the actor behind the selected arena cover.",
+      "name_ko": "엄폐 이동",
+      "preconditions_ko": "생존한 실행자에게 도달 가능한 엄폐 위치와 위협 방향이 있다.",
+      "started_when_ko": "이동 제어기가 해당 위치로 이동을 시작한다.",
+      "completed_when_ko": "실행자가 도착하고 엄폐물이 위협과의 시야를 실제로 차단한다.",
+      "failure_cancel_ko": "경로 차단·위협 이동·다운 시 재평가한다. 도착만으로 엄폐 성공을 보고하지 않는다.",
+      "unity_source": "PlayerMotor plus Arena cover geometry; AI movement adapter required",
+      "bindings": [
+        {
+          "line_id": "melee_cover_low",
+          "actor_ref": "speaker",
+          "target_ref": "cover",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_cover_laser",
+          "actor_ref": "speaker",
+          "target_ref": "cover",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_cover_block",
+          "actor_ref": "speaker",
+          "target_ref": "cover",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "regroup",
+      "implementation_status": "arena",
+      "intent_en": "Close the distance to the partner.",
+      "name_ko": "동료 합류",
+      "preconditions_ko": "양쪽 생존, 실행자와 파트너가 떨어져 있고 경로를 계산할 수 있다.",
+      "started_when_ko": "실행자가 현재 파트너 위치를 향해 이동을 시작한다.",
+      "completed_when_ko": "합류 거리 안에 도착해 상대 위치를 다시 확인한다.",
+      "failure_cancel_ko": "파트너 다운·경로 단절·새 위험 발생 시 접근 의도를 중단하거나 갱신한다.",
+      "unity_source": "PlayerMotor and partner transforms; AI movement adapter required",
+      "bindings": [
+        {
+          "line_id": "melee_regroup_ramp",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_regroup_gap",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_regroup_foot",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "hold_position",
+      "implementation_status": "arena",
+      "intent_en": "Wait at the present position for the agreed cue.",
+      "name_ko": "위치 대기",
+      "preconditions_ko": "실행자가 생존하며 현재 위치에서 대기할 수 있다.",
+      "started_when_ko": "수평 이동 입력을 거두고 위치를 유지하기 시작한다.",
+      "completed_when_ko": "합의한 해제 신호나 대기 목적 달성 후 정지 의도를 해제한다.",
+      "failure_cancel_ko": "회피·다운·사용자 취소 시 해제한다. 공중 중력이나 다른 플레이어의 입력을 고정하지 않는다.",
+      "unity_source": "PlayerMotor horizontal movement; AI movement adapter required",
+      "bindings": [
+        {
+          "line_id": "melee_hold_edge",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_hold_reload",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_hold_perch",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "request_support",
+      "implementation_status": "hud_demo",
+      "intent_en": "Send the selected shield, scan, or supply request.",
+      "name_ko": "지원 요청 발신",
+      "preconditions_ko": "수신할 파트너와 지원 종류가 정해져 있다.",
+      "started_when_ko": "SendSupport가 선택 채널의 요청을 발행한다.",
+      "completed_when_ko": "시연에서는 SupportRequested 방출, 네트워크판에서는 요청 수신을 별도로 확인한다.",
+      "failure_cancel_ko": "이미 해결됨·수신자 소실·요청 취소 시 대기 종료. 요청 시점에는 지원 효과를 적용하지 않는다.",
+      "unity_source": "OnYourMarkHud.SendSupport / SupportRequested",
+      "bindings": [
+        {
+          "line_id": "melee_need_heal",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_need_scan",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_need_charge",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_ask_shield",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_ask_scan",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_ask_ammo",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "grant_bio",
+      "implementation_status": "design",
+      "intent_en": "Apply remote bio support to the requesting partner.",
+      "name_ko": "원격 생체 지원",
+      "preconditions_ko": "파트너의 생체 요청이 활성이고 채널 소유권·쿨다운·조준 판정이 유효하다.",
+      "started_when_ko": "서버가 지원 입력과 대상 및 요청 ID를 수락한다.",
+      "completed_when_ko": "파트너 체력 회복과 보호막 적용을 확정하고 요청을 종료한다.",
+      "failure_cancel_ko": "빗나감·기간 만료·쿨다운·대상 다운 시 효과를 적용하지 않는다.",
+      "unity_source": "Planned remote support executor; Health.Heal is only one component",
+      "bindings": [
+        {
+          "line_id": "melee_shield_given",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "accepted"
+        },
+        {
+          "line_id": "ranged_heal_sent",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "control_sword_shield",
+          "actor_ref": "ranged",
+          "target_ref": "melee",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "control_gun_protected",
+          "actor_ref": "melee",
+          "target_ref": "ranged",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "grant_resource",
+      "implementation_status": "design",
+      "intent_en": "Refill the requested partner magazine or blade gauge.",
+      "name_ko": "원격 자원 보급",
+      "preconditions_ko": "상대의 보급 요청이 활성이고 부족 자원·소유권·쿨다운·명중 조건을 충족한다.",
+      "started_when_ko": "서버가 같은 요청에 대한 보급을 한 번 수락한다.",
+      "completed_when_ko": "P1은 검기, P2는 탄창이 실제로 충전되었음을 확인한다.",
+      "failure_cancel_ko": "이미 가득 참·표적 상실·요청 만료면 보급을 거절한다.",
+      "unity_source": "Planned remote support executor / AmmoPool.Fill",
+      "bindings": [
+        {
+          "line_id": "melee_ammo_given",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "ranged_charge_sent",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "accepted"
+        },
+        {
+          "line_id": "control_mag_refill",
+          "actor_ref": "melee",
+          "target_ref": "ranged",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "control_blade_refill",
+          "actor_ref": "ranged",
+          "target_ref": "melee",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "share_map",
+      "implementation_status": "design",
+      "intent_en": "Share a weak-point mark or a speed rail with the partner.",
+      "name_ko": "전술 지도 지원",
+      "preconditions_ko": "지도 지원 요청, 유효한 적 또는 경로 종점, 해당 파츠와 쿨다운을 확인한다.",
+      "started_when_ko": "P1은 약점 표식, P2는 가속 레일 생성을 서버에 요청한다.",
+      "completed_when_ko": "파트너에게 표식이 보이거나 사용할 수 있는 가속 레일이 생성된다.",
+      "failure_cancel_ko": "적 소멸·차단된 종점·요청 만료 시 취소한다. 지속 시간 만료는 효과 종료로 기록한다.",
+      "unity_source": "Planned map support executor; ReticleAutoLock alone is insufficient",
+      "bindings": [
+        {
+          "line_id": "melee_mark_shared",
+          "actor_ref": "speaker",
+          "target_ref": "enemy",
+          "speech_phase": "accepted"
+        },
+        {
+          "line_id": "ranged_rail_ready",
+          "actor_ref": "speaker",
+          "target_ref": "destination",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "control_weak_mark",
+          "actor_ref": "melee",
+          "target_ref": "enemy",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "control_speed_rail",
+          "actor_ref": "ranged",
+          "target_ref": "destination",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "request_exchange",
+      "implementation_status": "hud_demo",
+      "intent_en": "Offer a specific HUD channel to the partner.",
+      "name_ko": "HUD 교환 제안",
+      "preconditions_ko": "생체·지도·소모품 중 하나와 유효한 파트너가 선택되었다.",
+      "started_when_ko": "해당 채널이 pendingChannel이 되고 동의 대기가 시작된다.",
+      "completed_when_ko": "제안이 전달돼 동일 채널 응답을 받을 수 있다. 이 단계의 소유권은 유지된다.",
+      "failure_cancel_ko": "취소·만료·다른 채널로 갱신 시 이전 제안 ID는 무효화한다.",
+      "unity_source": "OnYourMarkHud.RequestExchange / ExchangeRequested",
+      "bindings": [
+        {
+          "line_id": "melee_ask_bio",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_ask_map",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_ask_items",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_ask_bio",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_ask_map",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_ask_supply",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        }
+      ]
+    },
+    {
+      "id": "confirm_exchange",
+      "implementation_status": "hud_demo",
+      "intent_en": "Accept the partner's still-open offer on the same HUD channel.",
+      "name_ko": "HUD 교환 동의",
+      "preconditions_ko": "상대의 유효한 제안, 같은 채널, 명시적 동의를 확인한다.",
+      "started_when_ko": "일치하는 제안의 동의를 한 번 수락한다.",
+      "completed_when_ko": "해당 파츠 소유권만 바꾸고 대기 상태를 닫는다.",
+      "failure_cancel_ko": "채널 불일치·제안 만료·이미 처리한 응답이면 소유권 변경 없이 거절한다.",
+      "unity_source": "OnYourMarkHud.ConfirmExchange; network consent planned",
+      "bindings": [
+        {
+          "line_id": "melee_confirm_bio",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "melee_confirm_map",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "melee_confirm_items",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "ranged_bio_ok",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "accepted"
+        },
+        {
+          "line_id": "ranged_map_ok",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "ranged_supply_ok",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "cancel_exchange",
+      "implementation_status": "hud_demo",
+      "intent_en": "Withdraw the actor's pending HUD offer.",
+      "name_ko": "HUD 제안 철회",
+      "preconditions_ko": "실행자가 소유한 미완료 제안과 제안 ID가 일치한다.",
+      "started_when_ko": "실행자의 철회 의사를 수락한다.",
+      "completed_when_ko": "대기 상태가 사라지고 기존 파츠 소유권이 유지된다.",
+      "failure_cancel_ko": "이미 수락·만료된 제안은 철회할 수 없다. 시간 만료는 수동 철회로 보고하지 않는다.",
+      "unity_source": "OnYourMarkHud.CancelExchange",
+      "bindings": [
+        {
+          "line_id": "melee_cancel_offer",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "accepted"
+        },
+        {
+          "line_id": "ranged_cancel_map",
+          "actor_ref": "speaker",
+          "target_ref": "self",
+          "speech_phase": "cancelled"
+        }
+      ]
+    },
+    {
+      "id": "return_hud",
+      "implementation_status": "hud_demo",
+      "intent_en": "Return an eligible HUD component after the sector objective.",
+      "name_ko": "목표 달성 후 HUD 반환",
+      "preconditions_ko": "구역 목표 완료, 유효 채널, 아직 반환하지 않은 파츠. 실제 공동 단말기는 양측의 홀드가 추가로 필요하다.",
+      "started_when_ko": "시연은 반환 입력 수락, 공동 단말기는 양측의 입력 유지가 시작된다.",
+      "completed_when_ko": "HudReturned와 파츠 상태를 확인한다. 네트워크판은 서버 소유권 확정 후 보고한다.",
+      "failure_cancel_ko": "목표 미완료·중복 반환·공동 홀드 이탈 시 반환을 완료하지 않는다.",
+      "unity_source": "OnYourMarkHud.ReturnHud / HudReturned; network terminal planned",
+      "bindings": [
+        {
+          "line_id": "control_terminal_available",
+          "actor_ref": "melee",
+          "target_ref": "partner",
+          "speech_phase": "accepted"
+        },
+        {
+          "line_id": "control_terminal_bio",
+          "actor_ref": "melee",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "control_terminal_sword",
+          "actor_ref": "ranged",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        }
+      ]
+    },
+    {
+      "id": "revive",
+      "implementation_status": "design",
+      "intent_en": "Revive a downed partner at close range.",
+      "name_ko": "근접 소생",
+      "preconditions_ko": "실행자는 생존, 파트너는 빈사이며 소생 반경 안에 있다.",
+      "started_when_ko": "서버가 상호작용 홀드를 수락하고 유지 시간을 재기 시작한다.",
+      "completed_when_ko": "필요한 홀드를 완료하여 파트너가 생존 상태와 회복된 체력을 얻는다.",
+      "failure_cancel_ko": "거리 이탈·입력 해제·구조자 다운·게임 오버 시 취소한다. 이동 중에는 소생 시작을 보고하지 않는다.",
+      "unity_source": "Planned downed/revive executor; existing Health.Died alone is insufficient",
+      "bindings": [
+        {
+          "line_id": "melee_revive_partner",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "melee_revive_success",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        },
+        {
+          "line_id": "ranged_revive_start",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "started"
+        },
+        {
+          "line_id": "ranged_revive_done",
+          "actor_ref": "speaker",
+          "target_ref": "partner",
+          "speech_phase": "completed"
+        }
+      ]
+    }
+  ]
+}
