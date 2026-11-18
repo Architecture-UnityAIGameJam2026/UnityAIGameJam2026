@@ -27,3 +27,7 @@ MonoBehaviour:
   dashMaxStacks: 1
   resourceCapacity: 6
   resourceStartsFull: 1
+  supportEffects:
+  - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
+  - {fileID: 11400000, guid: 8438b7b55263041f89195b6f19dac207, type: 2}
+  - {fileID: 11400000, guid: 93594536cee3245e7ae23a196a9d57a6, type: 2}

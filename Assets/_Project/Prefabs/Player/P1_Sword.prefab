@@ -228,6 +228,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ed477bbc9f0e64cfba2b8ce649e1d37a, type: 2}
+    - target: {fileID: 4686630308406251914, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: trigger
+      value: 
+      objectReference: {fileID: -6883469628129619336, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+    - target: {fileID: 4686630308406251914, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: pingWhenIdle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4704712806841285971, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: stats
       value: 

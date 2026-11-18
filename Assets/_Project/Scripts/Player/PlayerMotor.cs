@@ -14,6 +14,7 @@ namespace OnYourMark
         [SerializeField] InputActionReference move, jump, dash, zoom;
 
         CharacterController body;
+        PlayerBuffs buffs;
         Transform cam;
         float verticalSpeed, hoverTime, dashTimeLeft, dashRecharge;
         Vector3 dashDirection;
@@ -30,6 +31,7 @@ namespace OnYourMark
         void Awake()
         {
             body = GetComponent<CharacterController>();
+            buffs = GetComponent<PlayerBuffs>();
             DashStacks = stats.dashMaxStacks;
         }
 
@@ -62,7 +64,7 @@ namespace OnYourMark
             }
             else
             {
-                step = input * ((IsZooming ? stats.zoomMoveSpeed : stats.moveSpeed) * dt);
+                step = input * ((IsZooming ? stats.zoomMoveSpeed : stats.moveSpeed) * buffs.SpeedMultiplier * dt);
                 step.y = VerticalStep(dt);
             }
 

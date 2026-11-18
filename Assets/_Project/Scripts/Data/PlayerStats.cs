@@ -35,6 +35,16 @@ namespace OnYourMark
         public int resourceCapacity = 4;
         public bool resourceStartsFull;
 
+        [Header("원격 지원")]
+        [Tooltip("상대가 내 파츠를 들고 있을 때, 상대가 나를 지원하는 효과 (파츠당 하나)")]
+        public SupportEffect[] supportEffects;
+
+        public SupportEffect SupportFor(HudPart part)
+        {
+            foreach (var e in supportEffects) if (e.part == part) return e;
+            return null;
+        }
+
         public float JumpVelocity => Mathf.Sqrt(2f * -gravity * jumpHeight);
         public float DashSpeed => dashDistance / dashDuration;
         public bool CanZoom => zoomMagnification > 1f;

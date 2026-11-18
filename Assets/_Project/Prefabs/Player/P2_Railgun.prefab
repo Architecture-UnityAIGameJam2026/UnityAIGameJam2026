@@ -347,6 +347,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6247795060014951029}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+--- !u!114 &1141345864685667043 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4686630308406251914, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+  m_PrefabInstance: {fileID: 5682594310907827049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e2c9a96e19dc41b09d4530c5dac7d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.SupportGiver
 --- !u!1 &1169990408483511464 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
@@ -469,6 +480,7 @@ MonoBehaviour:
   muzzle: {fileID: 4517322814775240331}
   tracer: {fileID: 2824581523873952623}
   audioSource: {fileID: 1093401199587174246}
+  support: {fileID: 1141345864685667043}
 --- !u!4 &1922532094595571162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085090604175920819, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}

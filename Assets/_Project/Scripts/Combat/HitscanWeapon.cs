@@ -17,6 +17,8 @@ namespace OnYourMark
         [SerializeField] Transform muzzle;
         [SerializeField] LineRenderer tracer;
         [SerializeField] AudioSource audioSource;
+        [Tooltip("팀원 지원으로 쓰인 클릭이면 쏘지 않는다")]
+        [SerializeField] SupportGiver support;
 
         float readyTime;
         bool reloading;   // 서버 상태
@@ -27,7 +29,7 @@ namespace OnYourMark
 
             if (reload.action.WasPressedThisFrame() && !magazine.IsFull) ReloadRpc();
 
-            if (!fire.action.WasPressedThisFrame() || Time.time < readyTime) return;
+            if (!fire.action.WasPressedThisFrame() || support.ConsumedTrigger || Time.time < readyTime) return;
             readyTime = Time.time + data.cooldown;
 
             if (magazine.Current == 0) { audioSource.PlayOneShot(data.dryFireSound); return; }
