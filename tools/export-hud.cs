@@ -1,0 +1,11 @@
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using OnYourMark.UI;
+if(EditorApplication.isPlaying)throw new System.InvalidOperationException("Export in Edit mode.");
+var hud=Object.FindFirstObjectByType<OnYourMarkHud>();
+if(!hud||SceneManager.GetActiveScene().path!="Assets/garam/UI/Scenes/HudShowcase.unity")throw new System.InvalidOperationException("Open HudShowcase before export.");
+AssetDatabase.Refresh();
+System.IO.Directory.CreateDirectory(".gameharness/artifacts");
+AssetDatabase.ExportPackage("Assets/garam/UI",".gameharness/artifacts/OnYourMark-SenseLink-UI.unitypackage",ExportPackageOptions.Recurse);
+return "Exported UI assets, fonts, shaders, scene, prefab and README. Requires URP, UGUI and Input System in destination.";
