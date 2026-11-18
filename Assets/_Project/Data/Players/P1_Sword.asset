@@ -24,7 +24,7 @@ MonoBehaviour:
   dashDistance: 9
   dashDuration: 0.2
   dashCooldown: 3.5
-  dashMaxStacks: 2
+  dashMaxStacks: 3
   resourceCapacity: 4
   resourceStartsFull: 1
   supportEffects:
