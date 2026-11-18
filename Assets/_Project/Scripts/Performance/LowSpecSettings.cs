@@ -21,6 +21,10 @@ namespace OnYourMark
         [Tooltip("LOD를 이만큼 일찍 낮춘다 (1 = 기본)")]
         public float lodBias = 0.5f;
 
+        [Header("메모리")]
+        [Tooltip("텍스처 해상도를 2^n분의 1로 (1 = 절반: 2048 → 1024). M1처럼 메모리를 GPU와 함께 쓰는 기기에서 효과가 크다")]
+        [Range(0, 3)] public int textureMipLimit = 1;
+
         [Header("그림자 · 화면 효과")]
         [Tooltip("그림자를 그리는 최대 거리 (m)")]
         public float shadowDistance = 80f;

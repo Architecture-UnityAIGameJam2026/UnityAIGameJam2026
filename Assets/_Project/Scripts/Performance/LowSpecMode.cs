@@ -24,6 +24,7 @@ namespace OnYourMark
 
         LowSpecSettings settings;
         Camera lastCamera;
+        float savedLodBias; int savedMipLimit, savedFrameRate;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Boot()
@@ -38,12 +39,14 @@ namespace OnYourMark
             var mode = go.AddComponent<LowSpecMode>();
             mode.settings = s;
             mode.ApplyGlobal(go);
-            Debug.Log($"[LowSpec] on (memory {SystemInfo.systemMemorySize} MB): cull {s.cullDistance} m, shadows {s.shadowDistance} m, LOD bias {s.lodBias}");
+            Debug.Log($"[LowSpec] on (memory {SystemInfo.systemMemorySize} MB): cull {s.cullDistance} m, shadows {s.shadowDistance} m, LOD bias {s.lodBias}, texture 1/{1 << s.textureMipLimit}");
         }
 
         void ApplyGlobal(GameObject host)
         {
+            savedLodBias = QualitySettings.lodBias; savedMipLimit = QualitySettings.globalTextureMipmapLimit; savedFrameRate = Application.targetFrameRate;
             QualitySettings.lodBias = settings.lodBias;
+            QualitySettings.globalTextureMipmapLimit = settings.textureMipLimit;   // 텍스처 메모리 약 1/4
             if (settings.targetFrameRate > 0) Application.targetFrameRate = settings.targetFrameRate;
 
             // 그림자 거리: 우선순위가 높은 전역 볼륨으로 모든 씬의 볼륨 위에 덮어쓴다
@@ -53,6 +56,15 @@ namespace OnYourMark
             var shadows = profile.Add<HDShadowSettings>(true);
             shadows.maxShadowDistance.Override(settings.shadowDistance);
             volume.sharedProfile = profile;
+        }
+
+        // 에디터 플레이가 끝나면 품질 설정을 되돌린다 (프로젝트 설정 파일에 저장되지 않게)
+        void OnDestroy()
+        {
+            if (!settings) return;
+            QualitySettings.lodBias = savedLodBias;
+            QualitySettings.globalTextureMipmapLimit = savedMipLimit;
+            Application.targetFrameRate = savedFrameRate;
         }
 
         // 씬이 바뀌거나 카메라가 새로 생기면 그 카메라에 다시 적용한다
