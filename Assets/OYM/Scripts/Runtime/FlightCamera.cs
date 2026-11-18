@@ -33,8 +33,17 @@ namespace OYM
         [Header("Feel")]
         public float shakeAngle = 3.2f, shakeFreq = 22f, traumaDecay = 1.8f;
         public float kickFreq = 7f, kickDamping = 0.55f, fovFreq = 4.5f, fovDamping = 0.6f;
+        [Header("Speed (cruise boost, SetSpeedFx)")]
+        [Tooltip("degrees of FOV added at full cruise speed")]
+        public float speedFov = 14f;
+        [Tooltip("follow sharpness x (1 + this) at full cruise: the camera trails less at speed")]
+        public float speedFollow = 1.4f;
+        [Tooltip("trauma floor at full cruise: a fine thruster rumble")]
+        public float speedRumble = 0.3f;
 
         float _yaw, _pitch, _trauma, _seed;
+        float _speedFx, _speedTarget;
+        int _speedFrame = -10;
         Vector2 _kick, _kickV;
         float _fovK, _fovKV, _roll, _aimZoom;
         Vector3 _pivot;
@@ -91,6 +100,9 @@ namespace OYM
         public void FovKick(float degPerSec) { _fovKV += degPerSec; }
         public void SetRoll(float deg) { _roll = deg; }
         public void SetAimZoom(float z) { _aimZoom = Mathf.Clamp01(z); }
+        /// Cruise feel 0..1 for this frame (FOV opens, the follow tightens, a fine rumble). Call it every frame while it
+        /// applies; when the calls stop it eases back out on its own.
+        public void SetSpeedFx(float k) { _speedTarget = Mathf.Clamp01(k); _speedFrame = Time.frameCount; }
         public void SnapToTarget() { if (target) _pivot = target.position + pivotOffset; }
 
         /// Point under the crosshair (or `maxDist` along the aim if nothing is hit). Colliders under `ignore` are skipped.
@@ -142,9 +154,12 @@ namespace OYM
             Spring.Step(ref _kick, ref _kickV, Vector2.zero, kickFreq, kickDamping, dt);
             Spring.Step(ref _fovK, ref _fovKV, 0f, fovFreq, fovDamping, dt);
             _trauma = Mathf.Max(0f, _trauma - traumaDecay * dt);
+            float speedGoal = Time.frameCount - _speedFrame <= 1 ? _speedTarget : 0f;
+            _speedFx = Mathf.Lerp(_speedFx, speedGoal, 1f - Mathf.Exp(-(speedGoal > _speedFx ? 3f : 6f) * dt));   // opens slow, closes fast
 
             _base = Quaternion.Euler(_pitch, _yaw, 0f);
-            float s = _trauma * _trauma, t = Time.unscaledTime * shakeFreq;
+            float tr = Mathf.Max(_trauma, speedRumble * _speedFx);
+            float s = tr * tr, t = Time.unscaledTime * shakeFreq;
             var shake = new Vector3((Mathf.PerlinNoise(_seed, t) - 0.5f), (Mathf.PerlinNoise(_seed + 7f, t) - 0.5f), (Mathf.PerlinNoise(_seed + 13f, t) - 0.5f)) * (2f * shakeAngle * s);
             Quaternion rot = Quaternion.Euler(_pitch + _kick.x + shake.x, _yaw + _kick.y + shake.y, _roll + shake.z * 0.6f);
 
@@ -157,7 +172,7 @@ namespace OYM
             }
             else
             {
-                _pivot = Vector3.Lerp(_pivot, target.position + pivotOffset, 1f - Mathf.Exp(-followSharpness * dt));
+                _pivot = Vector3.Lerp(_pivot, target.position + pivotOffset, 1f - Mathf.Exp(-followSharpness * (1f + speedFollow * _speedFx) * dt));
                 Vector3 shoulderW = _base * shoulder;
                 Vector3 back = -(rot * Vector3.forward);
                 float d = distance;
@@ -169,7 +184,7 @@ namespace OYM
             if (_cam)
             {
                 float baseFov = firstPerson ? fpFov : fov;
-                _cam.fieldOfView = Mathf.Clamp(baseFov * (1f - 0.28f * _aimZoom) + _fovK, 20f, 110f);
+                _cam.fieldOfView = Mathf.Clamp(baseFov * (1f - 0.28f * _aimZoom) + _fovK + speedFov * _speedFx, 20f, 110f);
                 _cam.nearClipPlane = firstPerson ? 0.02f : 0.06f;
             }
         }
