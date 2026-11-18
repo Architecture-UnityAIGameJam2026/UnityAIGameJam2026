@@ -122,6 +122,10 @@ namespace OnYourMark
                 status += parry.IsActive ? $"<color=#D5EF86>[E] PARRY {parry.ActiveLeft:F1}s</color>  "
                     : parry.CooldownLeft > 0f ? $"<color=#9AA5B1>[E] PARRY {parry.CooldownLeft:F1}s</color>  "
                     : "<color=#D5EF86>[E] PARRY READY</color>  ";
+            if (me.TryGetComponent<WeaponModes>(out var wm))
+                status += wm.IsSwitching ? $"<color=#D5EF86>[E] → {wm.Next.displayName} {wm.SwitchLeft:F1}s</color>  "
+                    : wm.CooldownLeft > 0f ? $"<color=#9AA5B1>{wm.Current.displayName}  [E] {wm.CooldownLeft:F1}s</color>  "
+                    : $"<color=#D5EF86>{wm.Current.displayName}  [E] → {wm.Next.displayName}</color>  ";
             foreach (var a in me.GetComponent<AwakeningSet>().Active)
                 status += $"<color=#C792EA>{a.displayName}</color>  ";
             statusLabel.text = status;

@@ -277,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 534fd891dfdd24efb96ab8e98d30bc1e, type: 2}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: disableWhileDowned.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'disableWhileDowned.Array.data[3]'
@@ -287,6 +287,10 @@ PrefabInstance:
       propertyPath: 'disableWhileDowned.Array.data[4]'
       value: 
       objectReference: {fileID: 5242030366448041823}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[5]'
+      value: 
+      objectReference: {fileID: 3849098907872238154}
     - target: {fileID: 3063893716798316700, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -358,6 +362,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6247795060014951029}
+    - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3849098907872238154}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
 --- !u!114 &1141345864685667043 stripped
 MonoBehaviour:
@@ -486,12 +493,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.HitscanWeapon
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 8fc5023b1fe3b455cbedff750bc9b3e6, type: 2}
+  modes: {fileID: 3849098907872238154}
   fire: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   magazine: {fileID: 4915727301799875013}
   muzzle: {fileID: 4517322814775240331}
   tracer: {fileID: 2824581523873952623}
   audioSource: {fileID: 1093401199587174246}
   support: {fileID: 1141345864685667043}
+--- !u!114 &3849098907872238154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f65444d62b5945ca8da6f6cd465bfe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.WeaponModes
+  ShowTopMostFoldoutHeaderGroup: 1
+  modes:
+  - {fileID: 11400000, guid: 3315e331c25b143528c4a0ed2f10db91, type: 2}
+  - {fileID: 11400000, guid: 8fc5023b1fe3b455cbedff750bc9b3e6, type: 2}
+  data: {fileID: 11400000, guid: 04524783ff72d43e0a87a4f6ab99d74f, type: 2}
+  skill: {fileID: -3484653264553352299, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+  magazine: {fileID: 4915727301799875013}
 --- !u!4 &1922532094595571162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085090604175920819, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}

@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6bc9e8ef56f4d5888bf54b0f972956, type: 3}
   m_Name: Hitscan_Railgun
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.HitscanData
-  damage: 100
-  range: 50
+  displayName: RAIL
+  damage: 110
+  range: 60
   cooldown: 1.1
-  reloadTime: 2
+  magazine: 6
+  automatic: 0
+  pierce: 1
+  allowZoom: 1
   hitMask:
     serializedVersion: 2
     m_Bits: 1536

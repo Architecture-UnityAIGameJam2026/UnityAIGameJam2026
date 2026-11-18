@@ -27,7 +27,13 @@ namespace OnYourMark
         public int DashStacks { get; private set; }
         /// <summary>지금의 최대 대쉬 횟수 (기본 + 스킬로 늘어난 칸)</summary>
         public int DashCapacity => stats.dashMaxStacks + bonusDashStacks;
-        public bool IsZooming => stats.CanZoom && Held(zoom);
+        public bool IsZooming => stats.CanZoom && ZoomAllowed && Held(zoom);
+        /// <summary>지금 무기가 줌을 쓸 수 있는지 (P2 레일건 모드에서만)</summary>
+        public bool ZoomAllowed { get; set; } = true;
+        /// <summary>대쉬 금지 (P2 무기 변형 중)</summary>
+        public bool DashLocked { get; set; }
+        /// <summary>0 이상이면 이동 속도를 이 값으로 고정 (P2 무기 변형 중 감속)</summary>
+        public float SpeedOverride { get; set; } = -1f;
         public bool IsFlying => flying;
         /// <summary>대쉬가 시간이 지나면 저절로 차는지. 2번 파츠를 돌려받기 전에는 꺼진다 (ResourceReload)</summary>
         public bool AutoRechargeDash { get; set; } = true;
@@ -81,7 +87,8 @@ namespace OnYourMark
             }
             else
             {
-                step = input * ((IsZooming ? stats.zoomMoveSpeed : stats.moveSpeed) * buffs.SpeedMultiplier * dt);
+                float speed = SpeedOverride >= 0f ? SpeedOverride : IsZooming ? stats.zoomMoveSpeed : stats.moveSpeed;
+                step = input * (speed * buffs.SpeedMultiplier * dt);
                 step.y = VerticalStep(dt);
             }
 
@@ -163,7 +170,7 @@ namespace OnYourMark
 
         void TryDash(Vector3 input)
         {
-            if (DashStacks == 0 || dashTimeLeft > 0f) return;
+            if (DashStacks == 0 || dashTimeLeft > 0f || DashLocked) return;
             DashStacks--;
             dashTimeLeft = stats.dashDuration;
             dashDirection = input.sqrMagnitude > 0.01f ? input.normalized : transform.forward;
