@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PlayerStats
   displayName: P2 RAILGUN
   color: {r: 0.25, g: 0.85, b: 0.95, a: 1}
+  showDashOnHud: 0
   moveSpeed: 5
   zoomMoveSpeed: 2.5
   zoomMagnification: 2.5
@@ -25,7 +26,7 @@ MonoBehaviour:
   dashDuration: 0.25
   dashCooldown: 6
   dashMaxStacks: 1
-  resourceCapacity: 6
+  resourceCapacity: 20
   resourceStartsFull: 1
   supportEffects:
   - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
