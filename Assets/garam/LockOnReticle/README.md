@@ -1,12 +1,12 @@
 # 락온 조준점 모듈
 
-평소에는 작은 조준점, 근거리 락온에서는 적을 감싸는 원, 원거리 락온에서는 중심을 향하는 화살표 3개로 전환됩니다. Figma에서 만든 투명 PNG를 Unity UGUI 프리팹에 연결했습니다. 입력·적 탐색·공격 로직과 독립적으로 사용할 수 있습니다.
+평소에는 `( · )` 모양의 작은 조준점, 근거리 락온에서는 적을 감싸는 원, 원거리 락온에서는 중심을 향하는 화살표 3개로 전환됩니다. Figma에서 만든 투명 PNG를 Unity UGUI 프리팹에 연결했습니다. 입력·적 탐색·공격 로직과 독립적으로 사용할 수 있습니다.
 
 ## Figma 원본
 
 - [세 상태 미리보기](https://www.figma.com/design/XRi3tZ8GwuovH3Jt4qKWHV/UnityAIGameJam2026?node-id=33-2002)
 - [HUD / LockOnReticle 컴포넌트 세트](https://www.figma.com/design/XRi3tZ8GwuovH3Jt4qKWHV/UnityAIGameJam2026?node-id=33-2001)
-- 기존 `HUD v7 / Reticle`과 `primary`, `accent`, `white`, `dim`, `ink` 색상 변수를 재사용했습니다. 기존 HUD 원본은 수정하지 않았습니다.
+- 기본 조준점은 [HUD / BracketAim](https://www.figma.com/design/XRi3tZ8GwuovH3Jt4qKWHV/UnityAIGameJam2026?node-id=36-2007)이며, 둥근 괄호 사이에 작은 점을 둡니다. 원거리 조준점의 중심에도 같은 모양을 사용합니다. 기존 `primary`, `accent`, `white`, `dim`, `ink` 색상 변수를 재사용했습니다.
 - `Art/figma-source.json`에 에셋별 노드와 원래 크기를 기록했습니다. 임시 다운로드 URL이나 인증 정보는 저장하지 않습니다.
 
 ## 바로 사용
@@ -51,7 +51,7 @@ reticle.reducedMotion = true;                 // 수렴·맥동·크로스페이
 
 | 상태 | 위치와 크기 | 움직임 |
 | --- | --- | --- |
-| Idle | 카메라 화면 중심, 32×12 Canvas 단위 | 작은 기존 HUD 조준점 |
+| Idle | 카메라 화면 중심, 32×12 Canvas 단위 | 둥근 괄호와 중심점 `( · )` |
 | Near | 적 Renderer bounds의 화면상 중심, 크기에 맞춘 원 | 전체 투영 bounds의 대각선을 감싸고 여백 추가 |
 | Far | `Aim Point`의 정확한 투영 위치, 160×160 Canvas 단위 | 120° 간격 화살표 3개가 1.35배에서 1배로 0.3초 동안 수렴 |
 
