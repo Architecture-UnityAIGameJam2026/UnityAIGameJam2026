@@ -1,0 +1,6 @@
+{
+    "name": "Garam.Reticles.PlayModeTests",
+    "references": ["Garam.Reticles", "UnityEngine.UI"],
+    "optionalUnityReferences": ["TestAssemblies"],
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"]
+}
