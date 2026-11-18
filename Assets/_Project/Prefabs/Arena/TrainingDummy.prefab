@@ -352,6 +352,7 @@ GameObject:
   - component: {fileID: 8110500846690577380}
   - component: {fileID: 785361560470977420}
   - component: {fileID: 2512590958688385950}
+  - component: {fileID: 5507123158888647740}
   m_Layer: 0
   m_Name: TrainingDummy
   m_TagString: Untagged
@@ -431,3 +432,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.TargetDummy
   ShowTopMostFoldoutHeaderGroup: 1
   respawnDelay: 2
+--- !u!114 &5507123158888647740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7581684279709260009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f786105ee6c38b4cb0a637fe9ad7428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Garam.Reticles::Garam.Reticles.ReticleTarget
+  aimPoint: {fileID: 0}
+  boundsRenderers:
+  - {fileID: 3517567678561461120}
+  fallbackRadius: 1

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.SceneManagement;
 
 namespace OnYourMark.UI.Editor
@@ -23,7 +23,7 @@ namespace OnYourMark.UI.Editor
         }
         static Material Material(string name,Color color,float metallic=0,float smooth=.4f,Color? emission=null)
         {
-            var m=new Material(Shader.Find("Universal Render Pipeline/Lit"));m.name=name;m.SetColor("_BaseColor",color);m.SetFloat("_Metallic",metallic);m.SetFloat("_Smoothness",smooth);
+            var m=new Material(Shader.Find("HDRP/Lit"));m.name=name;m.SetColor("_BaseColor",color);m.SetFloat("_Metallic",metallic);m.SetFloat("_Smoothness",smooth);
             if(emission.HasValue){m.shader=Shader.Find("OnYourMark/IonSurface");m.SetColor("_EmissionColor",emission.Value);}
             AssetDatabase.CreateAsset(m,Root+"/Materials/"+name+".mat");return m;
         }
@@ -48,8 +48,8 @@ namespace OnYourMark.UI.Editor
             var cameraGo=new GameObject("Showcase Camera");cameraGo.tag="MainCamera";
             Camera camera=cameraGo.AddComponent<Camera>();camera.transform.position=new Vector3(0,2,-14);camera.transform.rotation=Quaternion.Euler(2,0,0);
             camera.fieldOfView=62;camera.nearClipPlane=.05f;camera.farClipPlane=180;camera.backgroundColor=new Color(.013f,.033f,.037f);camera.clearFlags=CameraClearFlags.SolidColor;camera.allowHDR=true;
-            camera.GetUniversalAdditionalCameraData().renderPostProcessing=true;
-            camera.GetUniversalAdditionalCameraData().antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+            var hdCamera=cameraGo.AddComponent<HDAdditionalCameraData>();
+            hdCamera.antialiasing=HDAdditionalCameraData.AntialiasingMode.SubpixelMorphologicalAntiAliasing;
             RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.08f,.14f,.15f);RenderSettings.reflectionIntensity=.15f;RenderSettings.fog=true;RenderSettings.fogColor=new Color(.018f,.057f,.063f);RenderSettings.fogMode=FogMode.ExponentialSquared;RenderSettings.fogDensity=.022f;
             var sun=new GameObject("Soft ceiling key").AddComponent<Light>();sun.type=LightType.Directional;sun.color=new Color(.49f,.72f,.74f);sun.intensity=.75f;sun.transform.rotation=Quaternion.Euler(48,-25,0);sun.shadows=LightShadows.Soft;
             BuildChamber();
@@ -75,7 +75,7 @@ namespace OnYourMark.UI.Editor
             canvas.worldCamera=null;PrefabUtility.SaveAsPrefabAsset(canvasGo,Root+"/Prefabs/SenseLinkHUD.prefab");canvas.worldCamera=camera;
             EditorSceneManager.SaveScene(scene,Root+"/Scenes/HudShowcase.unity");AssetDatabase.SaveAssets();
             Selection.activeGameObject=canvasGo;
-            return "Created 1920x1080 UGUI prefab and URP showcase scene.";
+            return "Created 1920x1080 UGUI prefab and HDRP showcase scene.";
         }
         static void BuildChamber()
         {

@@ -534,6 +534,7 @@ GameObject:
   - component: {fileID: 4369611960064370584}
   - component: {fileID: 1661481901906183947}
   - component: {fileID: 3436039713145137}
+  - component: {fileID: 1498592313910324305}
   m_Layer: 0
   m_Name: Enemy_Rusher
   m_TagString: Untagged
@@ -685,3 +686,21 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: b952629d1086741d98278ac82d302d7e, type: 2}
   fuseWarning: {fileID: 5031024972598152065}
   blastEffect: {fileID: 513686359128819725}
+--- !u!114 &1498592313910324305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7089585355763001093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f786105ee6c38b4cb0a637fe9ad7428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Garam.Reticles::Garam.Reticles.ReticleTarget
+  aimPoint: {fileID: 0}
+  boundsRenderers:
+  - {fileID: 1322181314661292988}
+  - {fileID: 4447073104401715004}
+  - {fileID: 6143366932291444937}
+  fallbackRadius: 1

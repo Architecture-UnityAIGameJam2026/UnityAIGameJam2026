@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 5492582106795401922}
   - component: {fileID: 8128297020645350004}
   - component: {fileID: 2361362989392587528}
+  - component: {fileID: 8455815778916440518}
   m_Layer: 0
   m_Name: Enemy_HoverLaser
   m_TagString: Untagged
@@ -352,6 +353,23 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: bf6ab7cc25265485d9f0650b1788e30e, type: 2}
   eye: {fileID: 4385592083372568745}
   laser: {fileID: 1353205280405847305}
+--- !u!114 &8455815778916440518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857554077235130427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f786105ee6c38b4cb0a637fe9ad7428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Garam.Reticles::Garam.Reticles.ReticleTarget
+  aimPoint: {fileID: 0}
+  boundsRenderers:
+  - {fileID: 298535991441140490}
+  - {fileID: 6967799539146458820}
+  fallbackRadius: 1
 --- !u!1 &2975802915110757399
 GameObject:
   m_ObjectHideFlags: 0
