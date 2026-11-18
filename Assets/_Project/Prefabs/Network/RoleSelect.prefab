@@ -741,6 +741,7 @@ MonoBehaviour:
   roles:
   - {fileID: 11400000, guid: 5e1577c1d2c24434b804173580805937, type: 2}
   - {fileID: 11400000, guid: e9f1162dcb7e7430985e6acacb5118b4, type: 2}
+  playersSpawned: {fileID: 11400000, guid: 377844f8dc0774543b0a018541533a28, type: 2}
 --- !u!114 &417137156105723497
 MonoBehaviour:
   m_ObjectHideFlags: 0

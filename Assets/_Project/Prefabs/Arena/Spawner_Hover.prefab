@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2751661228154828137}
+  - component: {fileID: 2721810907815210802}
   m_Layer: 0
   m_Name: Spawner_Hover
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 7993184483478853433}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2721810907815210802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603650515916140189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2eb92f0c85446beb60f36fe3bf6bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.Spawner
+  enemy: {fileID: 11400000, guid: bf6ab7cc25265485d9f0650b1788e30e, type: 2}
 --- !u!1 &5929412630353547469
 GameObject:
   m_ObjectHideFlags: 0

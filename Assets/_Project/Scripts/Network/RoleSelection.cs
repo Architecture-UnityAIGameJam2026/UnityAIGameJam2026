@@ -12,9 +12,11 @@ namespace OnYourMark
         public const ulong Nobody = ulong.MaxValue;
 
         [SerializeField] RoleDefinition[] roles;
+        [Tooltip("두 플레이어가 모두 스폰되면 Raise (웨이브 시작 등)")]
+        [SerializeField] GameEvent playersSpawned;
 
         readonly NetworkList<ulong> owners = new();
-        bool playersSpawned;
+        bool spawnDone;
 
         public RoleDefinition[] Roles => roles;
         public ulong OwnerOf(int role) => role < owners.Count ? owners[role] : Nobody;
@@ -40,7 +42,7 @@ namespace OnYourMark
         {
             ulong sender = rpc.Receive.SenderClientId;
             // 먼저 도착한 요청만 인정: 이미 찼거나, 이미 고른 사람이면 무시
-            if (playersSpawned || role < 0 || role >= roles.Length) return;
+            if (spawnDone || role < 0 || role >= roles.Length) return;
             if (OwnerOf(role) != Nobody || HasChosen(sender)) return;
 
             owners[role] = sender;
@@ -49,19 +51,20 @@ namespace OnYourMark
 
         void SpawnPlayers()
         {
-            playersSpawned = true;
+            spawnDone = true;
             for (int i = 0; i < roles.Length; i++)
             {
                 var point = SpawnPoint.For(roles[i]);
                 var player = Instantiate(roles[i].playerPrefab, point.position, point.rotation);
                 player.SpawnAsPlayerObject(owners[i]);
             }
+            playersSpawned.Raise();
         }
 
         // 고르는 도중 나간 플레이어의 자리를 비운다
         void ReleaseRole(ulong clientId)
         {
-            if (playersSpawned) return;
+            if (spawnDone) return;
             for (int i = 0; i < owners.Count; i++)
                 if (owners[i] == clientId) owners[i] = Nobody;
         }

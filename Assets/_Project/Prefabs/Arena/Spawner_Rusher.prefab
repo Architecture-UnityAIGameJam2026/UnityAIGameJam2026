@@ -99,6 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8510361446487594756}
+  - component: {fileID: 7630039116610595595}
   m_Layer: 0
   m_Name: Spawner_Rusher
   m_TagString: Untagged
@@ -122,3 +123,16 @@ Transform:
   - {fileID: 1887592653061365105}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7630039116610595595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5643137037472230328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2eb92f0c85446beb60f36fe3bf6bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.Spawner
+  enemy: {fileID: 11400000, guid: b952629d1086741d98278ac82d302d7e, type: 2}
