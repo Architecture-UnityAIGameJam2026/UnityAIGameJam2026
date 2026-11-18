@@ -251,7 +251,7 @@ python Tools/prep_cinematic.py      # 런처 발사관·엔진 배기용 빨강 
 | `FrameRateGuard` | 런타임에 모든 게임 카메라의 `allowDynamicResolution`을 켜고, GPU 시간으로 렌더 스케일을 조절(예산 18.9 ms, 60 Hz 수직동기 화면이면 그 주기). 스케일 50 %에서도 45 fps 아래면 볼륨으로 포그 품질 Low·접촉 그림자 끔(1단계), SSAO 끔(2단계), 여유가 생기면 되돌림. CPU 병목일 때는 해상도를 내리지 않음 |
 | `DebrisMotion` | `Spin`·`Drift` 1,800여 개를 Transform 잡 하나로 움직임(개별 FixedUpdate·리지드바디 보간 제거). 카메라 150 m 밖 데브리는 카메라 모션벡터만 써서 오브젝트 모션벡터 패스에서 빠짐 |
 | `ShadowThrottle` | 반경 60 m 이상 포인트/스팟 그림자(코어 라이트 900 m)를 HDRP 캐시 그림자로 바꾸고 큐브 6면 중 프레임당 2면씩 갱신. 요청하지 않은 면은 HDRP가 컬링도 건너뜀 |
-| HDRP High Fidelity | 데칼 지원 끔(프로젝트에 데칼 없음, 켜져 있으면 데칼을 받는 불투명 전부를 뎁스 프리패스로 한 번 더 그림), SSGI 지원 끔(모든 볼륨에서 꺼져 있음), 컬러 버퍼 R11G11B10, PCSS 그림자 필터 → Medium |
+| HDRP High Fidelity | GPU Resident Drawer 작은 메시 컬링 0.3 %(화면 높이 약 5 px 미만 메시 생략, 원거리 잔해), 데칼 지원 끔(프로젝트에 데칼 없음, 켜져 있으면 데칼을 받는 불투명 전부를 뎁스 프리패스로 한 번 더 그림), SSGI 지원 끔(모든 볼륨에서 꺼져 있음), 컬러 버퍼 R11G11B10, PCSS 그림자 필터 → Medium |
 | 볼륨·설정 | `OYM_SpaceVolume` 태양 그림자 거리 2600 → 1200 m(`OYMSetup` 상수도 같이), `Maximum Allowed Timestep` 0.333 → 0.1, Frame Timing Stats 켬 |
 
 명령줄: `-oymPerfHud`(fps·GPU·스케일 오버레이, **F8**로 토글), `-oymPerfLog <파일>`(초당 CSV), `-oymNoGuard`(가드 끔), `-oymNoShadowThrottle`.
