@@ -8,10 +8,14 @@ namespace OnYourMark
     /// <summary>
     /// 호스트에서 두 플레이어의 체력 · 대쉬 개수 · 총알 개수를 지켜보다가 의미 있는 변화가 생기면
     /// Jev에게 lines.csv의 대사 중 하나(또는 none)를 고르게 하고, 고른 대사를 모든 화면 오른쪽 위에 띄운다.
+    /// 인스펙터의 AI Mediation 체크로 켜고 끈다.
     /// 매 프레임 호출하지 않는다: 상태 단계가 바뀔 때만, 플레이어별 쿨타임을 두고 한 번에 하나씩 요청한다.
     /// </summary>
     public class CalloutDirector : NetworkBehaviour
     {
+        [Header("AI Mediation")]
+        [Tooltip("끄면 AI Mediation(Jev 판단 + 콜아웃 표시)을 쓰지 않는다. 플레이 중에도 바꿀 수 있다 (호스트 기준)")]
+        [SerializeField] bool aiMediationEnabled = true;
         [SerializeField] JevSettings settings;
         [SerializeField] CalloutCatalog catalog;
         [SerializeField] CalloutView view;
@@ -44,6 +48,12 @@ namespace OnYourMark
         void Update()
         {
             if (!IsServer) return;
+            if (!aiMediationEnabled)
+            {
+                // 꺼져 있는 동안 생긴 변화는 쌓아 두지 않는다. 다시 켜면 그때 상태부터 지켜본다
+                watches.Clear();
+                return;
+            }
 
             foreach (var p in Player.All)
             {
@@ -145,6 +155,7 @@ namespace OnYourMark
             StartCoroutine(JevClient.Choose(settings, BuildState(subject, evt), Instructions, Criteria(), r =>
             {
                 w.inFlight = false;
+                if (!aiMediationEnabled) return;   // 응답을 기다리는 사이 꺼졌으면 표시하지 않는다
                 // 기다리는 동안 상황이 또 바뀌었으면 낡은 결과는 버린다 (새 상황으로 다시 묻는다)
                 if (subject == null || !subject.IsSpawned || w.generation != gen) return;
                 if (!r.ok || r.choice == "none") return;
