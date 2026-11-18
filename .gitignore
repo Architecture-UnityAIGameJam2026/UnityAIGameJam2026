@@ -138,3 +138,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]ceneDependencyCache*
 /.gameharness/staging/
 /.gameharness/artifacts/
+
+# Jev API 키가 들어 있는 설정 (인스펙터에서 입력, 공유 금지)
+/[Aa]ssets/_Project/Secrets/
+/[Aa]ssets/_Project/Secrets.meta
