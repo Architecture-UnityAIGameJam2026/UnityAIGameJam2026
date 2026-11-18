@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace OnYourMark
 {
-    /// <summary>서버에서 직선으로 날아가며 앞쪽을 SphereCast로 검사한다. 적중하거나 사거리를 다 날면 사라진다.</summary>
+    /// <summary>
+    /// 서버에서 직선으로 날아가며 앞쪽을 SphereCast로 검사한다. 적중하거나 사거리를 다 날면 사라진다.
+    /// NetworkObjectPool로 재사용되므로 발사 상태는 Launch에서 매번 초기화한다.
+    /// </summary>
     public class Projectile : NetworkBehaviour
     {
         ProjectileData data;
@@ -14,11 +17,14 @@ namespace OnYourMark
         {
             data = projectileData;
             direction = dir.normalized;
+            traveled = 0f;
         }
+
+        public override void OnNetworkDespawn() => data = null;   // 풀에 있는 동안 움직이지 않게
 
         void FixedUpdate()
         {
-            if (!IsServer || data == null) return;
+            if (!IsServer || !IsSpawned || data == null) return;
 
             float step = data.speed * Time.fixedDeltaTime;
             // 반지름만큼 뒤에서 검사를 시작한다: SphereCast는 시작 지점에서 이미 겹친 콜라이더를 무시하므로,

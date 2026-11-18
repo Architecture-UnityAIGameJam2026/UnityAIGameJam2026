@@ -15,6 +15,13 @@ namespace OnYourMark
 
         protected override EnemyData Data => data;
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            fusing = false;   // 풀에서 재사용: 이전 생의 퓨즈 상태를 지운다
+            if (fuseWarning) fuseWarning.SetActive(false);
+        }
+
         void Update()
         {
             if (!IsServer || !IsSpawned || fusing) return;
@@ -48,10 +55,7 @@ namespace OnYourMark
         [Rpc(SendTo.ClientsAndHost)]
         void ShowBlastRpc(Vector3 position)
         {
-            var fx = Instantiate(blastEffect, position, Quaternion.identity);
-            fx.transform.localScale = Vector3.one * data.blastRadius * 2f;
-            fx.SetActive(true);
-            Destroy(fx, 0.3f);
+            FxPool.Play(blastEffect, position, Quaternion.identity, Vector3.one * data.blastRadius * 2f, 0.3f);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace OnYourMark
 {
-    /// <summary>자원을 소모해 투사체를 쏜다. P1은 R로 원격 검기(검기 1칸 소모).</summary>
+    /// <summary>자원을 소모해 투사체를 쏜다. P1은 R로 원격 검기(검기 1칸 소모). 투사체는 NetworkObjectPool에서 꺼낸다.</summary>
     public class ProjectileWeapon : NetworkBehaviour
     {
         [SerializeField] ProjectileData data;
@@ -12,6 +12,11 @@ namespace OnYourMark
         [SerializeField] AmmoPool resource;
 
         float readyTime;
+
+        const int PrewarmProjectiles = 6;
+
+        // 모든 피어에서 등록해야 클라이언트도 풀에서 꺼내고 돌려놓는다 (여러 번 불러도 한 번만 등록)
+        public override void OnNetworkSpawn() => NetworkObjectPool.Register(data.prefab, PrewarmProjectiles);
 
         void Update()
         {
@@ -28,7 +33,7 @@ namespace OnYourMark
         {
             if (!resource.TrySpend(data.cost)) return;
             Vector3 origin = transform.position + Vector3.up * 1.2f + transform.forward * 0.8f;
-            var obj = Instantiate(data.prefab, origin, Quaternion.LookRotation(direction));
+            var obj = NetworkObjectPool.Get(data.prefab, origin, Quaternion.LookRotation(direction));
             obj.GetComponent<Projectile>().Launch(data, direction);
             obj.Spawn(destroyWithScene: true);
         }
