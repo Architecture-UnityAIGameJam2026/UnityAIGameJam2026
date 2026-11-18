@@ -1,0 +1,844 @@
+{
+    "passed": true,
+    "unityVersion": "6000.3.28f1",
+    "shader": "HDRP/Lit",
+    "style": "oym-lowpoly-v1",
+    "prefabCount": 64,
+    "triangles": 580103,
+    "greenGlowPrefabs": 3,
+    "partialEmissionPrefabs": 15,
+    "assets": [
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/01_backdrop_giant.prefab",
+            "triangles": 14915,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 200.0,
+                "y": 148.3960723876953,
+                "z": 194.0091094970703
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/02_mining_cover_asteroid.prefab",
+            "triangles": 17708,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 10.0,
+                "y": 7.424628257751465,
+                "z": 9.646678924560547
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/03_drift_rock_intact.prefab",
+            "triangles": 5432,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 1.174227237701416,
+                "y": 1.2000000476837159,
+                "z": 1.135481834411621
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/04_drift_rock_cracked.prefab",
+            "triangles": 5595,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 1.1302666664123536,
+                "y": 1.1999999284744263,
+                "z": 1.10634183883667
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/05_split_fragment_upper.prefab",
+            "triangles": 3367,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.7000000476837158,
+                "y": 0.6630927324295044,
+                "z": 0.4991016387939453
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/06_split_fragment_right.prefab",
+            "triangles": 3420,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.5838726758956909,
+                "y": 0.699999988079071,
+                "z": 0.6897343993186951
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/07_split_fragment_left.prefab",
+            "triangles": 3467,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.5608878135681152,
+                "y": 0.7000000476837158,
+                "z": 0.4779515266418457
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/08_split_fragment_lower.prefab",
+            "triangles": 3779,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.5932031869888306,
+                "y": 0.699999988079071,
+                "z": 0.5210159420967102
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/09_ice_asteroid.prefab",
+            "triangles": 12000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 18.179855346679689,
+                "y": 13.732402801513672,
+                "z": 20.0
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/10_metal_rich_asteroid.prefab",
+            "triangles": 10000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 19.81656265258789,
+                "y": 14.507915496826172,
+                "z": 20.0
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/01_asteroids/11_husk_claimed_asteroid.prefab",
+            "triangles": 17999,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 20.0,
+                "y": 14.87944221496582,
+                "z": 18.32830810546875
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/01_medkit_closed.prefab",
+            "triangles": 4606,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 44,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.2317173182964325,
+                "y": 0.24000005424022675,
+                "z": 0.10225148499011994
+            },
+            "greenGlow": true
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/02_medkit_open.prefab",
+            "triangles": 4606,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 44,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.23171734809875489,
+                "y": 0.23200862109661103,
+                "z": 0.2740524709224701
+            },
+            "greenGlow": true
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/03_stim_injector.prefab",
+            "triangles": 1016,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 44,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.03321991115808487,
+                "y": 0.1379999816417694,
+                "z": 0.027337754145264627
+            },
+            "greenGlow": true
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/04_booster_fuel_cell.prefab",
+            "triangles": 1832,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 104,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.08065084367990494,
+                "y": 0.18599998950958253,
+                "z": 0.08493253588676453
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/05_ammo_box_closed.prefab",
+            "triangles": 4412,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 44,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.21701042354106904,
+                "y": 0.17000000178813935,
+                "z": 0.08825092762708664
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/06_ammo_box_open.prefab",
+            "triangles": 4412,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 44,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.21701037883758546,
+                "y": 0.17833015322685243,
+                "z": 0.21132247149944306
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/07_armor_patch_folded.prefab",
+            "triangles": 2480,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.14181748032569886,
+                "y": 0.15199999511241914,
+                "z": 0.08094368875026703
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/08_armor_patch_unfolded.prefab",
+            "triangles": 800,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.21000011265277863,
+                "y": 0.12631575763225556,
+                "z": 0.012236853130161763
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/09_shield_cell.prefab",
+            "triangles": 1192,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 264,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.08799999207258225,
+                "y": 0.1759999841451645,
+                "z": 0.06514843553304672
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/10_medkit_auto_injector.prefab",
+            "triangles": 736,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.125,
+                "y": 0.0276628527790308,
+                "z": 0.0276628527790308
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/11_sealant_patch_packet.prefab",
+            "triangles": 466,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.08999999612569809,
+                "y": 0.04859999567270279,
+                "z": 0.005490004550665617
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/02_pickups/12_ammo_magazine.prefab",
+            "triangles": 352,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.03475246950984001,
+                "y": 0.07799998670816422,
+                "z": 0.019422778859734536
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/01_mag_barricade_low.prefab",
+            "triangles": 16000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.399754524230957,
+                "y": 0.9390900731086731,
+                "z": 0.8171994686126709
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/02_mag_barricade_high.prefab",
+            "triangles": 10412,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.4000000953674318,
+                "y": 1.6293388605117798,
+                "z": 1.0876564979553223
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/03_cargo_container.prefab",
+            "triangles": 13194,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 4.0,
+                "y": 2.126199722290039,
+                "z": 2.1005311012268068
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/04_hull_plate_slab.prefab",
+            "triangles": 9703,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.8000001907348635,
+                "y": 2.393033027648926,
+                "z": 0.41229721903800967
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/05_station_bulkhead_fragment.prefab",
+            "triangles": 16152,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 3.200000047683716,
+                "y": 2.096096992492676,
+                "z": 1.8108271360397339
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/06_deployable_shield_deployed.prefab",
+            "triangles": 15545,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.4000000953674318,
+                "y": 1.1126881837844849,
+                "z": 0.68110591173172
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/06_deployable_shield_folded.prefab",
+            "triangles": 8000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.5745145678520203,
+                "y": 0.6000000238418579,
+                "z": 0.34180477261543276
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/03_cover/07_crate_stack.prefab",
+            "triangles": 15852,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.8000001907348635,
+                "y": 1.8875211477279664,
+                "z": 1.368512749671936
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/01_hab_module.prefab",
+            "triangles": 29666,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 9.336865425109864,
+                "y": 8.496545791625977,
+                "z": 12.0
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/02_truss_long_bent.prefab",
+            "triangles": 15924,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 8.0,
+                "y": 3.7221298217773439,
+                "z": 4.801662921905518
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/03_truss_short_box.prefab",
+            "triangles": 6886,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 4.0,
+                "y": 1.7616323232650757,
+                "z": 1.8939679861068726
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/04_truss_triangle.prefab",
+            "triangles": 7548,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 3.000000238418579,
+                "y": 2.550657033920288,
+                "z": 0.36560413241386416
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/05_solar_panel_wing.prefab",
+            "triangles": 15318,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 18.0,
+                "y": 14.557109832763672,
+                "z": 10.078118324279786
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/06_hull_large_ribbed.prefab",
+            "triangles": 15964,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 5.655527114868164,
+                "y": 5.999999523162842,
+                "z": 4.492029190063477
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/07_hull_curved_rib.prefab",
+            "triangles": 9576,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 3.0,
+                "y": 2.647458791732788,
+                "z": 0.5852964520454407
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/08_hull_shallow_panel.prefab",
+            "triangles": 6938,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 4.0,
+                "y": 2.320394277572632,
+                "z": 1.3477624654769898
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/09_derelict_ship_bow.prefab",
+            "triangles": 39822,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 120.0,
+                "y": 72.60286712646485,
+                "z": 46.40006637573242
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/10_debris_access_panel.prefab",
+            "triangles": 5194,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.800000011920929,
+                "y": 0.6615633368492127,
+                "z": 0.08350640535354614
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/11_debris_grille.prefab",
+            "triangles": 4853,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.709367036819458,
+                "y": 0.7999999523162842,
+                "z": 0.4191344678401947
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/12_debris_cylinder.prefab",
+            "triangles": 5934,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.800000011920929,
+                "y": 0.3152691721916199,
+                "z": 0.3210042715072632
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/13_debris_bracket.prefab",
+            "triangles": 5559,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.5527634024620056,
+                "y": 0.8000000715255737,
+                "z": 0.7911989688873291
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/14_debris_short_bolt.prefab",
+            "triangles": 1671,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.09999999403953552,
+                "y": 0.06516978144645691,
+                "z": 0.07516034692525864
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/15_debris_nut.prefab",
+            "triangles": 1806,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.09999999403953552,
+                "y": 0.08728600293397904,
+                "z": 0.04464031383395195
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/16_debris_washer.prefab",
+            "triangles": 1442,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.09999757260084152,
+                "y": 0.010443164967000485,
+                "z": 0.09999998658895493
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/17_debris_elbow_pipe.prefab",
+            "triangles": 6000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.800000011920929,
+                "y": 0.33800575137138369,
+                "z": 0.2520597577095032
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/18_debris_utility_box.prefab",
+            "triangles": 5942,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 0.7999999523162842,
+                "y": 0.49465852975845339,
+                "z": 0.2310268133878708
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/19_debris_cable_coil.prefab",
+            "triangles": 7999,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 1.0875359773635865,
+                "y": 0.22699491679668427,
+                "z": 1.1999998092651368
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/20_debris_cargo_net.prefab",
+            "triangles": 11825,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 1.8000001907348633,
+                "y": 1.2236257791519166,
+                "z": 0.3589434027671814
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/21_debris_torn_plate.prefab",
+            "triangles": 5261,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.7673687934875488,
+                "y": 0.7999999523162842,
+                "z": 0.14697319269180299
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/22_debris_long_plate.prefab",
+            "triangles": 5906,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.800000011920929,
+                "y": 0.07035943120718003,
+                "z": 0.3599339425563812
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/23_debris_small_plate.prefab",
+            "triangles": 5732,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.800000011920929,
+                "y": 0.07946088165044785,
+                "z": 0.35527777671813967
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/24_debris_beacon_caged.prefab",
+            "triangles": 7260,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 0.7963036894798279,
+                "y": 0.5354681015014648,
+                "z": 0.8000000715255737
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/04_wreckage/25_debris_beacon_pole.prefab",
+            "triangles": 6897,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 0.23642855882644654,
+                "y": 0.7999999523162842,
+                "z": 0.23650866746902467
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/01_propellant_tank_cluster.prefab",
+            "triangles": 17688,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.1265997886657717,
+                "y": 2.299999952316284,
+                "z": 1.3770838975906373
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/02_power_conduit_left.prefab",
+            "triangles": 13770,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.1999998092651369,
+                "y": 1.6192342042922974,
+                "z": 1.045654296875
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/03_power_conduit_right.prefab",
+            "triangles": 13492,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 2.1826305389404299,
+                "y": 2.200000047683716,
+                "z": 1.1023650169372559
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/04_gas_vent_hardware.prefab",
+            "triangles": 13510,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 1.929272174835205,
+                "y": 2.200000047683716,
+                "z": 1.0264654159545899
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/05_proximity_mine.prefab",
+            "triangles": 11326,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 1.4430160522460938,
+                "y": 2.1995632648468019,
+                "z": 1.3674513101577759
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/06_husk_beacon_closed.prefab",
+            "triangles": 18000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 1.5286998748779297,
+                "y": 3.0,
+                "z": 1.6050351858139039
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/07_husk_beacon_deployed.prefab",
+            "triangles": 18000,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 0,
+            "maskedEmissiveMaterials": 1,
+            "dimensions": {
+                "x": 2.875638484954834,
+                "y": 3.0,
+                "z": 2.4418325424194338
+            },
+            "greenGlow": false
+        },
+        {
+            "prefab": "Assets/garam/Prefabs/05_hazards/08_husk_small_drone.prefab",
+            "triangles": 7944,
+            "renderers": 1,
+            "unmaskedEmissiveTriangles": 188,
+            "maskedEmissiveMaterials": 0,
+            "dimensions": {
+                "x": 0.547661542892456,
+                "y": 0.550000011920929,
+                "z": 0.5009704828262329
+            },
+            "greenGlow": false
+        }
+    ]
+}
