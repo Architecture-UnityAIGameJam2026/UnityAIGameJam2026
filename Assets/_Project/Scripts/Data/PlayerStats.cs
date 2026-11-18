@@ -23,9 +23,15 @@ namespace OnYourMark
         public float jumpHeight = 2.2f;
         public float gravity = -22f;
 
-        [Header("호버링 (Space 홀드)")]
+        [Header("추진 비행 (공중에서 Space 홀드)")]
+        [Tooltip("카메라가 바라보는 방향으로 날아가는 속도 (m/s)")]
+        public float hoverSpeed = 9f;
+        [Tooltip("한 번에 날 수 있는 최대 시간 (게이지)")]
         public float hoverMaxTime = 2.5f;
-        public float hoverFallSpeed = 1.5f;
+        [Tooltip("착지 후 이 시간이 지나야 게이지가 충전된다")]
+        public float hoverRechargeDelay = 1.5f;
+        [Tooltip("초당 충전되는 비행 시간. 0이면 지연 시간이 지나는 순간 한 번에 가득 찬다")]
+        public float hoverRechargeRate = 0f;
 
         [Header("대쉬 (Shift)")]
         public float dashDistance = 9f;

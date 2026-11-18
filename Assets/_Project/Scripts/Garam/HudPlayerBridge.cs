@@ -66,7 +66,7 @@ namespace OnYourMark
             : player.Stats.showDashOnHud ? player.DashStacks : player.Ammo.Current;
 
         static int ResourceCapacity(Player player) => !player ? 0
-            : player.Stats.showDashOnHud ? player.Stats.dashMaxStacks : player.Ammo.Capacity;
+            : player.Stats.showDashOnHud ? player.DashCapacity : player.Ammo.Capacity;
 
         void RequestExchange(int channel) => exchange.Offer((HudPart)channel);
         void CancelExchange() => exchange.CancelOffer();

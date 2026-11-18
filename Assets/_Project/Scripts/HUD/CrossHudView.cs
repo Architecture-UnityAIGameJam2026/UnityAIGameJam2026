@@ -97,7 +97,7 @@ namespace OnYourMark
             bool showDash = who.Stats.showDashOnHud;
             string resource = showDash ? "DASH" : "AMMO";
             int current = showDash ? who.DashStacks : who.Ammo.Current;
-            int capacity = showDash ? who.Stats.dashMaxStacks : who.Ammo.Capacity;
+            int capacity = showDash ? who.DashCapacity : who.Ammo.Capacity;
             ammoLabel.text = $"3 {resource}  {Name(who)}  {current}/{capacity}";
             ammoFill.fillAmount = capacity > 0 ? (float)current / capacity : 0f;
             dashLabel.text = $"{resource} {current}/{capacity}";

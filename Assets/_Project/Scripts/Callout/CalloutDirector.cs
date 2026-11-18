@@ -87,7 +87,7 @@ namespace OnYourMark
                 : hp <= catalog.criticalHealth ? HealthLevel.Critical
                 : hp <= catalog.lowHealth ? HealthLevel.Low : HealthLevel.Ok;
 
-            int dash = p.DashStacks, dashMax = p.Stats.dashMaxStacks;
+            int dash = p.DashStacks, dashMax = p.DashCapacity;
             s.dash = dash <= 0 ? DashLevel.Empty : dash >= dashMax ? DashLevel.Full : DashLevel.Partial;
 
             if (HasGun(p))
@@ -182,7 +182,7 @@ namespace OnYourMark
             sb.AppendLine($"Partner (reads the subject's HUD out loud): {(partner ? partner.Stats.displayName : "none")}");
             sb.AppendLine($"Subject health: {Mathf.RoundToInt(subject.Health.Ratio * 100)}% ({subject.Health.Current:0}/{subject.Health.Max:0})");
             sb.AppendLine($"Subject downed: {(subject.Health.IsDead ? "yes" : "no")}");
-            sb.AppendLine($"Subject dash charges (booster fuel): {subject.DashStacks}/{subject.Stats.dashMaxStacks}");
+            sb.AppendLine($"Subject dash charges (booster fuel): {subject.DashStacks}/{subject.DashCapacity}");
             if (HasGun(subject)) sb.AppendLine($"Subject ammo: {subject.Ammo.Current}/{subject.Ammo.Capacity} rounds in the magazine");
             else sb.AppendLine("Subject ammo: none (melee sword, no gun)");
             return sb.ToString();

@@ -20,8 +20,10 @@ MonoBehaviour:
   zoomMagnification: 1
   jumpHeight: 2.2
   gravity: -22
+  hoverSpeed: 9
   hoverMaxTime: 2.5
-  hoverFallSpeed: 1.5
+  hoverRechargeDelay: 1.5
+  hoverRechargeRate: 0
   dashDistance: 9
   dashDuration: 0.2
   dashCooldown: 3.5

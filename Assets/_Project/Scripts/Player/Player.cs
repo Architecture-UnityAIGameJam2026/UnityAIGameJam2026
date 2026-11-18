@@ -10,6 +10,8 @@ namespace OnYourMark
         // 이동은 소유자만 계산하므로, 남은 대쉬 횟수도 소유자가 공유한다.
         readonly NetworkVariable<int> dashStacks = new(0,
             NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        readonly NetworkVariable<int> dashCapacity = new(0,
+            NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         public static IReadOnlyList<Player> All => all;
         public static Player Local => all.Find(p => p.IsOwner);
@@ -21,6 +23,8 @@ namespace OnYourMark
         public PlayerBuffs Buffs { get; private set; }
         public PlayerStats Stats => Motor.Stats;
         public int DashStacks => IsOwner ? Motor.DashStacks : dashStacks.Value;
+        /// <summary>지금의 최대 대쉬 횟수 (스킬로 늘어날 수 있다)</summary>
+        public int DashCapacity => IsOwner ? Motor.DashCapacity : UnityEngine.Mathf.Max(dashCapacity.Value, Stats.dashMaxStacks);
 
         void Awake()
         {
@@ -32,15 +36,16 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
-            if (IsOwner) dashStacks.Value = Motor.DashStacks;
+            if (IsOwner) { dashStacks.Value = Motor.DashStacks; dashCapacity.Value = Motor.DashCapacity; }
             all.Add(this);
             UnityEngine.Debug.Log($"[OnYourMark] {Stats.displayName} spawned for client {OwnerClientId} at {transform.position} (mine: {IsOwner})");
         }
 
         void LateUpdate()
         {
-            if (IsSpawned && IsOwner && dashStacks.Value != Motor.DashStacks)
-                dashStacks.Value = Motor.DashStacks;
+            if (!IsSpawned || !IsOwner) return;
+            if (dashStacks.Value != Motor.DashStacks) dashStacks.Value = Motor.DashStacks;
+            if (dashCapacity.Value != Motor.DashCapacity) dashCapacity.Value = Motor.DashCapacity;
         }
 
         public override void OnNetworkDespawn() => all.Remove(this);
