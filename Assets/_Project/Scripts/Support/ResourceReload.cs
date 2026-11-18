@@ -24,7 +24,7 @@ namespace OnYourMark
 
         public float CooldownLeft => IsSpawned ? Mathf.Max(0f, (float)(readyAt.Value - NetworkManager.ServerTime.Time)) : 0f;
         /// <summary>2번 파츠를 돌려받아 내 자원을 내가 관리하는지</summary>
-        public bool SelfManaged => hud != null && hud.IsReturned(HudPart.Consumable);
+        public bool SelfManaged => hud != null && hud.IsReturned(HudPart.Resource);
         /// <summary>지금 R을 누르면 채워지는 대상</summary>
         public Player Target => SelfManaged ? me : me.Partner;
 

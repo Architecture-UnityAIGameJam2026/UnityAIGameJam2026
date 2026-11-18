@@ -60,9 +60,9 @@ namespace OnYourMark
             downedVolume.weight = Mathf.MoveTowards(downedVolume.weight, vignette, Time.deltaTime * 3f);
             if (me == null) return;
 
-            ShowBio(Subject(HudPart.Bio));
-            ShowMap(Subject(HudPart.Map));
-            ShowConsumable(Subject(HudPart.Consumable));
+            ShowBio(Subject(HudPart.Vitals));
+            ShowMap(Subject(HudPart.Vitals));
+            ShowConsumable(Subject(HudPart.Resource));
             ShowSelf();
             ShowPrompt();
         }
@@ -73,7 +73,7 @@ namespace OnYourMark
         void ShowBio(Player who)
         {
             string shield = who && who.Health.Shield > 0 ? $"  <color=#8FD3FF>+{who.Health.Shield:F0} SHIELD</color>" : "";
-            bioLabel.text = $"1 BIO  {Name(who)}{shield}{Cooldown(HudPart.Bio)}";
+            bioLabel.text = $"1 BIO  {Name(who)}{shield}{Cooldown(HudPart.Vitals)}";
             bioFill.fillAmount = who ? who.Health.Ratio : 0f;
         }
 
@@ -113,7 +113,7 @@ namespace OnYourMark
                 waves.BetweenWaves ? $"WAVE {waves.WaveNumber} CLEAR   NEXT IN {waves.SecondsToNextWave:F0}s{(terminal.IsAvailable ? "   <color=#F08045>TERMINAL OPEN</color>" : "")}" :
                 $"WAVE {waves.WaveNumber}/{waves.TotalWaves}   ENEMIES {waves.Alive}";
 
-            partsLabel.text = $"{Key(HudPart.Bio, "1")}  {Key(HudPart.Map, "2")}  {Key(HudPart.Consumable, "3")}  SWAP    {ReloadStatus()}";
+            partsLabel.text = $"{Key(HudPart.Vitals, "1")}  {Key(HudPart.Resource, "2")}  {Key(HudPart.Skill, "3")}  SWAP    {ReloadStatus()}";
 
             string status = "";
             if (me.Buffs.SpeedMultiplier > 1f) status += "<color=#8FD3FF>RAIL BOOST</color>  ";
@@ -171,9 +171,9 @@ namespace OnYourMark
 
         static string PartName(HudPart part) => part switch
         {
-            HudPart.Bio => "BIO",
-            HudPart.Map => "MAP",
-            _ => "RESOURCE",
+            HudPart.Vitals => "VITALS",
+            HudPart.Resource => "AMMO/DASH",
+            _ => "SKILL",
         };
 
         // 반환 전 1번 파츠: 파트너를 조준해 회복시켜 줄 수 있으니 쿨타임을 보여 준다

@@ -55,9 +55,10 @@ namespace OnYourMark
             hud.localResourceIsDash = me.Stats.showDashOnHud;
             hud.SetPartnerTelemetry(partner ? partner.Health.Ratio : 1f,
                 ResourceCount(partner), ResourceCapacity(partner), partner && partner.Stats.showDashOnHud);
-            hud.SetGameState(state.IsReturned(HudPart.Bio), state.IsReturned(HudPart.Map),
-                state.IsReturned(HudPart.Consumable), exchange.HasOffer ? (int)exchange.OfferPart : -1);
-            mapImage.enabled = state.IsReturned(HudPart.Map) || partner != null;
+            // SenseLink 화면: 체력 · 지도는 1번 파츠, 잔탄 · 대쉬는 2번 파츠를 따른다 (3번 스킬은 교차 HUD에 표시)
+            hud.SetGameState(state.IsReturned(HudPart.Vitals), state.IsReturned(HudPart.Vitals),
+                state.IsReturned(HudPart.Resource), exchange.HasOffer ? (int)exchange.OfferPart : -1);
+            mapImage.enabled = state.IsReturned(HudPart.Vitals) || partner != null;
 
             if (CursorLock.IsLocked) hud.openPanel = OnYourMarkHud.Panel.Closed;
         }

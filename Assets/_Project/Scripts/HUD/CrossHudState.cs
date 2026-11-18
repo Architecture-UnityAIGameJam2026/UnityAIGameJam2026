@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace OnYourMark
 {
-    public enum HudPart { Bio, Map, Consumable }
+    /// <summary>교차 HUD 파츠 (새 기획서): 1 체력바+미니맵 / 2 탄창 · 대쉬 수 / 3 스킬(Q · E)</summary>
+    public enum HudPart { Vitals, Resource, Skill }
 
     /// <summary>
     /// 교차 HUD 파츠의 반환 상태 (팀 공용, 서버가 관리).

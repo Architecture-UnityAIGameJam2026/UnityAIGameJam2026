@@ -28,7 +28,7 @@ namespace OnYourMark
         public float CooldownLeft => IsSpawned ? Mathf.Max(0f, (float)(readyAt.Value - NetworkManager.ServerTime.Time)) : 0f;
 
         /// <summary>지금 체력 지원을 줄 수 있는 상태인지 (파트너 파츠를 들고 있음).</summary>
-        public bool CanSupport => hud != null && !hud.IsReturned(HudPart.Bio) && me.Partner != null;
+        public bool CanSupport => hud != null && !hud.IsReturned(HudPart.Vitals) && me.Partner != null;
 
         public override void OnNetworkSpawn()
         {
@@ -77,7 +77,7 @@ namespace OnYourMark
             var target = me.Partner;
             if (!CanSupport || target.Health.IsDead || CooldownLeft > 0f) return;
 
-            var effect = target.Stats.SupportFor(HudPart.Bio);
+            var effect = target.Stats.SupportFor(HudPart.Vitals);
             if (effect == null) return;
             effect.Apply(me, target);
             readyAt.Value = NetworkManager.ServerTime.Time + effect.cooldown;
