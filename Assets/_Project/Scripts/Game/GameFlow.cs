@@ -60,6 +60,7 @@ namespace OnYourMark
         {
             reachedWave.Value = waves.WaveNumber;
             result.Value = r;
+            Debug.Log($"[OnYourMark] Round ended: {r} at wave {waves.WaveNumber}");
             waves.Stop();
             foreach (var p in new System.Collections.Generic.List<Player>(Player.All)) p.NetworkObject.Despawn();
         }

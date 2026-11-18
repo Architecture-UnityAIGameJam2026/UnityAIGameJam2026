@@ -28,7 +28,11 @@ namespace OnYourMark
             Requests = GetComponent<SupportRequests>();
         }
 
-        public override void OnNetworkSpawn() => all.Add(this);
+        public override void OnNetworkSpawn()
+        {
+            all.Add(this);
+            UnityEngine.Debug.Log($"[OnYourMark] {Stats.displayName} spawned for client {OwnerClientId} at {transform.position} (mine: {IsOwner})");
+        }
         public override void OnNetworkDespawn() => all.Remove(this);
     }
 }

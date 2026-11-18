@@ -67,7 +67,8 @@ namespace OnYourMark
             {
                 betweenWaves.Value = false;
                 waveIndex.Value = i;
-                Spawn(waves[i]);
+                Debug.Log($"[OnYourMark] Wave {i + 1}/{waves.Length} started");
+                yield return Spawn(waves[i]);
                 yield return new WaitUntil(() => alive.Value == 0);
 
                 betweenWaves.Value = true;
@@ -79,8 +80,11 @@ namespace OnYourMark
             allWavesCleared.Raise();
         }
 
-        void Spawn(WaveData wave)
+        IEnumerator Spawn(WaveData wave)
         {
+            // 먼저 전체 수를 올려 둬야, 다 나오기 전에 먼저 나온 적을 잡아도 클리어로 판정되지 않는다
+            foreach (var group in wave.groups) alive.Value += group.count;
+
             foreach (var group in wave.groups)
             {
                 var points = Spawner.For(group.enemy);
@@ -90,7 +94,7 @@ namespace OnYourMark
                     var enemy = Instantiate(group.enemy.prefab, point.position, point.rotation);
                     enemy.GetComponent<Health>().Died += _ => alive.Value--;
                     enemy.Spawn(destroyWithScene: true);
-                    alive.Value++;
+                    yield return new WaitForSeconds(wave.spawnInterval);
                 }
             }
         }

@@ -26,7 +26,7 @@ MonoBehaviour:
   dashCooldown: 3.5
   dashMaxStacks: 2
   resourceCapacity: 4
-  resourceStartsFull: 0
+  resourceStartsFull: 1
   supportEffects:
   - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
   - {fileID: 11400000, guid: c08fce3330d0a4425ae30947e50b987d, type: 2}
