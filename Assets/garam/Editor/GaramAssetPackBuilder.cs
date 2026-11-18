@@ -27,9 +27,9 @@ namespace Garam.Editor
         [Serializable] public class MaterialSlot { public string sourceName, path; }
         [Serializable] public class MaterialSpec
         {
-            public string sourceName, path, baseMap, maskMap, emissionMap;
+            public string sourceName, path, baseMap, maskMap, emissionMap, normalMap;
             public float[] baseColor, emissionColor;
-            public float metallic, roughness, emissionStrength, emissionPixelFraction;
+            public float metallic, roughness, emissionStrength, emissionPixelFraction, normalStrength;
             public bool doubleSided;
         }
         [Serializable] public class AssetResult
@@ -43,7 +43,7 @@ namespace Garam.Editor
         {
             public bool passed;
             public string unityVersion, shader, style;
-            public int prefabCount, triangles, greenGlowPrefabs, partialEmissionPrefabs;
+            public int prefabCount, triangles, greenGlowPrefabs, partialEmissionPrefabs, normalMappedPrefabs;
             public List<AssetResult> assets = new List<AssetResult>();
         }
 
@@ -126,19 +126,22 @@ namespace Garam.Editor
         static void ConfigureTextures(Pack pack)
         {
             var linearMaps = new HashSet<string>(pack.materials.Select(m => m.maskMap).Where(p => !string.IsNullOrEmpty(p)));
-            var paths = pack.materials.SelectMany(m => new[] { m.baseMap, m.maskMap, m.emissionMap })
+            var normalMaps = new HashSet<string>(pack.materials.Select(m => m.normalMap).Where(p => !string.IsNullOrEmpty(p)));
+            var paths = pack.materials.SelectMany(m => new[] { m.baseMap, m.maskMap, m.emissionMap, m.normalMap })
                 .Where(p => !string.IsNullOrEmpty(p)).Distinct();
             foreach (var path in paths)
             {
                 var importer = AssetImporter.GetAtPath(path) as TextureImporter;
                 Require(importer != null, "Missing texture: " + path);
-                importer.textureType = TextureImporterType.Default;
-                importer.sRGBTexture = !linearMaps.Contains(path);
+                importer.textureType = normalMaps.Contains(path) ? TextureImporterType.NormalMap : TextureImporterType.Default;
+                importer.sRGBTexture = !linearMaps.Contains(path) && !normalMaps.Contains(path);
                 importer.alphaSource = TextureImporterAlphaSource.FromInput;
                 importer.alphaIsTransparency = false;
                 importer.mipmapEnabled = true;
                 importer.wrapMode = TextureWrapMode.Repeat;
-                importer.maxTextureSize = 2048;
+                importer.maxTextureSize = 4096;
+                importer.anisoLevel = 8;
+                importer.filterMode = FilterMode.Trilinear;
                 importer.textureCompression = TextureImporterCompression.Uncompressed;
                 importer.SaveAndReimport();
             }
@@ -170,6 +173,9 @@ namespace Garam.Editor
             material.SetFloat("_DoubleSidedNormalMode", 1f);
             SetTexture(material, "_BaseColorMap", spec.baseMap);
             SetTexture(material, "_MaskMap", spec.maskMap);
+            SetTexture(material, "_NormalMap", spec.normalMap);
+            material.SetFloat("_NormalScale", spec.normalStrength);
+            material.SetFloat("_NormalMapSpace", 0f);
             SetTexture(material, "_EmissiveColorMap", spec.emissionMap);
             var emission = ColorOf(spec.emissionColor);
             material.SetFloat("_UseEmissiveIntensity", 1f);
@@ -232,6 +238,19 @@ namespace Garam.Editor
                     Require(Mathf.Abs(bounds.min.y) < tolerance && new Vector2(bounds.center.x, bounds.center.z).magnitude < tolerance,
                         "Origin is not bottom-center: " + asset.id);
                     var mats = renderers.SelectMany(r => r.sharedMaterials).Distinct().ToArray();
+                    if (mats.Any(m => m.GetTexture("_NormalMap") != null)) report.normalMappedPrefabs++;
+                    foreach (var slot in asset.materials)
+                    {
+                        var definition = pack.materials.Single(m => m.path == slot.path);
+                        var material = AssetDatabase.LoadAssetAtPath<Material>(slot.path);
+                        if (!string.IsNullOrEmpty(definition.normalMap))
+                        {
+                            Require(material.GetTexture("_NormalMap") != null && material.IsKeywordEnabled("_NORMALMAP"), "Missing restored normal detail: " + asset.id);
+                            var importer = (TextureImporter)AssetImporter.GetAtPath(definition.normalMap);
+                            Require(importer.textureType == TextureImporterType.NormalMap && !importer.sRGBTexture, "Incorrect normal texture import: " + asset.id);
+                            Require(material.GetTexture("_NormalMap").width >= 2048, "Reduced normal-map resolution: " + asset.id);
+                        }
+                    }
                     int unmaskedEmission = 0;
                     var maskedEmission = new HashSet<Material>();
                     foreach (var renderer in renderers)
@@ -272,6 +291,8 @@ namespace Garam.Editor
                 finally { Object.DestroyImmediate(instance); }
             }
             Require(report.assets.Count == 64 && report.greenGlowPrefabs == 3, "Incorrect prefab/glow count.");
+            Require(report.normalMappedPrefabs == 52, "Expected restored normal maps on all 52 Meshy assets.");
+            Require(report.partialEmissionPrefabs == 15, "Expected 15 prefabs with partial emission.");
             report.prefabCount = report.assets.Count;
             report.passed = true;
             File.WriteAllText(Root + "/Editor/validation-report.json", JsonUtility.ToJson(report, true) + "\n");

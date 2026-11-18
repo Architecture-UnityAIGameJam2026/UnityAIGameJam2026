@@ -1,0 +1,735 @@
+{
+  "revision": "surface-detail-v2",
+  "beforeTriangles": 580103,
+  "afterTriangles": 2444208,
+  "normalMappedAssets": 52,
+  "assets": [
+    {
+      "asset": "01_asteroids__01_backdrop_giant",
+      "before": 14915,
+      "after": 59660,
+      "curved_edge_vertices": 22188,
+      "max_vertex_offset_m": 0.6000060795052087,
+      "preserved_crease_edges": 187,
+      "textures": {
+        "normal": 4096,
+        "basecolor": 4096
+      }
+    },
+    {
+      "asset": "01_asteroids__02_mining_cover_asteroid",
+      "before": 17708,
+      "after": 70832,
+      "curved_edge_vertices": 23263,
+      "max_vertex_offset_m": 0.030000282715120168,
+      "preserved_crease_edges": 3242,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__03_drift_rock_intact",
+      "before": 5432,
+      "after": 21728,
+      "curved_edge_vertices": 7964,
+      "max_vertex_offset_m": 0.003600050660269808,
+      "preserved_crease_edges": 190,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__04_drift_rock_cracked",
+      "before": 5595,
+      "after": 22380,
+      "curved_edge_vertices": 6861,
+      "max_vertex_offset_m": 0.0036000551094636964,
+      "preserved_crease_edges": 1526,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__05_split_fragment_upper",
+      "before": 3367,
+      "after": 13468,
+      "curved_edge_vertices": 4796,
+      "max_vertex_offset_m": 0.002100026791270977,
+      "preserved_crease_edges": 260,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__06_split_fragment_right",
+      "before": 3420,
+      "after": 13680,
+      "curved_edge_vertices": 4826,
+      "max_vertex_offset_m": 0.002100028185269907,
+      "preserved_crease_edges": 309,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__07_split_fragment_left",
+      "before": 3467,
+      "after": 13868,
+      "curved_edge_vertices": 5020,
+      "max_vertex_offset_m": 0.002100028120983569,
+      "preserved_crease_edges": 185,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__08_split_fragment_lower",
+      "before": 3779,
+      "after": 15116,
+      "curved_edge_vertices": 5598,
+      "max_vertex_offset_m": 0.0021000244498920514,
+      "preserved_crease_edges": 71,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__09_ice_asteroid",
+      "before": 12000,
+      "after": 48000,
+      "curved_edge_vertices": 17007,
+      "max_vertex_offset_m": 0.06000047763444827,
+      "preserved_crease_edges": 985,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__10_metal_rich_asteroid",
+      "before": 10000,
+      "after": 40000,
+      "curved_edge_vertices": 14717,
+      "max_vertex_offset_m": 0.06000049473281011,
+      "preserved_crease_edges": 284,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "01_asteroids__11_husk_claimed_asteroid",
+      "before": 17999,
+      "after": 71996,
+      "curved_edge_vertices": 23695,
+      "max_vertex_offset_m": 0.06000051934959201,
+      "preserved_crease_edges": 3255,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "02_pickups__01_medkit_closed",
+      "before": 4606,
+      "after": 18424,
+      "curved_edge_vertices": 5,
+      "max_vertex_offset_m": 2.9095447346220367e-08,
+      "preserved_crease_edges": 832,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__02_medkit_open",
+      "before": 4606,
+      "after": 18424,
+      "curved_edge_vertices": 41,
+      "max_vertex_offset_m": 9.094592642585711e-08,
+      "preserved_crease_edges": 832,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__03_stim_injector",
+      "before": 1016,
+      "after": 4064,
+      "curved_edge_vertices": 65,
+      "max_vertex_offset_m": 3.9775216028210935e-08,
+      "preserved_crease_edges": 72,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__04_booster_fuel_cell",
+      "before": 1832,
+      "after": 7328,
+      "curved_edge_vertices": 84,
+      "max_vertex_offset_m": 6.143906154658885e-08,
+      "preserved_crease_edges": 36,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__05_ammo_box_closed",
+      "before": 4412,
+      "after": 17648,
+      "curved_edge_vertices": 1,
+      "max_vertex_offset_m": 2.2351741790771484e-08,
+      "preserved_crease_edges": 576,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__06_ammo_box_open",
+      "before": 4412,
+      "after": 17648,
+      "curved_edge_vertices": 38,
+      "max_vertex_offset_m": 7.41323409308955e-08,
+      "preserved_crease_edges": 576,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__07_armor_patch_folded",
+      "before": 2480,
+      "after": 9920,
+      "curved_edge_vertices": 9,
+      "max_vertex_offset_m": 2.3039648079970816e-08,
+      "preserved_crease_edges": 108,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__08_armor_patch_unfolded",
+      "before": 800,
+      "after": 3200,
+      "curved_edge_vertices": 0,
+      "max_vertex_offset_m": 9.900094766853983e-09,
+      "preserved_crease_edges": 168,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__09_shield_cell",
+      "before": 1192,
+      "after": 4768,
+      "curved_edge_vertices": 0,
+      "max_vertex_offset_m": 5.587935447692871e-09,
+      "preserved_crease_edges": 36,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__10_medkit_auto_injector",
+      "before": 736,
+      "after": 2944,
+      "curved_edge_vertices": 0,
+      "max_vertex_offset_m": 9.520467510568384e-09,
+      "preserved_crease_edges": 0,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__11_sealant_patch_packet",
+      "before": 466,
+      "after": 1864,
+      "curved_edge_vertices": 0,
+      "max_vertex_offset_m": 1.6880221664905548e-09,
+      "preserved_crease_edges": 76,
+      "textures": {}
+    },
+    {
+      "asset": "02_pickups__12_ammo_magazine",
+      "before": 352,
+      "after": 1408,
+      "curved_edge_vertices": 0,
+      "max_vertex_offset_m": 3.725290298461914e-09,
+      "preserved_crease_edges": 40,
+      "textures": {}
+    },
+    {
+      "asset": "03_cover__01_mag_barricade_low",
+      "before": 16000,
+      "after": 187796,
+      "restored_original_mesh": true,
+      "textures": {
+        "basecolor": 2048,
+        "normal": 2048
+      }
+    },
+    {
+      "asset": "03_cover__02_mag_barricade_high",
+      "before": 10412,
+      "after": 41648,
+      "curved_edge_vertices": 9176,
+      "max_vertex_offset_m": 0.007200058894085483,
+      "preserved_crease_edges": 6323,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "03_cover__03_cargo_container",
+      "before": 13194,
+      "after": 52776,
+      "curved_edge_vertices": 12101,
+      "max_vertex_offset_m": 0.012000118270686323,
+      "preserved_crease_edges": 7652,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "03_cover__04_hull_plate_slab",
+      "before": 9703,
+      "after": 38812,
+      "curved_edge_vertices": 10325,
+      "max_vertex_offset_m": 0.008400084373839621,
+      "preserved_crease_edges": 4229,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "03_cover__05_station_bulkhead_fragment",
+      "before": 16152,
+      "after": 64608,
+      "curved_edge_vertices": 17967,
+      "max_vertex_offset_m": 0.00960010982010694,
+      "preserved_crease_edges": 6267,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "03_cover__06_deployable_shield_deployed",
+      "before": 15545,
+      "after": 62180,
+      "curved_edge_vertices": 15928,
+      "max_vertex_offset_m": 0.007200058727923462,
+      "preserved_crease_edges": 7381,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "03_cover__06_deployable_shield_folded",
+      "before": 8000,
+      "after": 32000,
+      "curved_edge_vertices": 7342,
+      "max_vertex_offset_m": 0.0018000251574359666,
+      "preserved_crease_edges": 4638,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "03_cover__07_crate_stack",
+      "before": 15852,
+      "after": 63408,
+      "curved_edge_vertices": 15100,
+      "max_vertex_offset_m": 0.008400067212695629,
+      "preserved_crease_edges": 8616,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__01_hab_module",
+      "before": 29666,
+      "after": 118664,
+      "curved_edge_vertices": 25717,
+      "max_vertex_offset_m": 0.036000461090679066,
+      "preserved_crease_edges": 18692,
+      "textures": {
+        "normal": 4096,
+        "basecolor": 4096
+      }
+    },
+    {
+      "asset": "04_wreckage__02_truss_long_bent",
+      "before": 15924,
+      "after": 63696,
+      "curved_edge_vertices": 15743,
+      "max_vertex_offset_m": 0.024000150111650482,
+      "preserved_crease_edges": 8117,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__03_truss_short_box",
+      "before": 6886,
+      "after": 27544,
+      "curved_edge_vertices": 7165,
+      "max_vertex_offset_m": 0.012000067495695438,
+      "preserved_crease_edges": 3165,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__04_truss_triangle",
+      "before": 7548,
+      "after": 30192,
+      "curved_edge_vertices": 7705,
+      "max_vertex_offset_m": 0.009000092579775814,
+      "preserved_crease_edges": 3619,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__05_solar_panel_wing",
+      "before": 15318,
+      "after": 61272,
+      "curved_edge_vertices": 14761,
+      "max_vertex_offset_m": 0.05400054825750917,
+      "preserved_crease_edges": 8208,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__06_hull_large_ribbed",
+      "before": 15964,
+      "after": 63856,
+      "curved_edge_vertices": 13082,
+      "max_vertex_offset_m": 0.018000235623285864,
+      "preserved_crease_edges": 10803,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__07_hull_curved_rib",
+      "before": 9576,
+      "after": 38304,
+      "curved_edge_vertices": 9918,
+      "max_vertex_offset_m": 0.009000105454668537,
+      "preserved_crease_edges": 4425,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__08_hull_shallow_panel",
+      "before": 6938,
+      "after": 27752,
+      "curved_edge_vertices": 6943,
+      "max_vertex_offset_m": 0.012000108214233036,
+      "preserved_crease_edges": 3462,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__09_derelict_ship_bow",
+      "before": 39822,
+      "after": 159288,
+      "curved_edge_vertices": 32212,
+      "max_vertex_offset_m": 0.36000230806812433,
+      "preserved_crease_edges": 27066,
+      "textures": {
+        "normal": 4096,
+        "basecolor": 4096
+      }
+    },
+    {
+      "asset": "04_wreckage__10_debris_access_panel",
+      "before": 5194,
+      "after": 20776,
+      "curved_edge_vertices": 5109,
+      "max_vertex_offset_m": 0.002400026391259973,
+      "preserved_crease_edges": 2674,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__11_debris_grille",
+      "before": 4853,
+      "after": 19412,
+      "curved_edge_vertices": 4856,
+      "max_vertex_offset_m": 0.0024000269474755277,
+      "preserved_crease_edges": 2419,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__12_debris_cylinder",
+      "before": 5934,
+      "after": 23736,
+      "curved_edge_vertices": 6209,
+      "max_vertex_offset_m": 0.002400016465399644,
+      "preserved_crease_edges": 2650,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__13_debris_bracket",
+      "before": 5559,
+      "after": 22236,
+      "curved_edge_vertices": 6686,
+      "max_vertex_offset_m": 0.00240002683266125,
+      "preserved_crease_edges": 1650,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__14_debris_short_bolt",
+      "before": 1671,
+      "after": 6684,
+      "curved_edge_vertices": 2146,
+      "max_vertex_offset_m": 0.00030000356954439046,
+      "preserved_crease_edges": 362,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__15_debris_nut",
+      "before": 1806,
+      "after": 7224,
+      "curved_edge_vertices": 2117,
+      "max_vertex_offset_m": 0.0003000034333586223,
+      "preserved_crease_edges": 592,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__16_debris_washer",
+      "before": 1442,
+      "after": 5768,
+      "curved_edge_vertices": 1609,
+      "max_vertex_offset_m": 0.00030000185389525094,
+      "preserved_crease_edges": 559,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__17_debris_elbow_pipe",
+      "before": 6000,
+      "after": 24000,
+      "curved_edge_vertices": 7238,
+      "max_vertex_offset_m": 0.002400011679626321,
+      "preserved_crease_edges": 1764,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__18_debris_utility_box",
+      "before": 5942,
+      "after": 23768,
+      "curved_edge_vertices": 6897,
+      "max_vertex_offset_m": 0.002400012995603915,
+      "preserved_crease_edges": 2019,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__19_debris_cable_coil",
+      "before": 7999,
+      "after": 31996,
+      "curved_edge_vertices": 8414,
+      "max_vertex_offset_m": 0.0036000254303481323,
+      "preserved_crease_edges": 3557,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__20_debris_cargo_net",
+      "before": 11825,
+      "after": 47300,
+      "curved_edge_vertices": 12667,
+      "max_vertex_offset_m": 0.005400043341326751,
+      "preserved_crease_edges": 5071,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__21_debris_torn_plate",
+      "before": 5261,
+      "after": 21044,
+      "curved_edge_vertices": 6258,
+      "max_vertex_offset_m": 0.002400025495134642,
+      "preserved_crease_edges": 1639,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__22_debris_long_plate",
+      "before": 5906,
+      "after": 23624,
+      "curved_edge_vertices": 8026,
+      "max_vertex_offset_m": 0.0024000095584620993,
+      "preserved_crease_edges": 698,
+      "textures": {
+        "normal": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__23_debris_small_plate",
+      "before": 5732,
+      "after": 22928,
+      "curved_edge_vertices": 7267,
+      "max_vertex_offset_m": 0.0024000021924279196,
+      "preserved_crease_edges": 1124,
+      "textures": {
+        "normal": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__24_debris_beacon_caged",
+      "before": 7260,
+      "after": 29040,
+      "curved_edge_vertices": 7282,
+      "max_vertex_offset_m": 0.0024000276089758948,
+      "preserved_crease_edges": 3584,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "04_wreckage__25_debris_beacon_pole",
+      "before": 6897,
+      "after": 27588,
+      "curved_edge_vertices": 8789,
+      "max_vertex_offset_m": 0.002400027762925045,
+      "preserved_crease_edges": 1560,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__01_propellant_tank_cluster",
+      "before": 17688,
+      "after": 70752,
+      "curved_edge_vertices": 16369,
+      "max_vertex_offset_m": 0.006900113650582023,
+      "preserved_crease_edges": 10123,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__02_power_conduit_left",
+      "before": 13770,
+      "after": 55080,
+      "curved_edge_vertices": 15503,
+      "max_vertex_offset_m": 0.006600060184440401,
+      "preserved_crease_edges": 5149,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__03_power_conduit_right",
+      "before": 13492,
+      "after": 53968,
+      "curved_edge_vertices": 14353,
+      "max_vertex_offset_m": 0.006600092877639787,
+      "preserved_crease_edges": 5888,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__04_gas_vent_hardware",
+      "before": 13510,
+      "after": 54040,
+      "curved_edge_vertices": 14798,
+      "max_vertex_offset_m": 0.006600103393515916,
+      "preserved_crease_edges": 5473,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__05_proximity_mine",
+      "before": 11326,
+      "after": 45304,
+      "curved_edge_vertices": 12819,
+      "max_vertex_offset_m": 0.006598752806042876,
+      "preserved_crease_edges": 4169,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__06_husk_beacon_closed",
+      "before": 18000,
+      "after": 72000,
+      "curved_edge_vertices": 16229,
+      "max_vertex_offset_m": 0.009000102603056653,
+      "preserved_crease_edges": 10720,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__07_husk_beacon_deployed",
+      "before": 18000,
+      "after": 72000,
+      "curved_edge_vertices": 15314,
+      "max_vertex_offset_m": 0.009000123167484473,
+      "preserved_crease_edges": 11634,
+      "textures": {
+        "normal": 2048,
+        "basecolor": 2048
+      }
+    },
+    {
+      "asset": "05_hazards__08_husk_small_drone",
+      "before": 7944,
+      "after": 31776,
+      "curved_edge_vertices": 7765,
+      "max_vertex_offset_m": 0.001650026527690116,
+      "preserved_crease_edges": 3971,
+      "textures": {
+        "normal": 2048
+      }
+    }
+  ]
+}

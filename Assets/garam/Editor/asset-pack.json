@@ -7,7 +7,7 @@
       "name": "01_backdrop_giant",
       "model": "Assets/garam/Models/01_asteroids/01_backdrop_giant.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/01_backdrop_giant.prefab",
-      "triangles": 14915,
+      "triangles": 59660,
       "dimensions": [
         200.0,
         148.39605712890625,
@@ -15,13 +15,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "c68f07075b9cf1cfc0a0ec797d3713baff0b5102e4a6d5d10c0dc68aa54396c3",
+      "sourceFbxSha256": "f79284d2c6ba8b432f651fd373d548ffa2f5f6d6828cab5a162ee72027aa4660",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_dd498e48af51.mat"
         }
-      ]
+      ],
+      "previousTriangles": 14915,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 14915,
+        "after": 59660,
+        "curved_edge_vertices": 22188,
+        "max_vertex_offset_m": 0.6000060795052087,
+        "preserved_crease_edges": 187
+      }
     },
     {
       "id": "01_asteroids__02_mining_cover_asteroid",
@@ -29,7 +38,7 @@
       "name": "02_mining_cover_asteroid",
       "model": "Assets/garam/Models/01_asteroids/02_mining_cover_asteroid.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/02_mining_cover_asteroid.prefab",
-      "triangles": 17708,
+      "triangles": 70832,
       "dimensions": [
         10.0,
         7.424627780914307,
@@ -37,13 +46,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "32c04aef08918fba7e3d9b77aff72716e9406a0c9f9666f5ba0bc2aca1dfe985",
+      "sourceFbxSha256": "78ee15befcccc211c34a5cb177af9b1b315fce773045c9059ac9208d8722ecdc",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_22c88c41fd4d.mat"
         }
-      ]
+      ],
+      "previousTriangles": 17708,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 17708,
+        "after": 70832,
+        "curved_edge_vertices": 23263,
+        "max_vertex_offset_m": 0.030000282715120168,
+        "preserved_crease_edges": 3242
+      }
     },
     {
       "id": "01_asteroids__03_drift_rock_intact",
@@ -51,7 +69,7 @@
       "name": "03_drift_rock_intact",
       "model": "Assets/garam/Models/01_asteroids/03_drift_rock_intact.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/03_drift_rock_intact.prefab",
-      "triangles": 5432,
+      "triangles": 21728,
       "dimensions": [
         1.174227237701416,
         1.2000000476837158,
@@ -59,13 +77,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "d5970b3c184f5201556613de60eb24e05716255b50d99a6e48d47991d36a118e",
+      "sourceFbxSha256": "d2219777178150a6127fcac64f457cd427672a3d28f06e5bf25dd808e03d97d7",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_46c280093598.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5432,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5432,
+        "after": 21728,
+        "curved_edge_vertices": 7964,
+        "max_vertex_offset_m": 0.003600050660269808,
+        "preserved_crease_edges": 190
+      }
     },
     {
       "id": "01_asteroids__04_drift_rock_cracked",
@@ -73,7 +100,7 @@
       "name": "04_drift_rock_cracked",
       "model": "Assets/garam/Models/01_asteroids/04_drift_rock_cracked.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/04_drift_rock_cracked.prefab",
-      "triangles": 5595,
+      "triangles": 22380,
       "dimensions": [
         1.1302666664123535,
         1.1999999284744263,
@@ -81,13 +108,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "a2fd1d50230b3d81932857ec7273ebed0751fccfdbf43f9b5dbd619fd664f3ee",
+      "sourceFbxSha256": "5b0557415a191118586a4f5633aec5332951a2ef726fba358b5ddacb47ac42f5",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_197679c1885e.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5595,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5595,
+        "after": 22380,
+        "curved_edge_vertices": 6861,
+        "max_vertex_offset_m": 0.0036000551094636964,
+        "preserved_crease_edges": 1526
+      }
     },
     {
       "id": "01_asteroids__05_split_fragment_upper",
@@ -95,7 +131,7 @@
       "name": "05_split_fragment_upper",
       "model": "Assets/garam/Models/01_asteroids/05_split_fragment_upper.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/05_split_fragment_upper.prefab",
-      "triangles": 3367,
+      "triangles": 13468,
       "dimensions": [
         0.7000000476837158,
         0.6630927324295044,
@@ -103,13 +139,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "ac00606c75dc0b67bccbf51a49f05f62eb0a3628a34afced12a21be02f048e97",
+      "sourceFbxSha256": "8f0a9db38daaa5ee13a2592e980fabb5735044d5ea648f16f3701a06e83ec59a",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_e6a77ac60141.mat"
         }
-      ]
+      ],
+      "previousTriangles": 3367,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 3367,
+        "after": 13468,
+        "curved_edge_vertices": 4796,
+        "max_vertex_offset_m": 0.002100026791270977,
+        "preserved_crease_edges": 260
+      }
     },
     {
       "id": "01_asteroids__06_split_fragment_right",
@@ -117,7 +162,7 @@
       "name": "06_split_fragment_right",
       "model": "Assets/garam/Models/01_asteroids/06_split_fragment_right.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/06_split_fragment_right.prefab",
-      "triangles": 3420,
+      "triangles": 13680,
       "dimensions": [
         0.5838726758956909,
         0.699999988079071,
@@ -125,13 +170,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "ee2d73c43fda889aa17038cbc648da78dc315460f11db806a030ed62f4326ddd",
+      "sourceFbxSha256": "ecb69f2999fbda88e9c3be91a3af94229e0caa731aeb4901edeabb86ebe2730d",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_ecea025446a8.mat"
         }
-      ]
+      ],
+      "previousTriangles": 3420,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 3420,
+        "after": 13680,
+        "curved_edge_vertices": 4826,
+        "max_vertex_offset_m": 0.002100028185269907,
+        "preserved_crease_edges": 309
+      }
     },
     {
       "id": "01_asteroids__07_split_fragment_left",
@@ -139,7 +193,7 @@
       "name": "07_split_fragment_left",
       "model": "Assets/garam/Models/01_asteroids/07_split_fragment_left.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/07_split_fragment_left.prefab",
-      "triangles": 3467,
+      "triangles": 13868,
       "dimensions": [
         0.5608878135681152,
         0.7000000476837158,
@@ -147,13 +201,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "6fafca700d68cd93a536bf8bb8e25eb2e83f864db954dbb9838a187f3644c5a6",
+      "sourceFbxSha256": "8f57d23696f61b91cf94b802f2ca28cbdd9c48878d0729a09aadb12aca59bc5a",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_2df3ac0c0ac3.mat"
         }
-      ]
+      ],
+      "previousTriangles": 3467,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 3467,
+        "after": 13868,
+        "curved_edge_vertices": 5020,
+        "max_vertex_offset_m": 0.002100028120983569,
+        "preserved_crease_edges": 185
+      }
     },
     {
       "id": "01_asteroids__08_split_fragment_lower",
@@ -161,7 +224,7 @@
       "name": "08_split_fragment_lower",
       "model": "Assets/garam/Models/01_asteroids/08_split_fragment_lower.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/08_split_fragment_lower.prefab",
-      "triangles": 3779,
+      "triangles": 15116,
       "dimensions": [
         0.5932031869888306,
         0.699999988079071,
@@ -169,13 +232,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "d639929f2545d72fa8effa4040953f804b7ee583a02f17a12a70a89f30cf7ef8",
+      "sourceFbxSha256": "85eab8dcafae4ec217b0a8bae2907b6fed21fca079adb849dc1c8ff626eb0579",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_16cc2c5622d2.mat"
         }
-      ]
+      ],
+      "previousTriangles": 3779,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 3779,
+        "after": 15116,
+        "curved_edge_vertices": 5598,
+        "max_vertex_offset_m": 0.0021000244498920514,
+        "preserved_crease_edges": 71
+      }
     },
     {
       "id": "01_asteroids__09_ice_asteroid",
@@ -183,7 +255,7 @@
       "name": "09_ice_asteroid",
       "model": "Assets/garam/Models/01_asteroids/09_ice_asteroid.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/09_ice_asteroid.prefab",
-      "triangles": 12000,
+      "triangles": 48000,
       "dimensions": [
         18.179855346679688,
         13.732401847839355,
@@ -191,13 +263,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "2a95081fb50ce8063ecf800a553804a3053d869e1f243cfaf17dfc492ed1e356",
+      "sourceFbxSha256": "34234f95b0354307d4069936cbbc4efe232269594fa6826fb631c6003be1a632",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_439f0bdf29d6.mat"
         }
-      ]
+      ],
+      "previousTriangles": 12000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 12000,
+        "after": 48000,
+        "curved_edge_vertices": 17007,
+        "max_vertex_offset_m": 0.06000047763444827,
+        "preserved_crease_edges": 985
+      }
     },
     {
       "id": "01_asteroids__10_metal_rich_asteroid",
@@ -205,7 +286,7 @@
       "name": "10_metal_rich_asteroid",
       "model": "Assets/garam/Models/01_asteroids/10_metal_rich_asteroid.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/10_metal_rich_asteroid.prefab",
-      "triangles": 10000,
+      "triangles": 40000,
       "dimensions": [
         19.81656265258789,
         14.507914543151855,
@@ -213,13 +294,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "79444194007a9db25b57a082e1fe679506c4fe606b528318e97890d0d5a1b869",
+      "sourceFbxSha256": "803dced0d3bc9babe74fa50e66d4eac3a244c4cfa6af7bf0f72f94961ab2b9ee",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_9d5ae7953bfc.mat"
         }
-      ]
+      ],
+      "previousTriangles": 10000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 10000,
+        "after": 40000,
+        "curved_edge_vertices": 14717,
+        "max_vertex_offset_m": 0.06000049473281011,
+        "preserved_crease_edges": 284
+      }
     },
     {
       "id": "01_asteroids__11_husk_claimed_asteroid",
@@ -227,7 +317,7 @@
       "name": "11_husk_claimed_asteroid",
       "model": "Assets/garam/Models/01_asteroids/11_husk_claimed_asteroid.fbx",
       "prefab": "Assets/garam/Prefabs/01_asteroids/11_husk_claimed_asteroid.prefab",
-      "triangles": 17999,
+      "triangles": 71996,
       "dimensions": [
         20.0,
         14.879441261291504,
@@ -235,13 +325,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "9499cef181803a0c1ed4f946d3b667f7aa74525d9971abcf055e5f9e92690680",
+      "sourceFbxSha256": "119424acb531373e5fa17a59a18619e96cc99cd141c69407feeb66c9c4d867ec",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_1a2ac2508aaa.mat"
         }
-      ]
+      ],
+      "previousTriangles": 17999,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 17999,
+        "after": 71996,
+        "curved_edge_vertices": 23695,
+        "max_vertex_offset_m": 0.06000051934959201,
+        "preserved_crease_edges": 3255
+      }
     },
     {
       "id": "02_pickups__01_medkit_closed",
@@ -249,7 +348,7 @@
       "name": "01_medkit_closed",
       "model": "Assets/garam/Models/02_pickups/01_medkit_closed.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/01_medkit_closed.prefab",
-      "triangles": 4606,
+      "triangles": 18424,
       "dimensions": [
         0.2317173182964325,
         0.24000000953674316,
@@ -257,7 +356,7 @@
       ],
       "greenGlow": true,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "9aaf8f5a8f56ac0b870199548c7982b1051787c4861f5f51987578ea611e2728",
+      "sourceFbxSha256": "403d3abd945f4a8333bbed48475ff4a0ea63f9c858c95c6e09fccb873d0a0d7f",
       "materials": [
         {
           "sourceName": "OYM_V1_off_white",
@@ -291,7 +390,16 @@
           "sourceName": "OYM_V1_health_green",
           "path": "Assets/garam/Materials/OYM_V1_health_green_ff618e70a959.mat"
         }
-      ]
+      ],
+      "previousTriangles": 4606,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 4606,
+        "after": 18424,
+        "curved_edge_vertices": 5,
+        "max_vertex_offset_m": 2.9095447346220367e-08,
+        "preserved_crease_edges": 832
+      }
     },
     {
       "id": "02_pickups__02_medkit_open",
@@ -299,7 +407,7 @@
       "name": "02_medkit_open",
       "model": "Assets/garam/Models/02_pickups/02_medkit_open.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/02_medkit_open.prefab",
-      "triangles": 4606,
+      "triangles": 18424,
       "dimensions": [
         0.2317173182964325,
         0.23200859129428864,
@@ -307,7 +415,7 @@
       ],
       "greenGlow": true,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "0dd0f10a2cac752c25cb807c6914183aa052986043222a6f9b3c4ac918d05992",
+      "sourceFbxSha256": "8cbc23bf035e4a86a82fc50da9ace1b27b29a14975a0663d8f6dc6c11d1ce656",
       "materials": [
         {
           "sourceName": "OYM_V1_off_white",
@@ -341,7 +449,16 @@
           "sourceName": "OYM_V1_health_green",
           "path": "Assets/garam/Materials/OYM_V1_health_green_ff618e70a959.mat"
         }
-      ]
+      ],
+      "previousTriangles": 4606,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 4606,
+        "after": 18424,
+        "curved_edge_vertices": 41,
+        "max_vertex_offset_m": 9.094592642585711e-08,
+        "preserved_crease_edges": 832
+      }
     },
     {
       "id": "02_pickups__03_stim_injector",
@@ -349,7 +466,7 @@
       "name": "03_stim_injector",
       "model": "Assets/garam/Models/02_pickups/03_stim_injector.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/03_stim_injector.prefab",
-      "triangles": 1016,
+      "triangles": 4064,
       "dimensions": [
         0.03321993350982666,
         0.1379999965429306,
@@ -357,7 +474,7 @@
       ],
       "greenGlow": true,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "7bc99f0e27123315de09cf9af265a26bca9a9c5c6e58da4030916f64fa139ac5",
+      "sourceFbxSha256": "6fdcda5de44ca8e04df052d008f67b684aada04bb81dfd89ace518962035f543",
       "materials": [
         {
           "sourceName": "OYM_V1_bare_metal",
@@ -375,7 +492,16 @@
           "sourceName": "OYM_HealthGreen_Emissive",
           "path": "Assets/garam/Materials/OYM_HealthGreen_Emissive_42887820e503.mat"
         }
-      ]
+      ],
+      "previousTriangles": 1016,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 1016,
+        "after": 4064,
+        "curved_edge_vertices": 65,
+        "max_vertex_offset_m": 3.9775216028210935e-08,
+        "preserved_crease_edges": 72
+      }
     },
     {
       "id": "02_pickups__04_booster_fuel_cell",
@@ -383,7 +509,7 @@
       "name": "04_booster_fuel_cell",
       "model": "Assets/garam/Models/02_pickups/04_booster_fuel_cell.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/04_booster_fuel_cell.prefab",
-      "triangles": 1832,
+      "triangles": 7328,
       "dimensions": [
         0.08065080642700195,
         0.1860000044107437,
@@ -391,7 +517,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "90157a67a286b3d0f70d9b095f577cb331cc44a8c42fa098d0201bfccd07559e",
+      "sourceFbxSha256": "934c4b3f479f5cb4b376549e837ce222101e3057240028c95fe3e74d4f2ad384",
       "materials": [
         {
           "sourceName": "OYM_V1_bare_metal",
@@ -413,7 +539,16 @@
           "sourceName": "OYM_V1_padding",
           "path": "Assets/garam/Materials/OYM_V1_padding_e29a68ab502d.mat"
         }
-      ]
+      ],
+      "previousTriangles": 1832,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 1832,
+        "after": 7328,
+        "curved_edge_vertices": 84,
+        "max_vertex_offset_m": 6.143906154658885e-08,
+        "preserved_crease_edges": 36
+      }
     },
     {
       "id": "02_pickups__05_ammo_box_closed",
@@ -421,7 +556,7 @@
       "name": "05_ammo_box_closed",
       "model": "Assets/garam/Models/02_pickups/05_ammo_box_closed.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/05_ammo_box_closed.prefab",
-      "triangles": 4412,
+      "triangles": 17648,
       "dimensions": [
         0.21701042354106903,
         0.17000000178813934,
@@ -429,7 +564,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "ee2a00172b6458a4ca964c0a656098a1da321effcd691e4e601eee60186900a7",
+      "sourceFbxSha256": "bfac070eb9e8395f6eb95ecdac1f6170ded08a63f167ebb4805e39309766c877",
       "materials": [
         {
           "sourceName": "OYM_V1_off_white",
@@ -459,7 +594,16 @@
           "sourceName": "OYM_V1_hazard_yellow",
           "path": "Assets/garam/Materials/OYM_V1_hazard_yellow_56588df1e4e3.mat"
         }
-      ]
+      ],
+      "previousTriangles": 4412,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 4412,
+        "after": 17648,
+        "curved_edge_vertices": 1,
+        "max_vertex_offset_m": 2.2351741790771484e-08,
+        "preserved_crease_edges": 576
+      }
     },
     {
       "id": "02_pickups__06_ammo_box_open",
@@ -467,7 +611,7 @@
       "name": "06_ammo_box_open",
       "model": "Assets/garam/Models/02_pickups/06_ammo_box_open.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/06_ammo_box_open.prefab",
-      "triangles": 4412,
+      "triangles": 17648,
       "dimensions": [
         0.21701040863990784,
         0.17833015322685242,
@@ -475,7 +619,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "c1faae35c9df32ce21db0613f6b27dcb7b1fe7153916f97935d1be8ea8892c79",
+      "sourceFbxSha256": "fe91d0ea433ca1ebafccb0d551a496ff3248630f0269a7be4c85bc7471338785",
       "materials": [
         {
           "sourceName": "OYM_V1_off_white",
@@ -505,7 +649,16 @@
           "sourceName": "OYM_V1_hazard_yellow",
           "path": "Assets/garam/Materials/OYM_V1_hazard_yellow_56588df1e4e3.mat"
         }
-      ]
+      ],
+      "previousTriangles": 4412,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 4412,
+        "after": 17648,
+        "curved_edge_vertices": 38,
+        "max_vertex_offset_m": 7.41323409308955e-08,
+        "preserved_crease_edges": 576
+      }
     },
     {
       "id": "02_pickups__07_armor_patch_folded",
@@ -513,7 +666,7 @@
       "name": "07_armor_patch_folded",
       "model": "Assets/garam/Models/02_pickups/07_armor_patch_folded.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/07_armor_patch_folded.prefab",
-      "triangles": 2480,
+      "triangles": 9920,
       "dimensions": [
         0.14181745052337646,
         0.15199999511241913,
@@ -521,7 +674,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "12187ff27bca0d162da8ea4234b506b371600f76ca33661d86951f7a3e4fa721",
+      "sourceFbxSha256": "a874aa9ade4912b45c50a0561bea076bdbee8d608f29dd867e57bc240dd9d0ba",
       "materials": [
         {
           "sourceName": "OYM_V1_dark_frame",
@@ -539,7 +692,16 @@
           "sourceName": "OYM_V1_hazard_yellow",
           "path": "Assets/garam/Materials/OYM_V1_hazard_yellow_56588df1e4e3.mat"
         }
-      ]
+      ],
+      "previousTriangles": 2480,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 2480,
+        "after": 9920,
+        "curved_edge_vertices": 9,
+        "max_vertex_offset_m": 2.3039648079970816e-08,
+        "preserved_crease_edges": 108
+      }
     },
     {
       "id": "02_pickups__08_armor_patch_unfolded",
@@ -547,7 +709,7 @@
       "name": "08_armor_patch_unfolded",
       "model": "Assets/garam/Models/02_pickups/08_armor_patch_unfolded.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/08_armor_patch_unfolded.prefab",
-      "triangles": 800,
+      "triangles": 3200,
       "dimensions": [
         0.21000003814697266,
         0.12631577253341675,
@@ -555,7 +717,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "386d88d71875cff38345338b2af0f0aa25fe5bca983d627c370f2d83bcc9e695",
+      "sourceFbxSha256": "2c010f97264bc15492ed14c9634754535a47c7b32e2403026395004bf4112cfc",
       "materials": [
         {
           "sourceName": "OYM_V1_dark_frame",
@@ -569,7 +731,16 @@
           "sourceName": "OYM_V1_off_white",
           "path": "Assets/garam/Materials/OYM_V1_off_white_12ac7fc5af8e.mat"
         }
-      ]
+      ],
+      "previousTriangles": 800,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 800,
+        "after": 3200,
+        "curved_edge_vertices": 0,
+        "max_vertex_offset_m": 9.900094766853983e-09,
+        "preserved_crease_edges": 168
+      }
     },
     {
       "id": "02_pickups__09_shield_cell",
@@ -577,7 +748,7 @@
       "name": "09_shield_cell",
       "model": "Assets/garam/Models/02_pickups/09_shield_cell.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/09_shield_cell.prefab",
-      "triangles": 1192,
+      "triangles": 4768,
       "dimensions": [
         0.08799998462200165,
         0.1759999841451645,
@@ -585,7 +756,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "998c9d61cb970be948f908e8ecd7b923df1dbfd48a820f04b14bee6b01f70210",
+      "sourceFbxSha256": "a12a3510aec76108a08a511e594c1cb7b6522853fd097f7763cb64ee206ea9d4",
       "materials": [
         {
           "sourceName": "OYM_V1_shield_blue",
@@ -607,7 +778,16 @@
           "sourceName": "OYM_V1_padding",
           "path": "Assets/garam/Materials/OYM_V1_padding_e29a68ab502d.mat"
         }
-      ]
+      ],
+      "previousTriangles": 1192,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 1192,
+        "after": 4768,
+        "curved_edge_vertices": 0,
+        "max_vertex_offset_m": 5.587935447692871e-09,
+        "preserved_crease_edges": 36
+      }
     },
     {
       "id": "02_pickups__10_medkit_auto_injector",
@@ -615,7 +795,7 @@
       "name": "10_medkit_auto_injector",
       "model": "Assets/garam/Models/02_pickups/10_medkit_auto_injector.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/10_medkit_auto_injector.prefab",
-      "triangles": 736,
+      "triangles": 2944,
       "dimensions": [
         0.125,
         0.02766285091638565,
@@ -623,7 +803,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "3cb9010f6f1a8a092e6f2f7ae3cb949726232c1498485affdb8cc499cb2172b6",
+      "sourceFbxSha256": "c0221fd33f4f95374376955db9b3064123fa91e4c21572908367eac91ca25bd2",
       "materials": [
         {
           "sourceName": "OYM_V1_bare_metal",
@@ -641,7 +821,16 @@
           "sourceName": "OYM_V1_fuel_amber",
           "path": "Assets/garam/Materials/OYM_V1_fuel_amber_1a153e2736cd.mat"
         }
-      ]
+      ],
+      "previousTriangles": 736,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 736,
+        "after": 2944,
+        "curved_edge_vertices": 0,
+        "max_vertex_offset_m": 9.520467510568384e-09,
+        "preserved_crease_edges": 0
+      }
     },
     {
       "id": "02_pickups__11_sealant_patch_packet",
@@ -649,7 +838,7 @@
       "name": "11_sealant_patch_packet",
       "model": "Assets/garam/Models/02_pickups/11_sealant_patch_packet.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/11_sealant_patch_packet.prefab",
-      "triangles": 466,
+      "triangles": 1864,
       "dimensions": [
         0.09000003337860107,
         0.04859999939799309,
@@ -657,7 +846,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "94be3ce883e168e13417147f613a91aec6ef6a659b39e1b1cb07cafb019ac0ac",
+      "sourceFbxSha256": "92e79c2eb15cd9bce9107a1607fd68d1352c960c4b854758194aa535869f4283",
       "materials": [
         {
           "sourceName": "OYM_V1_hazard_yellow",
@@ -667,7 +856,16 @@
           "sourceName": "OYM_V1_off_white",
           "path": "Assets/garam/Materials/OYM_V1_off_white_12ac7fc5af8e.mat"
         }
-      ]
+      ],
+      "previousTriangles": 466,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 466,
+        "after": 1864,
+        "curved_edge_vertices": 0,
+        "max_vertex_offset_m": 1.6880221664905548e-09,
+        "preserved_crease_edges": 76
+      }
     },
     {
       "id": "02_pickups__12_ammo_magazine",
@@ -675,7 +873,7 @@
       "name": "12_ammo_magazine",
       "model": "Assets/garam/Models/02_pickups/12_ammo_magazine.fbx",
       "prefab": "Assets/garam/Prefabs/02_pickups/12_ammo_magazine.prefab",
-      "triangles": 352,
+      "triangles": 1408,
       "dimensions": [
         0.03475236892700195,
         0.07799999415874481,
@@ -683,7 +881,7 @@
       ],
       "greenGlow": false,
       "method": "Blender construction; existing approved geometry",
-      "sourceFbxSha256": "e7c6f9aa4f625e3029891d05db3da2cfadefaf007d7437381c0b867301c218a1",
+      "sourceFbxSha256": "fdf1134d480ac7e0feb76b6ceeb9e435fddf549cc8cc713997cbb43f425ed95a",
       "materials": [
         {
           "sourceName": "OYM_V1_dark_frame",
@@ -693,7 +891,16 @@
           "sourceName": "OYM_V1_hazard_yellow",
           "path": "Assets/garam/Materials/OYM_V1_hazard_yellow_56588df1e4e3.mat"
         }
-      ]
+      ],
+      "previousTriangles": 352,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 352,
+        "after": 1408,
+        "curved_edge_vertices": 0,
+        "max_vertex_offset_m": 3.725290298461914e-09,
+        "preserved_crease_edges": 40
+      }
     },
     {
       "id": "03_cover__01_mag_barricade_low",
@@ -701,7 +908,7 @@
       "name": "01_mag_barricade_low",
       "model": "Assets/garam/Models/03_cover/01_mag_barricade_low.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/01_mag_barricade_low.prefab",
-      "triangles": 16000,
+      "triangles": 187796,
       "dimensions": [
         2.399754524230957,
         0.9390900135040283,
@@ -709,13 +916,20 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "76ec1df42deede724add5b1934171587add83ccac47460dc1cee666ed8c08c49",
+      "sourceFbxSha256": "9be2d00b2c2a9b67bbfddec48913c92b3ce97ee47bbdc541204566ce55629290",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_0b5a3bd24507.mat"
         }
-      ]
+      ],
+      "previousTriangles": 16000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 16000,
+        "after": 187796,
+        "restored_original_mesh": true
+      }
     },
     {
       "id": "03_cover__02_mag_barricade_high",
@@ -723,7 +937,7 @@
       "name": "02_mag_barricade_high",
       "model": "Assets/garam/Models/03_cover/02_mag_barricade_high.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/02_mag_barricade_high.prefab",
-      "triangles": 10412,
+      "triangles": 41648,
       "dimensions": [
         2.4000000953674316,
         1.6293388605117798,
@@ -731,7 +945,7 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "21e9bc9d79568e90517c223b77ab0344dd30368126bf9200c37fd2a4a5429f91",
+      "sourceFbxSha256": "57cf34c7984fcd40b9f9be8d0cf97003f876f6a7ad2dd03cc730a3f099534409",
       "materials": [
         {
           "sourceName": "OYM_Broad",
@@ -741,7 +955,16 @@
           "sourceName": "OYM_Slit_Inner_Dark",
           "path": "Assets/garam/Materials/OYM_Slit_Inner_Dark_b7cf88b9b38c.mat"
         }
-      ]
+      ],
+      "previousTriangles": 10412,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 10412,
+        "after": 41648,
+        "curved_edge_vertices": 9176,
+        "max_vertex_offset_m": 0.007200058894085483,
+        "preserved_crease_edges": 6323
+      }
     },
     {
       "id": "03_cover__03_cargo_container",
@@ -749,7 +972,7 @@
       "name": "03_cargo_container",
       "model": "Assets/garam/Models/03_cover/03_cargo_container.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/03_cargo_container.prefab",
-      "triangles": 13194,
+      "triangles": 52776,
       "dimensions": [
         4.0,
         2.126199722290039,
@@ -757,13 +980,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "ab32cd9aec682df989aca6714377332ee5b79a19cefec92f9909be38feb1e6a0",
+      "sourceFbxSha256": "e7210c3d2ca911460c83d022a63627b4fe3ea95a33b82e2e4915adf461a0df96",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_f08b10481ee3.mat"
         }
-      ]
+      ],
+      "previousTriangles": 13194,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 13194,
+        "after": 52776,
+        "curved_edge_vertices": 12101,
+        "max_vertex_offset_m": 0.012000118270686323,
+        "preserved_crease_edges": 7652
+      }
     },
     {
       "id": "03_cover__04_hull_plate_slab",
@@ -771,7 +1003,7 @@
       "name": "04_hull_plate_slab",
       "model": "Assets/garam/Models/03_cover/04_hull_plate_slab.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/04_hull_plate_slab.prefab",
-      "triangles": 9703,
+      "triangles": 38812,
       "dimensions": [
         2.8000001907348633,
         2.393033266067505,
@@ -779,13 +1011,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "8cdebf4a4b5d2bf8effaf121775096d4b00cde5e00cdab58ad75386f9a7348c8",
+      "sourceFbxSha256": "8ecb9b60c38b38e41e1af76c220a7b093d59d24ca784c2786b64a7b14a7c6747",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_9027c50e3b50.mat"
         }
-      ]
+      ],
+      "previousTriangles": 9703,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 9703,
+        "after": 38812,
+        "curved_edge_vertices": 10325,
+        "max_vertex_offset_m": 0.008400084373839621,
+        "preserved_crease_edges": 4229
+      }
     },
     {
       "id": "03_cover__05_station_bulkhead_fragment",
@@ -793,7 +1034,7 @@
       "name": "05_station_bulkhead_fragment",
       "model": "Assets/garam/Models/03_cover/05_station_bulkhead_fragment.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/05_station_bulkhead_fragment.prefab",
-      "triangles": 16152,
+      "triangles": 64608,
       "dimensions": [
         3.200000047683716,
         2.096096992492676,
@@ -801,13 +1042,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "359edd9ce9cd8e0afe731eea8931eea66f3ed32376683132156414be4f5da494",
+      "sourceFbxSha256": "4b243b736da7352c350f247fdf3a93e6849919af9597db182823044ca64d91f8",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_351f194b29c9.mat"
         }
-      ]
+      ],
+      "previousTriangles": 16152,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 16152,
+        "after": 64608,
+        "curved_edge_vertices": 17967,
+        "max_vertex_offset_m": 0.00960010982010694,
+        "preserved_crease_edges": 6267
+      }
     },
     {
       "id": "03_cover__06_deployable_shield_deployed",
@@ -815,7 +1065,7 @@
       "name": "06_deployable_shield_deployed",
       "model": "Assets/garam/Models/03_cover/06_deployable_shield_deployed.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/06_deployable_shield_deployed.prefab",
-      "triangles": 15545,
+      "triangles": 62180,
       "dimensions": [
         2.4000000953674316,
         1.1126881837844849,
@@ -823,13 +1073,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "ad625088f0c7f1256b741bec6b0a9226c01d3ce809e6cae7a060b5aac43d6513",
+      "sourceFbxSha256": "07abb5862fbc6cf04875ae78f8053a76381c7e16280cefd54b79af2756ddddc5",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_d9711ce89a9e.mat"
         }
-      ]
+      ],
+      "previousTriangles": 15545,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 15545,
+        "after": 62180,
+        "curved_edge_vertices": 15928,
+        "max_vertex_offset_m": 0.007200058727923462,
+        "preserved_crease_edges": 7381
+      }
     },
     {
       "id": "03_cover__06_deployable_shield_folded",
@@ -837,7 +1096,7 @@
       "name": "06_deployable_shield_folded",
       "model": "Assets/garam/Models/03_cover/06_deployable_shield_folded.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/06_deployable_shield_folded.prefab",
-      "triangles": 8000,
+      "triangles": 32000,
       "dimensions": [
         0.5745145678520203,
         0.6000000238418579,
@@ -845,13 +1104,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "14fb9c50bd440d863933a50801b33f9ad7275fc71762d6964124533d3e2cebe5",
+      "sourceFbxSha256": "4a27717d12ecec630cd037a059bb0dd8fc4bdef55cb99204c81c0d457373984e",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_0657c60e3927.mat"
         }
-      ]
+      ],
+      "previousTriangles": 8000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 8000,
+        "after": 32000,
+        "curved_edge_vertices": 7342,
+        "max_vertex_offset_m": 0.0018000251574359666,
+        "preserved_crease_edges": 4638
+      }
     },
     {
       "id": "03_cover__07_crate_stack",
@@ -859,7 +1127,7 @@
       "name": "07_crate_stack",
       "model": "Assets/garam/Models/03_cover/07_crate_stack.fbx",
       "prefab": "Assets/garam/Prefabs/03_cover/07_crate_stack.prefab",
-      "triangles": 15852,
+      "triangles": 63408,
       "dimensions": [
         2.8000001907348633,
         1.8875211477279663,
@@ -867,13 +1135,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "d975bd584143a8e193f3fbf069b2485adcf5b9d3e53d4406f17092ae3910d595",
+      "sourceFbxSha256": "dd97327af9495e255b80301310e8eed3dc7f07714981ae39ca4b10041929f5c9",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_b3c0fea2b00a.mat"
         }
-      ]
+      ],
+      "previousTriangles": 15852,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 15852,
+        "after": 63408,
+        "curved_edge_vertices": 15100,
+        "max_vertex_offset_m": 0.008400067212695629,
+        "preserved_crease_edges": 8616
+      }
     },
     {
       "id": "04_wreckage__01_hab_module",
@@ -881,7 +1158,7 @@
       "name": "01_hab_module",
       "model": "Assets/garam/Models/04_wreckage/01_hab_module.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/01_hab_module.prefab",
-      "triangles": 29666,
+      "triangles": 118664,
       "dimensions": [
         9.336865425109863,
         8.49654483795166,
@@ -889,13 +1166,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "9cb11acc605ed5397d07f39284e0e673da0063a9cd86ea77ac5600a4b5a4f2fd",
+      "sourceFbxSha256": "0e8f8340fbca68db453fcebfdfe3b2e03306ea47384dd0a43d98594bb8b51de7",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_b38607ee45c0.mat"
         }
-      ]
+      ],
+      "previousTriangles": 29666,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 29666,
+        "after": 118664,
+        "curved_edge_vertices": 25717,
+        "max_vertex_offset_m": 0.036000461090679066,
+        "preserved_crease_edges": 18692
+      }
     },
     {
       "id": "04_wreckage__02_truss_long_bent",
@@ -903,7 +1189,7 @@
       "name": "02_truss_long_bent",
       "model": "Assets/garam/Models/04_wreckage/02_truss_long_bent.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/02_truss_long_bent.prefab",
-      "triangles": 15924,
+      "triangles": 63696,
       "dimensions": [
         8.0,
         3.7221295833587646,
@@ -911,13 +1197,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "13fc1dd44f86e4bad3c50e361b369af3c72e4c47668012597141939f6be4d1e2",
+      "sourceFbxSha256": "1723806939f2c3aeb0e614fa141a0a0ba855f22a2be7bfeecc3951bd3ae705fb",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_8fea74e5a345.mat"
         }
-      ]
+      ],
+      "previousTriangles": 15924,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 15924,
+        "after": 63696,
+        "curved_edge_vertices": 15743,
+        "max_vertex_offset_m": 0.024000150111650482,
+        "preserved_crease_edges": 8117
+      }
     },
     {
       "id": "04_wreckage__03_truss_short_box",
@@ -925,7 +1220,7 @@
       "name": "03_truss_short_box",
       "model": "Assets/garam/Models/04_wreckage/03_truss_short_box.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/03_truss_short_box.prefab",
-      "triangles": 6886,
+      "triangles": 27544,
       "dimensions": [
         4.0,
         1.7616322040557861,
@@ -933,13 +1228,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "9f4d22e66701daefbc4198842974d61757d1263657ae5246e76098cf2d0a9417",
+      "sourceFbxSha256": "541aad66a33f2b722ec8887444d4c00796ca3ab655aa24125722d6d3664e9983",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_04de445281e5.mat"
         }
-      ]
+      ],
+      "previousTriangles": 6886,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 6886,
+        "after": 27544,
+        "curved_edge_vertices": 7165,
+        "max_vertex_offset_m": 0.012000067495695438,
+        "preserved_crease_edges": 3165
+      }
     },
     {
       "id": "04_wreckage__04_truss_triangle",
@@ -947,7 +1251,7 @@
       "name": "04_truss_triangle",
       "model": "Assets/garam/Models/04_wreckage/04_truss_triangle.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/04_truss_triangle.prefab",
-      "triangles": 7548,
+      "triangles": 30192,
       "dimensions": [
         3.000000238418579,
         2.550657272338867,
@@ -955,13 +1259,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "d92786c390342ad05ea83fa153337d8d433fb53158315739f37895ba29b201ba",
+      "sourceFbxSha256": "e68c3434e3e017f6f0b85e963cb579e55ff8df611e1ac31d03f5f5ef62b5410c",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_9a7b2d4150fe.mat"
         }
-      ]
+      ],
+      "previousTriangles": 7548,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 7548,
+        "after": 30192,
+        "curved_edge_vertices": 7705,
+        "max_vertex_offset_m": 0.009000092579775814,
+        "preserved_crease_edges": 3619
+      }
     },
     {
       "id": "04_wreckage__05_solar_panel_wing",
@@ -969,7 +1282,7 @@
       "name": "05_solar_panel_wing",
       "model": "Assets/garam/Models/04_wreckage/05_solar_panel_wing.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/05_solar_panel_wing.prefab",
-      "triangles": 15318,
+      "triangles": 61272,
       "dimensions": [
         18.0,
         14.557109832763672,
@@ -977,13 +1290,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "14bf6f34879f5fcfc7fe50f786b91fb8263cc85951da1cdaf70860445de3de11",
+      "sourceFbxSha256": "9063e53ed645fa31172ebc85499ccf03c95f8439233e721bc21cfc85836a7c29",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_a7da41314f9d.mat"
         }
-      ]
+      ],
+      "previousTriangles": 15318,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 15318,
+        "after": 61272,
+        "curved_edge_vertices": 14761,
+        "max_vertex_offset_m": 0.05400054825750917,
+        "preserved_crease_edges": 8208
+      }
     },
     {
       "id": "04_wreckage__06_hull_large_ribbed",
@@ -991,7 +1313,7 @@
       "name": "06_hull_large_ribbed",
       "model": "Assets/garam/Models/04_wreckage/06_hull_large_ribbed.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/06_hull_large_ribbed.prefab",
-      "triangles": 15964,
+      "triangles": 63856,
       "dimensions": [
         5.655527114868164,
         5.999999523162842,
@@ -999,13 +1321,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "d7d7ef21a07f47239c75ed78dd03413b4b9ca33e34405d81da8d6de42d7bc2a0",
+      "sourceFbxSha256": "c128d90f0eb34af7f7aea37b5a84d7b9641f3c249274fde0741d932d67dc63a1",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_0c62fc6a2df6.mat"
         }
-      ]
+      ],
+      "previousTriangles": 15964,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 15964,
+        "after": 63856,
+        "curved_edge_vertices": 13082,
+        "max_vertex_offset_m": 0.018000235623285864,
+        "preserved_crease_edges": 10803
+      }
     },
     {
       "id": "04_wreckage__07_hull_curved_rib",
@@ -1013,7 +1344,7 @@
       "name": "07_hull_curved_rib",
       "model": "Assets/garam/Models/04_wreckage/07_hull_curved_rib.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/07_hull_curved_rib.prefab",
-      "triangles": 9576,
+      "triangles": 38304,
       "dimensions": [
         3.0,
         2.647459030151367,
@@ -1021,13 +1352,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "4fa32694a052c0379d87bc1c607b41b9bfe0de1b0ef2c08ae604698fac555e89",
+      "sourceFbxSha256": "065be78ffd0f9084ad825734e053a228d0fda7b5acdd5e2ab5e3ea539b30a33f",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_5bb65ad0f221.mat"
         }
-      ]
+      ],
+      "previousTriangles": 9576,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 9576,
+        "after": 38304,
+        "curved_edge_vertices": 9918,
+        "max_vertex_offset_m": 0.009000105454668537,
+        "preserved_crease_edges": 4425
+      }
     },
     {
       "id": "04_wreckage__08_hull_shallow_panel",
@@ -1035,7 +1375,7 @@
       "name": "08_hull_shallow_panel",
       "model": "Assets/garam/Models/04_wreckage/08_hull_shallow_panel.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/08_hull_shallow_panel.prefab",
-      "triangles": 6938,
+      "triangles": 27752,
       "dimensions": [
         4.0,
         2.320394277572632,
@@ -1043,13 +1383,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "657f52b20d67e9a6019ddc11f12da3f5212ca30b4390402f23de3e84c378b775",
+      "sourceFbxSha256": "4a54d68e601c681db0e899e38fb2a742b0f61f623586a5a4ac5e3ed618e86077",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_70f2782be3c0.mat"
         }
-      ]
+      ],
+      "previousTriangles": 6938,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 6938,
+        "after": 27752,
+        "curved_edge_vertices": 6943,
+        "max_vertex_offset_m": 0.012000108214233036,
+        "preserved_crease_edges": 3462
+      }
     },
     {
       "id": "04_wreckage__09_derelict_ship_bow",
@@ -1057,7 +1406,7 @@
       "name": "09_derelict_ship_bow",
       "model": "Assets/garam/Models/04_wreckage/09_derelict_ship_bow.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/09_derelict_ship_bow.prefab",
-      "triangles": 39822,
+      "triangles": 159288,
       "dimensions": [
         120.0,
         72.60286712646484,
@@ -1065,13 +1414,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "079ded4cb0d6a410d56118a9939896efa4408c78860aa22f3c3250a8c055c8ca",
+      "sourceFbxSha256": "942db286b789b04bc0496e1da7a22c6183fe3f7e1d55ca2c571c30cc0d016824",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_eb75542be878.mat"
         }
-      ]
+      ],
+      "previousTriangles": 39822,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 39822,
+        "after": 159288,
+        "curved_edge_vertices": 32212,
+        "max_vertex_offset_m": 0.36000230806812433,
+        "preserved_crease_edges": 27066
+      }
     },
     {
       "id": "04_wreckage__10_debris_access_panel",
@@ -1079,7 +1437,7 @@
       "name": "10_debris_access_panel",
       "model": "Assets/garam/Models/04_wreckage/10_debris_access_panel.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/10_debris_access_panel.prefab",
-      "triangles": 5194,
+      "triangles": 20776,
       "dimensions": [
         0.800000011920929,
         0.6615633964538574,
@@ -1087,13 +1445,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "18d582457bd1e159a2082ff184953989b245d191644b816eceead1387481c3fb",
+      "sourceFbxSha256": "0ff0894da74946ca3f057805c42ed6c582c56160731332d72de3367409d9c4cf",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_8c924780afbd.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5194,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5194,
+        "after": 20776,
+        "curved_edge_vertices": 5109,
+        "max_vertex_offset_m": 0.002400026391259973,
+        "preserved_crease_edges": 2674
+      }
     },
     {
       "id": "04_wreckage__11_debris_grille",
@@ -1101,7 +1468,7 @@
       "name": "11_debris_grille",
       "model": "Assets/garam/Models/04_wreckage/11_debris_grille.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/11_debris_grille.prefab",
-      "triangles": 4853,
+      "triangles": 19412,
       "dimensions": [
         0.709367036819458,
         0.7999999523162842,
@@ -1109,13 +1476,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "1f57fa4f4ce813c538c75be593951a309fbb05541ab8921deb9adbac4c6c062a",
+      "sourceFbxSha256": "0fedbd78cd446e30318a19c44ac158b6ada7f7e16b5dd8d46bf7613288467147",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_178cd35b5c25.mat"
         }
-      ]
+      ],
+      "previousTriangles": 4853,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 4853,
+        "after": 19412,
+        "curved_edge_vertices": 4856,
+        "max_vertex_offset_m": 0.0024000269474755277,
+        "preserved_crease_edges": 2419
+      }
     },
     {
       "id": "04_wreckage__12_debris_cylinder",
@@ -1123,7 +1499,7 @@
       "name": "12_debris_cylinder",
       "model": "Assets/garam/Models/04_wreckage/12_debris_cylinder.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/12_debris_cylinder.prefab",
-      "triangles": 5934,
+      "triangles": 23736,
       "dimensions": [
         0.800000011920929,
         0.3152691721916199,
@@ -1131,13 +1507,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "0a15521b50f11e50cd75f275f48ccbfb62980f4d77bd90df70e7cd0681058847",
+      "sourceFbxSha256": "c91458501c795a122d054f7618eb88cdd960275f21aab820fab78939cdf2d1c3",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_3be72d13f012.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5934,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5934,
+        "after": 23736,
+        "curved_edge_vertices": 6209,
+        "max_vertex_offset_m": 0.002400016465399644,
+        "preserved_crease_edges": 2650
+      }
     },
     {
       "id": "04_wreckage__13_debris_bracket",
@@ -1145,7 +1530,7 @@
       "name": "13_debris_bracket",
       "model": "Assets/garam/Models/04_wreckage/13_debris_bracket.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/13_debris_bracket.prefab",
-      "triangles": 5559,
+      "triangles": 22236,
       "dimensions": [
         0.5527634024620056,
         0.800000011920929,
@@ -1153,13 +1538,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "4affc12d71781fd09cb296409c18fca406851f8aa50c267a9fa94a331f4595f9",
+      "sourceFbxSha256": "e051ab27b06c99361ad23396ba490d20a936c4ecf9008390e6ea594153bc891e",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_b0656efdd591.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5559,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5559,
+        "after": 22236,
+        "curved_edge_vertices": 6686,
+        "max_vertex_offset_m": 0.00240002683266125,
+        "preserved_crease_edges": 1650
+      }
     },
     {
       "id": "04_wreckage__14_debris_short_bolt",
@@ -1167,7 +1561,7 @@
       "name": "14_debris_short_bolt",
       "model": "Assets/garam/Models/04_wreckage/14_debris_short_bolt.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/14_debris_short_bolt.prefab",
-      "triangles": 1671,
+      "triangles": 6684,
       "dimensions": [
         0.09999999403953552,
         0.06516978144645691,
@@ -1175,13 +1569,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "a1f613f88ee681fe0e1e97242a8356c05b42052ad98c5fd7d16992f35b286616",
+      "sourceFbxSha256": "4338a8b0b25cf2cd00e08673e967292424e3b6e0723ef95437ea7663e48a757b",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_738a62955c36.mat"
         }
-      ]
+      ],
+      "previousTriangles": 1671,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 1671,
+        "after": 6684,
+        "curved_edge_vertices": 2146,
+        "max_vertex_offset_m": 0.00030000356954439046,
+        "preserved_crease_edges": 362
+      }
     },
     {
       "id": "04_wreckage__15_debris_nut",
@@ -1189,7 +1592,7 @@
       "name": "15_debris_nut",
       "model": "Assets/garam/Models/04_wreckage/15_debris_nut.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/15_debris_nut.prefab",
-      "triangles": 1806,
+      "triangles": 7224,
       "dimensions": [
         0.09999999403953552,
         0.08728600293397903,
@@ -1197,13 +1600,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "e387d35381f2df98f8def9242c0c64263b31ed927c94cb075074ff64dc401dd4",
+      "sourceFbxSha256": "19f6f8aa0e461f2e065c12908e5e43864a4e235a010d6224babbcf7bfbe7ff11",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_eec8275d6e91.mat"
         }
-      ]
+      ],
+      "previousTriangles": 1806,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 1806,
+        "after": 7224,
+        "curved_edge_vertices": 2117,
+        "max_vertex_offset_m": 0.0003000034333586223,
+        "preserved_crease_edges": 592
+      }
     },
     {
       "id": "04_wreckage__16_debris_washer",
@@ -1211,7 +1623,7 @@
       "name": "16_debris_washer",
       "model": "Assets/garam/Models/04_wreckage/16_debris_washer.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/16_debris_washer.prefab",
-      "triangles": 1442,
+      "triangles": 5768,
       "dimensions": [
         0.09999757260084152,
         0.010443153791129589,
@@ -1219,13 +1631,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "fd936ff7c058d59b4c0919b41b75044ede0eea60a326e78d29a303331ae068e7",
+      "sourceFbxSha256": "04c52819515e8b0a650ba539c1697f49a4ec1b5979f594f92b1e8dcbe3137f71",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_7f469e57684e.mat"
         }
-      ]
+      ],
+      "previousTriangles": 1442,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 1442,
+        "after": 5768,
+        "curved_edge_vertices": 1609,
+        "max_vertex_offset_m": 0.00030000185389525094,
+        "preserved_crease_edges": 559
+      }
     },
     {
       "id": "04_wreckage__17_debris_elbow_pipe",
@@ -1233,7 +1654,7 @@
       "name": "17_debris_elbow_pipe",
       "model": "Assets/garam/Models/04_wreckage/17_debris_elbow_pipe.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/17_debris_elbow_pipe.prefab",
-      "triangles": 6000,
+      "triangles": 24000,
       "dimensions": [
         0.800000011920929,
         0.33800575137138367,
@@ -1241,13 +1662,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "2d9cff1b9a6fa4e6b1466690f6a8c233f682ed728720603b85fe107fbcb384c1",
+      "sourceFbxSha256": "58503cd01ee2bad05ea0f3bc49929c9dfed935a78d840276782ce9c5c2118300",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_68a028189fae.mat"
         }
-      ]
+      ],
+      "previousTriangles": 6000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 6000,
+        "after": 24000,
+        "curved_edge_vertices": 7238,
+        "max_vertex_offset_m": 0.002400011679626321,
+        "preserved_crease_edges": 1764
+      }
     },
     {
       "id": "04_wreckage__18_debris_utility_box",
@@ -1255,7 +1685,7 @@
       "name": "18_debris_utility_box",
       "model": "Assets/garam/Models/04_wreckage/18_debris_utility_box.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/18_debris_utility_box.prefab",
-      "triangles": 5942,
+      "triangles": 23768,
       "dimensions": [
         0.7999999523162842,
         0.49465852975845337,
@@ -1263,13 +1693,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "42e29a191e6bf0e93dfa250388140a241999e9b422424e563c41bc2a86c503a7",
+      "sourceFbxSha256": "60541e8b50a2cdab7a5acb8da2e07de6f0cc16e17dcd3fffcb6a92ac374244ed",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_0b6b00b43307.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5942,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5942,
+        "after": 23768,
+        "curved_edge_vertices": 6897,
+        "max_vertex_offset_m": 0.002400012995603915,
+        "preserved_crease_edges": 2019
+      }
     },
     {
       "id": "04_wreckage__19_debris_cable_coil",
@@ -1277,7 +1716,7 @@
       "name": "19_debris_cable_coil",
       "model": "Assets/garam/Models/04_wreckage/19_debris_cable_coil.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/19_debris_cable_coil.prefab",
-      "triangles": 7999,
+      "triangles": 31996,
       "dimensions": [
         1.0875359773635864,
         0.22699478268623352,
@@ -1285,13 +1724,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "09dd98745bb8516ccec7f4f19c3dba310a7cb4f8a75dadd08d4c733c6ca4f9b4",
+      "sourceFbxSha256": "bcb9fecc379a0434c68764662e366c04b890eb1c9f393541074681d70ec4867c",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_c2915f434296.mat"
         }
-      ]
+      ],
+      "previousTriangles": 7999,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 7999,
+        "after": 31996,
+        "curved_edge_vertices": 8414,
+        "max_vertex_offset_m": 0.0036000254303481323,
+        "preserved_crease_edges": 3557
+      }
     },
     {
       "id": "04_wreckage__20_debris_cargo_net",
@@ -1299,7 +1747,7 @@
       "name": "20_debris_cargo_net",
       "model": "Assets/garam/Models/04_wreckage/20_debris_cargo_net.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/20_debris_cargo_net.prefab",
-      "triangles": 11825,
+      "triangles": 47300,
       "dimensions": [
         1.8000001907348633,
         1.223625898361206,
@@ -1307,13 +1755,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "be431e2d57e5c8206e7dc3e41fd9d82e67ba9072814f22671e65adbb5b104002",
+      "sourceFbxSha256": "5f0360dd5c73bccd3353bf7e13ed1a1191fe1d85b0216537c9bfe3e2e22c74d4",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_07f106535998.mat"
         }
-      ]
+      ],
+      "previousTriangles": 11825,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 11825,
+        "after": 47300,
+        "curved_edge_vertices": 12667,
+        "max_vertex_offset_m": 0.005400043341326751,
+        "preserved_crease_edges": 5071
+      }
     },
     {
       "id": "04_wreckage__21_debris_torn_plate",
@@ -1321,7 +1778,7 @@
       "name": "21_debris_torn_plate",
       "model": "Assets/garam/Models/04_wreckage/21_debris_torn_plate.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/21_debris_torn_plate.prefab",
-      "triangles": 5261,
+      "triangles": 21044,
       "dimensions": [
         0.7673687934875488,
         0.800000011920929,
@@ -1329,13 +1786,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "fc6bdde459be8f13e76f9923c17fa36cf46e86daa75bd3557be50fd01f5d5d13",
+      "sourceFbxSha256": "ff11c8087ae39c49426f7c2323bce5a72eaf43731463fd2a946fcf8cbcd1b65f",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_0c7c045edf3b.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5261,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5261,
+        "after": 21044,
+        "curved_edge_vertices": 6258,
+        "max_vertex_offset_m": 0.002400025495134642,
+        "preserved_crease_edges": 1639
+      }
     },
     {
       "id": "04_wreckage__22_debris_long_plate",
@@ -1343,7 +1809,7 @@
       "name": "22_debris_long_plate",
       "model": "Assets/garam/Models/04_wreckage/22_debris_long_plate.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/22_debris_long_plate.prefab",
-      "triangles": 5906,
+      "triangles": 23624,
       "dimensions": [
         0.800000011920929,
         0.07035939395427704,
@@ -1351,13 +1817,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "8330fbacc190f8de6011104750e4f2bc9f10362a9cb556f33072c35ca81815c4",
+      "sourceFbxSha256": "b82f398deff3724b204231ae5471eb7b3558f09f8986f89de533d4e94c0e4ee5",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_a8dc824df0da.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5906,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5906,
+        "after": 23624,
+        "curved_edge_vertices": 8026,
+        "max_vertex_offset_m": 0.0024000095584620993,
+        "preserved_crease_edges": 698
+      }
     },
     {
       "id": "04_wreckage__23_debris_small_plate",
@@ -1365,7 +1840,7 @@
       "name": "23_debris_small_plate",
       "model": "Assets/garam/Models/04_wreckage/23_debris_small_plate.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/23_debris_small_plate.prefab",
-      "triangles": 5732,
+      "triangles": 22928,
       "dimensions": [
         0.800000011920929,
         0.07946084439754486,
@@ -1373,13 +1848,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "65f9f45d6508db2b09ebe9a3f8f430c83a98f68d7a2ce76cefc1cc7e228f7165",
+      "sourceFbxSha256": "82256aba173a487df43124a76ee52523e426dea8549048945224c8e0463435ed",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_7991ebf7f0b4.mat"
         }
-      ]
+      ],
+      "previousTriangles": 5732,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 5732,
+        "after": 22928,
+        "curved_edge_vertices": 7267,
+        "max_vertex_offset_m": 0.0024000021924279196,
+        "preserved_crease_edges": 1124
+      }
     },
     {
       "id": "04_wreckage__24_debris_beacon_caged",
@@ -1387,7 +1871,7 @@
       "name": "24_debris_beacon_caged",
       "model": "Assets/garam/Models/04_wreckage/24_debris_beacon_caged.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/24_debris_beacon_caged.prefab",
-      "triangles": 7260,
+      "triangles": 29040,
       "dimensions": [
         0.7963036894798279,
         0.5354680418968201,
@@ -1395,13 +1879,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "7f376000ec6ce4a27cb2d6eff6d75a55e19d876b538832392b5ad0a91e07806a",
+      "sourceFbxSha256": "85ca1b376c5dae57428509f55bb20c19a7e2acc2f5a61289503f3bd5b533df34",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_87bdc275191e.mat"
         }
-      ]
+      ],
+      "previousTriangles": 7260,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 7260,
+        "after": 29040,
+        "curved_edge_vertices": 7282,
+        "max_vertex_offset_m": 0.0024000276089758948,
+        "preserved_crease_edges": 3584
+      }
     },
     {
       "id": "04_wreckage__25_debris_beacon_pole",
@@ -1409,7 +1902,7 @@
       "name": "25_debris_beacon_pole",
       "model": "Assets/garam/Models/04_wreckage/25_debris_beacon_pole.fbx",
       "prefab": "Assets/garam/Prefabs/04_wreckage/25_debris_beacon_pole.prefab",
-      "triangles": 6897,
+      "triangles": 27588,
       "dimensions": [
         0.23642855882644653,
         0.800000011920929,
@@ -1417,13 +1910,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "04a5c7ff1c6275cce783830ccb16d6d9ea4eaf884c4b7884e122ad6f8537cce2",
+      "sourceFbxSha256": "892ff67b0ec55ce6146c39f86614949c2b78d43dd866b9b5e0ea32353f4cdc21",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_34d2365d7945.mat"
         }
-      ]
+      ],
+      "previousTriangles": 6897,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 6897,
+        "after": 27588,
+        "curved_edge_vertices": 8789,
+        "max_vertex_offset_m": 0.002400027762925045,
+        "preserved_crease_edges": 1560
+      }
     },
     {
       "id": "05_hazards__01_propellant_tank_cluster",
@@ -1431,7 +1933,7 @@
       "name": "01_propellant_tank_cluster",
       "model": "Assets/garam/Models/05_hazards/01_propellant_tank_cluster.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/01_propellant_tank_cluster.prefab",
-      "triangles": 17688,
+      "triangles": 70752,
       "dimensions": [
         2.1265997886657715,
         2.299999952316284,
@@ -1439,13 +1941,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "1eb5970518b7770c0cad3c33f81321b216b0427f08beff616394b350744390fe",
+      "sourceFbxSha256": "2279e4498f5b97a419ccad8375feef48299556c2b3d7d5de273b456790456780",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_73ecc516a462.mat"
         }
-      ]
+      ],
+      "previousTriangles": 17688,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 17688,
+        "after": 70752,
+        "curved_edge_vertices": 16369,
+        "max_vertex_offset_m": 0.006900113650582023,
+        "preserved_crease_edges": 10123
+      }
     },
     {
       "id": "05_hazards__02_power_conduit_left",
@@ -1453,7 +1964,7 @@
       "name": "02_power_conduit_left",
       "model": "Assets/garam/Models/05_hazards/02_power_conduit_left.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/02_power_conduit_left.prefab",
-      "triangles": 13770,
+      "triangles": 55080,
       "dimensions": [
         2.1999998092651367,
         1.6192342042922974,
@@ -1461,13 +1972,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "e8026e1d2ff691823eee746bc6d0a834e98244b3cf697e0665d70fd4f8b04d6c",
+      "sourceFbxSha256": "4bbc2693e1bf7d09356ba40631f8faaa3f03420f278fbff9975ef0527d6d66ab",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_ec8133d5cb8b.mat"
         }
-      ]
+      ],
+      "previousTriangles": 13770,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 13770,
+        "after": 55080,
+        "curved_edge_vertices": 15503,
+        "max_vertex_offset_m": 0.006600060184440401,
+        "preserved_crease_edges": 5149
+      }
     },
     {
       "id": "05_hazards__03_power_conduit_right",
@@ -1475,7 +1995,7 @@
       "name": "03_power_conduit_right",
       "model": "Assets/garam/Models/05_hazards/03_power_conduit_right.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/03_power_conduit_right.prefab",
-      "triangles": 13492,
+      "triangles": 53968,
       "dimensions": [
         2.1826305389404297,
         2.200000047683716,
@@ -1483,13 +2003,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "df9174829f6bd114eb514ab75e52414120dadbcc1567b5cab5565950a21a2725",
+      "sourceFbxSha256": "193a0500fc38bf01f3368944697ba48178af59eef5519979015fb985412e0428",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_0a2d741e472c.mat"
         }
-      ]
+      ],
+      "previousTriangles": 13492,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 13492,
+        "after": 53968,
+        "curved_edge_vertices": 14353,
+        "max_vertex_offset_m": 0.006600092877639787,
+        "preserved_crease_edges": 5888
+      }
     },
     {
       "id": "05_hazards__04_gas_vent_hardware",
@@ -1497,7 +2026,7 @@
       "name": "04_gas_vent_hardware",
       "model": "Assets/garam/Models/05_hazards/04_gas_vent_hardware.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/04_gas_vent_hardware.prefab",
-      "triangles": 13510,
+      "triangles": 54040,
       "dimensions": [
         1.929272174835205,
         2.200000047683716,
@@ -1505,13 +2034,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "fafcbaf747742f5a7d5ec4961bd4a65ab534edbe7bd7865efb3af022a3768512",
+      "sourceFbxSha256": "cc7a8eb78a049e28c547e672db5c7d9ebc28bfd49a6193b47ecee17425d3577d",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_c88467aa8c32.mat"
         }
-      ]
+      ],
+      "previousTriangles": 13510,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 13510,
+        "after": 54040,
+        "curved_edge_vertices": 14798,
+        "max_vertex_offset_m": 0.006600103393515916,
+        "preserved_crease_edges": 5473
+      }
     },
     {
       "id": "05_hazards__05_proximity_mine",
@@ -1519,7 +2057,7 @@
       "name": "05_proximity_mine",
       "model": "Assets/garam/Models/05_hazards/05_proximity_mine.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/05_proximity_mine.prefab",
-      "triangles": 11326,
+      "triangles": 45304,
       "dimensions": [
         1.4430160522460938,
         2.1995632648468018,
@@ -1527,13 +2065,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "682bf0d09b657d32bc552430437cbd9be74df0f15947eb0cf647536b1880662a",
+      "sourceFbxSha256": "287f622e6936b28b58ac5d297bf187f6407e9c2d864a819582b00e4434adba32",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_89fa894304f2.mat"
         }
-      ]
+      ],
+      "previousTriangles": 11326,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 11326,
+        "after": 45304,
+        "curved_edge_vertices": 12819,
+        "max_vertex_offset_m": 0.006598752806042876,
+        "preserved_crease_edges": 4169
+      }
     },
     {
       "id": "05_hazards__06_husk_beacon_closed",
@@ -1541,7 +2088,7 @@
       "name": "06_husk_beacon_closed",
       "model": "Assets/garam/Models/05_hazards/06_husk_beacon_closed.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/06_husk_beacon_closed.prefab",
-      "triangles": 18000,
+      "triangles": 72000,
       "dimensions": [
         1.5286998748779297,
         3.0,
@@ -1549,13 +2096,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "e21e8bf5de97d81d402c3fbaa5e9ad5ab71790df1a842310e2a389a3988f52c5",
+      "sourceFbxSha256": "3ad794d42f6dbb8ffa2ba8d96769fe604f2291a60209a542e74b9125fff0aae6",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_06c4784413af.mat"
         }
-      ]
+      ],
+      "previousTriangles": 18000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 18000,
+        "after": 72000,
+        "curved_edge_vertices": 16229,
+        "max_vertex_offset_m": 0.009000102603056653,
+        "preserved_crease_edges": 10720
+      }
     },
     {
       "id": "05_hazards__07_husk_beacon_deployed",
@@ -1563,7 +2119,7 @@
       "name": "07_husk_beacon_deployed",
       "model": "Assets/garam/Models/05_hazards/07_husk_beacon_deployed.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/07_husk_beacon_deployed.prefab",
-      "triangles": 18000,
+      "triangles": 72000,
       "dimensions": [
         2.875638484954834,
         3.0,
@@ -1571,13 +2127,22 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "047f86eaf9f00ffe7d30dfbc4be5a693e2b5d032b6f081924ff08159aa6aa5f1",
+      "sourceFbxSha256": "7cbff9b5468d44e9de5718ce14976e9775c731dc8c4e75a221d36927d09cb252",
       "materials": [
         {
           "sourceName": "OYM_Broad",
           "path": "Assets/garam/Materials/OYM_Broad_a4bdadeade0c.mat"
         }
-      ]
+      ],
+      "previousTriangles": 18000,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 18000,
+        "after": 72000,
+        "curved_edge_vertices": 15314,
+        "max_vertex_offset_m": 0.009000123167484473,
+        "preserved_crease_edges": 11634
+      }
     },
     {
       "id": "05_hazards__08_husk_small_drone",
@@ -1585,7 +2150,7 @@
       "name": "08_husk_small_drone",
       "model": "Assets/garam/Models/05_hazards/08_husk_small_drone.fbx",
       "prefab": "Assets/garam/Prefabs/05_hazards/08_husk_small_drone.prefab",
-      "triangles": 7944,
+      "triangles": 31776,
       "dimensions": [
         0.547661542892456,
         0.550000011920929,
@@ -1593,7 +2158,7 @@
       ],
       "greenGlow": false,
       "method": "Meshy 6 + Blender refinement",
-      "sourceFbxSha256": "6e6fb89d46c7c52c56947e0925dfb2652d2b1b203be1659b5486fe72a2f13d7e",
+      "sourceFbxSha256": "2adc8da5cd29f06d54a40212eafa22b0bbe997a87a8648a3b3412631cca6c81d",
       "materials": [
         {
           "sourceName": "OYM_Broad",
@@ -1603,7 +2168,16 @@
           "sourceName": "OYM_Husk_Lens_Emissive",
           "path": "Assets/garam/Materials/OYM_Husk_Lens_Emissive_eea9bfdd3453.mat"
         }
-      ]
+      ],
+      "previousTriangles": 7944,
+      "fidelityRevision": "surface-detail-v2",
+      "geometryRefinement": {
+        "before": 7944,
+        "after": 31776,
+        "curved_edge_vertices": 7765,
+        "max_vertex_offset_m": 0.001650026527690116,
+        "preserved_crease_edges": 3971
+      }
     }
   ],
   "materials": [
@@ -1624,10 +2198,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_ee1e132af1c030cf.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__01_backdrop_giant_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_dd498e48af51.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_dd498e48af51.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__01_backdrop_giant_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1646,10 +2222,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_47c8d2f77f0ae02a.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__02_mining_cover_asteroid_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_22c88c41fd4d.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_22c88c41fd4d.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__02_mining_cover_asteroid_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1668,10 +2246,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_344aa013e6e779f4.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__03_drift_rock_intact_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_46c280093598.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_46c280093598.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__03_drift_rock_intact_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1690,10 +2270,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_448437a1a017b790.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__04_drift_rock_cracked_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_197679c1885e.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_197679c1885e.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__04_drift_rock_cracked_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1712,10 +2294,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_730701f8a1fa5f00.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__05_split_fragment_upper_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_e6a77ac60141.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_e6a77ac60141.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__05_split_fragment_upper_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1734,10 +2318,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_891a37640daba9f4.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__06_split_fragment_right_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_ecea025446a8.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_ecea025446a8.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__06_split_fragment_right_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1756,10 +2342,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_42bd4eed845861e7.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__07_split_fragment_left_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_2df3ac0c0ac3.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_2df3ac0c0ac3.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__07_split_fragment_left_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1778,10 +2366,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_0bb2cbed9f05ec23.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__08_split_fragment_lower_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_df24ff00bb5d0dde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_16cc2c5622d2.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_16cc2c5622d2.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__08_split_fragment_lower_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1800,10 +2390,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_fa9507f6f6a832b2.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__09_ice_asteroid_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_48583f6194a17e7c.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_439f0bdf29d6.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_439f0bdf29d6.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__09_ice_asteroid_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1822,10 +2414,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_02f6e69760e7b60b.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__10_metal_rich_asteroid_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_7054e5055ae6ebde.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_9d5ae7953bfc.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_9d5ae7953bfc.mat",
+      "normalMap": "Assets/garam/Textures/01_asteroids__10_metal_rich_asteroid_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -1844,11 +2438,13 @@
         0.699999988079071
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_ed3b05733709683e.png",
+      "baseMap": "Assets/garam/Textures/01_asteroids__11_husk_claimed_asteroid_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_f25fb7e84dc054c2.png",
       "emissionMap": "Assets/garam/Textures/Emission_d090add0a19af9ad.png",
       "path": "Assets/garam/Materials/OYM_Broad_1a2ac2508aaa.mat",
-      "emissionPixelFraction": 0.0005178451538085938
+      "emissionPixelFraction": 0.0005178451538085938,
+      "normalMap": "Assets/garam/Textures/01_asteroids__11_husk_claimed_asteroid_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_V1_off_white",
@@ -2100,8 +2696,8 @@
         1,
         1
       ],
-      "metallic": 1,
-      "roughness": 1,
+      "metallic": 0.2,
+      "roughness": 0.64,
       "doubleSided": true,
       "emissionColor": [
         0,
@@ -2109,10 +2705,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_f29aaea2f16afae6.png",
-      "maskMap": "Assets/garam/Textures/Mask_b8239847b4659b88.png",
+      "baseMap": "Assets/garam/Textures/03_cover__01_mag_barricade_low_Detail_basecolor.png",
+      "maskMap": "",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_0b5a3bd24507.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_0b5a3bd24507.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__01_mag_barricade_low_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2131,10 +2729,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_d737cf40d064989b.png",
+      "baseMap": "Assets/garam/Textures/03_cover__02_mag_barricade_high_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_205e1b1c03154e0e.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_ab86a176b942.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_ab86a176b942.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__02_mag_barricade_high_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Slit_Inner_Dark",
@@ -2175,10 +2775,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_466ae765807e63bb.png",
+      "baseMap": "Assets/garam/Textures/03_cover__03_cargo_container_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_292aad837f9ca5b5.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_f08b10481ee3.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_f08b10481ee3.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__03_cargo_container_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2197,10 +2799,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_a7278b676cd534b6.png",
+      "baseMap": "Assets/garam/Textures/03_cover__04_hull_plate_slab_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_493b2363bc77db14.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_9027c50e3b50.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_9027c50e3b50.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__04_hull_plate_slab_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2219,10 +2823,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_fc78412cd6fefeea.png",
+      "baseMap": "Assets/garam/Textures/03_cover__05_station_bulkhead_fragment_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_114736dcdec6103e.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_351f194b29c9.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_351f194b29c9.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__05_station_bulkhead_fragment_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2241,10 +2847,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_10878b210e6bc26e.png",
+      "baseMap": "Assets/garam/Textures/03_cover__06_deployable_shield_deployed_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_35323d4b05483f26.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_d9711ce89a9e.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_d9711ce89a9e.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__06_deployable_shield_deployed_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2263,10 +2871,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_ba3dfce295f593a9.png",
+      "baseMap": "Assets/garam/Textures/03_cover__06_deployable_shield_folded_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_213a9d8759e04319.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_0657c60e3927.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_0657c60e3927.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__06_deployable_shield_folded_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2285,10 +2895,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_c197dee3de86ed72.png",
+      "baseMap": "Assets/garam/Textures/03_cover__07_crate_stack_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_14d263bc6eef5351.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_b3c0fea2b00a.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_b3c0fea2b00a.mat",
+      "normalMap": "Assets/garam/Textures/03_cover__07_crate_stack_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2307,10 +2919,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_2f0758b5e0f436e6.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__01_hab_module_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_0596aa8ab49fd0a6.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_b38607ee45c0.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_b38607ee45c0.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__01_hab_module_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2329,10 +2943,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_b74628de94c3f989.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__02_truss_long_bent_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_24f42f0f5661411f.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_8fea74e5a345.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_8fea74e5a345.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__02_truss_long_bent_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2351,10 +2967,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_63266aacb3686340.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__03_truss_short_box_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_261fd88e9ebb4766.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_04de445281e5.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_04de445281e5.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__03_truss_short_box_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2373,10 +2991,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_732fb895e93923e2.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__04_truss_triangle_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_5c4af6a4bc3f64fe.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_9a7b2d4150fe.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_9a7b2d4150fe.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__04_truss_triangle_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2395,10 +3015,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_cda6c76018bd29cf.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__05_solar_panel_wing_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_c452b7aa20f31f2c.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_a7da41314f9d.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_a7da41314f9d.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__05_solar_panel_wing_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2417,10 +3039,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_f4c5365e560900ab.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__06_hull_large_ribbed_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_bc17de82f3f1e539.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_0c62fc6a2df6.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_0c62fc6a2df6.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__06_hull_large_ribbed_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2439,10 +3063,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_e34daf79ee28f495.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__07_hull_curved_rib_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_5d35fb50cd6782a9.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_5bb65ad0f221.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_5bb65ad0f221.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__07_hull_curved_rib_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2461,10 +3087,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_399255fb13aaf656.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__08_hull_shallow_panel_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_43bb7c45456a5e3c.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_70f2782be3c0.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_70f2782be3c0.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__08_hull_shallow_panel_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2483,10 +3111,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_e1460c19cf3e3782.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__09_derelict_ship_bow_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_c8400aad1109e1c8.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_eb75542be878.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_eb75542be878.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__09_derelict_ship_bow_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2505,10 +3135,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_3813905c98c30d9b.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__10_debris_access_panel_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_d769b1e62ae64b77.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_8c924780afbd.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_8c924780afbd.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__10_debris_access_panel_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2527,10 +3159,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_3bc8da2b3814f44c.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__11_debris_grille_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_1697d09990703ef0.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_178cd35b5c25.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_178cd35b5c25.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__11_debris_grille_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2549,10 +3183,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_c6d9eed25ebd50d8.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__12_debris_cylinder_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_a28761aec13e7732.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_3be72d13f012.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_3be72d13f012.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__12_debris_cylinder_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2571,10 +3207,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_7a1ff3b4473539b0.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__13_debris_bracket_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_2b243bff23ba4d63.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_b0656efdd591.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_b0656efdd591.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__13_debris_bracket_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2593,10 +3231,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_90ae72fb4e8534ba.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__14_debris_short_bolt_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_39688183ca79363a.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_738a62955c36.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_738a62955c36.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__14_debris_short_bolt_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2615,10 +3255,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_9cde1e0b1176e813.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__15_debris_nut_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_e34f820d8b341f0e.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_eec8275d6e91.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_eec8275d6e91.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__15_debris_nut_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2637,10 +3279,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_d6753e67ad8214d8.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__16_debris_washer_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_5275856eaff1deea.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_7f469e57684e.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_7f469e57684e.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__16_debris_washer_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2659,10 +3303,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_35e004744cfaf6d0.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__17_debris_elbow_pipe_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_5fb473fb5e24cd05.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_68a028189fae.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_68a028189fae.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__17_debris_elbow_pipe_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2681,12 +3327,14 @@
         1
       ],
       "emissionStrength": 2.5,
-      "baseMap": "Assets/garam/Textures/BaseColor_33d1c8de49744684.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__18_debris_utility_box_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_a597f1076ebb70d2.png",
       "emissionMap": "Assets/garam/Textures/04_wreckage__18_debris_utility_box_LampEmission.png",
       "path": "Assets/garam/Materials/OYM_Broad_0b6b00b43307.mat",
       "emissionRegion": "Only the small amber indicator button; cable stripes excluded.",
-      "emissionPixelFraction": 0.00347900390625
+      "emissionPixelFraction": 0.00347900390625,
+      "normalMap": "Assets/garam/Textures/04_wreckage__18_debris_utility_box_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2705,10 +3353,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_c9193becd2494352.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__19_debris_cable_coil_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_2033379f2d3f38d4.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_c2915f434296.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_c2915f434296.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__19_debris_cable_coil_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2727,10 +3377,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_65dfbdce2bcfd31b.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__20_debris_cargo_net_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_87a7ad5a1fbc5538.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_07f106535998.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_07f106535998.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__20_debris_cargo_net_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2749,10 +3401,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_ab96a124f44514c7.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__21_debris_torn_plate_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_07fe1ce1e26f27ae.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_0c7c045edf3b.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_0c7c045edf3b.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__21_debris_torn_plate_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2774,7 +3428,9 @@
       "baseMap": "Assets/garam/Textures/BaseColor_6fb601a6e2128bab.png",
       "maskMap": "",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_a8dc824df0da.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_a8dc824df0da.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__22_debris_long_plate_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2796,7 +3452,9 @@
       "baseMap": "Assets/garam/Textures/BaseColor_430aa6ae6c4a5f91.png",
       "maskMap": "",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_7991ebf7f0b4.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_7991ebf7f0b4.mat",
+      "normalMap": "Assets/garam/Textures/04_wreckage__23_debris_small_plate_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2815,12 +3473,14 @@
         1
       ],
       "emissionStrength": 2.5,
-      "baseMap": "Assets/garam/Textures/BaseColor_a5428c76df1a4eac.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__24_debris_beacon_caged_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_cc2c806e3565d020.png",
       "emissionMap": "Assets/garam/Textures/04_wreckage__24_debris_beacon_caged_LampEmission.png",
       "path": "Assets/garam/Materials/OYM_Broad_87bdc275191e.mat",
       "emissionRegion": "Only the central glass lamp inside the cage; base paint excluded.",
-      "emissionPixelFraction": 0.010271072387695312
+      "emissionPixelFraction": 0.010271072387695312,
+      "normalMap": "Assets/garam/Textures/04_wreckage__24_debris_beacon_caged_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2839,12 +3499,14 @@
         1
       ],
       "emissionStrength": 2.5,
-      "baseMap": "Assets/garam/Textures/BaseColor_2ea4d946071233c0.png",
+      "baseMap": "Assets/garam/Textures/04_wreckage__25_debris_beacon_pole_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_feae4cd548f684ed.png",
       "emissionMap": "Assets/garam/Textures/04_wreckage__25_debris_beacon_pole_LampEmission.png",
       "path": "Assets/garam/Materials/OYM_Broad_34d2365d7945.mat",
       "emissionRegion": "Only the amber lens at the top of the pole.",
-      "emissionPixelFraction": 0.037746429443359375
+      "emissionPixelFraction": 0.037746429443359375,
+      "normalMap": "Assets/garam/Textures/04_wreckage__25_debris_beacon_pole_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2863,10 +3525,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_06176d9a8f26cbf7.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__01_propellant_tank_cluster_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_dc32d77871473078.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_73ecc516a462.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_73ecc516a462.mat",
+      "normalMap": "Assets/garam/Textures/05_hazards__01_propellant_tank_cluster_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2885,10 +3549,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_abb4cc950b908e75.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__02_power_conduit_left_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_758d9aba92c403b8.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_ec8133d5cb8b.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_ec8133d5cb8b.mat",
+      "normalMap": "Assets/garam/Textures/05_hazards__02_power_conduit_left_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2907,10 +3573,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_d12f4404c6251aa0.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__03_power_conduit_right_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_fa1eec25e0ca864a.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_0a2d741e472c.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_0a2d741e472c.mat",
+      "normalMap": "Assets/garam/Textures/05_hazards__03_power_conduit_right_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2929,10 +3597,12 @@
         0
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_075802849cd64bd4.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__04_gas_vent_hardware_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_bf3592b9464725b3.png",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_c88467aa8c32.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_c88467aa8c32.mat",
+      "normalMap": "Assets/garam/Textures/05_hazards__04_gas_vent_hardware_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2951,12 +3621,14 @@
         1
       ],
       "emissionStrength": 2.5,
-      "baseMap": "Assets/garam/Textures/BaseColor_108b6451fdbe9d3e.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__05_proximity_mine_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_19cb356bfa2b35b3.png",
       "emissionMap": "Assets/garam/Textures/05_hazards__05_proximity_mine_LampEmission.png",
       "path": "Assets/garam/Materials/OYM_Broad_89fa894304f2.mat",
       "emissionRegion": "Only the two amber domes above the mine shell.",
-      "emissionPixelFraction": 0.0035638809204101562
+      "emissionPixelFraction": 0.0035638809204101562,
+      "normalMap": "Assets/garam/Textures/05_hazards__05_proximity_mine_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2975,11 +3647,13 @@
         0.699999988079071
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_23280e685b720e69.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__06_husk_beacon_closed_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_61b99b1918ac9071.png",
       "emissionMap": "Assets/garam/Textures/Emission_346e784d423b499d.png",
       "path": "Assets/garam/Materials/OYM_Broad_06c4784413af.mat",
-      "emissionPixelFraction": 0.010613441467285156
+      "emissionPixelFraction": 0.010613441467285156,
+      "normalMap": "Assets/garam/Textures/05_hazards__06_husk_beacon_closed_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -2998,11 +3672,13 @@
         0.699999988079071
       ],
       "emissionStrength": 1,
-      "baseMap": "Assets/garam/Textures/BaseColor_ae960207ab222af2.png",
+      "baseMap": "Assets/garam/Textures/05_hazards__07_husk_beacon_deployed_Detail_basecolor.png",
       "maskMap": "Assets/garam/Textures/Mask_982a5e88d5a4788a.png",
       "emissionMap": "Assets/garam/Textures/Emission_85c019e645ae7648.png",
       "path": "Assets/garam/Materials/OYM_Broad_a4bdadeade0c.mat",
-      "emissionPixelFraction": 0.0035648345947265625
+      "emissionPixelFraction": 0.0035648345947265625,
+      "normalMap": "Assets/garam/Textures/05_hazards__07_husk_beacon_deployed_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Broad",
@@ -3024,7 +3700,9 @@
       "baseMap": "Assets/garam/Textures/BaseColor_b9157ec3f0a06983.png",
       "maskMap": "",
       "emissionMap": "",
-      "path": "Assets/garam/Materials/OYM_Broad_752ad8a156c9.mat"
+      "path": "Assets/garam/Materials/OYM_Broad_752ad8a156c9.mat",
+      "normalMap": "Assets/garam/Textures/05_hazards__08_husk_small_drone_Detail_normal.png",
+      "normalStrength": 0.7
     },
     {
       "sourceName": "OYM_Husk_Lens_Emissive",
@@ -3048,5 +3726,7 @@
       "emissionMap": "",
       "path": "Assets/garam/Materials/OYM_Husk_Lens_Emissive_eea9bfdd3453.mat"
     }
-  ]
+  ],
+  "fidelityRevision": "surface-detail-v2",
+  "totalTriangles": 2444208
 }
