@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: -38}
-  m_SizeDelta: {x: -38, y: 44}
+  m_AnchoredPosition: {x: 3, y: -36}
+  m_SizeDelta: {x: -38, y: 60}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8995213376295539456
 CanvasRenderer:
@@ -67,16 +67,16 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 28
+    m_FontSize: 26
     m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 18
+    m_MaxSize: 26
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
+    m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
 --- !u!1 &3928842208336500647
@@ -119,7 +119,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -24, y: -340}
-  m_SizeDelta: {x: 460, y: 128}
+  m_SizeDelta: {x: 560, y: 132}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &7331876043425101082
 CanvasRenderer:
@@ -316,8 +316,8 @@ MonoBehaviour:
     m_FontSize: 18
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 18
+    m_MaxSize: 18
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -359,8 +359,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: -86}
-  m_SizeDelta: {x: -38, y: 32}
+  m_AnchoredPosition: {x: 3, y: -100}
+  m_SizeDelta: {x: -38, y: 24}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5239360631425600666
 CanvasRenderer:
@@ -392,11 +392,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 17
+    m_FontSize: 16
     m_FontStyle: 2
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 16
+    m_MaxSize: 16
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1

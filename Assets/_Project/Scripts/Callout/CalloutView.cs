@@ -3,7 +3,10 @@ using UnityEngine.UI;
 
 namespace OnYourMark
 {
-    /// <summary>화면 오른쪽 위 콜아웃 표시. 말한 사람 → 들은 사람, 한국어 자막, 영어 원문을 잠깐 보여주고 사라진다.</summary>
+    /// <summary>
+    /// 화면 오른쪽 위 콜아웃 표시. 누구의 상태인지(캐릭터 이름표) + 대사, 말한 사람 → 들은 사람, 영어 원문을 잠깐 보여주고 사라진다.
+    /// 캐릭터 이름표와 색은 PlayerStats의 displayName · color를 쓴다.
+    /// </summary>
     public class CalloutView : MonoBehaviour
     {
         [SerializeField] CanvasGroup group;
@@ -21,10 +24,12 @@ namespace OnYourMark
             group.alpha = 0f;
         }
 
-        public void Show(string speaker, Color speakerColor, string listener, string koreanLine, string englishLine, float seconds)
+        public void Show(string subject, Color subjectColor, string speaker, string listener,
+            string koreanLine, string englishLine, float seconds)
         {
-            header.text = $"<color=#{ColorUtility.ToHtmlStringRGB(speakerColor)}>{speaker}</color>  ▸  {listener}";
-            korean.text = koreanLine;
+            string tag = $"<color=#{ColorUtility.ToHtmlStringRGB(subjectColor)}>[{subject}]</color>";
+            header.text = $"상태 알림   {speaker} ▸ {listener}";
+            korean.text = $"{tag} {koreanLine}";
             english.text = englishLine;
             group.alpha = 1f;
             hideAt = Time.unscaledTime + seconds;

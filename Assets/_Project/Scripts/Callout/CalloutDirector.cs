@@ -202,7 +202,8 @@ namespace OnYourMark
             bool bySubject = cand != null && cand.spokenBySubject;
             var speaker = bySubject ? subject : partner;
             var listener = bySubject ? partner : subject;
-            view.Show(Name(speaker), speaker ? speaker.Stats.color : Color.white, Name(listener),
+            // 대사 앞에 "누구의 상태인지"를 캐릭터 이름표로 붙인다
+            view.Show(Name(subject), subject ? subject.Stats.color : Color.white, Name(speaker), Name(listener),
                 line.korean, line.english, catalog.displaySeconds);
         }
 
