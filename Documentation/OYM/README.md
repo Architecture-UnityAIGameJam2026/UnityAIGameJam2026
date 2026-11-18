@@ -240,6 +240,24 @@ python Tools/prep_cinematic.py      # 런처 발사관·엔진 배기용 빨강 
   - 7.3–9.3 s 머리 위 통과(집게 → 배 쪽 빨간 선 → 엔진), 10.0–10.5 s 검게 페이드합니다.
 - HDRP `PhysicallyBasedSky`는 배치 렌더에서 사전 계산된 빛이 0으로 남아(해발 0 m에 해를 높이 띄워도 땅과 대기가 검음) 쓰지 않습니다.
 
+## 성능 — 45 fps 방어 (2026-11-19, 브랜치 `perf/fps45`)
+
+목표: 메인 타이틀과 게임 중 45 fps 이상(RTX 4060 노트북, 2560×1600 기준). 씬·프리팹은 건드리지 않고 임포트 설정, 파이프라인 에셋, 런타임 컴포넌트로만 처리했습니다.
+
+| 항목 | 내용 |
+|---|---|
+| 텍스처 | 무압축이던 130장(garam BaseColor/Mask/Emission, 히트 FX, 레티클, 팀 로고) → BC7/BC5. 4K 소품 6장 → 2K. 1인칭 무기·스카이 큐브맵은 유지. 4의 배수가 아닌 타이틀 로고·아이콘과 그라데이션 램프(`T_Ramp_*`)는 압축 안 함 |
+| 동적 해상도 | HDRP 에셋 3종에서 켬(하드웨어 DRS 50–100 %). 업스케일러는 **DLSS(RTX) → STP** 순, 폴백 FSR1. `com.unity.modules.nvidia` 추가 |
+| `FrameRateGuard` | 런타임에 모든 게임 카메라의 `allowDynamicResolution`을 켜고, GPU 시간으로 렌더 스케일을 조절(예산 18.9 ms, 60 Hz 수직동기 화면이면 그 주기). 스케일 50 %에서도 45 fps 아래면 볼륨으로 포그 품질 Low·접촉 그림자 끔(1단계), SSAO 끔(2단계), 여유가 생기면 되돌림. CPU 병목일 때는 해상도를 내리지 않음 |
+| `DebrisMotion` | `Spin`·`Drift` 1,800여 개를 Transform 잡 하나로 움직임(개별 FixedUpdate·리지드바디 보간 제거). 카메라 150 m 밖 데브리는 카메라 모션벡터만 써서 오브젝트 모션벡터 패스에서 빠짐 |
+| `ShadowThrottle` | 반경 60 m 이상 포인트/스팟 그림자(코어 라이트 900 m)를 HDRP 캐시 그림자로 바꾸고 큐브 6면 중 프레임당 2면씩 갱신. 요청하지 않은 면은 HDRP가 컬링도 건너뜀 |
+| HDRP High Fidelity | 데칼 지원 끔(프로젝트에 데칼 없음, 켜져 있으면 데칼을 받는 불투명 전부를 뎁스 프리패스로 한 번 더 그림), SSGI 지원 끔(모든 볼륨에서 꺼져 있음), 컬러 버퍼 R11G11B10, PCSS 그림자 필터 → Medium |
+| 볼륨·설정 | `OYM_SpaceVolume` 태양 그림자 거리 2600 → 1200 m(`OYMSetup` 상수도 같이), `Maximum Allowed Timestep` 0.333 → 0.1, Frame Timing Stats 켬 |
+
+명령줄: `-oymPerfHud`(fps·GPU·스케일 오버레이, **F8**로 토글), `-oymPerfLog <파일>`(초당 CSV), `-oymNoGuard`(가드 끔), `-oymNoShadowThrottle`.
+데칼을 쓰게 되면 `HDRP High Fidelity`의 Decals를 다시 켜야 합니다(뎁스 프리패스 비용이 같이 돌아옵니다).
+잔해 799조각(820만 삼각형)에는 여전히 LOD가 없습니다. Unity 6.3 `MeshLodUtility.GenerateMeshLods`로 임포터에서 자동 생성해 봤지만 `frag_0090`에서 에디터가 네이티브 크래시(`MeshLod::BuildRedirect`)해서 넣지 않았습니다. LOD가 필요하면 `skybox/export_assets.py` 쪽에서 단순화 메시를 같이 내보내는 게 안전합니다.
+
 ## 알려진 한계
 
 - 스폰 시야(+Z)가 태양(앞 오른쪽)과 행성(앞 왼쪽)을 함께 마주 봐서 대부분 실루엣·림 라이트로 보입니다. 의도한 역광 구도지만 전투 가독성이 더 필요하면 스폰 방향이나 `PlanetshineLux`를 조정하세요.
