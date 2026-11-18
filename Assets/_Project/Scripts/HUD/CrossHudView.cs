@@ -6,9 +6,10 @@ using UnityEngine.UI;
 namespace OnYourMark
 {
     /// <summary>
-    /// S2 인게임 HUD. 파츠(생체 / 지도 / 소모품)마다 반환 전이면 상대, 반환 후면 내 정보를 보여 준다.
-    /// 반환 전 파츠에는 그 파츠로 줄 수 있는 지원의 쿨타임을 함께 표시한다.
-    /// 소모품은 검 캐릭터의 대쉬 / 레일건 캐릭터의 탄창을 표시한다.
+    /// S2 인게임 HUD (새 기획서 파츠 구조). 파츠마다 반환 전이면 상대, 반환 후면 내 정보를 보여 준다.
+    /// 1 체력바 + 미니맵 (반환 전에는 파트너 회복 쿨타임 함께 표시)
+    /// 2 탄창 · 대쉬 수 (검 캐릭터는 대쉬, 총 캐릭터는 탄창)
+    /// 3 스킬: Q 킬 게이지와 E 쿨타임
     /// 호버 · 웨이브 · 받은 효과는 항상 내 정보다. 체력 지원 쿨타임은 1번 파츠에 표시한다.
     /// </summary>
     public class CrossHudView : MonoBehaviour
@@ -19,19 +20,21 @@ namespace OnYourMark
         [SerializeField] UnlockTerminal terminal;
         [SerializeField] GameObject root;
 
-        [Header("1 생체")]
+        [Header("1 체력바")]
         [SerializeField] TMP_Text bioLabel;
         [SerializeField] Image bioFill;
 
-        [Header("2 지도")]
+        [Header("1 미니맵")]
         [SerializeField] TMP_Text mapLabel;
         [SerializeField] Camera mapCamera;
         [SerializeField] float mapCameraHeight = 30f;
 
-        [Header("3 소모품")]
+        [Header("2 탄창 · 대쉬 수")]
         [SerializeField] TMP_Text ammoLabel;
         [SerializeField] Image ammoFill;
-        [Tooltip("기존 대쉬 위치에 표시하는 소모품 요약 (패널과 같은 대상)")]
+
+        [Header("3 스킬 (Q · E)")]
+        [Tooltip("Q 킬 게이지 · E 쿨타임 (3번 파츠 대상)")]
         [SerializeField] TMP_Text dashLabel;
 
         [Header("내 정보")]
@@ -62,7 +65,8 @@ namespace OnYourMark
 
             ShowBio(Subject(HudPart.Vitals));
             ShowMap(Subject(HudPart.Vitals));
-            ShowConsumable(Subject(HudPart.Resource));
+            ShowResource(Subject(HudPart.Resource));
+            ShowSkill(Subject(HudPart.Skill));
             ShowSelf();
             ShowPrompt();
         }
@@ -73,34 +77,57 @@ namespace OnYourMark
         void ShowBio(Player who)
         {
             string shield = who && who.Health.Shield > 0 ? $"  <color=#8FD3FF>+{who.Health.Shield:F0} SHIELD</color>" : "";
-            bioLabel.text = $"1 BIO  {Name(who)}{shield}{Cooldown(HudPart.Vitals)}";
+            string hp = who ? $"  {who.Health.Current:F0}/{who.Health.Max:F0}" : "";
+            bioLabel.text = $"1 VITALS  {Name(who)}{hp}{shield}{Cooldown(HudPart.Vitals)}";
             bioFill.fillAmount = who ? who.Health.Ratio : 0f;
         }
 
         void ShowMap(Player who)
         {
-            mapLabel.text = $"2 MAP  {Name(who)}";
+            mapLabel.text = $"1 MAP  {Name(who)}";
             mapCamera.enabled = who != null;
             if (who) mapCamera.transform.position = who.transform.position + Vector3.up * mapCameraHeight;
         }
 
-        void ShowConsumable(Player who)
+        void ShowResource(Player who)
         {
             if (who == null)
             {
-                ammoLabel.text = "3 RESOURCE  -";
+                ammoLabel.text = "2 AMMO/DASH  -";
                 ammoFill.fillAmount = 0f;
-                dashLabel.text = "";
                 return;
             }
 
             bool showDash = who.Stats.showDashOnHud;
-            string resource = showDash ? "DASH" : "AMMO";
+            string resource = showDash ? "DASH"
+                : who.TryGetComponent<WeaponModes>(out var wm) ? $"AMMO {wm.Current.displayName}" : "AMMO";
             int current = showDash ? who.DashStacks : who.Ammo.Current;
             int capacity = showDash ? who.DashCapacity : who.Ammo.Capacity;
-            ammoLabel.text = $"3 {resource}  {Name(who)}  {current}/{capacity}";
+            ammoLabel.text = $"2 {resource}  {Name(who)}  {current}/{capacity}";
             ammoFill.fillAmount = capacity > 0 ? (float)current / capacity : 0f;
-            dashLabel.text = $"{resource} {current}/{capacity}";
+        }
+
+        // 3번 파츠: 대상의 Q 킬 게이지와 E 상태
+        void ShowSkill(Player who)
+        {
+            if (who == null) { dashLabel.text = "3 SKILL  -"; return; }
+
+            var u = who.Ultimate;
+            string q = u.IsActive ? $"<color=#D5EF86>Q {u.Data.displayName} {u.ActiveLeft:F1}s</color>"
+                : u.IsReady ? "<color=#D5EF86>Q READY</color>"
+                : $"Q {u.Kills}/{u.KillsRequired}";
+
+            string e = "";
+            if (who.TryGetComponent<Parry>(out var parry))
+                e = parry.IsActive ? $"<color=#D5EF86>E PARRY {parry.ActiveLeft:F1}s</color>"
+                    : parry.CooldownLeft > 0f ? $"<color=#9AA5B1>E PARRY {parry.CooldownLeft:F1}s</color>"
+                    : "<color=#D5EF86>E PARRY READY</color>";
+            else if (who.TryGetComponent<WeaponModes>(out var wm))
+                e = wm.IsSwitching ? $"<color=#D5EF86>E → {wm.Next.displayName} {wm.SwitchLeft:F1}s</color>"
+                    : wm.CooldownLeft > 0f ? $"<color=#9AA5B1>E {wm.Current.displayName} {wm.CooldownLeft:F1}s</color>"
+                    : $"<color=#D5EF86>E {wm.Current.displayName} → {wm.Next.displayName}</color>";
+
+            dashLabel.text = $"3 SKILL  {Name(who)}  {q}  {e}";
         }
 
         void ShowSelf()
@@ -118,14 +145,7 @@ namespace OnYourMark
             string status = "";
             if (me.Buffs.SpeedMultiplier > 1f) status += "<color=#8FD3FF>RAIL BOOST</color>  ";
             if (me.Buffs.RevealsWeakPoints) status += "<color=#FF6B6B>WEAK POINTS</color>  ";
-            if (me.TryGetComponent<Parry>(out var parry))
-                status += parry.IsActive ? $"<color=#D5EF86>[E] PARRY {parry.ActiveLeft:F1}s</color>  "
-                    : parry.CooldownLeft > 0f ? $"<color=#9AA5B1>[E] PARRY {parry.CooldownLeft:F1}s</color>  "
-                    : "<color=#D5EF86>[E] PARRY READY</color>  ";
-            if (me.TryGetComponent<WeaponModes>(out var wm))
-                status += wm.IsSwitching ? $"<color=#D5EF86>[E] → {wm.Next.displayName} {wm.SwitchLeft:F1}s</color>  "
-                    : wm.CooldownLeft > 0f ? $"<color=#9AA5B1>{wm.Current.displayName}  [E] {wm.CooldownLeft:F1}s</color>  "
-                    : $"<color=#D5EF86>{wm.Current.displayName}  [E] → {wm.Next.displayName}</color>  ";
+            if (me.Ultimate.IsActive) status += $"<color=#D5EF86>{me.Ultimate.Data.displayName}</color>  ";
             foreach (var a in me.GetComponent<AwakeningSet>().Active)
                 status += $"<color=#C792EA>{a.displayName}</color>  ";
             statusLabel.text = status;
