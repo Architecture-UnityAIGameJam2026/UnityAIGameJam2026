@@ -30,12 +30,14 @@ namespace OnYourMark
         class Watch
         {
             public Situation last;
+            public float settledAt;
             public string pendingEvent;
             public float nextAllowed;
             public int generation;
             public bool inFlight;
         }
 
+        const float SpawnSettleSeconds = 1f;
         readonly Dictionary<Player, Watch> watches = new();
         bool warnedNoKey;
 
@@ -49,9 +51,11 @@ namespace OnYourMark
                 var now = Read(p);
                 if (!watches.TryGetValue(p, out var w))
                 {
-                    watches[p] = new Watch { last = now };
+                    watches[p] = new Watch { last = now, settledAt = Time.time + SpawnSettleSeconds };
                     continue;
                 }
+                // 막 생성된 직후에는 동기화 값(대쉬 개수 등)이 아직 0일 수 있어 변화로 보지 않는다
+                if (Time.time < w.settledAt) { w.last = now; continue; }
                 string evt = Describe(p, w.last, now);
                 w.last = now;
                 if (evt != null) { w.pendingEvent = evt; w.generation++; }
