@@ -8,7 +8,8 @@ namespace OnYourMark
     /// <summary>
     /// S2 인게임 HUD. 파츠(생체 / 지도 / 소모품)마다 반환 전이면 상대, 반환 후면 내 정보를 보여 준다.
     /// 반환 전 파츠에는 그 파츠로 줄 수 있는 지원의 쿨타임을 함께 표시한다.
-    /// 대쉬 · 호버 · 웨이브 · 내 요청 · 받은 효과는 항상 내 정보다.
+    /// 소모품은 검 캐릭터의 대쉬 / 레일건 캐릭터의 탄창을 표시한다.
+    /// 호버 · 웨이브 · 내 요청 · 받은 효과는 항상 내 정보다.
     /// </summary>
     public class CrossHudView : MonoBehaviour
     {
@@ -30,9 +31,10 @@ namespace OnYourMark
         [Header("3 소모품")]
         [SerializeField] TMP_Text ammoLabel;
         [SerializeField] Image ammoFill;
+        [Tooltip("기존 대쉬 위치에 표시하는 소모품 요약 (패널과 같은 대상)")]
+        [SerializeField] TMP_Text dashLabel;
 
         [Header("내 정보")]
-        [SerializeField] TMP_Text dashLabel;
         [SerializeField] Image hoverFill;
         [SerializeField] TMP_Text waveLabel;
         [SerializeField] TMP_Text partsLabel;
@@ -89,14 +91,25 @@ namespace OnYourMark
 
         void ShowConsumable(Player who)
         {
-            string count = who ? $"  {who.Ammo.Current}/{who.Ammo.Capacity}" : "";
-            ammoLabel.text = $"3 AMMO  {Name(who)}{count}{Cooldown(HudPart.Consumable)}";
-            ammoFill.fillAmount = who ? who.Ammo.Ratio : 0f;
+            if (who == null)
+            {
+                ammoLabel.text = "3 RESOURCE  -";
+                ammoFill.fillAmount = 0f;
+                dashLabel.text = "";
+                return;
+            }
+
+            bool showDash = who.Stats.showDashOnHud;
+            string resource = showDash ? "DASH" : "AMMO";
+            int current = showDash ? who.DashStacks : who.Ammo.Current;
+            int capacity = showDash ? who.Stats.dashMaxStacks : who.Ammo.Capacity;
+            ammoLabel.text = $"3 {resource}  {Name(who)}  {current}/{capacity}{Cooldown(HudPart.Consumable)}";
+            ammoFill.fillAmount = capacity > 0 ? (float)current / capacity : 0f;
+            dashLabel.text = $"{resource} {current}/{capacity}";
         }
 
         void ShowSelf()
         {
-            dashLabel.text = $"DASH {me.Motor.DashStacks}/{me.Stats.dashMaxStacks}";
             hoverFill.fillAmount = me.Motor.HoverLeft01;
 
             waveLabel.text =
@@ -165,7 +178,7 @@ namespace OnYourMark
         {
             HudPart.Bio => "BIO",
             HudPart.Map => "MAP",
-            _ => "AMMO",
+            _ => "RESOURCE",
         };
 
         // 반환 전 파츠: 이 파츠로 상대를 지원할 수 있으니 쿨타임을 보여 준다

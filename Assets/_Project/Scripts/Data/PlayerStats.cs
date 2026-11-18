@@ -9,6 +9,8 @@ namespace OnYourMark
         [Header("HUD 표시")]
         public string displayName = "P1";
         public Color color = Color.white;
+        [Tooltip("소모품 HUD에 탄창 대신 대쉬 횟수를 표시 (P1 검)")]
+        public bool showDashOnHud;
 
         [Header("이동 (m/s)")]
         public float moveSpeed = 7.5f;

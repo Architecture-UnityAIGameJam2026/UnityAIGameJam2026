@@ -7,6 +7,9 @@ namespace OnYourMark
     public class Player : NetworkBehaviour
     {
         static readonly List<Player> all = new();
+        // 이동은 소유자만 계산하므로, 남은 대쉬 횟수도 소유자가 공유한다.
+        readonly NetworkVariable<int> dashStacks = new(0,
+            NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         public static IReadOnlyList<Player> All => all;
         public static Player Local => all.Find(p => p.IsOwner);
@@ -18,6 +21,7 @@ namespace OnYourMark
         public PlayerBuffs Buffs { get; private set; }
         public SupportRequests Requests { get; private set; }
         public PlayerStats Stats => Motor.Stats;
+        public int DashStacks => IsOwner ? Motor.DashStacks : dashStacks.Value;
 
         void Awake()
         {
@@ -30,9 +34,17 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
+            if (IsOwner) dashStacks.Value = Motor.DashStacks;
             all.Add(this);
             UnityEngine.Debug.Log($"[OnYourMark] {Stats.displayName} spawned for client {OwnerClientId} at {transform.position} (mine: {IsOwner})");
         }
+
+        void LateUpdate()
+        {
+            if (IsSpawned && IsOwner && dashStacks.Value != Motor.DashStacks)
+                dashStacks.Value = Motor.DashStacks;
+        }
+
         public override void OnNetworkDespawn() => all.Remove(this);
     }
 }
