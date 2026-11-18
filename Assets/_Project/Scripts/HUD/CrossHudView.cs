@@ -118,6 +118,10 @@ namespace OnYourMark
             string status = "";
             if (me.Buffs.SpeedMultiplier > 1f) status += "<color=#8FD3FF>RAIL BOOST</color>  ";
             if (me.Buffs.RevealsWeakPoints) status += "<color=#FF6B6B>WEAK POINTS</color>  ";
+            if (me.TryGetComponent<Parry>(out var parry))
+                status += parry.IsActive ? $"<color=#D5EF86>[E] PARRY {parry.ActiveLeft:F1}s</color>  "
+                    : parry.CooldownLeft > 0f ? $"<color=#9AA5B1>[E] PARRY {parry.CooldownLeft:F1}s</color>  "
+                    : "<color=#D5EF86>[E] PARRY READY</color>  ";
             foreach (var a in me.GetComponent<AwakeningSet>().Active)
                 status += $"<color=#C792EA>{a.displayName}</color>  ";
             statusLabel.text = status;

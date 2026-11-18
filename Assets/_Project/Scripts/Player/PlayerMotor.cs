@@ -158,6 +158,9 @@ namespace OnYourMark
             if (fill) dashRecharge = 0f;
         }
 
+        /// <summary>대쉬 칸을 amount만큼 즉시 채운다 (최대치까지). 패링 성공 보상 등.</summary>
+        public void AddDashStacks(int amount) => DashStacks = Mathf.Min(DashCapacity, DashStacks + amount);
+
         void TryDash(Vector3 input)
         {
             if (DashStacks == 0 || dashTimeLeft > 0f) return;

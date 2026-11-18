@@ -16,6 +16,18 @@ namespace OnYourMark
 
         protected abstract EnemyData Data { get; }
 
+        double stunnedUntil;   // 서버 시간
+        /// <summary>경직 중이면 AI가 멈춘다 (패링에 막혔을 때).</summary>
+        protected bool IsStunned => IsSpawned && NetworkManager.ServerTime.Time < stunnedUntil;
+
+        /// <summary>서버 전용. seconds 동안 이동 · 공격을 멈춘다.</summary>
+        public void Stun(float seconds)
+        {
+            if (!IsServer) return;
+            stunnedUntil = NetworkManager.ServerTime.Time + seconds;
+            if (Agent.isOnNavMesh) Agent.ResetPath();
+        }
+
         public override void OnNetworkSpawn()
         {
             Agent = GetComponent<NavMeshAgent>();
