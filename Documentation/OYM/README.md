@@ -247,16 +247,29 @@ python Tools/prep_cinematic.py      # 런처 발사관·엔진 배기용 빨강 
 | 항목 | 내용 |
 |---|---|
 | 텍스처 | 무압축이던 130장(garam BaseColor/Mask/Emission, 히트 FX, 레티클, 팀 로고) → BC7/BC5. 4K 소품 6장 → 2K. 1인칭 무기·스카이 큐브맵은 유지. 4의 배수가 아닌 타이틀 로고·아이콘과 그라데이션 램프(`T_Ramp_*`)는 압축 안 함 |
-| 동적 해상도 | HDRP 에셋 3종에서 켬(하드웨어 DRS 50–100 %). 업스케일러는 **DLSS(RTX) → STP** 순, 폴백 FSR1. `com.unity.modules.nvidia` 추가 |
+| 동적 해상도 | HDRP 에셋 3종에서 켬(하드웨어 DRS 50–100 %). 업스케일러는 **DLSS(RTX) → STP** 순, 폴백 FSR1, High Fidelity는 DoF 뒤에서 업스케일(DoF를 저해상도로). `com.unity.modules.nvidia` 추가 |
 | `FrameRateGuard` | 런타임에 모든 게임 카메라의 `allowDynamicResolution`을 켜고, GPU 시간으로 렌더 스케일을 조절(예산 18.9 ms, 60 Hz 수직동기 화면이면 그 주기). 스케일 50 %에서도 45 fps 아래면 볼륨으로 포그 품질 Low·접촉 그림자 끔(1단계), SSAO 끔(2단계), 여유가 생기면 되돌림. CPU 병목일 때는 해상도를 내리지 않음 |
-| `DebrisMotion` | `Spin`·`Drift` 1,800여 개를 Transform 잡 하나로 움직임(개별 FixedUpdate·리지드바디 보간 제거). 카메라 150 m 밖 데브리는 카메라 모션벡터만 써서 오브젝트 모션벡터 패스에서 빠짐 |
+| `DebrisMotion` | `Spin`·`Drift` 1,800여 개를 Transform 잡 하나로 움직임(개별 FixedUpdate·리지드바디 보간 제거). 화면에서 프레임당 0.75 px 미만으로 움직이는 원거리·느린 데브리는 2–6프레임마다 엇갈려 갱신해서, 안 움직인 프레임은 모션벡터 패스·물리 동기화에서 빠짐(렌더러의 모션벡터 모드를 런타임에 바꾸는 방식은 GPU Resident Drawer가 등록 때 값을 캐시해서 효과가 없었음) |
+| 잔해 LOD | LOD가 없던 잔해 799조각 중 1,500삼각형 이상 736조각에 Blender로 구운 LOD1 25 %·LOD2 6 %(`Generated/WreckLod/`, 812만 → 203만/49만 삼각형). `WreckLods`가 씬 로드 때 LODGroup(0.3 / 0.08 / 0)을 붙임(씬 수정 없음, 충돌체는 그대로). 다시 굽는 법은 `Tools/OYM/wreck_lods/README.md` |
 | `ShadowThrottle` | 반경 60 m 이상 포인트/스팟 그림자(코어 라이트 900 m)를 HDRP 캐시 그림자로 바꾸고 큐브 6면 중 프레임당 2면씩 갱신. 요청하지 않은 면은 HDRP가 컬링도 건너뜀 |
 | HDRP High Fidelity | GPU Resident Drawer 작은 메시 컬링 0.3 %(화면 높이 약 5 px 미만 메시 생략, 원거리 잔해), 데칼 지원 끔(프로젝트에 데칼 없음, 켜져 있으면 데칼을 받는 불투명 전부를 뎁스 프리패스로 한 번 더 그림), SSGI 지원 끔(모든 볼륨에서 꺼져 있음), 컬러 버퍼 R11G11B10, PCSS 그림자 필터 → Medium |
 | 볼륨·설정 | `OYM_SpaceVolume` 태양 그림자 거리 2600 → 1200 m(`OYMSetup` 상수도 같이), `Maximum Allowed Timestep` 0.333 → 0.1, Frame Timing Stats 켬 |
 
-명령줄: `-oymPerfHud`(fps·GPU·스케일 오버레이, **F8**로 토글), `-oymPerfLog <파일>`(초당 CSV), `-oymNoGuard`(가드 끔), `-oymNoShadowThrottle`.
+측정(2026-11-19, 에디터 플레이모드 2560×1600, RTX 4060 노트북, 다른 Unity 작업이 같이 돌던 상태라 절대값은 빌드보다 나쁘게 나옴):
+
+| 씬 | 최적화 전 | 최적화 후 | 비고 |
+|---|---|---|---|
+| MainTitle | 15.2 fps (66 ms, GPU 57 ms) | 30.3 fps (33 ms, GPU 28 ms) | 삼각형 2,930만 → 1,500만, 키네마틱 바디 2,569 → 982, 텍스처 메모리 3.3 → 2.3 GB |
+| Showcase_DebrisField | 20.2 fps (50 ms, GPU 34 ms) | 28.4 fps (35 ms, GPU 28 ms) | 삼각형 2,870만 → 1,370만 |
+| Arena | 101 fps | 118 fps | 텍스처 메모리 2.6 → 1.8 GB |
+
+에디터 기준으로는 아직 45 fps에 못 미칩니다. 남은 비용은 해상도와 무관한 G버퍼(약 11 ms)·오브젝트 모션벡터(약 10.5 ms) 패스와 메인 스레드 컬링(약 10 ms)이고, 가드는 이 씬들에서 해상도 50 %·2단계까지 내려가 있습니다. 플레이어 빌드 측정은 아직 하지 않았습니다.
+측정 도구(팀 저장소 밖): `OYM_git/perf_tools/run_bench.sh`, `compare.py`.
+메모리가 부족한 PC에서 에디터 셰이더 컴파일이 "out of memory"로 실패하면 GPU Resident Drawer(DOTS_INSTANCING) 변형이 깨져 모델이 흰 덩어리·파편처럼 보입니다. 이때는 메모리를 확보하고 `Library/ShaderCache`를 지운 뒤 다시 여세요.
+
+명령줄: `-oymPerfHud`(fps·GPU·스케일 오버레이, **F8**로 토글), `-oymPerfLog <파일>`(초당 CSV), `-oymNoGuard`(가드 끔), `-oymNoShadowThrottle`, `-oymNoWreckLods`.
 데칼을 쓰게 되면 `HDRP High Fidelity`의 Decals를 다시 켜야 합니다(뎁스 프리패스 비용이 같이 돌아옵니다).
-잔해 799조각(820만 삼각형)에는 여전히 LOD가 없습니다. Unity 6.3 `MeshLodUtility.GenerateMeshLods`로 임포터에서 자동 생성해 봤지만 `frag_0090`에서 에디터가 네이티브 크래시(`MeshLod::BuildRedirect`)해서 넣지 않았습니다. LOD가 필요하면 `skybox/export_assets.py` 쪽에서 단순화 메시를 같이 내보내는 게 안전합니다.
+Unity 6.3 `MeshLodUtility.GenerateMeshLods`(임포터 자동 LOD)는 `frag_0090`에서 에디터가 네이티브 크래시(`MeshLod::BuildRedirect`)해서 쓰지 않고, 위처럼 Blender로 미리 굽습니다. 잔해를 다시 내보내면 LOD도 다시 구워야 합니다.
 
 ## 알려진 한계
 
