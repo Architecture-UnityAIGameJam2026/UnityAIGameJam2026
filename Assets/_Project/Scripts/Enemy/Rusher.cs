@@ -24,7 +24,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsServer || !IsSpawned || fusing) return;
+            if (!IsServer || !IsSpawned || fusing || IsStunned) return;
 
             var target = NearestPlayer();
             if (target == null) { Agent.ResetPath(); return; }
@@ -43,7 +43,8 @@ namespace OnYourMark
             yield return new WaitForSeconds(data.fuseTime);
 
             foreach (var c in Physics.OverlapSphere(transform.position, data.blastRadius, data.targetMask))
-                if (Health.Of(c) is { } h && h != Health) h.Damage(data.blastDamage);
+                if (Health.Of(c) is { } h && h != Health && !Parry.Blocks(h, transform.position, true, this))
+                    h.Damage(data.blastDamage);
 
             ShowBlastRpc(transform.position);
             Health.Damage(Health.Max);   // 자폭: 사망 처리(웨이브 카운트, 디스폰)를 그대로 탄다

@@ -15,10 +15,11 @@ MonoBehaviour:
   prefab: {fileID: 7613923369655819655, guid: c15fd5b4acad14fbc9204162209187fa, type: 3}
   damage: 70
   speed: 30
-  range: 30
+  range: 15
   radius: 0.6
   cost: 1
   cooldown: 0.4
+  pierce: 1
   hitMask:
     serializedVersion: 2
     m_Bits: 1536

@@ -15,5 +15,7 @@ namespace OnYourMark
         }
 
         public Group[] groups;
+        [Tooltip("적을 한 마리씩 내보내는 간격(초). 한꺼번에 몰려 한 명이 순식간에 쓰러지는 것을 막는다")]
+        public float spawnInterval = 0.6f;
     }
 }

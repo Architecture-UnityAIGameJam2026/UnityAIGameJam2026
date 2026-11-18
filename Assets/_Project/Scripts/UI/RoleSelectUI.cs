@@ -19,9 +19,14 @@ namespace OnYourMark
         void Update()
         {
             var net = NetworkManager.Singleton;
-            bool show = selection.IsSpawned && net.IsConnectedClient && net.LocalClient.PlayerObject == null;
+            bool show = selection.IsSpawned && net.IsConnectedClient && net.LocalClient.PlayerObject == null && !selection.AllChosen;
             if (panel.activeSelf != show) panel.SetActive(show);
-            if (show) Refresh(net.LocalClientId);
+            if (!show) return;
+            Refresh(net.LocalClientId);
+
+            // 실행 인자 -role 로 자동 선택 (빌드 테스트용)
+            if (LaunchArgs.Get("-role") is { } r && int.TryParse(r, out int role) && !selection.HasChosen(net.LocalClientId)
+                && buttons[role].interactable) Choose(role);
         }
 
         void Refresh(ulong me)
@@ -37,6 +42,9 @@ namespace OnYourMark
                 labels[i].text = $"{role.displayName}\n<size=60%>{state}</size>";
             }
             status.text = chosen ? "Waiting for your partner..." : "Choose your position";
+            // Host는 상대가 Join할 방 코드를 알려 준다 (IP를 base64로 바꾼 값, IP는 화면에 보이지 않는다)
+            if (NetworkManager.Singleton.IsServer)
+                status.text += $"\n<size=60%>Room code: <color=#F08045>{RoomCode.Encode(LocalAddress.Get())}</color></size>";
         }
     }
 }

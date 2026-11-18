@@ -14,6 +14,8 @@ namespace OnYourMark
         [SerializeField] RoleDefinition[] roles;
         [Tooltip("두 플레이어가 모두 스폰되면 Raise (웨이브 시작 등)")]
         [SerializeField] GameEvent playersSpawned;
+        [Tooltip("재시작 시 Raise: 포지션을 다시 고른다")]
+        [SerializeField] GameEvent roundReset;
 
         readonly NetworkList<ulong> owners = new();
         bool spawnDone;
@@ -21,6 +23,8 @@ namespace OnYourMark
         public RoleDefinition[] Roles => roles;
         public ulong OwnerOf(int role) => role < owners.Count ? owners[role] : Nobody;
         public bool HasChosen(ulong clientId) => owners.Contains(clientId);
+        /// <summary>두 역할이 모두 정해짐 (진행 중이거나 결과 화면). 재시작하면 다시 false.</summary>
+        public bool AllChosen => owners.Count > 0 && !owners.Contains(Nobody);
 
         public override void OnNetworkSpawn()
         {
@@ -28,11 +32,20 @@ namespace OnYourMark
             owners.Clear();
             foreach (var _ in roles) owners.Add(Nobody);
             NetworkManager.OnClientDisconnectCallback += ReleaseRole;
+            roundReset.Raised += ClearRoles;
+        }
+
+        void ClearRoles()
+        {
+            for (int i = 0; i < owners.Count; i++) owners[i] = Nobody;
+            spawnDone = false;
         }
 
         public override void OnNetworkDespawn()
         {
-            if (IsServer && NetworkManager != null) NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
+            if (!IsServer) return;
+            if (NetworkManager != null) NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
+            roundReset.Raised -= ClearRoles;
         }
 
         public void Choose(int role) => ChooseRpc(role);

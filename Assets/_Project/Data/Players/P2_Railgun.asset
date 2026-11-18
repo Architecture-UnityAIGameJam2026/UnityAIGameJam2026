@@ -12,16 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9480a99c54241ff8d7de3b7238b16e, type: 3}
   m_Name: P2_Railgun
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PlayerStats
+  displayName: P2 RAILGUN
+  color: {r: 0.25, g: 0.85, b: 0.95, a: 1}
+  showDashOnHud: 0
   moveSpeed: 5
   zoomMoveSpeed: 2.5
   zoomMagnification: 2.5
   jumpHeight: 1.5
   gravity: -18
+  hoverSpeed: 6
   hoverMaxTime: 3.5
-  hoverFallSpeed: 0.5
+  hoverRechargeDelay: 1.5
+  hoverRechargeRate: 0
   dashDistance: 5
   dashDuration: 0.25
   dashCooldown: 6
   dashMaxStacks: 1
-  resourceCapacity: 6
+  resourceCapacity: 20
   resourceStartsFull: 1
+  supportEffects:
+  - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
+  awakenings:
+  - {fileID: 11400000, guid: 133e694fc10a64c269b10f959c9708b4, type: 2}
+  - {fileID: 11400000, guid: 2fe435d90a8f040b0b3b89711cd579d2, type: 2}
+  - {fileID: 11400000, guid: 29164e5d249cf4d68a2df54c8ab642c7, type: 2}

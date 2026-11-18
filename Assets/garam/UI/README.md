@@ -48,9 +48,11 @@ Edit mode에서 `unity command script eval --file tools/export-hud.cs --project-
 
 ```csharp
 hud.demoInput = false;
-hud.SetPartnerTelemetry(partnerHealth01, partnerAmmo); // ammo: 0..8
+hud.SetPartnerTelemetry(partnerHealth01, partnerAmmo, partnerCapacity, partnerResourceIsDash);
 hud.localHealth = localHealth01;
 hud.localAmmo = localAmmo;
+hud.localAmmoCapacity = localCapacity;
+hud.localResourceIsDash = localResourceIsDash;
 
 // 게임/네트워크 계층에서 이벤트를 구독합니다.
 hud.ExchangeRequested += SendExchangeRequest;
@@ -65,9 +67,19 @@ hud.sectorComplete = true;
 hud.ReturnHud(0);
 ```
 
-컨트롤러는 로컬 UI 상태와 이벤트를 제공합니다. 멀티플레이 동기화, AI 음성/대화, 전투, 실제 대시 초기화는 구현하지 않았습니다.
+컨트롤러는 로컬 UI 상태와 이벤트를 제공합니다. 게임 연결은 아래의 `HudPlayerBridge`가 담당하며, Showcase에서는 기존 시연 입력을 사용할 수 있습니다.
 구독한 이벤트는 연결한 게임 컴포넌트의 수명에 맞춰 해제하세요.
 현재 HUD의 텍스트는 체력·탄약·거리 숫자 3개뿐입니다. 설명 문구를 추가하거나 한국어로 현지화할 경우 한글 폰트를 연결하세요.
+
+### feature/prototype의 Arena 연결
+
+- `main`의 SenseLink 프리팹과 HUD 연결 코드를 바탕으로 Arena에 적용했습니다. 렌더링은 이 브랜치의 URP 설정을 사용합니다.
+- `Assets/_Project/Scripts/Garam/HudPlayerBridge.cs`가 실제 플레이어, `CrossHudState`, `PartExchange`를 연결합니다. Arena에서는 시연 입력을 끄고, 플레이어가 생성된 동안만 HUD를 표시합니다.
+- 검 화면은 레일건 잔탄(최대 20발), 레일건 화면은 검 대시(최대 3회)를 표시합니다. 숫자는 실제 남은 수량이며, 아래 눈금은 용량에 비례합니다. 대시는 3칸을 사용합니다.
+- 교환 버튼은 서버의 기존 제안·동의 흐름으로 연결되고, 취소는 제안자만 할 수 있습니다. 지원 버튼은 실제 지원 요청을 보냅니다. 키보드 1/2/3, Q, 조준 후 지원 동작도 유지됩니다.
+- Esc로 커서를 푼 뒤 왼쪽 아래 HUD 버튼을 클릭합니다. HUD 밖을 클릭하면 다시 1인칭 조작으로 돌아갑니다.
+- 지도에는 기존 교차 HUD의 실제 RenderTexture를 연결했습니다. 웨이브, 호버, 교환·소생·단말기 안내는 기존 게임 표시를 함께 사용합니다.
+- HUD 반환 및 라운드 재시작은 서버 상태를 따릅니다. 기존 `SetPartnerTelemetry(health, ammo)` 호출은 8칸 시연용으로 계속 사용할 수 있습니다.
 
 ## 디자인과 효과
 

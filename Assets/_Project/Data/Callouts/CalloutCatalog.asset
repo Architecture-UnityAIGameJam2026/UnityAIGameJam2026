@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6926e98be4985477281a69ded317d4cc, type: 3}
+  m_Name: CalloutCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.CalloutCatalog
+  linesCsv: {fileID: 4900000, guid: 5e335bd97c29546a5a7c5e4fbf54e943, type: 3}
+  candidates:
+  - id: heal_now
+    usage: Use when the subject's health just dropped to low (about 40% or less)
+      but is not critical yet.
+    spokenBySubject: 0
+  - id: heal_crit
+    usage: Use when the subject's health is critical, in the red (15% or less).
+    spokenBySubject: 0
+  - id: heal_ok
+    usage: Use when the subject's health recovered back to a safe level.
+    spokenBySubject: 0
+  - id: fuel_low
+    usage: Use when the subject just used up all dash charges (booster fuel is empty).
+    spokenBySubject: 0
+  - id: fuel_full
+    usage: Use when the subject's dash charges are fully recharged after being empty.
+    spokenBySubject: 0
+  - id: ammo_low
+    usage: Use when the subject's gun is running low on ammo but the magazine is
+      not empty.
+    spokenBySubject: 0
+  - id: ammo_empty
+    usage: Use when the subject's magazine is completely empty (0 rounds).
+    spokenBySubject: 0
+  - id: downed
+    usage: Use when the subject just went down (health 0). Said by the downed subject
+      asking the partner for a revive.
+    spokenBySubject: 1
+  - id: reviving
+    usage: Use when the subject is downed and the partner is heading over to revive
+      them.
+    spokenBySubject: 0
+  - id: thanks
+    usage: Use when the subject was just revived by the partner. Said by the revived
+      subject.
+    spokenBySubject: 1
+  lowHealth: 0.4
+  criticalHealth: 0.15
+  lowAmmo: 0.25
+  displaySeconds: 4
+  cooldownSeconds: 5

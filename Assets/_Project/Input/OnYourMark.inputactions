@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Request",
+                    "name": "Ultimate",
                     "type": "Button",
                     "id": "3b1df610-ee7c-4e3a-a3fa-ed44bbbe8ce7",
                     "expectedControlType": "Button",
@@ -114,9 +114,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Special",
+                    "name": "Reload",
                     "type": "Button",
                     "id": "d7708a45-59a7-4411-af69-8f809d1b1de3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill",
+                    "type": "Button",
+                    "id": "8269f116-92f8-4e64-b064-739c4e441efd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TacticalMap",
+                    "type": "Button",
+                    "id": "932b5e91-9506-4e9a-9cba-fb4753016021",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -241,7 +259,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Request",
+                    "action": "Ultimate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -281,7 +299,7 @@
                 {
                     "name": "",
                     "id": "6857147c-32e1-408a-a871-baaba75d191d",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -307,7 +325,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Special",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "213e9597-9f27-46ce-a744-71b1c3604dd1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0009a7f-c190-4df9-bc0a-6edb9fe6a1cc",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "TacticalMap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

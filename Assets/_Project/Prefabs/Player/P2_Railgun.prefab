@@ -271,10 +271,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 639847117943148603, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: 2e8e4955f393346e9a6c982ecf486136, type: 2}
     - target: {fileID: 784904537766462124, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: 534fd891dfdd24efb96ab8e98d30bc1e, type: 2}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: disableWhileDowned.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[3]'
+      value: 
+      objectReference: {fileID: 6247795060014951029}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[4]'
+      value: 
+      objectReference: {fileID: 5242030366448041823}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[5]'
+      value: 
+      objectReference: {fileID: 3849098907872238154}
     - target: {fileID: 3063893716798316700, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -346,7 +366,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6247795060014951029}
+    - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3849098907872238154}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+--- !u!114 &1141345864685667043 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4686630308406251914, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+  m_PrefabInstance: {fileID: 5682594310907827049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e2c9a96e19dc41b09d4530c5dac7d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.SupportGiver
 --- !u!1 &1169990408483511464 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
@@ -463,12 +497,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.HitscanWeapon
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 8fc5023b1fe3b455cbedff750bc9b3e6, type: 2}
+  modes: {fileID: 3849098907872238154}
+  reloadConfig: {fileID: 11400000, guid: 4e9f3d15311064b2f9a694decf50db66, type: 2}
   fire: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
-  reload: {fileID: -1726813000163922418, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   magazine: {fileID: 4915727301799875013}
   muzzle: {fileID: 4517322814775240331}
   tracer: {fileID: 2824581523873952623}
   audioSource: {fileID: 1093401199587174246}
+  support: {fileID: 1141345864685667043}
+--- !u!114 &3849098907872238154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f65444d62b5945ca8da6f6cd465bfe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.WeaponModes
+  ShowTopMostFoldoutHeaderGroup: 1
+  modes:
+  - {fileID: 11400000, guid: 3315e331c25b143528c4a0ed2f10db91, type: 2}
+  - {fileID: 11400000, guid: 8fc5023b1fe3b455cbedff750bc9b3e6, type: 2}
+  data: {fileID: 11400000, guid: 04524783ff72d43e0a87a4f6ab99d74f, type: 2}
+  skill: {fileID: -3484653264553352299, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+  magazine: {fileID: 4915727301799875013}
 --- !u!4 &1922532094595571162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085090604175920819, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
@@ -485,3 +540,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4544fc08e0ac144f190b9f4287b73f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.AmmoPool
+--- !u!114 &5242030366448041823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 460439955930557494, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+  m_PrefabInstance: {fileID: 5682594310907827049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deecf7f484dd04439a097db23a45bd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ResourceReload

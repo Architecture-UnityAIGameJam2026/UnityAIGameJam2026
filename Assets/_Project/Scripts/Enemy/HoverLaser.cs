@@ -42,7 +42,7 @@ namespace OnYourMark
             laser.enabled = charging.Value || flashing;
             if (laser.enabled) { laser.SetPosition(0, eye.position); laser.SetPosition(1, aimPoint.Value); }
 
-            if (!IsServer || !IsSpawned || charging.Value) return;
+            if (!IsServer || !IsSpawned || charging.Value || IsStunned) return;
 
             var target = NearestPlayer();
             if (target == null) return;
@@ -82,7 +82,8 @@ namespace OnYourMark
             if (Physics.Raycast(eye.position, aim, out var hit, data.range, data.targetMask))
             {
                 aimPoint.Value = hit.point;
-                if (Health.Of(hit.collider) is { } h) h.Damage(data.damage);
+                // 패링 중인 P1이 정면으로 받으면 대미지 대신 반사된다
+                if (Health.Of(hit.collider) is { } h && !Parry.Blocks(h, eye.position, false, this)) h.Damage(data.damage);
             }
             ShowShotRpc();
 

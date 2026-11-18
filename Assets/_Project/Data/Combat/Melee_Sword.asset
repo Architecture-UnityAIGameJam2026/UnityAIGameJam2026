@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21046bec4491447c8dd627319c88082, type: 3}
   m_Name: Melee_Sword
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.MeleeData
-  damage: 50
+  damage: 40
   windup: 0.1
   recovery: 0.3
-  boxSize: {x: 2.5, y: 2, z: 3}
-  gaugePerHit: 1
+  boxSize: {x: 2.8, y: 2, z: 3.2}
   hitMask:
     serializedVersion: 2
     m_Bits: 1536

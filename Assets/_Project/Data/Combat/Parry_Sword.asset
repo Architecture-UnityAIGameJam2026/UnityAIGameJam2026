@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e664403e22c29496dbd71f7a3242325c, type: 3}
+  m_Name: Parry_Sword
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ParryData
+  duration: 1.5
+  cooldown: 8
+  frontHalfAngle: 75
+  boxSize: {x: 2.2, y: 2, z: 1.5}
+  reflectDamage: 120
+  reflectRange: 60
+  reflectMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  stunSeconds: 1.5
+  dashPayback: 1
+  partnerKillBonus: 2
+  cooldownMultiplierWhileCrossed: 0.7

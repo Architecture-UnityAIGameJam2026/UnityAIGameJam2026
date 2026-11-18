@@ -12,16 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9480a99c54241ff8d7de3b7238b16e, type: 3}
   m_Name: P1_Sword
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PlayerStats
+  displayName: P1 SWORD
+  color: {r: 0.95, g: 0.65, b: 0.15, a: 1}
+  showDashOnHud: 1
   moveSpeed: 7.5
   zoomMoveSpeed: 0
   zoomMagnification: 1
   jumpHeight: 2.2
   gravity: -22
+  hoverSpeed: 9
   hoverMaxTime: 2.5
-  hoverFallSpeed: 1.5
+  hoverRechargeDelay: 1.5
+  hoverRechargeRate: 0
   dashDistance: 9
   dashDuration: 0.2
   dashCooldown: 3.5
-  dashMaxStacks: 2
+  dashMaxStacks: 3
   resourceCapacity: 4
-  resourceStartsFull: 0
+  resourceStartsFull: 1
+  supportEffects:
+  - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
+  awakenings:
+  - {fileID: 11400000, guid: 133e694fc10a64c269b10f959c9708b4, type: 2}
+  - {fileID: 11400000, guid: 221f8af7e852d4f81900ebb94dd4dc00, type: 2}
+  - {fileID: 11400000, guid: a5fec534b3a744f9c892280532cfc82c, type: 2}

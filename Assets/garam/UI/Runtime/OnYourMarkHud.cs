@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -14,8 +14,12 @@ namespace OnYourMark.UI
         public bool demoInput=true;
         [Range(0,1)] public float partnerHealth=.78f;
         public int partnerAmmo=6;
+        public int partnerAmmoCapacity=8;
+        public bool partnerResourceIsDash;
         [Range(0,1)] public float localHealth=.92f;
         public int localAmmo=8;
+        public int localAmmoCapacity=8;
+        public bool localResourceIsDash;
         public bool reducedMotion;
         public enum PreviewState { Field, Request, Critical, Awakened }
         public enum Panel { Closed, Channels, Support }
@@ -25,6 +29,7 @@ namespace OnYourMark.UI
         public int pendingChannel=-1;
         public bool sectorComplete;
         public System.Action<int> ExchangeRequested;
+        public System.Action ExchangeCancelled;
         public System.Action<int> SupportRequested;
         public System.Action<int> HudReturned;
         /// <summary>채널이 주인을 바꾸기 직전(화면에는 아직 이전 데이터). (channel, 이제 내 정보를 보는지). HudSwapGlitch가 구독한다.</summary>
@@ -33,7 +38,7 @@ namespace OnYourMark.UI
         static readonly string[] TwoDigits=BuildTwoDigits();
         static string[] BuildTwoDigits(){var a=new string[101];for(int i=0;i<a.Length;i++)a[i]=i.ToString("00");return a;}
         static string Two(int v)=>(uint)v<(uint)TwoDigits.Length?TwoDigits[v]:v.ToString("00");
-        public bool PartnerNeedsSupport=>partnerHealth<=.15f||partnerAmmo<=1;
+        public bool PartnerNeedsSupport=>partnerHealth<=.15f||(partnerAmmoCapacity>0&&(float)partnerAmmo/partnerAmmoCapacity<=.125f);
         readonly Dictionary<string,Text> texts=new Dictionary<string,Text>();
         readonly Dictionary<string,CanvasGroup> groups=new Dictionary<string,CanvasGroup>();
         readonly Dictionary<string,string> visibility=new Dictionary<string,string>();
@@ -131,14 +136,35 @@ namespace OnYourMark.UI
             if(action=="channels")openPanel=openPanel==Panel.Channels?Panel.Closed:Panel.Channels;
             else if(action=="support")openPanel=openPanel==Panel.Support?Panel.Closed:Panel.Support;
             else if(action=="close")openPanel=Panel.Closed;
-            else if(action=="cancel")CancelExchange();
+            else if(action=="cancel"){CancelExchange();ExchangeCancelled?.Invoke();}
             else if(action.StartsWith("exchange")&&int.TryParse(action.Substring(8),out int channel))RequestExchange(channel);
             else if(action.StartsWith("send")&&int.TryParse(action.Substring(4),out int support))SendSupport(support);
         }
-        public void SetPartnerTelemetry(float health01,int ammo)
+        public void SetPartnerTelemetry(float health01,int ammo,int capacity=8,bool isDash=false)
         {
-            partnerHealth=Mathf.Clamp01(health01);partnerAmmo=Mathf.Clamp(ammo,0,8);
+            partnerHealth=Mathf.Clamp01(health01);partnerAmmoCapacity=Mathf.Max(0,capacity);
+            partnerAmmo=Mathf.Clamp(ammo,0,partnerAmmoCapacity);partnerResourceIsDash=isDash;
             if(state==PreviewState.Field||state==PreviewState.Critical)state=PartnerNeedsSupport?PreviewState.Critical:PreviewState.Field;
+        }
+        // Live games take ownership and pending offers from the server, including round resets.
+        public void SetGameState(bool bioReturned,bool mapReturned,bool resourceReturned,int offer)
+        {
+            bool changed=returned[0]!=bioReturned||returned[1]!=mapReturned||returned[2]!=resourceReturned;
+            if(changed&&ChannelSwapping!=null)   // 서버 교환 · 단말기 반환 · 라운드 리셋: 바뀌기 직전 화면을 고스트로 남긴다
+            {
+                if(returned[0]!=bioReturned)ChannelSwapping(0,bioReturned);
+                if(returned[1]!=mapReturned)ChannelSwapping(1,mapReturned);
+                if(returned[2]!=resourceReturned)ChannelSwapping(2,resourceReturned);
+            }
+            returned[0]=bioReturned;returned[1]=mapReturned;returned[2]=resourceReturned;
+            if(changed)RefreshOwnership();
+            if(offer>=0&&offer<3)
+            {
+                if(pendingChannel!=offer)requestAt=Time.unscaledTime;
+                pendingChannel=offer;state=PreviewState.Request;
+                SetIcon("Exchange/Channel icon",ChannelIcons[offer]);
+            }
+            else if(pendingChannel>=0)CancelExchange();
         }
         public void RequestExchange(int channel)
         {
@@ -250,9 +276,25 @@ namespace OnYourMark.UI
                 healthBar.color=returned[0]?accentColor:target<=.15f?dangerColor:primaryColor;
             }
             int ammo=returned[2]?localAmmo:partnerAmmo;
-            SetText("Reserves/Ammo number",Two(ammo));
-            for(int i=0;i<8;i++)if(ammoCells[i]){var color=i<ammo?primaryColor:dimColor;color.a=i<ammo?.85f:.25f;ammoCells[i].color=color;}
+            int capacity=returned[2]?localAmmoCapacity:partnerAmmoCapacity;
+            bool isDash=returned[2]?localResourceIsDash:partnerResourceIsDash;
+            SetText("Reserves/Ammo number",capacity>0?Two(ammo):"--");
+            int cells=capacity>0?Mathf.Min(capacity,ammoCells.Length):0;
+            int filled=capacity>0?Mathf.CeilToInt((float)ammo/capacity*cells):0;
+            for(int i=0;i<ammoCells.Length;i++)if(ammoCells[i])
+            {
+                ammoCells[i].enabled=i<cells;
+                var color=i<filled?primaryColor:dimColor;color.a=i<filled?.85f:.25f;ammoCells[i].color=color;
+            }
+            SetResourceWeapon("Reserves/Primary weapon",isDash?"sword":"rifle",160f);
+            SetResourceWeapon("Reserves/Melee weapon",isDash?"rifle":"sword",80f);
             SetIcon("Critical/Support icon",partnerHealth<=.15f?"shield":"supply");
+        }
+        void SetResourceWeapon(string key,string kind,float width)
+        {
+            SetIcon(key,kind);
+            if(iconGraphics.TryGetValue(key,out var graphic))
+                graphic.rectTransform.sizeDelta=new Vector2(width,width*graphic.iconHeight/graphic.iconWidth);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace OnYourMark
 {
-    /// <summary>자원을 소모해 투사체를 쏜다. P1은 R로 원격 검기(검기 1칸 소모). 투사체는 NetworkObjectPool에서 꺼낸다.</summary>
+    /// <summary>자원을 소모해 투사체를 쏜다. (P13에서 P1 검기 발사는 제거됨. 투사체 무기 틀로 남겨 둔다) 투사체는 NetworkObjectPool에서 꺼낸다.</summary>
     public class ProjectileWeapon : NetworkBehaviour
     {
         [SerializeField] ProjectileData data;
@@ -34,7 +34,7 @@ namespace OnYourMark
             if (!resource.TrySpend(data.cost)) return;
             Vector3 origin = transform.position + Vector3.up * 1.2f + transform.forward * 0.8f;
             var obj = NetworkObjectPool.Get(data.prefab, origin, Quaternion.LookRotation(direction));
-            obj.GetComponent<Projectile>().Launch(data, direction);
+            obj.GetComponent<Projectile>().Launch(data, direction, GetComponent<Player>());
             obj.Spawn(destroyWithScene: true);
         }
     }
