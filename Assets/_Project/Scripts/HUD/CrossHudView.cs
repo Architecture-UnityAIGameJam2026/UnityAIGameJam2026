@@ -103,7 +103,9 @@ namespace OnYourMark
             string status = "";
             if (me.Requests.Any) status += "<color=#FFD166>REQUESTING</color>  ";
             if (me.Buffs.SpeedMultiplier > 1f) status += "<color=#8FD3FF>RAIL BOOST</color>  ";
-            if (me.Buffs.RevealsWeakPoints) status += "<color=#FF6B6B>WEAK POINTS</color>";
+            if (me.Buffs.RevealsWeakPoints) status += "<color=#FF6B6B>WEAK POINTS</color>  ";
+            foreach (var a in me.GetComponent<AwakeningSet>().Active)
+                status += a.cooldown > 0f ? $"<color=#C792EA>{a.displayName} [F] {FCooldown()}</color>  " : $"<color=#C792EA>{a.displayName}</color>  ";
             statusLabel.text = status;
         }
 
@@ -153,6 +155,12 @@ namespace OnYourMark
             if (state.IsReturned(part) || partner == null) return "";
             float left = me.GetComponent<SupportGiver>().CooldownLeft(part);
             return left > 0f ? $"  <color=#9AA5B1>CD {left:F1}s</color>" : "  <color=#7CFC9A>READY</color>";
+        }
+
+        string FCooldown()
+        {
+            float left = me.GetComponent<AwakeningSet>().CooldownLeft;
+            return left > 0f ? $"{left:F0}s" : "READY";
         }
 
         string Key(HudPart part, string key) => state.IsReturned(part) ? $"<color=#7CFC9A>[{key}]</color>" : $"[{key}]";

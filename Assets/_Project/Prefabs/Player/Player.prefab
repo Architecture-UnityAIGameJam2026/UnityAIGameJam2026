@@ -940,6 +940,7 @@ GameObject:
   - component: {fileID: 3570068424368635747}
   - component: {fileID: 6667239965964454827}
   - component: {fileID: 4686630308406251914}
+  - component: {fileID: 2942410894330977412}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1131,6 +1132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.Health
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: c450407b2781c43e784311358f1584ed, type: 2}
+  killedBy: {fileID: 0}
 --- !u!114 &784904537766462124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1206,3 +1208,18 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: db1ed4b6c30704365a72b843bacd1d85, type: 2}
   trigger: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   pingWhenIdle: 0
+--- !u!114 &2942410894330977412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836470251196452801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea1b63988793430184a1dea1bf26172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.AwakeningSet
+  ShowTopMostFoldoutHeaderGroup: 1
+  enemyKilled: {fileID: 11400000, guid: 734eb9cffdc214f548fcf958cee15254, type: 2}
+  activate: {fileID: -3484653264553352299, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}

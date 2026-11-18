@@ -771,6 +771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.Health
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 5b18d9249fc0c409cbeb2ffb3584d411, type: 2}
+  killedBy: {fileID: 11400000, guid: 734eb9cffdc214f548fcf958cee15254, type: 2}
 --- !u!195 &1661481901906183947
 NavMeshAgent:
   m_ObjectHideFlags: 0

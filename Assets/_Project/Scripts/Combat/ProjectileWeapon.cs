@@ -29,7 +29,7 @@ namespace OnYourMark
             if (!resource.TrySpend(data.cost)) return;
             Vector3 origin = transform.position + Vector3.up * 1.2f + transform.forward * 0.8f;
             var obj = Instantiate(data.prefab, origin, Quaternion.LookRotation(direction));
-            obj.GetComponent<Projectile>().Launch(data, direction);
+            obj.GetComponent<Projectile>().Launch(data, direction, GetComponent<Player>());
             obj.Spawn(destroyWithScene: true);
         }
     }

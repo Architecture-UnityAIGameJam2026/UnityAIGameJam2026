@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e4e051ad6b6b485098771930250d3a1, type: 3}
+  m_Name: Awaken_P2_Bio_Shockwave
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ShockwaveAwakening
+  displayName: SHOCKWAVE
+  part: 0
+  cooldown: 0
+  effect: {fileID: 7703295262594307196, guid: 0c029976ddec045d29f9f3a305d356f4, type: 3}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 512
+  radius: 4
+  pushDistance: 3
+  selfHeal: 15

@@ -18,6 +18,14 @@ namespace OnYourMark
         [SerializeField] GameObject slashEffect;
 
         float readyTime;
+        Player me;
+        AwakeningSet awakening;
+
+        void Awake()
+        {
+            me = GetComponent<Player>();
+            awakening = GetComponent<AwakeningSet>();
+        }
 
         void Update()
         {
@@ -39,8 +47,9 @@ namespace OnYourMark
             foreach (var c in Physics.OverlapBox(center, data.boxSize * 0.5f, transform.rotation, data.hitMask))
                 if (Health.Of(c) is { IsDead: false } h) targets.Add(h);
 
-            foreach (var h in targets) h.Damage(data.damage);
+            foreach (var h in targets) h.Damage(data.damage, me);
             gauge.Add(targets.Count * data.gaugePerHit);
+            awakening.NotifyBasicAttack();
             ShowSlashRpc();
         }
 

@@ -8,6 +8,8 @@ namespace OnYourMark
     public class Health : NetworkBehaviour
     {
         [SerializeField] HealthData data;
+        [Tooltip("죽었을 때 마지막으로 때린 플레이어를 실어 보낼 채널 (적만 지정)")]
+        [SerializeField] PlayerEvent killedBy;
 
         readonly NetworkVariable<float> current = new();
         readonly NetworkVariable<float> shield = new();
@@ -27,14 +29,17 @@ namespace OnYourMark
             if (IsServer) current.Value = data.maxHealth;
         }
 
-        public void Damage(float amount)
+        /// <param name="attacker">때린 플레이어. 적의 공격이면 null</param>
+        public void Damage(float amount, Player attacker = null)
         {
             if (!IsServer || IsDead) return;
 
             float absorbed = Mathf.Min(Shield, amount);   // 실드가 먼저 깎인다
             shield.Value -= absorbed;
             current.Value = Mathf.Max(0f, current.Value - (amount - absorbed));
-            if (IsDead) Died?.Invoke(this);
+            if (!IsDead) return;
+            if (killedBy != null && attacker != null) killedBy.Raise(attacker);
+            Died?.Invoke(this);
         }
 
         public void Heal(float amount)

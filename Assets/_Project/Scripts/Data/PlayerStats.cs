@@ -39,6 +39,10 @@ namespace OnYourMark
         [Tooltip("상대가 내 파츠를 들고 있을 때, 상대가 나를 지원하는 효과 (파츠당 하나)")]
         public SupportEffect[] supportEffects;
 
+        [Header("각성")]
+        [Tooltip("내 파츠를 돌려받았을 때 켜지는 각성 효과 (파츠당 하나)")]
+        public Awakening[] awakenings;
+
         public SupportEffect SupportFor(HudPart part)
         {
             foreach (var e in supportEffects) if (e.part == part) return e;

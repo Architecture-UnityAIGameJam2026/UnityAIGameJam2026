@@ -98,6 +98,13 @@ namespace OnYourMark
             return (before + verticalSpeed) * 0.5f * dt;
         }
 
+        /// <summary>대쉬 스택을 모두 채운다 (P1 생체 각성).</summary>
+        public void ResetDash()
+        {
+            DashStacks = stats.dashMaxStacks;
+            dashRecharge = 0f;
+        }
+
         void TryDash(Vector3 input)
         {
             if (DashStacks == 0 || dashTimeLeft > 0f) return;

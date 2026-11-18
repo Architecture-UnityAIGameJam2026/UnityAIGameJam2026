@@ -21,6 +21,14 @@ namespace OnYourMark
         [SerializeField] SupportGiver support;
 
         float readyTime;
+        Player me;
+        AwakeningSet awakening;
+
+        void Awake()
+        {
+            me = GetComponent<Player>();
+            awakening = GetComponent<AwakeningSet>();
+        }
         bool reloading;   // 서버 상태
 
         void Update()
@@ -49,7 +57,8 @@ namespace OnYourMark
             if (Physics.Raycast(origin, aimDirection, out var hit, data.range, data.hitMask))
             {
                 end = hit.point;
-                Health.Of(hit.collider)?.Damage(data.damage);
+                Health.Of(hit.collider)?.Damage(data.damage, me);
+                awakening.NotifyHit(hit.point);
             }
             ShowTracerRpc(end);
         }
@@ -63,7 +72,7 @@ namespace OnYourMark
         IEnumerator Reload()
         {
             reloading = true;
-            yield return new WaitForSeconds(data.reloadTime);
+            yield return new WaitForSeconds(data.reloadTime * awakening.ReloadMultiplier);
             magazine.Fill();
             reloading = false;
         }

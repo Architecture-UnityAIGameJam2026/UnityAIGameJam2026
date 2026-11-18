@@ -9,10 +9,12 @@ namespace OnYourMark
         ProjectileData data;
         Vector3 direction;
         float traveled;
+        Player shooter;
 
-        public void Launch(ProjectileData projectileData, Vector3 dir)
+        public void Launch(ProjectileData projectileData, Vector3 dir, Player owner)
         {
             data = projectileData;
+            shooter = owner;
             direction = dir.normalized;
         }
 
@@ -26,7 +28,7 @@ namespace OnYourMark
             Vector3 start = transform.position - direction * data.radius;
             if (Physics.SphereCast(start, data.radius, direction, out var hit, step + data.radius, data.hitMask))
             {
-                Health.Of(hit.collider)?.Damage(data.damage);
+                Health.Of(hit.collider)?.Damage(data.damage, shooter);
                 NetworkObject.Despawn();
                 return;
             }
