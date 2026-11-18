@@ -56,7 +56,7 @@ namespace OnYourMark
         void ShowSlashRpc()
         {
             if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Slash();
-            StartCoroutine(Flash(slashEffect, 0.12f));
+            else if (slashEffect) StartCoroutine(Flash(slashEffect, 0.12f));
         }
 
         public static IEnumerator Flash(GameObject effect, float seconds)

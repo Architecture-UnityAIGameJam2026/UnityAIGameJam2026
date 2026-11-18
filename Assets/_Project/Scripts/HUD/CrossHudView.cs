@@ -53,10 +53,15 @@ namespace OnYourMark
         [SerializeField] Volume downedVolume;
 
         Player me, partner;
+        float lastHealth;
 
         void Update()
         {
-            me = Player.Local;
+            var local = Player.Local;
+            if (local && me == local && local.Health.Current < lastHealth)
+                downedVolume.weight = Mathf.Max(downedVolume.weight, 0.65f);
+            me = local;
+            lastHealth = me ? me.Health.Current : 0f;
             partner = me ? me.Partner : null;
             root.SetActive(me != null);
             float vignette = me != null && me.Health.IsDead ? 1f : 0f;

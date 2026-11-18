@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,12 +13,15 @@ namespace OnYourMark
         [SerializeField] GameObject blastEffect;
 
         bool fusing;
+        readonly HashSet<Health> blastTargets = new();
+        int coverMask;
 
         protected override EnemyData Data => data;
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+            coverMask = LayerMask.GetMask("Environment");
             fusing = false;   // 풀에서 재사용: 이전 생의 퓨즈 상태를 지운다
             if (fuseWarning) fuseWarning.SetActive(false);
         }
@@ -42,8 +46,12 @@ namespace OnYourMark
             ShowFuseRpc();
             yield return new WaitForSeconds(data.fuseTime);
 
+            Vector3 origin = transform.position + Vector3.up * 0.8f;
+            blastTargets.Clear();
             foreach (var c in Physics.OverlapSphere(transform.position, data.blastRadius, data.targetMask))
-                if (Health.Of(c) is { } h && h != Health && !Parry.Blocks(h, transform.position, true, this))
+                if (Health.Of(c) is { IsDead: false } h && h != Health && blastTargets.Add(h)
+                    && !Physics.Linecast(origin, Chest(h), coverMask, QueryTriggerInteraction.Ignore)
+                    && !Parry.Blocks(h, transform.position, true, this))
                     h.Damage(data.blastDamage);
 
             ShowBlastRpc(transform.position);

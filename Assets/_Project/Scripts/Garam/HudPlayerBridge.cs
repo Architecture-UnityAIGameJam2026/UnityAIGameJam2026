@@ -28,6 +28,9 @@ namespace OnYourMark
             canvas = GetComponent<Canvas>();
             raycaster = GetComponent<UnityEngine.UI.GraphicRaycaster>();
             hud.demoInput = false;
+            // The arena's LockOnReticle draws both the idle sight and the target marker.
+            var previewReticle = hud.transform.Find("Reticle");
+            if (previewReticle) previewReticle.gameObject.SetActive(false);
             if (!swapGlitch) swapGlitch = hud.GetComponent<HudSwapGlitch>();
         }
 

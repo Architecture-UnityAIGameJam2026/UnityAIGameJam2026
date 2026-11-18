@@ -1,5 +1,4 @@
 using Garam.Reticles;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace OnYourMark
@@ -17,15 +16,25 @@ namespace OnYourMark
         [Tooltip("락온 중인 적이 이 각도를 벗어나면 해제한다.")]
         [SerializeField] float releaseAngle = 20f;
         [SerializeField] float maxDistance = 80f;
+        Canvas reticleCanvas;
+
+        void Awake() => reticleCanvas = reticle.GetComponentInParent<Canvas>();
 
         void Update()
         {
             if (!reticle) return;
+            var player = Player.Local;
+            reticleCanvas.enabled = player && !player.Health.IsDead;
+            if (!reticleCanvas.enabled)
+            {
+                if (reticle.IsLocked) reticle.ReleaseTarget();
+                return;
+            }
             var cam = Camera.main;
             if (!cam) return;
 
             reticle.worldCamera = cam;
-            if (!reticle.distanceOrigin) reticle.distanceOrigin = LocalPlayer();
+            reticle.distanceOrigin = player.transform;
 
             var current = reticle.Target;
             if (current && Score(cam, current, releaseAngle) < 0f) { reticle.ReleaseTarget(); current = null; }
@@ -55,11 +64,5 @@ namespace OnYourMark
             return angle <= maxAngle ? angle : -1f;
         }
 
-        static Transform LocalPlayer()
-        {
-            var nm = NetworkManager.Singleton;
-            var obj = nm && nm.LocalClient != null ? nm.LocalClient.PlayerObject : null;
-            return obj ? obj.transform : null;
-        }
     }
 }
