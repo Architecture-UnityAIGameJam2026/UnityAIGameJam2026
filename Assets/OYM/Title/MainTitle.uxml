@@ -1,0 +1,106 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="MainTitle.uss" />
+    <!-- Only what the user drew (11-18): logo, Discord, co-op circle, pilot boxes, menu, bottom line. No small text. -->
+    <ui:VisualElement name="title-root" class="root">
+        <ui:VisualElement name="chrome" class="chrome">
+
+            <!-- top left: logo -->
+            <ui:VisualElement name="logo" class="logo">
+                <ui:VisualElement name="logo-clip" class="logo-clip">
+                    <ui:VisualElement name="logo-image" class="logo-image" />
+                </ui:VisualElement>
+                <ui:VisualElement class="logo-scan" />
+            </ui:VisualElement>
+
+            <!-- top right: Discord -->
+            <ui:VisualElement name="btn-discord" class="discord intro pick">
+                <ui:VisualElement class="discord-rule">
+                    <ui:VisualElement class="discord-rule-accent" />
+                </ui:VisualElement>
+                <ui:VisualElement class="discord-row">
+                    <ui:VisualElement name="discord-icon-slot" class="discord-icon-slot" />
+                    <ui:Label text="DISCORD" class="discord-title" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- right: co-op circle -> friend code -->
+            <ui:VisualElement name="friend" class="friend intro">
+                <ui:VisualElement name="friend-panel" class="friend-panel pick">
+                    <ui:VisualElement class="fp-row">
+                        <ui:Label name="fp-code" text="----" class="fp-code" />
+                        <ui:Label name="btn-copy" text="COPY" class="sbtn pick" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="fp-rule" />
+                    <ui:VisualElement class="fp-row">
+                        <ui:VisualElement class="fp-field-wrap">
+                            <ui:TextField name="fp-field" class="fp-field" />
+                            <ui:Label name="fp-placeholder" text="FRIEND CODE" class="fp-placeholder" />
+                        </ui:VisualElement>
+                        <ui:Label name="btn-join" text="JOIN" class="sbtn sbtn--accent pick" />
+                    </ui:VisualElement>
+                    <ui:Label name="fp-status" class="fp-status" />
+                </ui:VisualElement>
+                <ui:VisualElement name="btn-friend" class="friend-btn pick">
+                    <ui:VisualElement name="friend-icon-slot" class="friend-icon-slot" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- bottom right: pilot icons (selected big, the other small; built by TitleUI) -->
+            <ui:VisualElement name="pilots" class="pilots intro">
+                <ui:VisualElement class="pilots-rule" />
+                <ui:VisualElement name="cards" class="cards" />
+            </ui:VisualElement>
+
+            <!-- bottom left: menu -->
+            <ui:VisualElement name="menu" class="menu intro">
+                <ui:VisualElement name="menu-cursor" class="menu-cursor">
+                    <ui:VisualElement class="menu-cursor-bg" />
+                    <ui:VisualElement class="menu-cursor-bar" />
+                </ui:VisualElement>
+                <ui:VisualElement name="mi-0" class="menu-item pick">
+                    <ui:Label text="GAME START" class="mi-label" />
+                </ui:VisualElement>
+                <ui:VisualElement name="mi-1" class="menu-item pick">
+                    <ui:Label text="OPTION" class="mi-label" />
+                </ui:VisualElement>
+                <ui:VisualElement name="mi-2" class="menu-item pick">
+                    <ui:Label text="EXIT" class="mi-label" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- bottom left: options (replaces the menu) -->
+            <ui:VisualElement name="options" class="options pick">
+                <ui:Label text="OPTIONS" class="opt-title" />
+                <ui:VisualElement name="opt-rows" class="opt-rows" />
+            </ui:VisualElement>
+
+            <!-- bottom: line with the team logo (Team Architecture) -->
+            <ui:VisualElement name="hints" class="hints intro">
+                <ui:VisualElement class="hints-line hints-line--l" />
+                <ui:VisualElement name="hints-mark" class="hints-mark" />
+                <ui:VisualElement name="team-logo" class="team-logo" />
+                <ui:VisualElement class="hints-line" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement class="toast-wrap">
+            <ui:Label name="toast" class="toast" />
+        </ui:VisualElement>
+
+        <!-- quit dialog -->
+        <ui:VisualElement name="modal" class="modal pick">
+            <ui:VisualElement class="modal-box">
+                <ui:Label text="QUIT TO DESKTOP?" class="modal-title" />
+                <ui:VisualElement class="modal-buttons">
+                    <ui:Label name="btn-quit" text="QUIT" class="mbtn mbtn-quit pick" />
+                    <ui:Label name="btn-cancel" text="CANCEL" class="mbtn pick" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="fade" class="fade fade--on" />
+        <ui:VisualElement name="deploy" class="deploy">
+            <ui:VisualElement name="deploy-row" class="deploy-row" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

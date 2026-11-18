@@ -1,0 +1,400 @@
+{
+ "items": [
+  {
+   "name": "pk_medkit_closed",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": true,
+   "emissive_strength": 4.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_medkit_open",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_stim_injector",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_booster_fuel_cell",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_ammo_closed",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_ammo_open",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_armor_patch",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "pk_shield_cell",
+   "category": "Pickups",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": true,
+   "emissive_strength": 4.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_barricade_low",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_barricade_high",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_container",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_hull_slab",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_bulkhead",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_crate_stack",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_shield_folded",
+   "category": "Cover",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "cover_shield_deployed",
+   "category": "Cover",
+   "tex": 2048,
+   "origin": "bottom",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "ast_giant",
+   "category": "Asteroids",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "ast_cover_drill",
+   "category": "Asteroids",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "ast_ice",
+   "category": "Asteroids",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "ast_metal",
+   "category": "Asteroids",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "ast_husk",
+   "category": "Asteroids",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": true,
+   "emissive_strength": 8.0,
+   "pieces": false
+  },
+  {
+   "name": "rock_intact",
+   "category": "Asteroids",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "rock_cracked",
+   "category": "Asteroids",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "rock_split",
+   "category": "Asteroids",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": true
+  },
+  {
+   "name": "wreck_hab_module",
+   "category": "Wreckage",
+   "tex": 4096,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_truss_long",
+   "category": "Wreckage",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_truss_short",
+   "category": "Wreckage",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_truss_corner",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_solar_wing",
+   "category": "Wreckage",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_hull_large",
+   "category": "Wreckage",
+   "tex": 2048,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_hull_rib",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_hull_panel",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "wreck_ship_bow",
+   "category": "Wreckage",
+   "tex": 4096,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_panel",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_vent_grate",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_tank",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_bracket",
+   "category": "Wreckage",
+   "tex": 512,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_pipe_elbow",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_junction_box",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_cable_coil",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_cargo_net",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_panel_shard",
+   "category": "Wreckage",
+   "tex": 512,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_beacon_cage",
+   "category": "Wreckage",
+   "tex": 1024,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  },
+  {
+   "name": "debris_beacon_post",
+   "category": "Wreckage",
+   "tex": 512,
+   "origin": "center",
+   "emissive": false,
+   "emissive_strength": 0.0,
+   "pieces": false
+  }
+ ]
+}

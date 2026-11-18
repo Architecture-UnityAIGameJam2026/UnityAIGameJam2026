@@ -20,13 +20,21 @@ namespace OnYourMark
 
         float readyTime;
         bool flashing;   // 발사 순간 굵은 레이저 연출 중
+        float baseWidth;
 
         protected override EnemyData Data => data;
+
+        void Awake() => baseWidth = laser.widthMultiplier;
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            if (IsServer) Agent.baseOffset = data.hoverHeight;
+            // 풀에서 재사용: 차징 중에 죽었던 인스턴스의 조준선·굵기·쿨다운을 되돌린다
+            flashing = false;
+            laser.widthMultiplier = baseWidth;
+            laser.enabled = false;
+            readyTime = 0f;
+            if (IsServer) { Agent.baseOffset = data.hoverHeight; charging.Value = false; }
         }
 
         void Update()
@@ -86,14 +94,15 @@ namespace OnYourMark
         [Rpc(SendTo.ClientsAndHost)]
         void ShowShotRpc() => StartCoroutine(Pulse());
 
+        static readonly WaitForSeconds PulseWait = new(0.15f);
+
         IEnumerator Pulse()
         {
-            float width = laser.widthMultiplier;
-            laser.widthMultiplier = width * 5f;
+            laser.widthMultiplier = baseWidth * 5f;
             flashing = true;
-            yield return new WaitForSeconds(0.15f);
+            yield return PulseWait;
             flashing = false;
-            laser.widthMultiplier = width;
+            laser.widthMultiplier = baseWidth;
         }
     }
 }
