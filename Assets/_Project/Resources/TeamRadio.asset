@@ -315,3 +315,38 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c004ebb6eb7b54a51885603e2aedb4cb, type: 3}
   - {fileID: 8300000, guid: 8dacb185549144bcc9b4c232358e32aa, type: 3}
   - {fileID: 8300000, guid: c4782ddb3e2dd49c794b210eff5f9513, type: 3}
+  statusClips:
+  - {fileID: 8300000, guid: ce5347dad577445caafa24a6324e47bc, type: 3}
+  - {fileID: 8300000, guid: 20ab142f9a33546689b0472bdcf3c6fe, type: 3}
+  - {fileID: 8300000, guid: 8c47d53dcfb924ca593724f047576531, type: 3}
+  - {fileID: 8300000, guid: 9452fc34cfcdd4fea8e6082e2b1e13a5, type: 3}
+  - {fileID: 8300000, guid: 4af7a625282c24343a07344f048bd981, type: 3}
+  - {fileID: 8300000, guid: 2e8479352db6048eab51bb136106b9f5, type: 3}
+  - {fileID: 8300000, guid: 46b54ebc6d1eb49daab9c5ff1874edc9, type: 3}
+  - {fileID: 8300000, guid: c5397dd7a863a46f2950359eccb98ede, type: 3}
+  - {fileID: 8300000, guid: ebf4ab7a6a4d5416eaa9babcc701e94b, type: 3}
+  - {fileID: 8300000, guid: e21db0edb5a954d6c9b222ed213a1d9e, type: 3}
+  - {fileID: 8300000, guid: bd539082179994d6a89db4127d57510d, type: 3}
+  - {fileID: 8300000, guid: cbc58313ab7134e379a1f3a6f7b29466, type: 3}
+  - {fileID: 8300000, guid: c9badf3d34a8d43b7a346a58f130e1d8, type: 3}
+  - {fileID: 8300000, guid: 7a8ff36e100834598883142221513f49, type: 3}
+  - {fileID: 8300000, guid: f4a5f145433324d21b2a2b4bc6e15e31, type: 3}
+  - {fileID: 8300000, guid: 8e9d6a1a5cf3c4d9dbd3d7956cd59ee9, type: 3}
+  - {fileID: 8300000, guid: 70a4409d1934549f58b0995d38cb51f5, type: 3}
+  - {fileID: 8300000, guid: 7b4481bf891594ff3aa8ec29e4fa90ff, type: 3}
+  - {fileID: 8300000, guid: 59cad8d35448f46c98da3aaf48c45b96, type: 3}
+  - {fileID: 8300000, guid: 2da9abb8fcebe454c9c0155941170f76, type: 3}
+  - {fileID: 8300000, guid: b64185d6dcbe645bbbd6147505db7e48, type: 3}
+  - {fileID: 8300000, guid: 969092ea72504489bbb764230cdf7dd5, type: 3}
+  - {fileID: 8300000, guid: 4f2557af1eb674e0597a7b314ec8d1b1, type: 3}
+  - {fileID: 8300000, guid: 66ea707ec83f447efaae18c6887b96a0, type: 3}
+  - {fileID: 8300000, guid: 53a57aa210e734ebc85ee453c9f26d79, type: 3}
+  - {fileID: 8300000, guid: 1fd86600fa42a48e1b3b482df590b676, type: 3}
+  - {fileID: 8300000, guid: ff7404d4d06cf486bbafdf3f1352227c, type: 3}
+  - {fileID: 8300000, guid: d1a3151d9d81d4d69bd121e5eecc9a84, type: 3}
+  - {fileID: 8300000, guid: 204a35927af2d4b87ae04eddc6db40ab, type: 3}
+  - {fileID: 8300000, guid: 69a85beaf34764748a4328c497045e69, type: 3}
+  - {fileID: 8300000, guid: 4828d1face7064b8d8fadc38758605fa, type: 3}
+  - {fileID: 8300000, guid: cb6d24e4559dd46a8b5f86464ab05fcc, type: 3}
+  - {fileID: 8300000, guid: b913a6300ee314cf7963ef019c4bdea1, type: 3}
+  relayPrefab: {fileID: 6153985700622224696, guid: 9af31f2db7fa6ac4b9965391e020d2c1, type: 3}

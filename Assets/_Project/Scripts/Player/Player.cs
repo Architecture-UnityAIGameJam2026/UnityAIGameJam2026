@@ -73,6 +73,18 @@ namespace OnYourMark
             if (dashCapacity.Value != Motor.DashCapacity) dashCapacity.Value = Motor.DashCapacity;
         }
 
+        public void MoveToCheckpoint(UnityEngine.Vector3 position)
+        {
+            if (IsServer) WarpOwnerRpc(position);
+        }
+
+        [Rpc(SendTo.Owner)]
+        void WarpOwnerRpc(UnityEngine.Vector3 position)
+        {
+            Motor.ResetMotion(position);
+            GetComponent<Unity.Netcode.Components.NetworkTransform>().Teleport(position, transform.rotation, transform.localScale);
+        }
+
         public override void OnNetworkDespawn() => all.Remove(this);
     }
 }

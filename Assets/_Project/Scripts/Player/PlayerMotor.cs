@@ -109,6 +109,14 @@ namespace OnYourMark
             RecoverFromFall();
         }
 
+        public void ResetMotion(Vector3 position)
+        {
+            transform.position = lastGroundedPosition = position;
+            verticalSpeed = dashTimeLeft = hoverTime = groundedTime = 0;
+            flying = jumpPressedInAir = false;
+            Physics.SyncTransforms();
+        }
+
         void RecoverFromFall()
         {
             if (body.isGrounded) lastGroundedPosition = transform.position;

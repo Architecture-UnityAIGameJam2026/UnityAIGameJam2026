@@ -10,11 +10,11 @@ namespace OnYourMark
     public partial class CalloutDirector : NetworkBehaviour
     {
         [SerializeField] bool aiMediationEnabled = true;
-        [SerializeField] JevSettings settings;
+        JevSettings settings;
         [SerializeField] CalloutView view;
         [SerializeField, Min(2)] float decisionInterval = 6;
         [SerializeField, Min(0)] float radioGap = .8f;
-        bool runtimeSettings;
+        bool runtimeSettings, heardRadio;
         RadioLibrary library;
         WaveManager waves;
         PartExchange exchange;
@@ -38,12 +38,15 @@ namespace OnYourMark
         readonly Dictionary<Player, Reading> history = new();
         struct Reading
         {
-            public bool down, reloading;
+            public bool down, reloading, beingRevived;
             public int hp, ammo, dash, requests;
         }
 
         public override void OnNetworkSpawn()
         {
+#if UNITY_EDITOR
+            if (IsServer) settings = UnityEditor.AssetDatabase.LoadAssetAtPath<JevSettings>("Assets/_Project/Secrets/JevSettings.asset");
+#endif
             if (IsServer && !settings) { settings = ScriptableObject.CreateInstance<JevSettings>(); runtimeSettings = true; }
             if (IsServer)
             {
@@ -55,6 +58,7 @@ namespace OnYourMark
             exchange = FindFirstObjectByType<PartExchange>();
             terminal = FindFirstObjectByType<UnlockTerminal>(); hud = FindFirstObjectByType<CrossHudState>();
             channel = gameObject.AddComponent<AudioSource>(); channel.playOnAwake = false; channel.spatialBlend = 0;
+            heardRadio = false;
             nextDecision = Time.unscaledTime + 1;
         }
         public override void OnNetworkDespawn()
@@ -69,15 +73,18 @@ namespace OnYourMark
         }
         void ResetRound()
         {
-            revision++; pending = null; pendingTopics = null; priority = 0; history.Clear(); outcomes.Clear(); armedRushers = chargingLasers = 0; said.Clear(); lastSpoken = "";
+            revision++; pending = null; pendingTopics = null; priority = 0; history.Clear(); nextStatus.Clear(); outcomes.Clear(); armedRushers = chargingLasers = 0; said.Clear(); lastSpoken = "";
             lastWave = -1; lastOffer = -2; wasBetween = false; busyUntil = 0;
             if (channel) channel.Stop();
         }
         void Update()
         {
             if (!IsSpawned) return;
+            if (waves && waves.MissionSilent) return;
             MicUpdate();
             if (IsClient) MoveMediator();
+            if (IsClient && !IsServer && !heardRadio && waves && waves.Phase > 0 && Player.Local && Player.Local.Partner)
+                PlayLine("control_both_present",TeamMidpoint());
             if (!IsServer || Time.unscaledTime < nextCheck) return;
             nextCheck = Time.unscaledTime + .15f;
             if (Player.All.Count != 2)
@@ -87,7 +94,7 @@ namespace OnYourMark
             }
             if (history.Keys.Any(p => !p || !p.IsSpawned))
             {
-                foreach (var old in history.Keys.Where(p => !p || !p.IsSpawned).ToArray()) history.Remove(old);
+                foreach (var old in history.Keys.Where(p => !p || !p.IsSpawned).ToArray()) { history.Remove(old); nextStatus.Remove(old); }
                 revision++;
                 pending = null;
                 pendingTopics = null;
@@ -147,13 +154,17 @@ namespace OnYourMark
             var r = new Reading
             {
                 down = p.Health.IsDead,
+                beingRevived = p.Health.IsDead && p.Partner && p.Partner.TryGetComponent<Reviver>(out var rescuer) && rescuer.Progress01 > 0f,
                 reloading = p.TryGetComponent<ResourceReload>(out var refill) && refill.SelfManaged && refill.CooldownLeft > 0f,
                 hp = p.Health.Ratio <= .15f ? 0 : p.Health.Ratio <= .4f ? 1 : 2,
                 ammo = p.Ammo.Current,
                 dash = p.DashStacks,
                 requests = (p.NeedsSupport(HudPart.Vitals) ? 1 : 0) | (p.NeedsSupport(HudPart.Skill) ? 2 : 0) | (p.NeedsSupport(HudPart.Resource) ? 4 : 0)
             };
-            if (history.TryGetValue(p, out var old))
+            if (!nextStatus.ContainsKey(p)) nextStatus[p] = Time.unscaledTime + 1f;
+            bool hasPrevious = history.TryGetValue(p, out var old);
+            history[p] = r;
+            if (hasPrevious)
             {
                 if (!old.reloading && r.reloading) QueueEvent("Railgun just started reloading.", 2, "coordination", "reload");
                 if (old.down && !r.down && p.Partner) Outcome(p.Partner.Role, "revive");
@@ -170,8 +181,8 @@ namespace OnYourMark
                 if (old.ammo == 0 && r.ammo == p.Ammo.Capacity) QueueEvent(p.Role + " resource just refilled to full.", 2, "resource_support", "coordination", "telemetry");
                 if (old.dash > 0 && r.dash == 0) QueueEvent(p.Role + " spent the last dash.", 1, "movement");
                 if (old.requests != r.requests && r.requests != 0) QueueEvent(p.Role + " requested support: " + Requests(p), 2, "bio_request", "resource_request", "map_request", "support");
+                ObserveStatus(p, old, r);
             }
-            history[p] = r;
         }
         static string Requests(Player p) => string.Join(",", System.Enum.GetValues(typeof(HudPart)).Cast<HudPart>().Where(p.NeedsSupport));
         void QueueRadio(string reason, int rank) => QueueEvent(reason, rank);
@@ -314,10 +325,13 @@ namespace OnYourMark
         }
         bool Current(int version, int rank) => IsSpawned && aiMediationEnabled && version == revision && priority <= rank && Player.All.Count == 2;
         [Rpc(SendTo.ClientsAndHost)]
-        void PlayRadioRpc(string id, Vector3 focusPoint)
+        void PlayRadioRpc(string id, Vector3 focusPoint) => PlayLine(id,focusPoint);
+
+        void PlayLine(string id, Vector3 focusPoint)
         {
             if (!library.Lines.TryGetValue(id, out var l) || !Player.Local || l.speaker == Player.Local.Role) return;
             var clip = library.Clip(l.id); if (!clip) return;
+            heardRadio = true;
             channel.clip = clip; channel.Play();
             var sender = Player.All.FirstOrDefault(p => p.Role == l.speaker);
             var listener = Player.All.FirstOrDefault(p => p.Role == l.recipient);
@@ -325,6 +339,12 @@ namespace OnYourMark
             string name = sender ? sender.Stats.displayName : "중재 AI";
             view.Show(name, sender ? sender.Stats.color : Color.cyan, name, listener ? listener.Stats.displayName : "팀", l.korean, l.english, clip.length);
         }
+        public void Silence()
+        {
+            StopAllCoroutines(); StopMic(); ResetRound();
+            if (mediator) mediator.SetActive(false);
+        }
+
         public void MissionCue(string id)
         {
             if (!IsServer || Player.All.Count != 2 || library == null || !library.Lines.ContainsKey(id)) return;
@@ -346,10 +366,16 @@ namespace OnYourMark
             target += Vector3.up * (2.5f + .12f * Mathf.Sin((float)NetworkManager.ServerTime.Time * 2));
             if (!mediator)
             {
-                mediator = GameObject.CreatePrimitive(PrimitiveType.Sphere); mediator.name = "Mediator relay";
-                var collider = mediator.GetComponent<Collider>(); collider.enabled = false; Destroy(collider);
-                mediator.transform.localScale = new Vector3(.34f, .19f, .34f); mediator.transform.position = target;
-                var block = new MaterialPropertyBlock(); block.SetColor("_BaseColor", Color.cyan); mediator.GetComponent<Renderer>().SetPropertyBlock(block);
+                mediator = Instantiate(library.RelayPrefab, target, Quaternion.identity);
+                mediator.name = "Mediator relay";
+                foreach (var collider in mediator.GetComponentsInChildren<Collider>()) collider.enabled = false;
+                var renderers = mediator.GetComponentsInChildren<Renderer>();
+                var bounds = renderers[0].bounds;
+                foreach (var r in renderers) bounds.Encapsulate(r.bounds);
+                mediator.transform.localScale *= 1.15f / Mathf.Max(.01f,bounds.size.magnitude);
+                var glow = new MaterialPropertyBlock();
+                glow.SetColor("_EmissiveColor",new Color(.05f,1.4f,1.25f));
+                foreach (var r in renderers) r.SetPropertyBlock(glow);
             }
             mediator.SetActive(true); mediator.transform.position = Vector3.MoveTowards(mediator.transform.position, target, Time.deltaTime * 4);
         }

@@ -883,7 +883,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.CalloutDirector
   ShowTopMostFoldoutHeaderGroup: 1
-  settings: {fileID: 11400000, guid: f6e9a805eb5ab49bd8ce88bcacb7b1bb, type: 2}
   catalog: {fileID: 11400000, guid: 4e4584fdd742b4f55bf2c3b19d9d1def, type: 2}
   view: {fileID: 7243260057035753575}
 --- !u!114 &7243260057035753575

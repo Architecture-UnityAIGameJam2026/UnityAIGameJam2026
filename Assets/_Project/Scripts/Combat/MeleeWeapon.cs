@@ -27,7 +27,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
+            if (WaveManager.TakesCombatInput || !IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
             // 나노 강화제: 공격 속도 배율만큼 선딜 · 후딜이 짧아진다
             readyTime = Time.time + (data.windup + data.recovery) / me.Ultimate.AttackSpeedMultiplier;
             SlashRpc();

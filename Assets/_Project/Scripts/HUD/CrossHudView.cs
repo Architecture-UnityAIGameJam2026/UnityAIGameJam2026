@@ -139,7 +139,7 @@ namespace OnYourMark
         {
             hoverFill.fillAmount = me.Motor.HoverLeft01;
 
-            waveLabel.text =
+            waveLabel.text = waves.HasMission ? $"PHASE {waves.Phase}   ENEMIES {waves.Alive}" :
                 waves.WaveNumber == 0 ? "GET READY" :
                 waves.AllCleared ? "ALL WAVES CLEAR" :
                 waves.BetweenWaves ? $"WAVE {waves.WaveNumber} CLEAR   NEXT IN {waves.SecondsToNextWave:F0}s{(terminal.IsAvailable ? "   <color=#F08045>TERMINAL OPEN</color>" : "")}" :

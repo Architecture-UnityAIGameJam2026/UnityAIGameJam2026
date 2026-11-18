@@ -8,7 +8,22 @@ Unity **6000.3.28f1** / High Definition Render Pipeline (**HDRP 17.3.0**).
 2. Unity 6000.3.28f1로 열고 패키지 설치와 셰이더 임포트가 끝날 때까지 기다립니다.
 3. `Assets/OYM/Scenes/MainTitle.unity`를 열고 Play를 누릅니다. 빌드도 이 타이틀에서 시작합니다.
 4. 방장은 파일럿을 고르고 **GAME START**로 방을 엽니다. 같은 LAN의 파트너는 타이틀의 **CO-OP → JOIN**에 방장의 방 코드를 입력합니다. 코드는 대소문자를 구분하며, 방장의 역할 대기 화면에도 표시됩니다.
-5. KESTREL은 P1 검, ORBIT FRAME은 P2 레일건을 맡습니다. 두 사람이 같은 파일럿을 고르면 나중에 들어온 사람이 남은 역할을 선택합니다. 둘 다 준비되면 데브리 필드에서 교차 HUD와 첫 웨이브가 시작됩니다.
+5. KESTREL은 P1 검, ORBIT FRAME은 P2 레일건입니다. 같은 역할을 골랐다면 나중에 들어온 사람이 남은 역할을 선택합니다. 혼자 방을 열면 5초 뒤 AI가 빈 역할을 맡습니다. 대기 중 **B**로 바로 시작할 수 있고, 사람이 합류하면 AI의 자리를 이어받습니다.
+
+## 협동 미션
+
+플레이 씬은 `Assets/_Project/Scenes/Arena.unity`입니다. 화면 위에 각 파일럿의 목표와 방향·거리가 표시됩니다.
+
+| 구간 | 두 파일럿이 할 일 |
+|---|---|
+| 1 · 첫 도약 | P2가 엄호하는 동안 P1이 첫 잔해로 건넙니다. 뒤따르는 P2의 점프에 맞춰 각자 **좌클릭**으로 동료에게 향하는 파편을 막습니다. |
+| 2 · 슈트 고장 | 레이저를 지나면 HUD와 궁극기 권한이 교차합니다. P1은 위쪽 선체, P2는 아래쪽 트러스의 집결점을 차례로 지납니다. |
+| 3 · 재회 | 링이 겹치는 순간 **Space**를 누릅니다. P1이 먼저, P2가 한 박자 뒤입니다. 같은 갑판에 착지한 뒤 적을 정리하고 함께 전진합니다. |
+| 4 · 상갑판 | P1이 검으로 사선을 열고 P2가 레일건으로 끝냅니다. 한 명이 그로기라면 그 파일럿이 **Q**로 동료의 스킬을 열고, 서 있는 파일럿이 마무리합니다. 결과 화면에서 호스트가 타이틀로 돌아갑니다. |
+
+피격 시 자기 화면 가장자리가 붉게 반응합니다. 그로기 중 **C**로 동료의 1인칭을 보거나 자기 시점으로 돌아옵니다. **F**를 길게 누르면 가까운 동료를 소생시킵니다. 한 명이 쓰러진 상태로 다음 구간에 진입하면 HP 50%로 복귀합니다. 둘 다 쓰러지면 마지막 구간 체크포인트에서 다시 시작합니다.
+
+전투 중 **1 / 2 / 3**으로 파츠 교환을 제안·수락하고, **R**로 현재 권한에 맞는 자원을 채웁니다. **V**를 누른 채 말하고 놓으면 팀 무전을 전송합니다. 미션 안내와 상태 콜아웃은 녹음 음성과 한영 자막을 사용합니다. Jev의 상황 선택에는 호스트의 OpenRouter 설정이, 마이크 음성 인식에는 ElevenLabs 설정이 필요합니다. 마지막 일격에서는 음악과 중재자 무전이 멎고 슈트 호흡과 열린 무전음이 남습니다.
 
 ## 렌더링 설정
 
@@ -25,7 +40,7 @@ HDRP 설정과 시작 씬은 Unity 공식 `com.unity.template.hdrp-blank` 17.1.1
 ### 구성
 
 - `Assets/OYM/`: OnYourMark 아트·연출(데브리 필드 아레나, KESTREL / ORBIT FRAME, HUSK 적 6종 + CITADEL, 프랍 44종, 타격 FX, 메인 타이틀, CITADEL 시네마틱, BGM). 자세한 내용과 병합 때 바뀐 점은 [Documentation/OYM/README.md](Documentation/OYM/README.md)에 있습니다.
-- 협동 플레이 씬은 `Assets/_Project/Scenes/Arena.unity`입니다. 데브리 필드의 하늘·행성·잔해 사이에서 기존 전투 동선과 NavMesh를 사용하고, 두 파일럿의 1인칭 무기와 파트너 모델, WICK 돌격병과 PRISM 레이저 적을 표시합니다. 에디터에서 이 씬을 직접 열면 Host/Join을 수동으로 선택할 수 있습니다. `DebrisField`와 `Showcase_DebrisField`는 아트 시연용으로도 열 수 있습니다.
+- 협동 맵은 HDRP `Showcase_DebrisField`의 시작 선체·징검다리·부유 잔해를 사용하며 높은 선체 길과 낮은 트러스 길이 합류합니다. 에디터에서 `Arena`를 직접 열면 Host/Join을 선택할 수 있습니다. 원본 아트 씬도 개별적으로 열 수 있습니다.
 - ProjectSettings(중력, 레이어, 품질, HDRP High Fidelity, 입력)는 팀 설정을 그대로 씁니다. OYM 장애물은 `Environment`(10) 레이어입니다.
 - 백업: OYM 병합 직전 `main`은 `backup/main-20261118-pre-oym`, `feature/prototype`(P7~P21) 병합 직전 `main`은 `backup/main-20261119-pre-prototype` 브랜치에 있습니다.
 - `feature/prototype`(URP)은 HDRP로 맞춰 합쳤습니다: 새 FX 머티리얼 8종은 HDRP 투명 Lit, 다운 비네트 볼륨은 HDRP Vignette/ColorAdjustments, URP 카메라·라이트 데이터는 제거. `Arena`의 SenseLink HUD는 네트워크 교환에 연결된 prototype 쪽 하나만 남겼습니다.
@@ -34,7 +49,7 @@ HDRP 설정과 시작 씬은 Unity 공식 `com.unity.template.hdrp-blank` 17.1.1
 
 교차 HUD 채널(0 생체 `Vitals` / 1 지도 `Spatial` / 2 소모품 `Reserves`)의 주인이 바뀌는 순간을 보여 주는 연출입니다.
 화면에 있던 데이터(고스트)는 찢어지며 바깥쪽으로 빠져나가고, 새 데이터는 안쪽에서 띠별로 엇갈려 들어옵니다. 들어온 데이터는 '쪼'(살짝 넘어갔다가 딱 멈춤)로 고정된 뒤 새 소유자 색(내 것 라임 / 파트너 것 라벤더)으로 한 번 번쩍입니다. 전체 길이는 약 0.56초입니다.
-파트너가 처음 접속하면 세 채널이 0.08초 간격으로 차례로 뒤바뀝니다(크로스 링크: 서로의 HUD를 들고 시작하는 순간).
+협동 미션은 자기 HUD로 시작합니다. 페이즈 2에서 레이저가 슈트를 손상시키면 HUD 소유권이 바뀌고 교차 연출이 재생됩니다.
 
 - `SenseLinkHUD` 프리팹 루트에 `HudSwapGlitch`가 붙어 있어 `Arena`·`HudShowcase`에 자동으로 들어갑니다.
 - 자동 연결: `OnYourMarkHud.ChannelSwapping(channel, toSelf)`. 네트워크 게임에서는 `HudPlayerBridge`가 매 프레임 `SetGameState`로 서버 소유권(`CrossHudState`)을 넣는데, 값이 바뀌는 그 프레임에 **바뀌기 직전** 이벤트가 나가서 5초 합의 교환·단말기 반환·라운드 리셋 모두 글리치가 재생됩니다(1번 파츠는 생체·지도 두 모듈이 함께). 시연 모드의 `ConfirmExchange` / `ReturnHud`도 같은 이벤트를 씁니다.

@@ -64,7 +64,7 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void StartRpc(Vector3 aimDirection)
         {
-            if (CooldownLeft > 0f || me.Health.IsDead) return;
+            if (CooldownLeft > 0f) return;
             activeUntil.Value = Now + data.duration;
             readyAt.Value = Now + Cooldown;
             rewarded = false;

@@ -58,6 +58,8 @@ namespace OnYourMark
             }
         }
 
+        public bool IsHolding(Player p) => p && holders.Contains(p.IsBot ? RoleSelection.BotSlot : p.OwnerClientId);
+
         public void SetBotHolding(bool hold)
         {
             if (!IsServer) return;

@@ -5,14 +5,10 @@ using UnityEngine.UI;
 
 namespace OnYourMark
 {
-    /// <summary>
-    /// 라운드 결과(S7). 두 플레이어가 동시에 쓰러지면 게임 오버, 마지막 웨이브를 클리어하면 미션 클리어.
-    /// 끝나면 웨이브를 멈추고 캐릭터를 디스폰한다. Host가 재시작하면 RoundReset을 Raise해
-    /// 각 시스템이 자기 상태를 되돌리고, 다시 포지션 선택(S1)부터 시작한다.
-    /// </summary>
+    /// <summary>The server restores the mission checkpoint after a double down and returns both pilots to the title after the final strike.</summary>
     public class GameFlow : NetworkBehaviour
     {
-        enum Result { Playing, GameOver, MissionClear, PartnerLeft }
+        enum Result { Playing, GameOver, MissionClear }
 
         [SerializeField] WaveManager waves;
 
@@ -49,7 +45,11 @@ namespace OnYourMark
         void Update()
         {
             if (!IsSpawned) return;
-            if (IsServer && result.Value == Result.Playing && EveryoneDown()) End(Result.GameOver);
+            if (IsServer && result.Value == Result.Playing && EveryoneDown())
+            {
+                if (waves.HasMission) waves.RestoreCheckpoint();
+                else End(Result.GameOver);
+            }
             ShowResult();
         }
 
@@ -73,8 +73,21 @@ namespace OnYourMark
         public void Restart()
         {
             if (!IsServer || result.Value == Result.Playing) return;   // 끝난 판에서만
+            if (waves.HasMission && result.Value == Result.MissionClear) { ReturnToTitleRpc(); return; }
             result.Value = Result.Playing;
             roundReset.Raise();
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        void ReturnToTitleRpc() => StartCoroutine(LeaveArena());
+
+        System.Collections.IEnumerator LeaveArena()
+        {
+            // Give the host transport a tick to deliver the transition before shutting it down.
+            yield return new WaitForSecondsRealtime(IsServer ? .35f : .1f);
+            NetworkManager.Shutdown();
+            OYM.GameSession.ClearDeployment();
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(OYM.GameSession.TitleScene);
         }
 
         void ShowResult()
@@ -87,18 +100,16 @@ namespace OnYourMark
             title.text = result.Value switch
             {
                 Result.MissionClear => "MISSION CLEAR",
-                Result.PartnerLeft => "PARTNER DISCONNECTED",
                 _ => "GAME OVER"
             };
             title.color = clear ? new Color(0.5f, 0.95f, 0.6f) : new Color(1f, 0.4f, 0.4f);
             detail.text = result.Value switch
             {
-                Result.MissionClear => $"All {waves.TotalWaves} waves cleared",
-                Result.PartnerLeft => "Restart to choose roles and wait for a partner.",
+                Result.MissionClear => waves.HasMission ? "Upper deck secured" : $"All {waves.TotalWaves} waves cleared",
                 _ => $"Reached wave {reachedWave.Value} / {waves.TotalWaves}"
             };
             restartButton.interactable = IsServer;
-            restartLabel.text = IsServer ? "RESTART" : "WAITING FOR HOST";
+            restartLabel.text = IsServer ? (clear && waves.HasMission ? "RETURN TO TITLE" : "RESTART") : "WAITING FOR HOST";
         }
     }
 }

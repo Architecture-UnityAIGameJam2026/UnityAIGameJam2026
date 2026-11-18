@@ -21,7 +21,7 @@ namespace OnYourMark
         float until, nextScan, nextPath;
 
         const float GunSpacing = 8f;
-        static readonly HudPart[] SupportParts = { HudPart.Vitals, HudPart.Resource };
+        Vector3? jumpLanding;
         string order = "";
         public string LastResult { get; private set; } = "";
         public float ResultTime { get; private set; }
@@ -158,6 +158,7 @@ namespace OnYourMark
 
         void MoveTo(Vector3 destination, float stopDistance)
         {
+            if (jumpLanding.HasValue) return;
             var offset = Vector3.ProjectOnPlane(destination - transform.position, Vector3.up);
             if (offset.sqrMagnitude <= stopDistance * stopDistance) return;
             if (Time.time >= nextPath)
@@ -168,9 +169,17 @@ namespace OnYourMark
                     NavMesh.SamplePosition(destination, out var end, 8, NavMesh.AllAreas) &&
                     NavMesh.CalculatePath(start.position, end.position, NavMesh.AllAreas, path))
                 {
-                    foreach (var corner in path.corners)
+                    var corners = path.corners;
+                    var mission = WaveManager.Current;
+                    if (mission && mission.HasMission && me.Motor.Grounded &&
+                        mission.Route.TryFindJump(transform.position, corners, out var landing))
                     {
-                        if (Vector3.ProjectOnPlane(corner - transform.position, Vector3.up).sqrMagnitude < .09f) continue;
+                        jumpLanding = landing;
+                        return;
+                    }
+                    foreach (var corner in corners)
+                    {
+                        if (Vector3.ProjectOnPlane(corner - transform.position, Vector3.up).sqrMagnitude < .5f) continue;
                         waypoint = corner;
                         break;
                     }

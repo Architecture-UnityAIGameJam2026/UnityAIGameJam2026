@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace OnYourMark
@@ -7,6 +6,7 @@ namespace OnYourMark
     public sealed class RadioAssets : ScriptableObject
     {
         public TextAsset lines, actions;
-        public AudioClip[] clips;
+        public AudioClip[] clips, statusClips;
+        public GameObject relayPrefab;
     }
 }

@@ -41,7 +41,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
+            if (WaveManager.TakesCombatInput || !IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
 
             var weapon = Weapon;
             if (support.ConsumedTrigger) triggerUsedForSupport = true;
@@ -134,7 +134,7 @@ namespace OnYourMark
         [Rpc(SendTo.ClientsAndHost)]
         void ShowTracerRpc(Vector3 end)
         {
-            if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Recoil();
+            if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Recoil(Weapon.automatic);
             tracer.SetPosition(0, muzzle.position);
             tracer.SetPosition(1, end);
             StartCoroutine(MeleeWeapon.Flash(tracer.gameObject, 0.08f));

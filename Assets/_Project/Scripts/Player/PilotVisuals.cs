@@ -5,7 +5,7 @@ using UnityEngine;
 namespace OnYourMark
 {
     /// Uses the art prefab's rig and weapon while the network player owns movement, input and hits.
-    public class PilotVisuals : NetworkBehaviour
+    public partial class PilotVisuals : NetworkBehaviour
     {
         [SerializeField] ZeroGFlight pilot;
 
@@ -16,6 +16,7 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
+            weaponAudio.spatialBlend = IsOwner && NetworkObject.IsPlayerObject ? 0f : 1f;
             if (IsOwner && NetworkObject.IsPlayerObject)
             {
                 view = Instantiate(pilot.fpRig, transform, false);
@@ -47,19 +48,23 @@ namespace OnYourMark
 
         public void Slash()
         {
+            if (bladeAudio) weaponAudio.PlayOneShot(bladeAudio);
             if (!animator) return;
             animator.SetInteger("AttackType", nextSlash);
             animator.SetTrigger("Attack");
             nextSlash = (nextSlash + 1) % 3;
         }
 
-        public void Recoil()
+        public void Recoil(bool automatic)
         {
+            var report = automatic ? carbineAudio : railAudio;
+            if (report) weaponAudio.PlayOneShot(report);
             if (view) view.Kick(1f);
         }
 
         public override void OnNetworkDespawn()
         {
+            StopWatching();
             if (view) Destroy(view.gameObject);
             else if (animator) Destroy(animator.gameObject);
             animator = null;

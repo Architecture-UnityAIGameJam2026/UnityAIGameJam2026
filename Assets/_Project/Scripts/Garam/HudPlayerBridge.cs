@@ -61,7 +61,7 @@ namespace OnYourMark
             if (partner != linkedPartner)
             {
                 linkedPartner = partner;
-                if (partner && swapGlitch) swapGlitch.PlayCrossLink(toSelf: false);   // 이제 서로의 감각을 본다
+                if (partner && swapGlitch && !state.IsReturned(HudPart.Vitals)) swapGlitch.PlayCrossLink(toSelf: false);   // 이제 서로의 감각을 본다
             }
             hud.localHealth = me.Health.Ratio;
             hud.localAmmo = ResourceCount(me);

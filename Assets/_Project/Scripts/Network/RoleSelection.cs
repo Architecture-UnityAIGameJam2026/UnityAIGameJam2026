@@ -111,6 +111,13 @@ namespace OnYourMark
         }
 
         // A joining player inherits the AI's role, location, health and ammunition.
+        static void InheritPilot(Player next, Player previous)
+        {
+            next.Health.Inherit(previous.Health);
+            if (next.TryGetComponent<WeaponModes>(out var modes)) modes.Inherit(previous.GetComponent<WeaponModes>());
+            next.Ammo.SetMagazine(previous.Ammo.Capacity, previous.Ammo.Current);
+        }
+
         void TakeBotSeat(ulong clientId)
         {
             if (!spawnDone || HasChosen(clientId)) return;
@@ -125,8 +132,7 @@ namespace OnYourMark
                 replacement.SpawnAsPlayerObject(clientId, true);
                 var human = replacement.GetComponent<Player>();
                 pilots[i] = human;
-                human.Health.Inherit(bot.Health);
-                human.Ammo.SetMagazine(bot.Ammo.Capacity, bot.Ammo.Current);
+                InheritPilot(human, bot);
                 bot.NetworkObject.Despawn();
                 return;
             }
@@ -149,8 +155,7 @@ namespace OnYourMark
                 pilots[i] = ai;
                 if (departing && departing.IsSpawned)
                 {
-                    ai.Health.Inherit(departing.Health);
-                    ai.Ammo.SetMagazine(departing.Ammo.Capacity, departing.Ammo.Current);
+                    InheritPilot(ai, departing);
                     departing.NetworkObject.Despawn();
                 }
                 replacement.gameObject.AddComponent<RadioCompanion>();

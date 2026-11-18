@@ -19,12 +19,17 @@ namespace OnYourMark
         [Serializable] class ActionDef { public string id; public Binding[] bindings; }
         [Serializable] class Binding { public string line_id, actor_ref, target_ref, speech_phase; }
         public readonly Dictionary<string, RadioLine> Lines = new();
+        public GameObject RelayPrefab { get; }
         readonly Dictionary<string, AudioClip> clips;
+        readonly Dictionary<string, AudioClip> statusClips;
+        public AudioClip StatusClip(string id) => statusClips.TryGetValue(id,out var clip) ? clip : null;
         public AudioClip Clip(string id) => clips.TryGetValue(id, out var clip) ? clip : null;
 
         public RadioLibrary()
         {
             var pack = Resources.Load<RadioAssets>("TeamRadio");
+            RelayPrefab = pack.relayPrefab;
+            statusClips = pack.statusClips.ToDictionary(clip => clip.name.Substring(clip.name.IndexOf('_') + 1));
             clips = pack.clips.ToDictionary(clip => clip.name);
             var csv = pack.lines;
             var rows = CalloutCatalog.SplitCsv(csv.text.TrimStart('\ufeff'));

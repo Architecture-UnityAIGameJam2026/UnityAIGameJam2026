@@ -18,7 +18,7 @@ namespace OnYourMark
 
         public Player Me => me;
         Awakening[] All => me.Stats.awakenings;
-        public bool IsActive(Awakening a) => hud != null && hud.IsReturned(a.part);
+        public bool IsActive(Awakening a) => hud != null && (WaveManager.Current == null || !WaveManager.Current.HasMission || WaveManager.Current.Phase >= 2) && hud.IsReturned(a.part);
         public Awakening[] Active => All.Where(IsActive).ToArray();
         public float ReloadMultiplier => Active.Aggregate(1f, (m, a) => m * a.ReloadMultiplier);
         /// <summary>내 처치 하나의 Q 킬 게이지 가치 (켜진 각성 중 가장 큰 값, 기본 1)</summary>

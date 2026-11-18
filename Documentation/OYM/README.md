@@ -4,7 +4,7 @@
 > 이 문서는 아트 작업용 로컬 프로젝트(`OnYourMark/OnYourMarkUnity`)의 README를 옮긴 것입니다. 팀 저장소에서는 아래가 다릅니다.
 > - 에셋 위치는 같습니다(`Assets/OYM/`). 문서 속 `Tools/`, `../skybox`, `../meshy`, `../pipeline`, `Screenshots/` 경로는 아트 작업 PC에만 있는 원본·파이프라인 폴더라 저장소에는 없습니다.
 > - **ProjectSettings는 팀 설정을 씁니다**: 중력 -9.81(무중력은 오브젝트별 `useGravity = false` / kinematic), 레이어 8 Player · 9 Enemy · 10 Environment · 11 Terminal, 기본 파이프라인 `Assets/Settings/HDRP High Fidelity`. `OYM_HDRP.asset`은 참고용으로만 남아 있고 기본값으로 지정되지 않습니다(그래서 SSR·셰도마스크 같은 일부 기능은 팀 HDRP 에셋 설정을 따릅니다).
-> - 빌드의 첫 씬은 `MainTitle`이며, 출격하면 HDRP 데브리 필드와 프로토타입의 네트워크 전투를 합친 `Arena`로 진입합니다. 아트 빌더는 누락된 시연 씬을 빌드 목록 뒤에 추가합니다.
+> - 빌드의 첫 씬은 `MainTitle`이며, 출격하면 HDRP 데브리 필드와 프로토타입의 네트워크 전투를 합친 `Arena`로 진입합니다. 플레이어 빌드에는 타이틀과 협동 미션이 들어갑니다. 아래 시연 씬은 에디터에서 열 수 있습니다.
 > - 잔해·운석·프랍 같은 장애물은 `Obstacle`(8) 대신 팀의 **`Environment`(10)** 레이어에 있습니다(`OYMSetup.ObstacleLayer`). 기존 씬·프리팹의 레이어도 같이 옮겼습니다.
 > - 스카이박스: 16K 원본(439 MB)은 GitHub 파일 한도(100 MB)를 넘어서 **7680×3840**(`Generated/Sky/skybox_equirect_7680_nosun.hdr`, GUID 동일)으로 줄였습니다. 임포트 설정이 큐브맵 면 2048(Standalone)이라 런타임 결과는 같습니다. 16K 원본은 아트 PC의 `skybox/` 출력에 있습니다.
 > - `BossIntro.unity`: 행성·대기 캡 메쉬(약 140만 정점)가 씬에 직렬화돼 128 MB였던 것을 `OYM.ProceduralCapMesh`가 로드 때 만들도록 바꿨습니다(씬 79 KB, 메쉬는 참조 카운트로 공유·해제).

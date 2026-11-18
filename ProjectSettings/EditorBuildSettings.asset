@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Arena.unity
     guid: fa03fc6d6c62d4f22b917c860fcb71cb
-  - enabled: 1
+  - enabled: 0
     path: Assets/OYM/Scenes/DebrisField.unity
     guid: f711d4722f6e0284992ccf2afd2b5c93
-  - enabled: 1
+  - enabled: 0
     path: Assets/OYM/Scenes/Showcase_DebrisField.unity
     guid: 1a55b2ed784bece48a75c81eab348665
   m_configObjects:

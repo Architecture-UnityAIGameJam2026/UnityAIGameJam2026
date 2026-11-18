@@ -9,7 +9,7 @@ namespace OnYourMark
     /// 웨이브 사이(intermission) 동안 단말기가 켜져 파츠를 돌려받을 수 있다.
     /// 적은 NetworkObjectPool로 재사용한다 (첫 웨이브에서 만들어진 인스턴스를 다음 웨이브가 다시 쓴다).
     /// </summary>
-    public class WaveManager : NetworkBehaviour
+    public partial class WaveManager : NetworkBehaviour
     {
         [SerializeField] WaveData[] waves;
         [SerializeField] float firstWaveDelay = 3f;
@@ -48,6 +48,7 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
+            MissionSpawn();
             RegisterEnemyPools();   // 모든 피어 (클라이언트도 풀에서 꺼내고 돌려놓는다)
             if (!IsServer) return;
             playersSpawned.Raised += Begin;
@@ -56,6 +57,7 @@ namespace OnYourMark
 
         public override void OnNetworkDespawn()
         {
+            MissionDespawn();
             if (!IsServer) return;
             playersSpawned.Raised -= Begin;
             roundReset.Raised -= Stop;
@@ -72,7 +74,7 @@ namespace OnYourMark
             betweenWaves.Value = false;
         }
 
-        void Begin() => StartCoroutine(Run());
+        void Begin() => BeginMission();
 
         IEnumerator Run()
         {
@@ -105,7 +107,7 @@ namespace OnYourMark
                 for (int k = 0; k < group.count; k++)
                 {
                     var point = points[k % points.Count];
-                    var enemy = NetworkObjectPool.Get(group.enemy.prefab, point.position, point.rotation);
+                    var enemy = NetworkObjectPool.Get(group.enemy.prefab, EncounterSpawn(k, point.position), point.rotation);
                     var health = enemy.GetComponent<Health>();
                     health.Died -= OnEnemyDied;   // 재사용된 인스턴스에 이전 구독이 남아 있으면 두 번 세지 않게
                     health.Died += OnEnemyDied;

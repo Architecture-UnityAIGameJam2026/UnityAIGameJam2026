@@ -40,7 +40,8 @@ namespace OnYourMark
             wasDowned = downed;
 
             if (IsServer && !NetworkObject.IsPlayerObject) GetComponent<PlayerMotor>().enabled = !downed;
-            if (IsOwner && NetworkObject.IsPlayerObject) foreach (var b in disableWhileDowned) b.enabled = !downed;
+            if (IsOwner && NetworkObject.IsPlayerObject) foreach (var b in disableWhileDowned)
+                if (b && b is not Ultimate && b is not Parry && b is not WeaponModes) b.enabled = !downed;
             body.localRotation = downed ? Quaternion.Euler(90f, 0f, 0f) * standingRotation : standingRotation;
             body.localPosition = downed ? new Vector3(0f, 0.4f, 0f) : standingPosition;
             downedEffect.SetActive(downed);

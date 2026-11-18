@@ -28,8 +28,14 @@ namespace OnYourMark
             {
                 nextScan = Time.time + .35f;
                 enemy = SelectTarget();
+                if (exchange && exchange.HasOffer && exchange.OfferFrom != RoleSelection.BotSlot && exchange.TimeLeft01 < .8f)
+                    exchange.BotOffer(exchange.OfferPart, true);
+                if (terminal && terminal.IsAvailable && terminal.IsHolding(partner) && terminal.IsInside(partner))
+                {
+                    order = "return_hud"; until = Time.time + 3;
+                }
                 if (!partner.Health.IsDead)
-                    {
+                {
                     if (partner.NeedsSupport(HudPart.Vitals)) support.GiveVitals();
                     if (!reload.SelfManaged && partner.NeedsSupport(HudPart.Resource)) reload.TryReload();
                 }
@@ -49,6 +55,35 @@ namespace OnYourMark
 
             if (gun && reload.SelfManaged && me.Ammo.Current == 0 && reload.TryReload()) Record("reload completed");
             TickState(partner, visible);
+            var mission = WaveManager.Current;
+            if (mission && mission.HasMission && mission.Phase > 0 && !mission.InQte && !mission.MissionSilent &&
+                (State == CompanionState.Guard || State == CompanionState.Reload) && order == "")
+            {
+                Vector3 target = mission.Objective(me);
+                MoveTo(target, 1.8f);
+            }
+            if (mission && mission.HasMission) CrossGap();
+        }
+
+        void CrossGap()
+        {
+            var motor = me.Motor;
+            if (!jumpLanding.HasValue) return;
+            Vector3 offset = jumpLanding.Value - transform.position;
+            Vector3 flat = Vector3.ProjectOnPlane(offset, Vector3.up);
+            if ((flat.magnitude <= .7f && offset.y < 1f) || offset.magnitude > 32f)
+            {
+                jumpLanding = null;
+                return;
+            }
+            if (motor.Grounded && motor.HoverLeft01 < .94f)
+            {
+                motor.BotDirection = Vector3.zero;
+                return;
+            }
+            motor.BotDirection = (offset + Vector3.up * 1.4f).normalized;
+            motor.BotJump = motor.Grounded;
+            motor.BotHover = !motor.Grounded;
         }
 
         CompanionState DecideState(Player partner, bool visible)
@@ -62,7 +97,7 @@ namespace OnYourMark
             switch (order)
             {
                 case "return_hud":
-                    if (terminal && terminal.IsAvailable && terminal.IsInside(me)) return CompanionState.UseTerminal;
+                    if (terminal && terminal.IsAvailable) return CompanionState.UseTerminal;
                     order = "";
                     break;
                 case "regroup":
@@ -123,9 +158,11 @@ namespace OnYourMark
                     }
                     MoveTo(tacticalGoal, .5f);
                     break;
+                case CompanionState.UseTerminal:
+                    if (!terminal.IsInside(me)) MoveTo(terminal.transform.position, .8f);
+                    return;
                 case CompanionState.Guard:
                 case CompanionState.Revive:
-                case CompanionState.UseTerminal:
                 case CompanionState.Reload:
                     return;
             }
