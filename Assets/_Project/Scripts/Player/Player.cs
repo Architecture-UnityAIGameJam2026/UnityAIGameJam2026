@@ -38,6 +38,10 @@ namespace OnYourMark
         public bool IsBot => IsSpawned && !NetworkObject.IsPlayerObject;
         public static Player Local => all.Find(p => p.IsOwner && !p.IsBot);
         public string Role => Stats.CanZoom ? "ranged" : "melee";
+
+        // 플레이 모드 진입 시 도메인 리로드를 끄더라도(에디터 설정) static 목록이 남지 않게 매번 비운다
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStatics() => all.Clear();
         public Player Partner => all.Find(p => p != this);
 
         public PlayerMotor Motor { get; private set; }

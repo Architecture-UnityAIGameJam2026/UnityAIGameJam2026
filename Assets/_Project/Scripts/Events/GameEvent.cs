@@ -12,5 +12,12 @@ namespace OnYourMark
     {
         public event Action Raised;
         public void Raise() => Raised?.Invoke();
+
+        // 도메인 리로드를 끈 플레이 모드: 에셋은 메모리에 남으므로 지난 플레이의 구독자를 비운다
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetSubscribers()
+        {
+            foreach (var e in Resources.FindObjectsOfTypeAll<GameEvent>()) e.Raised = null;
+        }
     }
 }
