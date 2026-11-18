@@ -13,6 +13,7 @@ namespace OYM
 
         internal int slot = -1;
         internal bool physics;
+        internal float radius; // bounding radius, measured once by DebrisMotion
 
         void Awake()
         {
