@@ -14,6 +14,8 @@ namespace OnYourMark
         public int Capacity => stats.resourceCapacity;
         public float Ratio => (float)current.Value / stats.resourceCapacity;
         public bool IsFull => current.Value >= stats.resourceCapacity;
+        /// <summary>마지막으로 탄을 쓴 시각 (서버, Time.time)</summary>
+        public float LastSpendTime { get; private set; } = -999f;
 
         public override void OnNetworkSpawn()
         {
@@ -25,6 +27,7 @@ namespace OnYourMark
         {
             if (current.Value < amount) return false;
             current.Value -= amount;
+            LastSpendTime = Time.time;
             return true;
         }
 

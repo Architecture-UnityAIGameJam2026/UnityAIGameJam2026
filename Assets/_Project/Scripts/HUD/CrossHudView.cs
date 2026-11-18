@@ -113,7 +113,7 @@ namespace OnYourMark
                 waves.BetweenWaves ? $"WAVE {waves.WaveNumber} CLEAR   NEXT IN {waves.SecondsToNextWave:F0}s{(terminal.IsAvailable ? "   <color=#F08045>TERMINAL OPEN</color>" : "")}" :
                 $"WAVE {waves.WaveNumber}/{waves.TotalWaves}   ENEMIES {waves.Alive}";
 
-            partsLabel.text = $"{Key(HudPart.Bio, "1")}  {Key(HudPart.Map, "2")}  {Key(HudPart.Consumable, "3")}  SWAP";
+            partsLabel.text = $"{Key(HudPart.Bio, "1")}  {Key(HudPart.Map, "2")}  {Key(HudPart.Consumable, "3")}  SWAP    {ReloadStatus()}";
 
             string status = "";
             if (me.Buffs.SpeedMultiplier > 1f) status += "<color=#8FD3FF>RAIL BOOST</color>  ";
@@ -174,6 +174,15 @@ namespace OnYourMark
             if (state.IsReturned(part) || partner == null) return "";
             float left = me.GetComponent<SupportGiver>().CooldownLeft;
             return left > 0f ? $"  <color=#9AA5B1>HEAL {left:F1}s</color>" : "  <color=#7CFC9A>HEAL READY</color>";
+        }
+
+        // [R] 원격 재장전: 누구를 채우는지와 쿨타임
+        string ReloadStatus()
+        {
+            var r = me.GetComponent<ResourceReload>();
+            string who = r.SelfManaged ? "SELF" : "PARTNER";
+            float left = r.CooldownLeft;
+            return left > 0f ? $"<color=#9AA5B1>[R] RELOAD {who} {left:F1}s</color>" : $"<color=#D5EF86>[R] RELOAD {who}</color>";
         }
 
         string Key(HudPart part, string key) => state.IsReturned(part) ? $"<color=#7CFC9A>[{key}]</color>" : $"[{key}]";

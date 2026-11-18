@@ -226,12 +226,16 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 106c15b7482b2493c9eaaa302236f758, type: 2}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: disableWhileDowned.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'disableWhileDowned.Array.data[3]'
       value: 
       objectReference: {fileID: 2190906338374099456}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2556565479709317673}
     - target: {fileID: 3063893716798316700, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -306,6 +310,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2190906338374099456}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+--- !u!114 &2556565479709317673 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 460439955930557494, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+  m_PrefabInstance: {fileID: 2673292585622746655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8933298920196258270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deecf7f484dd04439a097db23a45bd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ResourceReload
 --- !u!4 &8172877579876022444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085090604175920819, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
@@ -331,5 +346,4 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 985581c4e73134711906822a1a006a7c, type: 2}
   attack: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
-  gauge: {fileID: 0}
   slashEffect: {fileID: 192420115872336486}

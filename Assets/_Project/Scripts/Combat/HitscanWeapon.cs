@@ -6,13 +6,14 @@ using UnityEngine.InputSystem;
 namespace OnYourMark
 {
     /// <summary>
-    /// P2 레일건. 화면 중앙 방향으로 서버가 레이캐스트한다. R로 재장전.
+    /// P2 레일건. 화면 중앙 방향으로 서버가 레이캐스트한다.
+    /// 재장전은 ResourceReload가 맡는다 (파트너의 R, 2번 파츠 반환 후에는 내 R과 자동 재생).
     /// 탄이 없으면 내 화면에서만 빈 총 격발음을 낸다.
     /// </summary>
     public class HitscanWeapon : NetworkBehaviour
     {
         [SerializeField] HitscanData data;
-        [SerializeField] InputActionReference fire, reload;
+        [SerializeField] InputActionReference fire;
         [SerializeField] AmmoPool magazine;
         [SerializeField] Transform muzzle;
         [SerializeField] LineRenderer tracer;
@@ -29,13 +30,10 @@ namespace OnYourMark
             me = GetComponent<Player>();
             awakening = GetComponent<AwakeningSet>();
         }
-        bool reloading;   // 서버 상태
 
         void Update()
         {
             if (!IsOwner || !CursorLock.IsLocked) return;
-
-            if (reload.action.WasPressedThisFrame() && !magazine.IsFull) ReloadRpc();
 
             if (!fire.action.WasPressedThisFrame() || support.ConsumedTrigger || Time.time < readyTime) return;
             readyTime = Time.time + data.cooldown;
@@ -49,7 +47,7 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void FireRpc(Vector3 aimOrigin, Vector3 aimDirection)
         {
-            if (reloading || !magazine.TrySpend(1)) return;
+            if (!magazine.TrySpend(1)) return;
 
             // 카메라는 캐릭터 뒤에 있으므로, 캐릭터 위치에 해당하는 지점부터 사거리를 잰다
             Vector3 origin = aimOrigin + aimDirection * Vector3.Dot(transform.position - aimOrigin, aimDirection);
@@ -61,20 +59,6 @@ namespace OnYourMark
                 awakening.NotifyHit(hit.point);
             }
             ShowTracerRpc(end);
-        }
-
-        [Rpc(SendTo.Server)]
-        void ReloadRpc()
-        {
-            if (!reloading) StartCoroutine(Reload());
-        }
-
-        IEnumerator Reload()
-        {
-            reloading = true;
-            yield return new WaitForSeconds(data.reloadTime * awakening.ReloadMultiplier);
-            magazine.Fill();
-            reloading = false;
         }
 
         [Rpc(SendTo.ClientsAndHost)]

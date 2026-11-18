@@ -9,7 +9,6 @@ namespace OnYourMark
         public float damage = 100f;
         public float range = 50f;
         public float cooldown = 1.1f;
-        public float reloadTime = 2f;
         public LayerMask hitMask;
         public AudioClip dryFireSound;
     }

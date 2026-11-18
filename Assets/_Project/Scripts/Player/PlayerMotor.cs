@@ -29,6 +29,8 @@ namespace OnYourMark
         public int DashCapacity => stats.dashMaxStacks + bonusDashStacks;
         public bool IsZooming => stats.CanZoom && Held(zoom);
         public bool IsFlying => flying;
+        /// <summary>대쉬가 시간이 지나면 저절로 차는지. 2번 파츠를 돌려받기 전에는 꺼진다 (ResourceReload)</summary>
+        public bool AutoRechargeDash { get; set; } = true;
         public float HoverLeft01 => 1f - hoverTime / stats.hoverMaxTime;
 
         // 커서가 풀려 있으면(Esc) 조작 입력을 무시한다. 중력은 계속 적용된다
@@ -164,10 +166,10 @@ namespace OnYourMark
             dashDirection = input.sqrMagnitude > 0.01f ? input.normalized : transform.forward;
         }
 
-        // 스택은 하나씩 순서대로 충전
+        // 스택은 하나씩 순서대로 충전 (자동 충전이 허용됐을 때만)
         void RechargeDash(float dt)
         {
-            if (DashStacks >= DashCapacity) { dashRecharge = 0f; return; }
+            if (DashStacks >= DashCapacity || !AutoRechargeDash) { dashRecharge = 0f; return; }
             dashRecharge += dt;
             if (dashRecharge >= stats.dashCooldown) { DashStacks++; dashRecharge = 0f; }
         }

@@ -277,12 +277,16 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 534fd891dfdd24efb96ab8e98d30bc1e, type: 2}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: disableWhileDowned.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'disableWhileDowned.Array.data[3]'
       value: 
       objectReference: {fileID: 6247795060014951029}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[4]'
+      value: 
+      objectReference: {fileID: 5242030366448041823}
     - target: {fileID: 3063893716798316700, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -483,7 +487,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 8fc5023b1fe3b455cbedff750bc9b3e6, type: 2}
   fire: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
-  reload: {fileID: -1726813000163922418, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   magazine: {fileID: 4915727301799875013}
   muzzle: {fileID: 4517322814775240331}
   tracer: {fileID: 2824581523873952623}
@@ -505,3 +508,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4544fc08e0ac144f190b9f4287b73f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.AmmoPool
+--- !u!114 &5242030366448041823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 460439955930557494, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+  m_PrefabInstance: {fileID: 5682594310907827049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deecf7f484dd04439a097db23a45bd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ResourceReload

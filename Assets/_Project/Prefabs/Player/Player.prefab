@@ -853,6 +853,7 @@ GameObject:
   - component: {fileID: 2942410894330977412}
   - component: {fileID: 7915972274993269332}
   - component: {fileID: 1835494151136315763}
+  - component: {fileID: 460439955930557494}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -922,6 +923,7 @@ MonoBehaviour:
   jump: {fileID: -457368213462708081, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   dash: {fileID: -3792413512703870773, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   zoom: {fileID: -6883469628129619336, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+  fallLimitY: -20
 --- !u!114 &8723415091114972345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1136,7 +1138,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.AwakeningSet
   ShowTopMostFoldoutHeaderGroup: 1
   enemyKilled: {fileID: 11400000, guid: 734eb9cffdc214f548fcf958cee15254, type: 2}
-  activate: {fileID: -3484653264553352299, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
 --- !u!114 &7915972274993269332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,5 +1170,21 @@ MonoBehaviour:
   - {fileID: 4704712806841285971}
   - {fileID: 4686630308406251914}
   - {fileID: 2942410894330977412}
+  - {fileID: 460439955930557494}
   body: {fileID: 1127727046097662596}
   downedEffect: {fileID: 1535910043398446303}
+--- !u!114 &460439955930557494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836470251196452801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deecf7f484dd04439a097db23a45bd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ResourceReload
+  ShowTopMostFoldoutHeaderGroup: 1
+  config: {fileID: 11400000, guid: 4e9f3d15311064b2f9a694decf50db66, type: 2}
+  reload: {fileID: -1726813000163922418, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
