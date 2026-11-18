@@ -4,6 +4,10 @@ namespace OnYourMark
     [UnityEngine.CreateAssetMenu(menuName = "On Your Mark/Awakening/Dash Reload")]
     public class DashReloadAwakening : Awakening
     {
-        public override void OnDash(AwakeningSet owner) => owner.Me.Ammo.Fill();
+        public override void OnDash(AwakeningSet owner)
+        {
+            owner.Me.Ammo.Fill();
+            SoundRelay.All(SoundId.DashChargeReload, owner.Me.transform.position + UnityEngine.Vector3.up);
+        }
     }
 }

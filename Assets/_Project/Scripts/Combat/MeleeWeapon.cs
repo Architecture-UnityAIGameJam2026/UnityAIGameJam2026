@@ -56,20 +56,24 @@ namespace OnYourMark
                 if (Health.Of(c) is { IsDead: false } h) targets.Add(h);
 
             float damage = data.damage * me.Ultimate.DamageMultiplier;
+            Vector3 hitPoint = center; bool struck = false;
             foreach (var h in targets)
             {
+                if (!struck) { struck = true; hitPoint = h.transform.position + Vector3.up; }
                 bool rusher = h.GetComponent<Rusher>();
                 h.Damage(damage, me);
                 if (rusher && h.IsDead) me.ReportAction("slash", "ground kill");
             }
             if (targets.Count >= 2) me.ReportAction("slash", "double");
             awakening.NotifyBasicAttack();
-            ShowSlashRpc();
+            ShowSlashRpc(struck, hitPoint);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        void ShowSlashRpc()
+        void ShowSlashRpc(bool struck, Vector3 hitPoint)
         {
+            Sfx.Play(SoundId.SwordSwing, transform.position + Vector3.up * 1.2f);
+            if (struck) Sfx.Play(SoundId.SwordHit, hitPoint);
             if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Slash();
             else if (slashEffect) StartCoroutine(Flash(slashEffect, 0.12f));
         }

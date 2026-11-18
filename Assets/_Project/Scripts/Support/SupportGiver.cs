@@ -85,6 +85,7 @@ namespace OnYourMark
             var effect = target.Stats.SupportFor(HudPart.Vitals);
             if (effect == null) return false;
             effect.Apply(me, target);
+            SoundRelay.All(SoundId.HealShield, target.transform.position + Vector3.up);
             readyAt.Value = NetworkManager.ServerTime.Time + effect.cooldown;
             me.ReportAction("grant_bio", "vitals");
             target.FulfillSupport(HudPart.Vitals);

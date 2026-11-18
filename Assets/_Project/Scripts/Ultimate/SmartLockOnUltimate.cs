@@ -101,6 +101,7 @@ namespace OnYourMark
             foreach (var c in Physics.OverlapSphere(impact, o.blastRadius, enemyMask))
                 if (Health.Of(c) is { IsDead: false } h && hit.Add(h)) h.Damage(o.blastDamage, u.Me);
             u.ShowBlast(impact, o.blastRadius);
+            SoundRelay.All(SoundId.AwakenedRailgunLaser, impact);
         }
 
         void Fire(Ultimate u, Health target, float damage)

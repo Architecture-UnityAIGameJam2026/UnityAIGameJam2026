@@ -48,7 +48,6 @@ namespace OnYourMark
 
         public void Slash()
         {
-            if (bladeAudio) weaponAudio.PlayOneShot(bladeAudio);
             if (!animator) return;
             animator.SetInteger("AttackType", nextSlash);
             animator.SetTrigger("Attack");
@@ -57,8 +56,6 @@ namespace OnYourMark
 
         public void Recoil(bool automatic)
         {
-            var report = automatic ? carbineAudio : railAudio;
-            if (report) weaponAudio.PlayOneShot(report);
             if (view) view.Kick(1f);
         }
 

@@ -855,6 +855,7 @@ GameObject:
   - component: {fileID: 1835494151136315763}
   - component: {fileID: 460439955930557494}
   - component: {fileID: 639847117943148603}
+  - component: {fileID: 1175514611692475806}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -925,6 +926,10 @@ MonoBehaviour:
   dash: {fileID: -3792413512703870773, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   zoom: {fileID: -6883469628129619336, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   fallLimitY: -20
+  BotJump: 0
+  BotDash: 0
+  BotZoom: 0
+  BotHover: 0
 --- !u!114 &8723415091114972345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1207,3 +1212,21 @@ MonoBehaviour:
   activate: {fileID: -6485207036837334892, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   tracerMaterial: {fileID: 2100000, guid: f3fbfa288bf1f42829c9167059643693, type: 2}
   blastEffect: {fileID: 7653178667215114297, guid: 61a6304b6c6a8445587a86a1899ec7d0, type: 3}
+--- !u!114 &1175514611692475806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836470251196452801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d68544378d184cb2b8838ac03549769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PlayerSounds
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1025
+  footstepSpeed: 1.5
+  dashSpeed: 11
+  landingAirTime: 0.35

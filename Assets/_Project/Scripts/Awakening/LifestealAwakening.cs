@@ -10,6 +10,7 @@ namespace OnYourMark
 
         public override void OnKill(AwakeningSet owner)
         {
+            SoundRelay.All(SoundId.HealthAbsorb, owner.Me.transform.position + Vector3.up);
             var health = owner.Me.Health;
             health.Heal(health.Max * healRatio);
         }

@@ -658,6 +658,7 @@ GameObject:
   - component: {fileID: 3436039713145137}
   - component: {fileID: 1498592313910324305}
   - component: {fileID: 7567221134899840215}
+  - component: {fileID: 1039601965651736315}
   m_Layer: 0
   m_Name: Enemy_Rusher
   m_TagString: Untagged
@@ -843,6 +844,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.WeakPointMarker
   marker: {fileID: 6737596013530086793}
+--- !u!114 &1039601965651736315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7089585355763001093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f2471b749bbd4ee693356ab46327b93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.EnemySounds
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1001 &8611185855196628266
 PrefabInstance:
   m_ObjectHideFlags: 0

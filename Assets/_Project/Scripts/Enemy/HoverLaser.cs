@@ -94,7 +94,11 @@ namespace OnYourMark
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        void ShowShotRpc() => StartCoroutine(Pulse());
+        void ShowShotRpc()
+        {
+            StartCoroutine(Pulse());
+            Sfx.Play(SoundId.EnemyLaserFire, aimPoint.Value);
+        }
 
         static readonly WaitForSeconds PulseWait = new(0.15f);
 

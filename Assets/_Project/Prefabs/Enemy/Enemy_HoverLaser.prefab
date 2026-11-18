@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 2361362989392587528}
   - component: {fileID: 8455815778916440518}
   - component: {fileID: 2601728428490580687}
+  - component: {fileID: 6246222040026198778}
   m_Layer: 0
   m_Name: Enemy_HoverLaser
   m_TagString: Untagged
@@ -387,6 +388,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.WeakPointMarker
   marker: {fileID: 6699256182587075458}
+--- !u!114 &6246222040026198778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857554077235130427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f2471b749bbd4ee693356ab46327b93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.EnemySounds
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &2975802915110757399
 GameObject:
   m_ObjectHideFlags: 0

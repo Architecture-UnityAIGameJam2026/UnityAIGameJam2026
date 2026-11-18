@@ -26,6 +26,9 @@ namespace OnYourMark
         readonly NetworkVariable<Result> result = new();
         readonly NetworkVariable<int> reachedWave = new();
 
+        /// <summary>게임 오버 또는 미션 클리어로 끝났는지</summary>
+        public bool Ended => result.Value != Result.Playing;
+
         public override void OnNetworkSpawn()
         {
             if (!IsServer) return;
