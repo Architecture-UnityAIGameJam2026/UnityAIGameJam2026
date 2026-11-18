@@ -247,6 +247,9 @@ python Tools/prep_cinematic.py      # 런처 발사관·엔진 배기용 빨강 
 | 항목 | 내용 |
 |---|---|
 | 텍스처 | 무압축이던 130장(garam BaseColor/Mask/Emission, 히트 FX, 레티클, 팀 로고) → BC7/BC5. 4K 소품 6장 → 2K. 1인칭 무기·스카이 큐브맵은 유지. 4의 배수가 아닌 타이틀 로고·아이콘과 그라데이션 램프(`T_Ramp_*`)는 압축 안 함 |
+| 텍스처 2차(화면 크기별 상한) | 픽업 `pk_*` 512, 소형 잔해·엄폐물·일반 운석 1024, WICK·PRISM·CITADEL 미사일 1024, garam `Mask_*` 512. 거대 운석·대형 선체 3종·보스·캐릭터·1인칭 무기·스카이·타이틀 UI는 유지. 런타임 텍스처 추정 1,528 MB → 1,002 MB(1차) → 682 MB |
+| 오디오 | 음성 336개(`VoicePresets`, `AIMediation`): 로드 때 PCM으로 풀던 것을 Compressed In Memory로, Vorbis 품질 100 % → 60 %, 백그라운드 로드. 음악(스트리밍 Vorbis 0.7)과 총소리는 그대로 |
+| 메시 데이터 | Optimize Mesh Data(셰이더가 안 쓰는 정점 채널을 빌드에서 제거), Prebake Collision Meshes. FBX 메시 압축은 켜지 않음(런타임 정점 압축이 빠져 메모리가 오히려 늘 수 있음) |
 | 동적 해상도 | HDRP 에셋 3종에서 켬(하드웨어 DRS 50–100 %). 업스케일러는 **DLSS(RTX) → STP** 순, 폴백 FSR1, High Fidelity는 DoF 뒤에서 업스케일(DoF를 저해상도로). `com.unity.modules.nvidia` 추가 |
 | `FrameRateGuard` | 런타임에 모든 게임 카메라의 `allowDynamicResolution`을 켜고, GPU 시간으로 렌더 스케일을 조절(예산 18.9 ms, 60 Hz 수직동기 화면이면 그 주기). 스케일 50 %에서도 45 fps 아래면 볼륨으로 포그 품질 Low·접촉 그림자 끔(1단계), SSAO 끔(2단계), 여유가 생기면 되돌림. CPU 병목일 때는 해상도를 내리지 않음 |
 | `DebrisMotion` | `Spin`·`Drift` 1,800여 개를 Transform 잡 하나로 움직임(개별 FixedUpdate·리지드바디 보간 제거). 화면에서 프레임당 0.75 px 미만으로 움직이는 원거리·느린 데브리는 2–6프레임마다 엇갈려 갱신해서, 안 움직인 프레임은 모션벡터 패스·물리 동기화에서 빠짐(렌더러의 모션벡터 모드를 런타임에 바꾸는 방식은 GPU Resident Drawer가 등록 때 값을 캐시해서 효과가 없었음) |
