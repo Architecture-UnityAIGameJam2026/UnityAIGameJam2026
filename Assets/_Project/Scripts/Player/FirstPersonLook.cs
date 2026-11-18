@@ -24,7 +24,7 @@ namespace OnYourMark
         {
             if (!CursorLock.IsLocked || look == null || pitchTarget == null) return;
 
-            Vector2 delta = look.action.ReadValue<Vector2>() * sensitivity;
+            Vector2 delta = look.action.ReadValue<Vector2>() * (sensitivity * OYM.GameSettings.Sensitivity);
             transform.Rotate(Vector3.up, delta.x, Space.World);
 
             pitch = Mathf.Clamp(pitch - delta.y, minPitch, maxPitch);

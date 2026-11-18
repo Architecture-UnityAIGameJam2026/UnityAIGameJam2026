@@ -6,7 +6,9 @@ Unity **6000.3.28f1** / High Definition Render Pipeline (**HDRP 17.3.0**).
 
 1. Unity Hub에서 이 저장소 폴더를 프로젝트로 추가합니다.
 2. Unity 6000.3.28f1로 열고 패키지 설치와 셰이더 임포트가 끝날 때까지 기다립니다.
-3. `Assets/Scenes/SampleScene.unity`를 열고 Play를 누릅니다. HDRP 카메라, 태양, 하늘·안개 볼륨이 있는 빈 시작 씬입니다.
+3. `Assets/OYM/Scenes/MainTitle.unity`를 열고 Play를 누릅니다. 빌드도 이 타이틀에서 시작합니다.
+4. 방장은 파일럿을 고르고 **GAME START**로 방을 엽니다. 같은 LAN의 파트너는 타이틀의 **CO-OP → JOIN**에 방장의 방 코드를 입력합니다. 코드는 대소문자를 구분하며, 방장의 역할 대기 화면에도 표시됩니다.
+5. KESTREL은 P1 검, ORBIT FRAME은 P2 레일건을 맡습니다. 두 사람이 같은 파일럿을 고르면 나중에 들어온 사람이 남은 역할을 선택합니다. 둘 다 준비되면 데브리 필드에서 교차 HUD와 첫 웨이브가 시작됩니다.
 
 ## 렌더링 설정
 
@@ -23,7 +25,7 @@ HDRP 설정과 시작 씬은 Unity 공식 `com.unity.template.hdrp-blank` 17.1.1
 ### 구성
 
 - `Assets/OYM/`: OnYourMark 아트·연출(데브리 필드 아레나, KESTREL / ORBIT FRAME, HUSK 적 6종 + CITADEL, 프랍 44종, 타격 FX, 메인 타이틀, CITADEL 시네마틱, BGM). 자세한 내용과 병합 때 바뀐 점은 [Documentation/OYM/README.md](Documentation/OYM/README.md)에 있습니다.
-- 빌드 씬: `Arena`(0번, 그대로) 뒤에 `MainTitle`, `DebrisField`, `Showcase_DebrisField`가 붙어 있습니다. 데모의 시작 씬을 바꾸려면 Build Profiles에서 순서만 바꾸면 됩니다.
+- 협동 플레이 씬은 `Assets/_Project/Scenes/Arena.unity`입니다. 데브리 필드의 하늘·행성·잔해 사이에서 기존 전투 동선과 NavMesh를 사용하고, 두 파일럿의 1인칭 무기와 파트너 모델, WICK 돌격병과 PRISM 레이저 적을 표시합니다. 에디터에서 이 씬을 직접 열면 Host/Join을 수동으로 선택할 수 있습니다. `DebrisField`와 `Showcase_DebrisField`는 아트 시연용으로도 열 수 있습니다.
 - ProjectSettings(중력, 레이어, 품질, HDRP High Fidelity, 입력)는 팀 설정을 그대로 씁니다. OYM 장애물은 `Environment`(10) 레이어입니다.
 - 백업: OYM 병합 직전 `main`은 `backup/main-20261118-pre-oym`, `feature/prototype`(P7~P21) 병합 직전 `main`은 `backup/main-20261119-pre-prototype` 브랜치에 있습니다.
 - `feature/prototype`(URP)은 HDRP로 맞춰 합쳤습니다: 새 FX 머티리얼 8종은 HDRP 투명 Lit, 다운 비네트 볼륨은 HDRP Vignette/ColorAdjustments, URP 카메라·라이트 데이터는 제거. `Arena`의 SenseLink HUD는 네트워크 교환에 연결된 prototype 쪽 하나만 남겼습니다.

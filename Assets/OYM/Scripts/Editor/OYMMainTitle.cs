@@ -145,7 +145,6 @@ namespace OYM.EditorTools
             dir.transform.SetParent(root, false);
             dir.cam = cam; dir.pilots = new[] { k, o }; dir.ui = ui; dir.dofVolume = vol;
             dir.neutralShot = Neutral; dir.focusShots = new[] { FocusK, FocusO };
-            dir.gameScene = OYM.GameSession.GameScene;
             dir.neutralFarStart = 2e5f; dir.neutralFarEnd = 4e5f;             // neutral: no far blur (stars became hexagons)
             k.lookTarget = o.lookTarget = cam.transform;
             AddFX(dir, cam);
@@ -295,6 +294,7 @@ namespace OYM.EditorTools
             {
                 new OYM.BgmRoutes.Route { scene = OYM.GameSession.TitleScene, clip = theme, volume = 0.8f, fade = 2.5f },
                 new OYM.BgmRoutes.Route { scene = OYM.GameSession.GameScene, clip = battle, volume = 0.7f, fade = 1.2f },
+                new OYM.BgmRoutes.Route { scene = "Showcase_DebrisField", clip = battle, volume = 0.7f, fade = 1.2f },
                 new OYM.BgmRoutes.Route { scene = "DebrisField", clip = battle, volume = 0.7f, fade = 1.2f },
             };
             EditorUtility.SetDirty(r);

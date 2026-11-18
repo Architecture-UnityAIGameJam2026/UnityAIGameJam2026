@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/Arena.unity
-    guid: fa03fc6d6c62d4f22b917c860fcb71cb
-  - enabled: 1
     path: Assets/OYM/Scenes/MainTitle.unity
     guid: 5776460cacd0b3c4480f70ae4519fd13
+  - enabled: 1
+    path: Assets/_Project/Scenes/Arena.unity
+    guid: fa03fc6d6c62d4f22b917c860fcb71cb
   - enabled: 1
     path: Assets/OYM/Scenes/DebrisField.unity
     guid: f711d4722f6e0284992ccf2afd2b5c93

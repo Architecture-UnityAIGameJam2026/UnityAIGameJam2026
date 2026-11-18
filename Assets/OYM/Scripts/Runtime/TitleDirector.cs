@@ -52,7 +52,6 @@ namespace OYM
         public Vector2 focusFarRange = new Vector2(0.9f, 5.5f);
 
         [Header("Game")]
-        public string gameScene = GameSession.GameScene;
         public float deployDelay = 1.25f;
 
         public int Focus => _focus;
@@ -72,6 +71,12 @@ namespace OYM
 
         void Start()
         {
+            if (OnYourMark.LaunchArgs.Has("-host") || OnYourMark.LaunchArgs.Get("-join") != null)
+            {
+                enabled = false;
+                GameSession.LoadArena();
+                return;
+            }
             if (!cam) cam = Camera.main;
             if (dofVolume && dofVolume.profile && dofVolume.profile.TryGet(out DepthOfField d)) _dof = d;   // .profile = runtime copy
             foreach (var p in pilots) if (p) { p.lookTarget = cam ? cam.transform : null; p.Snap(TitleCharacter.Slot.Home); }
@@ -81,6 +86,7 @@ namespace OYM
             {
                 ui.Bind(this);
                 ui.DeployClicked += Deploy;
+                ui.JoinClicked += DeployToRoom;
                 ui.PilotClicked += SetFocus;
                 ui.FadeIn(1.6f);
             }
@@ -198,25 +204,25 @@ namespace OYM
             if (ui) ui.ShowFocus(i);
         }
 
-        public void Deploy()
+        public void Deploy() => DeployToRoom(null);
+
+        void DeployToRoom(string joinCode)
         {
             if (_deploying || _focus < 0) return;
             _deploying = true;
             var p = pilots[_focus];
-            GameSession.SelectedPilot = p.displayName;
             GameSettings.Save();
             p.SetSlot(TitleCharacter.Slot.Launch);
             _kick = 2.2f;
             if (ui) { ui.ShowDeploy(p.displayName); ui.FadeOut(deployDelay * 0.9f); }
             BgmPlayer.FadeOut(deployDelay + 0.3f);
-            StartCoroutine(LoadGame());
+            StartCoroutine(LoadGame(joinCode));
         }
 
-        IEnumerator LoadGame()
+        IEnumerator LoadGame(string joinCode)
         {
             yield return new WaitForSecondsRealtime(deployDelay);
-            Debug.Log($"[OYM-Title] deploy {GameSession.SelectedPilot} -> {gameScene}");
-            GameSession.LoadScene(gameScene);
+            GameSession.Deploy(_focus, joinCode);
         }
 
         // ------------------------------------------------------------------------------------------------ camera

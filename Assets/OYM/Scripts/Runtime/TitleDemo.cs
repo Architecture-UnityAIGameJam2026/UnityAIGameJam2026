@@ -95,8 +95,8 @@ namespace OYM
             while (SceneManager.GetActiveScene().name == title && t < 30f) { yield return null; t += Time.unscaledDeltaTime; }
             t = 0f;
             while (t < 3f) { yield return null; t += Time.unscaledDeltaTime; }
-            var pt = FindFirstObjectByType<PlayTestDirector>();
-            Log($"in {SceneManager.GetActiveScene().name}: pilot slot 0 = {(pt && pt.names != null && pt.names.Length > 0 ? pt.names[0] : "?")}, music = {(BgmPlayer.Current ? BgmPlayer.Current.name : "none")}");
+            var net = Unity.Netcode.NetworkManager.Singleton;
+            Log($"in {SceneManager.GetActiveScene().name}: hosting = {net && net.IsHost}, music = {(BgmPlayer.Current ? BgmPlayer.Current.name : "none")}");
             yield return Finish();
         }
 

@@ -4,7 +4,7 @@
 > 이 문서는 아트 작업용 로컬 프로젝트(`OnYourMark/OnYourMarkUnity`)의 README를 옮긴 것입니다. 팀 저장소에서는 아래가 다릅니다.
 > - 에셋 위치는 같습니다(`Assets/OYM/`). 문서 속 `Tools/`, `../skybox`, `../meshy`, `../pipeline`, `Screenshots/` 경로는 아트 작업 PC에만 있는 원본·파이프라인 폴더라 저장소에는 없습니다.
 > - **ProjectSettings는 팀 설정을 씁니다**: 중력 -9.81(무중력은 오브젝트별 `useGravity = false` / kinematic), 레이어 8 Player · 9 Enemy · 10 Environment · 11 Terminal, 기본 파이프라인 `Assets/Settings/HDRP High Fidelity`. `OYM_HDRP.asset`은 참고용으로만 남아 있고 기본값으로 지정되지 않습니다(그래서 SSR·셰도마스크 같은 일부 기능은 팀 HDRP 에셋 설정을 따릅니다).
-> - `OYM ▸ Rebuild Everything` / `1. Configure Project`는 이제 **프로젝트 설정을 건드리지 않습니다**(중력·레이어·그래픽 API·기본 파이프라인·빌드 씬 덮어쓰기 제거). 빌드 씬은 없을 때 뒤에 추가만 하고, 0번 씬은 팀 결정(현재 `Arena`)을 유지합니다.
+> - 빌드의 첫 씬은 `MainTitle`이며, 출격하면 HDRP 데브리 필드와 프로토타입의 네트워크 전투를 합친 `Arena`로 진입합니다. 아트 빌더는 누락된 시연 씬을 빌드 목록 뒤에 추가합니다.
 > - 잔해·운석·프랍 같은 장애물은 `Obstacle`(8) 대신 팀의 **`Environment`(10)** 레이어에 있습니다(`OYMSetup.ObstacleLayer`). 기존 씬·프리팹의 레이어도 같이 옮겼습니다.
 > - 스카이박스: 16K 원본(439 MB)은 GitHub 파일 한도(100 MB)를 넘어서 **7680×3840**(`Generated/Sky/skybox_equirect_7680_nosun.hdr`, GUID 동일)으로 줄였습니다. 임포트 설정이 큐브맵 면 2048(Standalone)이라 런타임 결과는 같습니다. 16K 원본은 아트 PC의 `skybox/` 출력에 있습니다.
 > - `BossIntro.unity`: 행성·대기 캡 메쉬(약 140만 정점)가 씬에 직렬화돼 128 MB였던 것을 `OYM.ProceduralCapMesh`가 로드 때 만들도록 바꿨습니다(씬 79 KB, 메쉬는 참조 카운트로 공유·해제).
@@ -40,7 +40,7 @@
 | `Scripts/Editor/OYMMainTitle.cs` | OYM ▸ Title ▸ … / `OYMMainTitle.BuildAndCapture`, `OpenAndPlay` | 메인 타이틀 씬(`MainTitle.unity`) 빌드, 음악 임포트(스트리밍 Vorbis), BGM 라우트, 빌드 세팅 첫 씬 등록, 스틸 캡처(아래 "메인 타이틀") |
 | `Scripts/Runtime/TitleDirector.cs`, `TitleCharacter.cs`, `TitleUI.cs`, `TitleIcons.cs`, `GameSettings.cs` | — | 타이틀 연출: 오프닝 → 선택 캐릭터 포커스·교대, 카메라 스프링·마우스 패럴랙스, 심도, UI Toolkit 오버레이(`Title/MainTitle.uxml/.uss`: 로고·메뉴·옵션·파일럿 카드·친구 코드·Discord), 설정 저장 |
 | `Scripts/Runtime/BgmPlayer.cs`, `BgmRoutes.cs` | — | 씬 이름 → BGM(`Resources/OYM_BgmRoutes.asset`), 씬 전환 시 크로스페이드, 음소거 기억 |
-| `Scripts/Runtime/GameSession.cs` | — | 타이틀에서 고른 캐릭터를 게임 씬의 PlayTestDirector 0번 슬롯으로 옮김 |
+| `Scripts/Runtime/GameSession.cs` | — | 타이틀에서 고른 파일럿과 참가할 방 코드를 협동 아레나에 전달 |
 | `Scripts/Editor/OYMDepthFade.cs` | OYM ▸ Look ▸ … / `OYMDepthFade.BatchCompare` | 원거리 감쇠(`Runtime/DepthFocusFade.cs` 글로벌 커스텀 패스 + `Shaders/DepthFocusFade.shader`)를 볼륨 프로필에 넣음, 끔/켬 비교 캡처 |
 | `Scripts/Runtime/FreeFlyCamera.cs` | — | 무중력 미리보기 카메라 |
 | `Scripts/Runtime/Spin.cs` | — | 잔해·운석의 일정 각속도 회전 |
@@ -186,29 +186,29 @@ Unity에서 **OYM ▸ Enemies ▸ Build + Capture Enemy Test** (배치: `OYMEnem
 | 왼쪽 위 | 이미지젠 로고(`Title/Logo/oym_logo_b.png`, 스텐실 2단 + 해저드 스트라이프). 와이프 + 스캔 라인으로 등장 |
 | 왼쪽 아래 | GAME START / OPTION / EXIT. 마우스 호버나 W·S로 커서 바가 스냅, 선택 항목이 오른쪽으로 밀려남 |
 | 오른쪽 아래 | 파일럿 박스(이름만). 선택한 캐릭터가 위에 크게, 다른 캐릭터는 아래에 작게 오른쪽으로 붙음. 클릭하면 교대 |
-| 오른쪽 | CO-OP 원형 버튼(F) → 친구 코드 패널: 내 코드(8자) + COPY, 친구 코드 입력 + JOIN |
+| 오른쪽 | CO-OP 원형 버튼(F)으로 내 방 코드를 복사하거나 방장 코드를 입력해 JOIN |
 | 오른쪽 위 | Discord 버튼(`OYMMainTitle.DiscordUrl`, 비어 있으면 "링크 미설정" 토스트) |
 | 아래 가운데 | 가는 선 + 마크(장식) |
 
 | 입력 | 동작 |
 |---|---|
 | A·D·←→ / Tab / 카드 클릭 / 뒤 캐릭터 클릭 | 캐릭터 교대(점화 플래시, 도착 시 스냅). UI 강조색이 KESTREL 시안 ↔ ORBIT FRAME 앰버로 바뀜 |
-| W·S·↑↓ + Enter/Space | 메뉴. GAME START = 선택 캐릭터 출격 → `Showcase_DebrisField` 로드, 그 캐릭터로 시작 |
+| W·S·↑↓ + Enter/Space | 메뉴. GAME START로 `Arena`에 방을 열고 선택한 파일럿 역할을 요청 |
 | OPTION | 마스터 볼륨, 음악 볼륨, 음악 켜기/끄기, 전체 화면, 마우스 감도(W·S 선택, A·D 조절, 드래그). `GameSettings`(PlayerPrefs)에 저장 |
 | Esc | 열린 패널 닫기 / 메인에서는 종료 확인 창(기본 선택 CANCEL) |
 | 마우스 이동 | 카메라가 살짝 따라 움직이는 패럴랙스 |
 
 - **로고**: `design/prompts/title/`의 프롬프트로 Codex 이미지젠 4안(`design/title/logo_a~d.png`) → `pipeline/title/logo_alpha.py`로 검정 배경을 알파로 → `Title/Logo/`. 바꾸려면 `OYMMainTitle.LogoVariant`.
-- **CO-OP**: 친구 코드는 설치마다 한 번 만들어 PlayerPrefs에 둡니다(0/O/1/I 제외 32자). 네트워킹 패키지가 없어서 JOIN은 형식만 검사하고 "CO-OP SERVICE IS NOT CONNECTED" 상태를 보여 줍니다.
+- 같은 LAN에서 방장의 대소문자 구분 방 코드를 입력하면 Unity Transport로 접속합니다. 역할이 이미 선점된 경우 아레나에서 남은 역할을 선택합니다.
 - **연출** (`TitleCharacter` 이벤트 + `TitleFX`, 카메라 오프셋은 디렉터 뒤 LateUpdate에서 얹음):
   - 오프닝: 카메라가 3 m 뒤 우주에서 2.2초 동안 밀고 들어옴
   - 교대: 들어오는 캐릭터는 바깥쪽으로 휘는 궤적으로 부스트(점화 HDR 플래시), 카메라가 그쪽으로 휩(요·롤 펀치, FOV가 벌어졌다 스냅), 모션 블러·블룸·색수차·렌즈 왜곡 펄스. 나가는 캐릭터는 역추진 + 살짝 돌며 뒤로 밀림
   - 스트라이크("쪼"): KESTREL은 Slash_Left 0.3→0.75초를 휘두르고(슬래시 아크) 칼을 왼쪽 아래로 뻗은 자세로 고정(팔을 화면 평면에서 18° 더 내림, 얼굴을 가리지 않게), ORBIT FRAME은 RG-77 충전 후 한 발 발사. 그 순간 히트스톱(0.08초) + 임팩트 셰이크 + FOV 펀치 인 + 히어로 라이트 플래시 + 역추진 퍼프
   - 출격: 큰 FOV 워프·블러·블룸·왜곡
   - 포즈 후보는 `OYMMainTitle.PoseSheet` → `python -I ../pipeline/title/pose_sheet.py Screenshots/title/poses Screenshots/title/pose_sheet.png`로 실제 포커스 카메라에서 비교해 고릅니다. 배치 스틸은 `ForceSkin()`으로 렌더마다 스키닝을 다시 계산합니다(안 하면 몸은 첫 포즈에 멈추고 손에 붙은 칼만 움직여 "칼이 손에 없는" 것처럼 보임).
-- **BGM**: `Resources/OYM_BgmRoutes.asset` — `MainTitle` → `bgm_main_theme_01`, `Showcase_DebrisField`·`DebrisField` → `bgm_battle_01`. 씬이 바뀌면 크로스페이드(실시간 기준이라 히트스톱 영향 없음), 라우트가 없는 씬은 지금 곡을 유지합니다. 음악 켜기/끄기와 볼륨은 OPTION에서 바꾸고 PlayerPrefs에 기억합니다.
+- 타이틀에서는 `bgm_main_theme_01`, `Arena`·`Showcase_DebrisField`·`DebrisField`에서는 `bgm_battle_01`이 재생됩니다. `Resources/OYM_BgmRoutes.asset`에서 곡과 크로스페이드를, OPTION에서 음악 음량을 설정합니다.
 - 음악 파일은 스트리밍 + Vorbis 70%로 임포트합니다(2~3분 WAV를 메모리에 풀지 않음).
-- 빌드 세팅 0번 = `MainTitle`, 게임 씬이 없으면 추가합니다. `OYMSetup.BuildScene`은 빌드 세팅을 `DebrisField`만으로 덮어쓰니 그 뒤에는 타이틀을 다시 빌드하세요.
+- 빌드 세팅에서 `MainTitle` 다음에 `Arena`가 활성화되어 있습니다.
 - UI는 버튼 컨트롤 없이 `pick` 클래스 요소 + 클릭 콜백으로 만듭니다(런타임 테마 스타일 간섭 방지). 아이콘(Discord, CO-OP)은 `TitleIcons.cs`가 Painter2D로 그립니다. UI 문구는 영어(폰트: OS의 Bahnschrift → Segoe UI → 내장 폰트 순).
 - 배치 빌드: `bash ../pipeline/title/run_title_batch.sh` (락이 풀릴 때까지 기다렸다가 `BuildAndCapture` → `Screenshots/title/t*.png`, UI 없는 스틸)
 - 플레이 확인: `bash ../pipeline/title/run_title_ui.sh demo` → 메뉴 이동·교대·친구 코드·옵션·종료 창·출격까지 녹화(`Screenshots/title/demo.gif`, 화면별 스틸 `Screenshots/title/ui_*.png`) 후 종료. 데모가 바꾼 설정은 끝에 되돌립니다.

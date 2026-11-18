@@ -25,7 +25,8 @@ namespace OnYourMark
             Net.OnClientDisconnectCallback += OnDisconnected;
 
             if (LaunchArgs.Has("-host")) Host();
-            else if (LaunchArgs.Get("-join") is { } code) { address.text = code; Join(); }
+            else if ((LaunchArgs.Get("-join") ?? OYM.GameSession.JoinCode) is { } code) { address.text = code; Join(); }
+            else if (OYM.GameSession.PreferredRole.HasValue) Host();
         }
 
         void OnDestroy()
@@ -41,7 +42,7 @@ namespace OnYourMark
             Show(Net.StartHost() ? "Hosting..." : "Could not start host. Is the port in use?");
         }
 
-        string joiningCode;
+        string joiningCode = "";
 
         public void Join()
         {

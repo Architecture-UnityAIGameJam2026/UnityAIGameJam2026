@@ -2,15 +2,12 @@ using UnityEngine;
 
 namespace OYM
 {
-    /// Player settings and small profile values kept in PlayerPrefs (title OPTION panel, remembered pilot, friend code).
+    /// Player settings kept in PlayerPrefs (title OPTION panel and remembered pilot).
     /// Volumes are applied at startup so every scene starts with the saved mix.
     public static class GameSettings
     {
         const string KMaster = "oym.audio.master", KMusic = "oym.audio.music", KSens = "oym.input.sensitivity";
-        const string KFull = "oym.display.fullscreen", KPilot = "oym.title.pilot", KCode = "oym.coop.friendcode";
-        /// friend code characters: no 0 / O / 1 / I, so a code read aloud or off a screenshot is unambiguous
-        public const string CodeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        public const int CodeLength = 8;
+        const string KFull = "oym.display.fullscreen", KPilot = "oym.title.pilot";
 
         public static float Master
         {
@@ -42,30 +39,6 @@ namespace OYM
         {
             get => PlayerPrefs.GetInt(KPilot, 1);
             set => PlayerPrefs.SetInt(KPilot, value);
-        }
-
-        /// This install's co-op friend code, 8 characters without the dash (made once, then kept).
-        public static string FriendCode
-        {
-            get
-            {
-                string c = PlayerPrefs.GetString(KCode, "");
-                if (IsValidCode(c)) return c;
-                var rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
-                var chars = new char[CodeLength];
-                for (int i = 0; i < CodeLength; i++) chars[i] = CodeAlphabet[rnd.Next(CodeAlphabet.Length)];
-                c = new string(chars);
-                PlayerPrefs.SetString(KCode, c);
-                PlayerPrefs.Save();
-                return c;
-            }
-        }
-
-        public static bool IsValidCode(string c)
-        {
-            if (c == null || c.Length != CodeLength) return false;
-            foreach (char ch in c) if (CodeAlphabet.IndexOf(ch) < 0) return false;
-            return true;
         }
 
         public static void Save() => PlayerPrefs.Save();

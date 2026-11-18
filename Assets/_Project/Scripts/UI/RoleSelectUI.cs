@@ -24,9 +24,12 @@ namespace OnYourMark
             if (!show) return;
             Refresh(net.LocalClientId);
 
-            // 실행 인자 -role 로 자동 선택 (빌드 테스트용)
-            if (LaunchArgs.Get("-role") is { } r && int.TryParse(r, out int role) && !selection.HasChosen(net.LocalClientId)
-                && buttons[role].interactable) Choose(role);
+            // The server still arbitrates ownership. An occupied title choice falls back to this picker.
+            int? requested = OYM.GameSession.PreferredRole;
+            if (requested.HasValue) OYM.GameSession.ClearDeployment();
+            if (int.TryParse(LaunchArgs.Get("-role"), out int launchRole)) requested = launchRole;
+            if (requested is int role && role >= 0 && role < buttons.Length && buttons[role].interactable)
+                Choose(role);
         }
 
         void Refresh(ulong me)

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6941582331914106879
 Transform:
   m_ObjectHideFlags: 0
@@ -299,6 +299,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b762efeca5c7b4d8f95feb16e734a149, type: 2}
+    - target: {fileID: 3986697133368826286, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056401925154251797, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4704712806841285971, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: stats
       value: 
@@ -369,6 +377,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3849098907872238154}
+    - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4397703811302625602}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
 --- !u!114 &1141345864685667043 stripped
 MonoBehaviour:
@@ -524,6 +535,20 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 04524783ff72d43e0a87a4f6ab99d74f, type: 2}
   skill: {fileID: -3484653264553352299, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   magazine: {fileID: 4915727301799875013}
+--- !u!114 &4397703811302625602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169990408483511464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ef8cfec928416a83570e314aba691f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PilotVisuals
+  ShowTopMostFoldoutHeaderGroup: 1
+  pilot: {fileID: 3638932594571893549, guid: b193e19f4cd583545bf33da5d185b767, type: 3}
 --- !u!4 &1922532094595571162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085090604175920819, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}

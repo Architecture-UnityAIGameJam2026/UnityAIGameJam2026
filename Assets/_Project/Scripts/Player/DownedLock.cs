@@ -17,11 +17,19 @@ namespace OnYourMark
         Health health;
         bool wasDowned;
         Vector3 standingPosition;
+        Quaternion standingRotation;
 
         void Awake()
         {
             health = GetComponent<Health>();
+            SetBody(body);
+        }
+
+        public void SetBody(Transform visual)
+        {
+            body = visual;
             standingPosition = body.localPosition;
+            standingRotation = body.localRotation;
         }
 
         void Update()
@@ -32,7 +40,7 @@ namespace OnYourMark
             wasDowned = downed;
 
             if (IsOwner) foreach (var b in disableWhileDowned) b.enabled = !downed;
-            body.localRotation = downed ? Quaternion.Euler(90f, 0f, 0f) : Quaternion.identity;
+            body.localRotation = downed ? Quaternion.Euler(90f, 0f, 0f) * standingRotation : standingRotation;
             body.localPosition = downed ? new Vector3(0f, 0.4f, 0f) : standingPosition;
             downedEffect.SetActive(downed);
         }

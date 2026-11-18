@@ -371,7 +371,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1711330801274280017
 Transform:
   m_ObjectHideFlags: 0
@@ -476,6 +476,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ed477bbc9f0e64cfba2b8ce649e1d37a, type: 2}
+    - target: {fileID: 3986697133368826286, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056401925154251797, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4686630308406251914, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: trigger
       value: 
@@ -554,6 +562,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6313443113317081578}
+    - targetCorrespondingSourceObject: {fileID: 6836470251196452801, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 804275968943766570}
   m_SourcePrefab: {fileID: 100100000, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
 --- !u!114 &2556565479709317673 stripped
 MonoBehaviour:
@@ -611,3 +622,17 @@ MonoBehaviour:
   dash: {fileID: -3792413512703870773, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   shieldEffect: {fileID: 1774842276347331685}
   reflectTracer: {fileID: 5061097432933152485}
+--- !u!114 &804275968943766570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8933298920196258270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ef8cfec928416a83570e314aba691f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PilotVisuals
+  ShowTopMostFoldoutHeaderGroup: 1
+  pilot: {fileID: 1710157546121136184, guid: 1ec6c7c51f0aa4044bffa5d39eb55bfe, type: 3}

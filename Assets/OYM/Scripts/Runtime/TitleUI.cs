@@ -41,6 +41,7 @@ namespace OYM
         public string discordUrl = "";
 
         public event System.Action DeployClicked;
+        public event System.Action<string> JoinClicked;
         public event System.Action<int> PilotClicked;
 
         /// scripted demo: the real mouse over the editor window (hover or a click on a pilot icon) must not change
@@ -73,7 +74,7 @@ namespace OYM
         Mode _mode = Mode.Intro;
         int _shown = -2, _menuSel, _optSel, _exitSel = 1, _typingFrame = -10;
         string _myCode = "";
-        IVisualElementScheduledItem _toastJob, _joinJob, _copyJob;
+        IVisualElementScheduledItem _toastJob, _copyJob;
         bool _ready;
 
         static FontDefinition? s_font;
@@ -347,8 +348,8 @@ namespace OYM
         // ------------------------------------------------------------------------------------------------ friend code
         void BindFriend()
         {
-            _myCode = GameSettings.FriendCode;
-            SetText(_fpCode, FormatCode(_myCode));
+            _myCode = OnYourMark.RoomCode.Encode(OnYourMark.LocalAddress.Get());
+            SetText(_fpCode, _myCode);
             if (_friendBtn != null)
             {
                 _friendBtn.RegisterCallback<ClickEvent>(_ => ToggleFriend());
@@ -358,12 +359,9 @@ namespace OYM
             _copy?.RegisterCallback<ClickEvent>(_ => CopyCode());
             _join?.RegisterCallback<ClickEvent>(_ => Join());
             if (_field == null) return;
-            _field.maxLength = GameSettings.CodeLength + 1;
             _field.RegisterValueChangedCallback(e =>
             {
-                string f = FormatCode(CleanCode(e.newValue));
-                if (f != e.newValue) { _field.SetValueWithoutNotify(f); _field.SelectRange(f.Length, f.Length); }
-                if (_fpPlaceholder != null) _fpPlaceholder.style.display = f.Length == 0 ? DisplayStyle.Flex : DisplayStyle.None;
+                if (_fpPlaceholder != null) _fpPlaceholder.style.display = string.IsNullOrEmpty(e.newValue) ? DisplayStyle.Flex : DisplayStyle.None;
             });
             _field.RegisterCallback<KeyDownEvent>(e =>
             {
@@ -373,21 +371,10 @@ namespace OYM
             }, TrickleDown.TrickleDown);
         }
 
-        static string CleanCode(string s)
-        {
-            if (string.IsNullOrEmpty(s)) return "";
-            var sb = new System.Text.StringBuilder(GameSettings.CodeLength);
-            foreach (char ch in s.ToUpperInvariant())
-                if (((ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')) && sb.Length < GameSettings.CodeLength) sb.Append(ch);
-            return sb.ToString();
-        }
-
-        static string FormatCode(string c) => c.Length > 4 ? c.Substring(0, 4) + "-" + c.Substring(4) : c;
-
         void CopyCode()
         {
             if (_mode != Mode.Friend) return;
-            GUIUtility.systemCopyBuffer = FormatCode(_myCode);
+            GUIUtility.systemCopyBuffer = _myCode;
             if (_copy is Label l)
             {
                 l.text = "COPIED"; l.AddToClassList("sbtn--done");
@@ -399,13 +386,9 @@ namespace OYM
         void Join()
         {
             if (_mode != Mode.Friend) return;
-            string code = CleanCode(_field != null ? _field.value : "");
-            _joinJob?.Pause();
-            if (!GameSettings.IsValidCode(code)) { SetStatus("ENTER ALL 8 CHARACTERS OF YOUR FRIEND'S CODE", "fp-status--err"); return; }
-            if (code == _myCode) { SetStatus("THAT IS YOUR OWN CODE", "fp-status--err"); return; }
-            SetStatus("CONNECTING TO " + FormatCode(code) + " ...", "fp-status--busy");
-            if (_fpStatus != null)
-                _joinJob = _fpStatus.schedule.Execute(() => SetStatus("CO-OP SERVICE IS NOT CONNECTED IN THIS BUILD", "fp-status--err")).StartingIn(1600);
+            string code = _field?.value.Trim();
+            if (!OnYourMark.RoomCode.TryDecode(code, out _)) { SetStatus("ENTER THE HOST'S ROOM CODE (CASE-SENSITIVE)", "fp-status--err"); return; }
+            JoinClicked?.Invoke(code);
         }
 
         void SetStatus(string s, string cls)
@@ -531,7 +514,6 @@ namespace OYM
             Toggle(_friend, "friend--open", false);
             _field?.Blur();
             _typingFrame = Time.frameCount;
-            _joinJob?.Pause();
             SetMode(Mode.Main);
         }
 

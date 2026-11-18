@@ -34,7 +34,7 @@
                     <ui:VisualElement class="fp-row">
                         <ui:VisualElement class="fp-field-wrap">
                             <ui:TextField name="fp-field" class="fp-field" />
-                            <ui:Label name="fp-placeholder" text="FRIEND CODE" class="fp-placeholder" />
+                            <ui:Label name="fp-placeholder" text="ROOM CODE" class="fp-placeholder" />
                         </ui:VisualElement>
                         <ui:Label name="btn-join" text="JOIN" class="sbtn sbtn--accent pick" />
                     </ui:VisualElement>

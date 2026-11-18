@@ -101,6 +101,7 @@ namespace OnYourMark
         [Rpc(SendTo.ClientsAndHost)]
         void ShowTracerRpc(Vector3 end)
         {
+            if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Recoil();
             tracer.SetPosition(0, muzzle.position);
             tracer.SetPosition(1, end);
             StartCoroutine(MeleeWeapon.Flash(tracer.gameObject, 0.08f));

@@ -124088,7 +124088,6 @@ MonoBehaviour:
   neutralFarStart: 200000
   neutralFarEnd: 400000
   focusFarRange: {x: 0.9, y: 5.5}
-  gameScene: Showcase_DebrisField
   deployDelay: 1.25
 --- !u!1 &750528090
 GameObject:
