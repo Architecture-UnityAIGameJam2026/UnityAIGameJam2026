@@ -34,4 +34,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2094ea61701994515a8f6ef5c12a36e0, type: 2}
   awakenings:
   - {fileID: 11400000, guid: 133e694fc10a64c269b10f959c9708b4, type: 2}
-  - {fileID: 11400000, guid: 694341c4f94374178aae451fe254710a, type: 2}
+  - {fileID: 11400000, guid: 2fe435d90a8f040b0b3b89711cd579d2, type: 2}
+  - {fileID: 11400000, guid: 29164e5d249cf4d68a2df54c8ab642c7, type: 2}

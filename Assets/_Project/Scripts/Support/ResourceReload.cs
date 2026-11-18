@@ -6,10 +6,12 @@ namespace OnYourMark
 {
     /// <summary>
     /// R 재장전과 2번 파츠(탄창 · 대쉬 수) 규칙.
-    /// - 2번 파츠 반환 전: R은 파트너의 자원(P2 탄창 / P1 대쉬)을 거리 · 조준 조건 없이 100% 채운다.
-    ///   내 자원은 스스로 채울 수 없고 자동으로도 차지 않는다 (파트너가 채워 줘야 한다).
-    /// - 2번 파츠 반환 후: R은 내 자원을 채우고, 자원이 자동으로 다시 찬다.
-    /// 쿨타임은 ReloadConfig에서 읽는다.
+    /// - 2번 파츠 반환 전 (역전된 리필 &amp; 오버차지): 나는 내 자원을 R로도, 자연 충전으로도 채울 수 없다.
+    ///   파트너가 R을 누르면 즉시 100% 충전 + 오버차지
+    ///   (P2: 탄창 150% 초과 장전, 초과 탄환 대미지 +30% / P1: 대쉬 완충 + 1초 무한 스텝).
+    ///   그래서 R은 거리 · 조준 조건 없이 파트너를 채운다.
+    /// - 2번 파츠 반환 후: R은 내 자원을 채우고(오버차지 없음), 대쉬 자연 충전이 돌아온다.
+    ///   포지션별 피드백 각성은 Awakening(처치 시 대쉬 +1 / 대쉬 시 즉시 장전)이 맡는다.
     /// </summary>
     public class ResourceReload : NetworkBehaviour
     {
@@ -20,7 +22,6 @@ namespace OnYourMark
 
         Player me;
         CrossHudState hud;
-        float regenTimer;
 
         public float CooldownLeft => IsSpawned ? Mathf.Max(0f, (float)(readyAt.Value - NetworkManager.ServerTime.Time)) : 0f;
         /// <summary>2번 파츠를 돌려받아 내 자원을 내가 관리하는지</summary>
@@ -34,16 +35,10 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsSpawned || hud == null) return;
-
-            if (IsOwner)
-            {
-                // 대쉬는 내 클라이언트가 계산하므로, 자동 충전 허용 여부도 여기서 알려 준다
-                me.Motor.AutoRechargeDash = SelfManaged;
-                if (CursorLock.IsLocked && reload.action.WasPressedThisFrame()) ReloadRpc();
-            }
-
-            if (IsServer) RegenerateAmmo();
+            if (!IsSpawned || hud == null || !IsOwner) return;
+            // 대쉬는 내 클라이언트가 계산하므로, 자연 충전 허용 여부도 여기서 알려 준다
+            me.Motor.AutoRechargeDash = SelfManaged;
+            if (CursorLock.IsLocked && reload.action.WasPressedThisFrame()) ReloadRpc();
         }
 
         [Rpc(SendTo.Server)]
@@ -51,33 +46,19 @@ namespace OnYourMark
         {
             var target = Target;
             if (CooldownLeft > 0f || me.Health.IsDead || target == null || target.Health.IsDead) return;
-            Refill(target);
+
+            bool overcharge = !SelfManaged;   // 파트너를 채워 줄 때만 오버차지
+            if (target.Stats.showDashOnHud)
+                target.GetComponent<ResourceReload>().FillDashRpc(overcharge ? config.infiniteDashSeconds : 0f);
+            else if (overcharge)
+                target.Ammo.FillTo(Mathf.CeilToInt(target.Ammo.Capacity * config.magazineOverchargeRatio));
+            else
+                target.Ammo.Fill();
+
             readyAt.Value = NetworkManager.ServerTime.Time + config.cooldown;
         }
 
-        // 서버에서 호출. 탄창은 서버가, 대쉬는 그 플레이어의 클라이언트가 관리한다
-        static void Refill(Player target)
-        {
-            if (target.Stats.showDashOnHud) target.GetComponent<ResourceReload>().FillDashRpc();
-            else target.Ammo.Fill();
-        }
-
         [Rpc(SendTo.Owner)]
-        void FillDashRpc() => me.Motor.ResetDash();
-
-        // 2번 파츠 반환 후 탄창 자동 재생 (서버)
-        void RegenerateAmmo()
-        {
-            if (!SelfManaged || me.Stats.showDashOnHud || me.Health.IsDead || me.Ammo.IsFull
-                || Time.time - me.Ammo.LastSpendTime < config.ammoRegenDelay)
-            {
-                regenTimer = 0f;
-                return;
-            }
-            regenTimer += Time.deltaTime;
-            if (regenTimer < config.ammoRegenInterval) return;
-            regenTimer = 0f;
-            me.Ammo.Add(1);
-        }
+        void FillDashRpc(float infiniteSeconds) => me.Motor.ResetDash(infiniteSeconds);
     }
 }

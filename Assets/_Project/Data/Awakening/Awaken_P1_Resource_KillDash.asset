@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91baf5fa394294923acd05946209d2d9, type: 3}
-  m_Name: Awaken_P1_Skill_SwordWave
-  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.SwordWaveAwakening
-  displayName: SWORD WAVE
-  part: 2
+  m_Script: {fileID: 11500000, guid: ac48bb38762904d11b2c18050b211f91, type: 3}
+  m_Name: Awaken_P1_Resource_KillDash
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.KillDashRefundAwakening
+  displayName: KILL DASH
+  part: 1
   effect: {fileID: 0}
   enemyMask:
     serializedVersion: 2
     m_Bits: 512
-  projectile: {fileID: 11400000, guid: 8008463855b6e4af48244e9c1269246b, type: 2}
+  stacks: 1

@@ -15,9 +15,7 @@ MonoBehaviour:
   displayName: NANO BOOST
   duration: 8
   killsRequired: 15
-  killsRequiredAwakened: 10
-  extendPerPartnerKill: 1
-  extendMax: 4
+  killsRequiredAwakened: 15
   damage: 1.5
   attackSpeed: 1.4
   moveSpeed: 1.2

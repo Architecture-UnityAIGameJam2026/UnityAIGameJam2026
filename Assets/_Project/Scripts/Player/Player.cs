@@ -38,7 +38,6 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer) Health.DamageTakenMultiplier = PartnerSwitchProtection;
             if (IsOwner) { dashStacks.Value = Motor.DashStacks; dashCapacity.Value = Motor.DashCapacity; }
             all.Add(this);
             UnityEngine.Debug.Log($"[OnYourMark] {Stats.displayName} spawned for client {OwnerClientId} at {transform.position} (mine: {IsOwner})");
@@ -52,16 +51,5 @@ namespace OnYourMark
         }
 
         public override void OnNetworkDespawn() => all.Remove(this);
-
-        CrossHudState hud;
-
-        // 시너지: 3번 파츠 반환 전, 파트너(P2)가 무기를 변형하는 동안 나는 피해를 덜 받는다
-        float PartnerSwitchProtection()
-        {
-            if (hud == null) hud = FindFirstObjectByType<CrossHudState>();
-            var partner = Partner;
-            if (hud == null || hud.IsReturned(HudPart.Skill) || partner == null) return 1f;
-            return partner.TryGetComponent<WeaponModes>(out var wm) && wm.IsSwitching ? wm.Data.partnerDamageTakenWhileSwitching : 1f;
-        }
     }
 }

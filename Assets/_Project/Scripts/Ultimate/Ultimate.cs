@@ -5,9 +5,12 @@ using UnityEngine.InputSystem;
 namespace OnYourMark
 {
     /// <summary>
-    /// Q 궁극기 (개인 독립 킬 카운트제). 본인이 직접 처치한 적 수가 필요 수에 닿으면 Q로 발동한다.
-    /// 발동 중 처치한 적은 세지 않는다. 필요 수는 15, 3번(스킬) 파츠를 돌려받으면 10.
-    /// 효과 자체는 UltimateData(나노 강화제 / 스마트 락온)가 정한다.
+    /// Q 궁극기. 효과 자체는 UltimateData(나노 강화제 / 스마트 락온)가 정한다.
+    /// 3번(스킬) 파츠 반환 전 — 역전 킬 카운트 &amp; 원격 대리 발동:
+    ///   파트너가 처치할 때마다 내 킬 게이지가 차고, 내 게이지가 다 차면 파트너가 Q를 눌러야 내 궁극기가 발동한다.
+    ///   (반대로 내가 Q를 누르면 파트너의 궁극기를 발동시킨다)
+    /// 반환 후 — 독자 각성: 내 처치가 내 게이지에 쌓이고(각성에 따라 처치당 2킬), 내 Q로 내 궁극기를 발동한다.
+    /// 발동 중 처치는 게이지에 쌓이지 않는다.
     /// </summary>
     public class Ultimate : NetworkBehaviour
     {
@@ -16,6 +19,8 @@ namespace OnYourMark
         [SerializeField] InputActionReference activate;
         [Tooltip("궁극기 사격 궤적에 쓸 재질")]
         [SerializeField] Material tracerMaterial;
+        [Tooltip("광역 폭발 연출 (P2 각성 레이저)")]
+        [SerializeField] GameObject blastEffect;
 
         readonly NetworkVariable<int> kills = new();
         readonly NetworkVariable<double> activeUntil = new();
@@ -30,7 +35,6 @@ namespace OnYourMark
         // 효과가 쓰는 발동별 상태 (서버)
         [System.NonSerialized] public float timer;
         [System.NonSerialized] public int counter;
-        [System.NonSerialized] public float extendedSeconds;
 
         double Now => NetworkManager.ServerTime.Time;
         public Player Me => me;
@@ -45,8 +49,9 @@ namespace OnYourMark
         public float DamageMultiplier => IsActive ? data.DamageMultiplier : 1f;
         public float AttackSpeedMultiplier => IsActive ? data.AttackSpeedMultiplier : 1f;
         public float MoveSpeedMultiplier => IsActive ? data.MoveSpeedMultiplier : 1f;
-        /// <summary>유도탄 발사 수 배율 (3번 파츠 반환 각성에서 +50%)</summary>
-        public float HomingRateMultiplier => GetComponent<AwakeningSet>().HomingRateMultiplier;
+        /// <summary>3번 파츠를 서로 들고 있는지 (반환 전)</summary>
+        public bool Crossed => hud != null && !hud.IsReturned(HudPart.Skill);
+        public AwakeningSet Awakening => GetComponent<AwakeningSet>();
 
         void Awake() => me = GetComponent<Player>();
 
@@ -69,7 +74,8 @@ namespace OnYourMark
             {
                 aim.Value = Camera.main.transform.forward;
                 me.Motor.ExternalSpeedMultiplier = MoveSpeedMultiplier;
-                if (CursorLock.IsLocked && activate.action.WasPressedThisFrame() && IsReady && !IsActive) ActivateRpc();
+                // 반환 전에는 Q가 파트너의 궁극기를 발동시킨다 (판정은 서버)
+                if (CursorLock.IsLocked && activate.action.WasPressedThisFrame()) ActivateRpc();
             }
 
             if (!IsServer) return;
@@ -81,38 +87,52 @@ namespace OnYourMark
 
         void OnEnemyKilled(Player killer)
         {
-            // 시너지: 파트너가 내 스킬 파츠를 들고 있으면 발동 중 파트너의 처치마다 지속 시간 연장
-            if (killer != null && killer == me.Partner && IsActive && data.extendPerPartnerKill > 0f
-                && hud != null && !hud.IsReturned(HudPart.Skill))
-                Extend(data.extendPerPartnerKill, data.extendMax);
-
-            if (killer != me || IsActive) return;   // 발동 중 처치는 누적하지 않는다
-            kills.Value = Mathf.Min(kills.Value + 1, data.killsRequired);
+            if (killer == null || IsActive) return;   // 발동 중 처치는 누적하지 않는다
+            if (Crossed)
+            {
+                // 역전 킬 카운트: 파트너의 처치가 내 게이지를 채운다
+                if (killer == me.Partner) AddKills(1);
+            }
+            else if (killer == me)
+            {
+                AddKills(Awakening.KillValue);   // P2 각성: 따발총 처치는 2킬
+            }
         }
 
-        /// <summary>서버 전용. 처치 수를 더한다 (3번 파츠 시너지: 파트너 패링 성공 시 +2).</summary>
+        /// <summary>서버 전용. 킬 게이지를 더한다.</summary>
         public void AddKills(int amount)
         {
-            if (IsServer && !IsActive) kills.Value = Mathf.Min(kills.Value + amount, data.killsRequired);
+            if (IsServer && !IsActive) kills.Value = Mathf.Min(kills.Value + amount, KillsRequired);
         }
 
-        /// <summary>서버 전용. 발동 중이면 지속 시간을 늘린다. 이번 발동에서 늘린 총량은 maxTotal을 넘지 않는다.</summary>
-        public void Extend(float seconds, float maxTotal)
-        {
-            if (!IsServer || !IsActive) return;
-            float add = Mathf.Min(seconds, maxTotal - extendedSeconds);
-            if (add <= 0f) return;
-            extendedSeconds += add;
-            activeUntil.Value += add;
-        }
-
+        // 반환 전: 내 Q는 파트너의 궁극기를, 반환 후: 내 궁극기를 발동한다
         [Rpc(SendTo.Server)]
         void ActivateRpc()
         {
-            if (!IsReady || IsActive || me.Health.IsDead) return;
+            if (me.Health.IsDead) return;
+            var target = Crossed ? (me.Partner ? me.Partner.Ultimate : null) : this;
+            if (target != null) target.TryActivate();
+        }
+
+        /// <summary>서버 전용. 게이지가 다 찼으면 비우고 발동한다.</summary>
+        public void TryActivate()
+        {
+            if (!IsServer || !IsReady || IsActive || me.Health.IsDead) return;
             kills.Value = 0;
-            timer = 0f; counter = 0; extendedSeconds = 0f;
-            activeUntil.Value = Now + data.duration;
+            Begin(data.duration);
+        }
+
+        /// <summary>서버 전용. 게이지를 쓰지 않고 seconds 동안 발동한다 (P1 패링 반사 각성의 미니 발동).</summary>
+        public void ActivateFree(float seconds)
+        {
+            if (!IsServer || IsActive || me.Health.IsDead) return;
+            Begin(seconds);
+        }
+
+        void Begin(float seconds)
+        {
+            timer = 0f; counter = 0;
+            activeUntil.Value = Now + seconds;
             wasActive = true;
             data.Begin(this);
         }
@@ -122,6 +142,17 @@ namespace OnYourMark
         public void SetDashBonusRpc(int bonus, bool fill) => me.Motor.SetDashBonus(bonus, fill);
 
         public void ShowShot(Vector3 from, Vector3 to) => ShowShotRpc(from, to);
+        public void ShowBlast(Vector3 at, float radius) => ShowBlastRpc(at, radius);
+
+        [Rpc(SendTo.ClientsAndHost)]
+        void ShowBlastRpc(Vector3 at, float radius)
+        {
+            if (blastEffect == null) return;
+            var fx = Instantiate(blastEffect, at, Quaternion.identity);
+            fx.transform.localScale = Vector3.one * radius * 2f;
+            fx.SetActive(true);
+            Destroy(fx, 0.35f);
+        }
 
         [Rpc(SendTo.ClientsAndHost)]
         void ShowShotRpc(Vector3 from, Vector3 to)

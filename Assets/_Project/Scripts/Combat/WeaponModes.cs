@@ -35,15 +35,7 @@ namespace OnYourMark
         public HitscanData Next => modes[(mode.Value + 1) % modes.Length];
         public WeaponSwitchData Data => data;
 
-        /// <summary>실제 변형 선딜레이: 3번 파츠 반환 후 한계 돌파 각성이 있으면 그 값 (0.4초)</summary>
-        public float Windup
-        {
-            get
-            {
-                float o = GetComponent<AwakeningSet>().SwitchWindupOverride;
-                return o > 0f ? o : data.windup;
-            }
-        }
+        public float Windup => data.windup;
 
         void Awake() => me = GetComponent<Player>();
 

@@ -3,23 +3,18 @@ using UnityEngine;
 namespace OnYourMark
 {
     /// <summary>
-    /// Q 궁극기 하나 (전략 패턴). 본인이 직접 처치한 적 수로 충전되고, 발동하면 duration 동안 효과가 켜진다.
+    /// Q 궁극기 하나 (전략 패턴). 킬 게이지가 차면 발동해 duration 동안 효과가 켜진다.
+    /// 게이지를 누가 채우고 누가 발동하는지는 3번 파츠 상태에 따라 Ultimate가 정한다.
     /// 훅은 모두 서버에서 호출된다. 능력치 배율은 무기 · 이동이 읽는다.
     /// </summary>
     public abstract class UltimateData : ScriptableObject
     {
         public string displayName = "ULTIMATE";
         public float duration = 8f;
-        [Tooltip("충전에 필요한 본인 처치 수")]
+        [Tooltip("충전에 필요한 처치 수")]
         public int killsRequired = 15;
-        [Tooltip("3번(스킬) 파츠를 돌려받은 뒤 필요한 처치 수")]
-        public int killsRequiredAwakened = 10;
-
-        [Header("3번(스킬) 파츠를 파트너가 들고 있을 때 (반환 전 시너지)")]
-        [Tooltip("발동 중 파트너가 적을 처치할 때마다 늘어나는 지속 시간 (0이면 없음)")]
-        public float extendPerPartnerKill;
-        [Tooltip("한 번 발동에서 늘어날 수 있는 최대 시간")]
-        public float extendMax = 4f;
+        [Tooltip("3번(스킬) 파츠를 돌려받은 뒤 필요한 처치 수 (같으면 변화 없음)")]
+        public int killsRequiredAwakened = 15;
 
         public virtual float DamageMultiplier => 1f;
         public virtual float AttackSpeedMultiplier => 1f;

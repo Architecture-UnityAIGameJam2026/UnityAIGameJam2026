@@ -498,6 +498,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 8fc5023b1fe3b455cbedff750bc9b3e6, type: 2}
   modes: {fileID: 3849098907872238154}
+  reloadConfig: {fileID: 11400000, guid: 4e9f3d15311064b2f9a694decf50db66, type: 2}
   fire: {fileID: 8967543676488527669, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   magazine: {fileID: 4915727301799875013}
   muzzle: {fileID: 4517322814775240331}

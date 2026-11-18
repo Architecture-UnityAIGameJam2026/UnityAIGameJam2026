@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: SMART LOCK-ON
   duration: 5
   killsRequired: 15
-  killsRequiredAwakened: 10
+  killsRequiredAwakened: 15
   coneAngle: 40
   range: 60
   enemyMask:

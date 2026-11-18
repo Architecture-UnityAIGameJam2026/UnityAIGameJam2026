@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: ReloadConfig
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.ReloadConfig
   cooldown: 5
-  ammoRegenDelay: 1.5
-  ammoRegenInterval: 0.4
+  magazineOverchargeRatio: 1.5
+  overchargeDamageBonus: 0.3
+  infiniteDashSeconds: 1

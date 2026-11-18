@@ -17,6 +17,8 @@ namespace OnYourMark
         [Tooltip("WeaponModes가 없을 때 쓰는 기본 무기")]
         [SerializeField] HitscanData data;
         [SerializeField] WeaponModes modes;
+        [Tooltip("오버차지 초과 탄환 대미지 보너스")]
+        [SerializeField] ReloadConfig reloadConfig;
         [SerializeField] InputActionReference fire;
         [SerializeField] AmmoPool magazine;
         [SerializeField] Transform muzzle;
@@ -59,8 +61,11 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void FireRpc(Vector3 aimOrigin, Vector3 aimDirection)
         {
-            if ((modes && modes.IsSwitching) || !magazine.TrySpend(1)) return;
+            if (modes && modes.IsSwitching) return;
+            bool overchargedRound = magazine.Overcharged;   // 장탄수를 넘는 탄 = 오버차지 탄환
+            if (!magazine.TrySpend(1)) return;
             var weapon = Weapon;
+            float damage = weapon.damage * (overchargedRound && reloadConfig ? 1f + reloadConfig.overchargeDamageBonus : 1f);
 
             // 카메라 위치가 아니라 캐릭터 위치에 해당하는 지점부터 사거리를 잰다
             Vector3 origin = aimOrigin + aimDirection * Vector3.Dot(transform.position - aimOrigin, aimDirection);
@@ -71,7 +76,7 @@ namespace OnYourMark
                 if (Physics.Raycast(origin, aimDirection, out var hit, weapon.range, weapon.hitMask))
                 {
                     end = hit.point;
-                    Health.Of(hit.collider)?.Damage(weapon.damage, me);
+                    Health.Of(hit.collider)?.Damage(damage, me);
                     awakening.NotifyHit(hit.point);
                 }
             }
@@ -86,7 +91,7 @@ namespace OnYourMark
                     var h = Health.Of(hit.collider);
                     if (h == null) { end = hit.point; break; }
                     if (!damaged.Add(h)) continue;
-                    h.Damage(weapon.damage, me);
+                    h.Damage(damage, me);
                     awakening.NotifyHit(hit.point);
                 }
             }

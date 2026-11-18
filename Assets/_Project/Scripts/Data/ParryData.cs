@@ -26,10 +26,5 @@ namespace OnYourMark
         [Tooltip("방어 · 반사에 성공하면 돌려받는 대쉬 칸 (시전당 1회)")]
         public int dashPayback = 1;
 
-        [Header("3번(스킬) 파츠를 파트너가 들고 있을 때 (반환 전 시너지)")]
-        [Tooltip("패링 성공마다 파트너 Q 킬 카운트에 더하는 수")]
-        public int partnerKillBonus = 2;
-        [Tooltip("파트너가 내 스킬 파츠를 들고 있는 동안 쿨타임 배율 (30% 단축)")]
-        public float cooldownMultiplierWhileCrossed = 0.7f;
     }
 }

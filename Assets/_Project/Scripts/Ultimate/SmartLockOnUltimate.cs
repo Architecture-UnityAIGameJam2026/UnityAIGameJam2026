@@ -7,6 +7,7 @@ namespace OnYourMark
     /// P2 Q — 전술 유도 사격: 시야 중앙 원뿔 안의 적을 자동으로 노린다. 잔탄을 쓰지 않는다.
     /// - 따발총 모드: 락온된 적들에게 돌아가며 초당 rate발 유도탄 (발당 arDamage)
     /// - 레일건 모드: 조준선에 가장 가까운 적 하나에 관통 레일탄 railShots발 (발당 railDamage)
+    ///   3번 파츠 반환 각성(RailOverdrive)이 있으면 대신 유도 폭발 레이저 한 발 (표적 + 반경 폭발)
     /// </summary>
     [CreateAssetMenu(menuName = "On Your Mark/Ultimate/Smart Lock-on")]
     public class SmartLockOnUltimate : UltimateData
@@ -32,7 +33,15 @@ namespace OnYourMark
             bool rail = modes != null && modes.Current.pierce;
             u.timer += dt;
 
-            if (rail)
+            if (rail && u.Awakening.Find<RailOverdriveAwakening>() is { } overdrive)
+            {
+                if (u.counter > 0) return;   // 한 발
+                var target = Closest(u);
+                if (target == null) return;
+                u.counter = 1;
+                Overdrive(u, target, overdrive);
+            }
+            else if (rail)
             {
                 if (u.counter >= railShots || u.timer < railInterval) return;
                 var target = Closest(u);
@@ -42,7 +51,7 @@ namespace OnYourMark
             }
             else
             {
-                float interval = 1f / (rate * u.HomingRateMultiplier);
+                float interval = 1f / rate;
                 while (u.timer >= interval)
                 {
                     u.timer -= interval;
@@ -82,6 +91,17 @@ namespace OnYourMark
         }
 
         static Vector3 Chest(Health h) => h.transform.position + Vector3.up * 0.9f;
+
+        // 표적을 끝까지 따라가 맞히고, 착탄 지점 주변을 폭발로 쓸어버린다
+        void Overdrive(Ultimate u, Health target, RailOverdriveAwakening o)
+        {
+            Vector3 impact = Chest(target);
+            Fire(u, target, o.laserDamage);
+            var hit = new HashSet<Health> { target };
+            foreach (var c in Physics.OverlapSphere(impact, o.blastRadius, enemyMask))
+                if (Health.Of(c) is { IsDead: false } h && hit.Add(h)) h.Damage(o.blastDamage, u.Me);
+            u.ShowBlast(impact, o.blastRadius);
+        }
 
         void Fire(Ultimate u, Health target, float damage)
         {

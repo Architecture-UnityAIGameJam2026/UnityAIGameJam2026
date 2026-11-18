@@ -1206,3 +1206,4 @@ MonoBehaviour:
   enemyKilled: {fileID: 11400000, guid: 734eb9cffdc214f548fcf958cee15254, type: 2}
   activate: {fileID: -6485207036837334892, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   tracerMaterial: {fileID: 2100000, guid: f3fbfa288bf1f42829c9167059643693, type: 2}
+  blastEffect: {fileID: 7653178667215114297, guid: 61a6304b6c6a8445587a86a1899ec7d0, type: 3}

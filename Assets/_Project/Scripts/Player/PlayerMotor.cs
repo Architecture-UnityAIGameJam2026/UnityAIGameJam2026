@@ -22,6 +22,11 @@ namespace OnYourMark
         bool flying, jumpPressedInAir;
         int bonusDashStacks;
         Vector3 dashDirection, lastGroundedPosition;
+        float infiniteDashUntil;   // 이 시각(Time.time)까지 대쉬가 칸을 쓰지 않는다
+
+        /// <summary>대쉬를 시작할 때 (내 클라이언트)</summary>
+        public event System.Action Dashed;
+        public bool InfiniteDash => Time.time < infiniteDashUntil;
 
         public PlayerStats Stats => stats;
         public int DashStacks { get; private set; }
@@ -152,11 +157,12 @@ namespace OnYourMark
             return (before + verticalSpeed) * 0.5f * dt;
         }
 
-        /// <summary>대쉬 스택을 모두 채운다.</summary>
-        public void ResetDash()
+        /// <summary>대쉬 스택을 모두 채운다. infiniteSeconds 동안은 대쉬해도 칸이 줄지 않는다 (오버차지).</summary>
+        public void ResetDash(float infiniteSeconds = 0f)
         {
             DashStacks = DashCapacity;
             dashRecharge = 0f;
+            if (infiniteSeconds > 0f) infiniteDashUntil = Time.time + infiniteSeconds;
         }
 
         /// <summary>최대 대쉬 횟수를 기본값 + bonus로 바꾼다 (P1 나노 강화제). fill이면 전부 채운다.</summary>
@@ -172,8 +178,9 @@ namespace OnYourMark
 
         void TryDash(Vector3 input)
         {
-            if (DashStacks == 0 || dashTimeLeft > 0f || DashLocked) return;
-            DashStacks--;
+            if ((DashStacks == 0 && !InfiniteDash) || dashTimeLeft > 0f || DashLocked) return;
+            if (!InfiniteDash) DashStacks--;
+            Dashed?.Invoke();
             dashTimeLeft = stats.dashDuration;
             dashDirection = input.sqrMagnitude > 0.01f ? input.normalized : transform.forward;
         }

@@ -26,7 +26,6 @@ namespace OnYourMark
             NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         Player me;
-        CrossHudState hud;
         AwakeningSet awakening;
         bool rewarded;   // 서버: 이번 시전에서 대쉬 보상을 줬는지
 
@@ -41,15 +40,7 @@ namespace OnYourMark
             awakening = GetComponent<AwakeningSet>();
         }
 
-        public override void OnNetworkSpawn() => hud = FindFirstObjectByType<CrossHudState>();
-
-        bool SkillCrossed => hud != null && !hud.IsReturned(HudPart.Skill);
-
-        /// <summary>
-        /// 실제 쿨타임: 3번 파츠 반환 전에는 파트너 시너지로 30% 단축,
-        /// 반환 후에는 한계 돌파 각성으로 절반.
-        /// </summary>
-        public float Cooldown => data.cooldown * (SkillCrossed ? data.cooldownMultiplierWhileCrossed : awakening.ParryCooldownMultiplier);
+        public float Cooldown => data.cooldown;
 
         void Update()
         {
@@ -101,15 +92,17 @@ namespace OnYourMark
             if (to.sqrMagnitude > 0.0001f && Vector3.Angle(forward, to) > data.frontHalfAngle) return false;
 
             if (melee) { if (attacker) attacker.Stun(data.stunSeconds); }
-            else Reflect();
+            else
+            {
+                Reflect();
+                awakening.NotifyReflect();   // P1 3번 파츠 각성: 반사 성공 시 Q 미니 발동
+            }
 
             if (!rewarded && data.dashPayback > 0)
             {
                 rewarded = true;
                 AddDashRpc(data.dashPayback);
             }
-            // 시너지: 파트너가 내 스킬 파츠를 들고 있으면 막을 때마다 파트너 Q 킬 카운트 +2
-            if (SkillCrossed && me.Partner != null) me.Partner.Ultimate.AddKills(data.partnerKillBonus);
             return true;
         }
 

@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76cdd248dfccf463cb6f24cac40c1317, type: 3}
-  m_Name: Awaken_P2_Skill_LimitBreak
-  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.SkillLimitBreakAwakening
-  displayName: LIMIT BREAK
+  m_Script: {fileID: 11500000, guid: c795d2b062c9940138304fb58c9870ec, type: 3}
+  m_Name: Awaken_P2_Skill_RailOverdrive
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.RailOverdriveAwakening
+  displayName: OVERDRIVE
   part: 2
   effect: {fileID: 0}
   enemyMask:
     serializedVersion: 2
-    m_Bits: 0
-  parryCooldownMultiplier: 1
-  switchWindup: 0.4
-  homingRateMultiplier: 1.5
+    m_Bits: 512
+  arKillValue: 2
+  laserDamage: 350
+  blastRadius: 5
+  blastDamage: 350
