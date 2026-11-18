@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Garam.Reticles
@@ -11,6 +12,17 @@ namespace Garam.Reticles
         [Min(0.01f)] public float fallbackRadius = 1f;
 
         public Vector3 AimPosition => aimPoint != null ? aimPoint.position : transform.position;
+
+        /// <summary>Enabled targets, kept up to date in OnEnable/OnDisable (no scene scans; works with pooled enemies).</summary>
+        public static IReadOnlyList<ReticleTarget> Active => s_Active;
+        static readonly List<ReticleTarget> s_Active = new List<ReticleTarget>(32);
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetRegistry() => s_Active.Clear();
+
+        private void OnEnable() => s_Active.Add(this);
+
+        private void OnDisable() => s_Active.Remove(this);
 
         private void Awake()
         {

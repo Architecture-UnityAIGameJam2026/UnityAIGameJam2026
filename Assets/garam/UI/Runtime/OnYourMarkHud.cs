@@ -29,6 +29,10 @@ namespace OnYourMark.UI
         public System.Action<int> HudReturned;
         /// <summary>채널이 주인을 바꾸기 직전(화면에는 아직 이전 데이터). (channel, 이제 내 정보를 보는지). HudSwapGlitch가 구독한다.</summary>
         public System.Action<int,bool> ChannelSwapping;
+        static readonly string[] ChannelIcons={"heart","map","ammo"};
+        static readonly string[] TwoDigits=BuildTwoDigits();
+        static string[] BuildTwoDigits(){var a=new string[101];for(int i=0;i<a.Length;i++)a[i]=i.ToString("00");return a;}
+        static string Two(int v)=>(uint)v<(uint)TwoDigits.Length?TwoDigits[v]:v.ToString("00");
         public bool PartnerNeedsSupport=>partnerHealth<=.15f||partnerAmmo<=1;
         readonly Dictionary<string,Text> texts=new Dictionary<string,Text>();
         readonly Dictionary<string,CanvasGroup> groups=new Dictionary<string,CanvasGroup>();
@@ -140,7 +144,7 @@ namespace OnYourMark.UI
         {
             if(channel<0||channel>2)return;
             openPanel=Panel.Closed;pendingChannel=channel;requestAt=Time.unscaledTime;state=PreviewState.Request;
-            SetIcon("Exchange/Channel icon",new[]{"heart","map","ammo"}[channel]);
+            SetIcon("Exchange/Channel icon",ChannelIcons[channel]);
             ExchangeRequested?.Invoke(channel);
         }
         // Invoke only after authoritative same-channel consent from both players.
@@ -164,12 +168,13 @@ namespace OnYourMark.UI
             if(!sectorComplete||channel<0||channel>2)return false;
             if(!returned[channel])ChannelSwapping?.Invoke(channel,true);
             returned[channel]=true;pendingChannel=-1;openPanel=Panel.Closed;state=PreviewState.Awakened;noticeUntil=Time.unscaledTime+4;
-            SetIcon("Awakened/Restored channel",new[]{"heart","map","ammo"}[channel]);
+            SetIcon("Awakened/Restored channel",ChannelIcons[channel]);
             RefreshOwnership();HudReturned?.Invoke(channel);return true;
         }
         public void SetPreviewState(PreviewState value)
         {
-            state=value;pendingChannel=-1;sectorComplete=false;returned=new bool[3];partnerHealth=.78f;partnerAmmo=6;
+            state=value;pendingChannel=-1;sectorComplete=false;partnerHealth=.78f;partnerAmmo=6;
+            if(returned==null||returned.Length!=3)returned=new bool[3];else System.Array.Clear(returned,0,3);
             openPanel=Panel.Closed;qHeld=0;supportSelectionMade=false;toastUntil=0;
             if(value==PreviewState.Request)RequestExchange(0);
             if(value==PreviewState.Critical)partnerHealth=.12f;
@@ -200,8 +205,11 @@ namespace OnYourMark.UI
             if(k.qKey.wasPressedThisFrame)supportSelectionMade=false;
             if(k.qKey.isPressed){qHeld+=Time.unscaledDeltaTime;if(qHeld>.25f&&!supportSelectionMade)openPanel=Panel.Support;}
             if(k.qKey.wasReleasedThisFrame){if(qHeld<=.25f)SendSupport(partnerHealth<=.15f?0:2);qHeld=0;openPanel=Panel.Closed;}
-            var keys=new[]{k.digit1Key,k.digit2Key,k.digit3Key};
-            for(int i=0;i<3;i++)if(keys[i].wasPressedThisFrame){if(openPanel==Panel.Support)SendSupport(i);else RequestExchange(i);}
+            for(int i=0;i<3;i++)
+            {
+                var key=i==0?k.digit1Key:i==1?k.digit2Key:k.digit3Key;   // 프레임마다 배열을 만들지 않는다
+                if(key.wasPressedThisFrame){if(openPanel==Panel.Support)SendSupport(i);else RequestExchange(i);}
+            }
             if(k.eKey.wasPressedThisFrame)ReturnHud(0);
             if(k.rKey.wasPressedThisFrame)reducedMotion=!reducedMotion;
             if(state==PreviewState.Critical&&Mouse.current!=null&&Mouse.current.rightButton.wasPressedThisFrame){SendSupport(partnerHealth<=.15f?0:2);SetPartnerTelemetry(.78f,6);Toast();}
@@ -234,7 +242,7 @@ namespace OnYourMark.UI
             }
             float target=returned[0]?localHealth:partnerHealth;
             shownHealth=reducedMotion?target:Mathf.MoveTowards(shownHealth,target,Time.unscaledDeltaTime*1.4f);
-            SetText("Vitals/Health number",Mathf.RoundToInt(shownHealth*100).ToString("00"));
+            SetText("Vitals/Health number",Two(Mathf.RoundToInt(shownHealth*100)));
             if(healthBar)
             {
                 var size=healthBar.rectTransform.sizeDelta;size.x=healthBarWidth*shownHealth;
@@ -242,7 +250,7 @@ namespace OnYourMark.UI
                 healthBar.color=returned[0]?accentColor:target<=.15f?dangerColor:primaryColor;
             }
             int ammo=returned[2]?localAmmo:partnerAmmo;
-            SetText("Reserves/Ammo number",ammo.ToString("00"));
+            SetText("Reserves/Ammo number",Two(ammo));
             for(int i=0;i<8;i++)if(ammoCells[i]){var color=i<ammo?primaryColor:dimColor;color.a=i<ammo?.85f:.25f;ammoCells[i].color=color;}
             SetIcon("Critical/Support icon",partnerHealth<=.15f?"shield":"supply");
         }
