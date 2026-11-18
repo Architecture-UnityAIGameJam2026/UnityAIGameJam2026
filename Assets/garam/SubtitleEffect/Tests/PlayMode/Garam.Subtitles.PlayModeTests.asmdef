@@ -1,0 +1,7 @@
+{
+    "name": "Garam.Subtitles.PlayModeTests",
+    "rootNamespace": "Garam.Subtitles.Tests",
+    "references": ["Garam.Subtitles", "UnityEngine.UI"],
+    "optionalUnityReferences": ["TestAssemblies"],
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"]
+}

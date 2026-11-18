@@ -1,0 +1,14 @@
+{
+    "fileKey": "XRi3tZ8GwuovH3Jt4qKWHV",
+    "componentSetNodeId": "33:2001",
+    "baseReticleNodeId": "36:2007",
+    "reviewNodeId": "33:2002",
+    "sourceUrl": "https://www.figma.com/design/XRi3tZ8GwuovH3Jt4qKWHV/UnityAIGameJam2026?node-id=33-2001",
+    "exports": [
+        { "file": "reticle-idle.png", "nodeId": "33:1966", "logicalWidth": 32, "logicalHeight": 12, "scale": 4 },
+        { "file": "reticle-near.png", "nodeId": "33:1973", "logicalWidth": 256, "logicalHeight": 256, "scale": 4 },
+        { "file": "reticle-far.png", "nodeId": "33:1990", "logicalWidth": 160, "logicalHeight": 160, "scale": 4 }
+    ],
+    "palette": { "primary": "#B7A6F6", "dim": "#716A91", "white": "#F3EEDD", "accent": "#D5EF86", "ink": "#141322" },
+    "runtime": "Garam.Reticles.LockOnReticle"
+}
