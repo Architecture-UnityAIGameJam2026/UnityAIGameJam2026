@@ -52,7 +52,7 @@ namespace OnYourMark
         {
             if (!IsSpawned) return;
 
-            if (IsOwner)
+            if (IsOwner && NetworkObject.IsPlayerObject)
             {
                 bool switching = IsSwitching;
                 me.Motor.ZoomAllowed = Current.allowZoom && !switching;

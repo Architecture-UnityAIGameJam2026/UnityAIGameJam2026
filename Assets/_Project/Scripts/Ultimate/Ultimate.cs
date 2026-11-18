@@ -70,7 +70,7 @@ namespace OnYourMark
         {
             if (!IsSpawned) return;
 
-            if (IsOwner)
+            if (IsOwner && NetworkObject.IsPlayerObject)
             {
                 aim.Value = Camera.main.transform.forward;
                 me.Motor.ExternalSpeedMultiplier = MoveSpeedMultiplier;

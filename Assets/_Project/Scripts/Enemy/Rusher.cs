@@ -12,6 +12,7 @@ namespace OnYourMark
         [SerializeField] GameObject fuseWarning;
         [SerializeField] GameObject blastEffect;
 
+        public bool Fusing => fusing;
         bool fusing;
         readonly HashSet<Health> blastTargets = new();
         int coverMask;

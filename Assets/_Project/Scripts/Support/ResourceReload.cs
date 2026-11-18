@@ -38,14 +38,16 @@ namespace OnYourMark
             if (!IsSpawned || hud == null || !IsOwner) return;
             // 대쉬는 내 클라이언트가 계산하므로, 자연 충전 허용 여부도 여기서 알려 준다
             me.Motor.AutoRechargeDash = SelfManaged;
-            if (CursorLock.IsLocked && reload.action.WasPressedThisFrame()) ReloadRpc();
+            if (NetworkObject.IsPlayerObject && CursorLock.IsLocked && reload.action.WasPressedThisFrame()) ReloadRpc();
         }
 
         [Rpc(SendTo.Server)]
-        void ReloadRpc()
+        void ReloadRpc() => TryReload();
+
+        public bool TryReload()
         {
             var target = Target;
-            if (CooldownLeft > 0f || me.Health.IsDead || target == null || target.Health.IsDead) return;
+            if (!IsServer || CooldownLeft > 0f || me.Health.IsDead || target == null || target.Health.IsDead) return false;
 
             bool overcharge = !SelfManaged;   // 파트너를 채워 줄 때만 오버차지
             if (target.Stats.showDashOnHud)
@@ -56,6 +58,9 @@ namespace OnYourMark
                 target.Ammo.Fill();
 
             readyAt.Value = NetworkManager.ServerTime.Time + config.cooldown;
+            target.FulfillSupport(HudPart.Resource);
+            me.ReportAction(SelfManaged ? "reload" : "grant_resource", "completed");
+            return true;
         }
 
         [Rpc(SendTo.Owner)]

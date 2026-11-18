@@ -23,6 +23,12 @@ namespace OnYourMark
             if (panel.activeSelf != show) panel.SetActive(show);
             if (!show) return;
             Refresh(net.LocalClientId);
+            if (net.IsHost && net.ConnectedClients.Count == 1 && selection.HasChosen(net.LocalClientId))
+            {
+                status.text += $"\nAI partner in {selection.SoloSecondsLeft}s · B to start now";
+                if (UnityEngine.InputSystem.Keyboard.current?.bKey.wasPressedThisFrame == true || LaunchArgs.Has("-bot"))
+                    selection.FillWithBot();
+            }
 
             // The server still arbitrates ownership. An occupied title choice falls back to this picker.
             int? requested = OYM.GameSession.PreferredRole;

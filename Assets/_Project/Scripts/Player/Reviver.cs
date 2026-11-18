@@ -28,7 +28,7 @@ namespace OnYourMark
         void Update()
         {
             if (!IsSpawned) return;
-            if (IsOwner && CursorLock.IsLocked)
+            if (IsOwner && NetworkObject.IsPlayerObject && CursorLock.IsLocked)
             {
                 if (interact.action.WasPressedThisFrame()) HoldRpc(true);
                 if (interact.action.WasReleasedThisFrame()) HoldRpc(false);
@@ -42,6 +42,11 @@ namespace OnYourMark
                 partner.Health.Revive(config.reviveHealthRatio);
                 progress.Value = 0f;
             }
+        }
+
+        public void SetBotHolding(bool active)
+        {
+            if (IsServer && me.IsBot) holding = active;
         }
 
         [Rpc(SendTo.Server)]

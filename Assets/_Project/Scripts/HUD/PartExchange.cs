@@ -50,20 +50,54 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void CancelOfferRpc(RpcParams rpc = default)
         {
-            if (HasOffer && offerFrom.Value == rpc.Receive.SenderClientId) offerPart.Value = -1;
+            if (HasOffer && offerFrom.Value == rpc.Receive.SenderClientId) Cancel(rpc.Receive.SenderClientId);
         }
 
         [Rpc(SendTo.Server)]
         void OfferRpc(int part, RpcParams rpc = default)
         {
-            ulong sender = rpc.Receive.SenderClientId;
+            ApplyOffer(part, rpc.Receive.SenderClientId);
+        }
+
+        public bool BotOffer(HudPart part, bool confirm)
+        {
+            if (!IsServer || state.IsReturned(part)) return false;
+            bool match = HasOffer && OfferPart == part && OfferFrom != RoleSelection.BotSlot;
+            if (confirm != match || (!confirm && HasOffer)) return false;
+            ApplyOffer((int)part, RoleSelection.BotSlot);
+            return true;
+        }
+
+        public bool BotCancel()
+        {
+            if (!IsServer || !HasOffer || OfferFrom != RoleSelection.BotSlot) return false;
+            Cancel(RoleSelection.BotSlot);
+            return true;
+        }
+
+        void Report(ulong sender, string action, HudPart part)
+        {
+            foreach (var player in Player.All)
+                if ((player.IsBot ? RoleSelection.BotSlot : player.OwnerClientId) == sender)
+                    player.ReportAction(action, part.ToString());
+        }
+
+        void Cancel(ulong sender)
+        {
+            Report(sender, "cancel_exchange", OfferPart);
+            offerPart.Value = -1;
+        }
+
+        void ApplyOffer(int part, ulong sender)
+        {
             if (part < 0 || part >= 3) return;
             if (state.IsReturned((HudPart)part)) return;
 
             bool partnerOfferedSame = HasOffer && offerPart.Value == part && offerFrom.Value != sender;
             if (partnerOfferedSame)
             {
-                state.Return((HudPart)part);   // 합의 성립: 그 파츠만 서로 돌려받는다
+                state.Return((HudPart)part);
+                Report(sender, "confirm_exchange", (HudPart)part);
                 offerPart.Value = -1;
                 return;
             }

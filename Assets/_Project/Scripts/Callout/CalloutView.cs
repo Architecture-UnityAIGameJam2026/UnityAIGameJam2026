@@ -1,4 +1,5 @@
 using System;
+using Garam.Subtitles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ namespace OnYourMark
             [NonSerialized] public string subject;
             [NonSerialized] public float shownAt, firstShownAt, hideAt;
             [NonSerialized] public Message? pending;
+            [NonSerialized] public AlienSubtitleEffect decoder;
 
             public bool Visible => subject != null;
         }
@@ -38,6 +40,8 @@ namespace OnYourMark
         [Tooltip("같은 캐릭터의 다음 알림으로 바뀌기 전에 앞 알림을 보여주는 최소 시간")]
         [SerializeField] float minShowSeconds = 1f;
         [SerializeField] float slotSpacing = 8f;
+        [Tooltip("외계 문자에서 한국어로 해독되는 시간. 짧은 대사는 재생 시간의 1/3까지 사용한다.")]
+        [SerializeField, Min(0f)] float decodeSeconds = 0.6f;
 
         // 프로젝트에 한글 폰트가 없어 OS 한글 폰트를 쓴다
         static readonly string[] KoreanFonts = { "Apple SD Gothic Neo", "AppleGothic", "Malgun Gothic", "맑은 고딕", "Noto Sans CJK KR", "NanumGothic" };
@@ -50,6 +54,8 @@ namespace OnYourMark
             foreach (var s in slots)
             {
                 if (font) foreach (var t in new[] { s.header, s.korean, s.english }) t.font = font;
+                if (!s.korean.TryGetComponent(out s.decoder))
+                    s.decoder = s.korean.gameObject.AddComponent<AlienSubtitleEffect>();
                 s.group.alpha = 0f;
             }
         }
@@ -87,9 +93,11 @@ namespace OnYourMark
         void Apply(Slot slot, Message m)
         {
             string tag = $"<color=#{ColorUtility.ToHtmlStringRGB(m.subjectColor)}>[{m.subject}]</color>";
-            slot.header.text = $"상태 알림   {m.speaker} ▸ {m.listener}";
-            slot.korean.text = $"{tag} {m.koreanLine}";
+            string sender = m.subject == m.speaker ? tag : $"{tag} {m.speaker}";
+            slot.header.text = $"상태 알림   {sender} ▸ {m.listener}";
             slot.english.text = m.englishLine;
+            slot.decoder.duration = Mathf.Clamp(m.seconds / 3f, 0f, decodeSeconds);
+            slot.decoder.Play(m.koreanLine);
             slot.subject = m.subject;
             slot.pending = null;
             slot.shownAt = Time.unscaledTime;

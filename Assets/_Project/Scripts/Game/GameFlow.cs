@@ -35,7 +35,6 @@ namespace OnYourMark
             if (!IsServer) return;
             result.Value = Result.Playing;
             allWavesCleared.Raised += OnAllWavesCleared;
-            NetworkManager.OnClientDisconnectCallback += OnClientLeft;
         }
 
         public override void OnNetworkDespawn()
@@ -43,15 +42,6 @@ namespace OnYourMark
             panel.SetActive(false);
             if (!IsServer) return;
             allWavesCleared.Raised -= OnAllWavesCleared;
-            NetworkManager.OnClientDisconnectCallback -= OnClientLeft;
-        }
-
-        void OnClientLeft(ulong clientId)
-        {
-            if (NetworkManager.ShutdownInProgress || result.Value != Result.Playing) return;
-            // NGO removes the departing player object before this callback. The role table still owns the two seats.
-            var roles = FindFirstObjectByType<RoleSelection>();
-            if (roles && roles.AllChosen && roles.HasChosen(clientId)) End(Result.PartnerLeft);
         }
 
         void OnAllWavesCleared() => End(Result.MissionClear);

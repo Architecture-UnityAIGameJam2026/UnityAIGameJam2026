@@ -16,7 +16,7 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
-            if (IsOwner)
+            if (IsOwner && NetworkObject.IsPlayerObject)
             {
                 view = Instantiate(pilot.fpRig, transform, false);
                 view.flight = null;

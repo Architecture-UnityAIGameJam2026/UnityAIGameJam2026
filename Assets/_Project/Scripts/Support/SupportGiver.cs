@@ -39,7 +39,7 @@ namespace OnYourMark
         void Update()
         {
             ConsumedTrigger = false;
-            if (!IsOwner || !CursorLock.IsLocked || !trigger.action.WasPressedThisFrame()) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !trigger.action.WasPressedThisFrame()) return;
 
             var partner = me.Partner;
             if (CanSupport && !partner.Health.IsDead && IsAimedAt(partner))
@@ -72,15 +72,32 @@ namespace OnYourMark
         }
 
         [Rpc(SendTo.Server)]
-        void SupportRpc()
+        void SupportRpc() => GiveVitals();
+
+        public bool CanGiveVitals => CanSupport && !me.Partner.Health.IsDead && CooldownLeft <= 0f &&
+            Vector3.Distance(transform.position, me.Partner.transform.position) <= config.supportRange;
+
+        public bool GiveVitals()
         {
             var target = me.Partner;
-            if (!CanSupport || target.Health.IsDead || CooldownLeft > 0f) return;
+            if (!IsServer || !CanGiveVitals) return false;
 
             var effect = target.Stats.SupportFor(HudPart.Vitals);
-            if (effect == null) return;
+            if (effect == null) return false;
             effect.Apply(me, target);
             readyAt.Value = NetworkManager.ServerTime.Time + effect.cooldown;
+            me.ReportAction("grant_bio", "vitals");
+            target.FulfillSupport(HudPart.Vitals);
+            return true;
+        }
+
+        public void SharePartnerPosition()
+        {
+            if (IsServer && me.Partner)
+            {
+                ShowPingRpc(me.Partner.transform.position);
+                me.ReportAction("share_map", "position");
+            }
         }
 
         [Rpc(SendTo.Server)]

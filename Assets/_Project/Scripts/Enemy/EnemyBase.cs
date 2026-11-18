@@ -14,6 +14,8 @@ namespace OnYourMark
     {
         protected NavMeshAgent Agent { get; private set; }
         protected Health Health { get; private set; }
+        Collider body;
+        public Vector3 AimPoint => body ? body.bounds.center : transform.position;
 
         protected abstract EnemyData Data { get; }
 
@@ -32,6 +34,7 @@ namespace OnYourMark
         public override void OnNetworkSpawn()
         {
             Agent = GetComponent<NavMeshAgent>();
+            body = GetComponentInChildren<Collider>();
             Health = GetComponent<Health>();
             stunnedUntil = 0;   // 풀에서 재사용: 이전 생의 경직을 지운다
             if (!IsServer) { Agent.enabled = false; return; }
@@ -59,9 +62,10 @@ namespace OnYourMark
         {
             Health best = null;
             float bestDistance = float.MaxValue;
-            foreach (var client in NetworkManager.ConnectedClientsList)
+            foreach (var player in Player.All)
             {
-                if (client.PlayerObject == null || !client.PlayerObject.TryGetComponent<Health>(out var h) || h.IsDead) continue;
+                var h = player.Health;
+                if (!player.IsSpawned || h.IsDead) continue;
                 float d = (h.transform.position - transform.position).sqrMagnitude;
                 if (d < bestDistance) { bestDistance = d; best = h; }
             }

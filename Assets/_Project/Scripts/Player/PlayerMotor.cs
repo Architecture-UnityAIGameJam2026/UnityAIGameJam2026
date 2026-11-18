@@ -32,7 +32,11 @@ namespace OnYourMark
         public int DashStacks { get; private set; }
         /// <summary>지금의 최대 대쉬 횟수 (기본 + 스킬로 늘어난 칸)</summary>
         public int DashCapacity => stats.dashMaxStacks + bonusDashStacks;
-        public bool IsZooming => stats.CanZoom && ZoomAllowed && Held(zoom);
+        public bool BotDriven { get; set; }
+        public Vector3 BotDirection { get; set; }
+        public bool BotJump, BotDash, BotZoom, BotHover;
+        public bool Grounded => body.isGrounded;
+        public bool IsZooming => stats.CanZoom && ZoomAllowed && (BotDriven ? BotZoom : Held(zoom));
         /// <summary>지금 무기가 줌을 쓸 수 있는지 (P2 레일건 모드에서만)</summary>
         public bool ZoomAllowed { get; set; } = true;
         /// <summary>대쉬 금지 (P2 무기 변형 중)</summary>
@@ -68,14 +72,15 @@ namespace OnYourMark
 
         void Update()
         {
-            if (cam == null) cam = Camera.main.transform;
+            if (!BotDriven && cam == null) cam = Camera.main.transform;
             float dt = Time.deltaTime;
 
-            Vector2 stick = CursorLock.IsLocked ? move.action.ReadValue<Vector2>() : Vector2.zero;
-            Vector3 input = CameraRelative(stick);
+            Vector2 stick = !BotDriven && CursorLock.IsLocked ? move.action.ReadValue<Vector2>() : Vector2.zero;
+            Vector3 input = BotDriven ? Vector3.ClampMagnitude(BotDirection, 1f) : CameraRelative(stick);
             RechargeDash(dt);
             RechargeHover(dt);
-            if (Pressed(dash)) TryDash(input);
+            if (BotDriven ? BotDash : Pressed(dash)) TryDash(input);
+            BotDash = false;
 
             Vector3 step;
             if (dashTimeLeft > 0f)
@@ -90,7 +95,7 @@ namespace OnYourMark
             else if (UpdateFlight(dt))
             {
                 // 추진 비행: 중력 없이 카메라가 바라보는 3D 방향으로 날아간다 (위를 보면 상승, 아래를 보면 급강하)
-                step = cam.forward * (stats.hoverSpeed * buffs.SpeedMultiplier * ExternalSpeedMultiplier * dt);
+                step = (BotDriven ? (BotDirection.sqrMagnitude > 0 ? BotDirection.normalized : Vector3.up) : cam.forward) * (stats.hoverSpeed * buffs.SpeedMultiplier * ExternalSpeedMultiplier * dt);
             }
             else
             {
@@ -100,6 +105,7 @@ namespace OnYourMark
             }
 
             body.Move(step);
+            BotJump = false;
             RecoverFromFall();
         }
 
@@ -121,11 +127,11 @@ namespace OnYourMark
         {
             bool airborne = !body.isGrounded;
             if (!airborne) jumpPressedInAir = false;
-            else if (Pressed(jump)) jumpPressedInAir = true;
+            else if (BotDriven ? BotJump : Pressed(jump)) jumpPressedInAir = true;
 
             bool hasFuel = hoverTime < stats.hoverMaxTime;
             bool canStart = airborne && (verticalSpeed <= 0f || jumpPressedInAir);
-            flying = Held(jump) && hasFuel && airborne && (flying || canStart);
+            flying = (BotDriven ? BotHover : Held(jump)) && hasFuel && airborne && (flying || canStart);
 
             if (!flying) return false;
             hoverTime += dt;
@@ -148,7 +154,7 @@ namespace OnYourMark
         {
             if (body.isGrounded)
             {
-                if (!Pressed(jump)) { verticalSpeed = -2f; return verticalSpeed * dt; }
+                if (!(BotDriven ? BotJump : Pressed(jump))) { verticalSpeed = -2f; return verticalSpeed * dt; }
                 verticalSpeed = stats.JumpVelocity;
             }
 
