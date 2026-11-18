@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Arena.unity
     guid: fa03fc6d6c62d4f22b917c860fcb71cb
+  - enabled: 1
+    path: Assets/OYM/Scenes/MainTitle.unity
+    guid: 5776460cacd0b3c4480f70ae4519fd13
+  - enabled: 1
+    path: Assets/OYM/Scenes/DebrisField.unity
+    guid: f711d4722f6e0284992ccf2afd2b5c93
+  - enabled: 1
+    path: Assets/OYM/Scenes/Showcase_DebrisField.unity
+    guid: 1a55b2ed784bece48a75c81eab348665
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
