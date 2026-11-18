@@ -25,8 +25,6 @@ namespace OnYourMark
         int[] stored;      // 서버: 모드별 남은 탄
         bool pending;      // 서버: 변형 진행 중
 
-        /// <summary>변형 시간 배율 (P20 각성에서 줄인다)</summary>
-        public float WindupMultiplier { get; set; } = 1f;
 
         double Now => NetworkManager.ServerTime.Time;
         public HitscanData Current => modes[Mathf.Clamp(mode.Value, 0, modes.Length - 1)];
@@ -35,6 +33,17 @@ namespace OnYourMark
         public float SwitchLeft => IsSpawned ? Mathf.Max(0f, (float)(switchEndsAt.Value - Now)) : 0f;
         public float CooldownLeft => IsSpawned ? Mathf.Max(0f, (float)(readyAt.Value - Now)) : 0f;
         public HitscanData Next => modes[(mode.Value + 1) % modes.Length];
+        public WeaponSwitchData Data => data;
+
+        /// <summary>실제 변형 선딜레이: 3번 파츠 반환 후 한계 돌파 각성이 있으면 그 값 (0.4초)</summary>
+        public float Windup
+        {
+            get
+            {
+                float o = GetComponent<AwakeningSet>().SwitchWindupOverride;
+                return o > 0f ? o : data.windup;
+            }
+        }
 
         void Awake() => me = GetComponent<Player>();
 
@@ -70,7 +79,7 @@ namespace OnYourMark
         {
             if (pending || CooldownLeft > 0f || me.Health.IsDead) return;
             pending = true;
-            switchEndsAt.Value = Now + data.windup * WindupMultiplier;
+            switchEndsAt.Value = Now + Windup;
         }
 
         void Complete()

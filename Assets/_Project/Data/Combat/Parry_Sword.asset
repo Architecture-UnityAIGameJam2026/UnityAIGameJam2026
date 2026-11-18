@@ -23,3 +23,5 @@ MonoBehaviour:
     m_Bits: 1536
   stunSeconds: 1.5
   dashPayback: 1
+  partnerKillBonus: 2
+  cooldownMultiplierWhileCrossed: 0.7

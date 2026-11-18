@@ -12,5 +12,9 @@ namespace OnYourMark
         public float cooldown = 2f;
         [Tooltip("변형 중 이동 속도 (m/s)")]
         public float moveSpeedWhileSwitching = 3f;
+
+        [Header("3번(스킬) 파츠를 파트너가 들고 있을 때 (반환 전 시너지)")]
+        [Tooltip("내가 변형하는 동안 파트너가 받는 피해 배율 (50% 감소)")]
+        public float partnerDamageTakenWhileSwitching = 0.5f;
     }
 }

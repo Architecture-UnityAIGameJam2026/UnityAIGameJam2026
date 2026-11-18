@@ -15,3 +15,4 @@ MonoBehaviour:
   windup: 1.8
   cooldown: 2
   moveSpeedWhileSwitching: 3
+  partnerDamageTakenWhileSwitching: 0.5

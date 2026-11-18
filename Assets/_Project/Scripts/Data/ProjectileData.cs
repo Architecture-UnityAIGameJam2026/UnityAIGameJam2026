@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OnYourMark
 {
-    /// <summary>P1 원격 검기 같은 투사체 공격.</summary>
+    /// <summary>검기 같은 투사체 공격.</summary>
     [CreateAssetMenu(menuName = "On Your Mark/Weapon/Projectile")]
     public class ProjectileData : ScriptableObject
     {
@@ -15,6 +15,8 @@ namespace OnYourMark
         [Tooltip("발사할 때 쓰는 자원(검기 칸) 수")]
         public int cost = 1;
         public float cooldown = 0.4f;
+        [Tooltip("맞은 적을 관통한다 (지형에서 멈춤)")]
+        public bool pierce;
         public LayerMask hitMask;
     }
 }

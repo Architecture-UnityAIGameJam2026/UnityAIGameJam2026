@@ -17,6 +17,8 @@ namespace OnYourMark
 
         /// <summary>서버에서만 호출된다.</summary>
         public event Action<Health> Died;
+        /// <summary>받는 피해 배율 (서버). 예: 파트너가 무기 변형 중일 때 50% 감소</summary>
+        public Func<float> DamageTakenMultiplier;
 
         public float Current => current.Value;
         public float Max => data.maxHealth;
@@ -33,6 +35,7 @@ namespace OnYourMark
         public void Damage(float amount, Player attacker = null)
         {
             if (!IsServer || IsDead) return;
+            if (DamageTakenMultiplier != null) amount *= DamageTakenMultiplier();
 
             float absorbed = Mathf.Min(Shield, amount);   // 실드가 먼저 깎인다
             shield.Value -= absorbed;

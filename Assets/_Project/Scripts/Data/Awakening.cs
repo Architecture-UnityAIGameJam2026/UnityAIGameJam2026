@@ -5,7 +5,7 @@ namespace OnYourMark
 {
     /// <summary>
     /// 각성 효과 하나 (전략 패턴). 자기 파츠를 돌려받으면 켜진다.
-    /// 필요한 시점만 골라 재정의한다: 처치 시 / 기본 공격 시 / 명중 시 / 재장전 배율.
+    /// 필요한 시점만 골라 재정의한다: 처치 시 / 기본 공격 시 / 명중 시, 그리고 스킬 수치 배율.
     /// 모든 훅은 서버에서 호출된다.
     /// </summary>
     public abstract class Awakening : ScriptableObject
@@ -20,6 +20,12 @@ namespace OnYourMark
         public virtual void OnBasicAttack(AwakeningSet owner) { }
         public virtual void OnHit(AwakeningSet owner, Vector3 point) { }
         public virtual float ReloadMultiplier => 1f;
+        /// <summary>E 패링 쿨타임 배율</summary>
+        public virtual float ParryCooldownMultiplier => 1f;
+        /// <summary>E 무기 전환 선딜레이 (초). 0 이하면 바꾸지 않는다</summary>
+        public virtual float SwitchWindupOverride => -1f;
+        /// <summary>Q 유도탄 발사 수 배율</summary>
+        public virtual float HomingRateMultiplier => 1f;
 
         /// <summary>origin에서 aim 방향 부채꼴(반각 halfAngle) 안, range 이내의 살아 있는 적.</summary>
         protected List<Health> EnemiesInCone(Vector3 origin, Vector3 aim, float range, float halfAngle)

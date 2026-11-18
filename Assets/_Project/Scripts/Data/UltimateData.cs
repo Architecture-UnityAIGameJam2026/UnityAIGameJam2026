@@ -15,6 +15,12 @@ namespace OnYourMark
         [Tooltip("3번(스킬) 파츠를 돌려받은 뒤 필요한 처치 수")]
         public int killsRequiredAwakened = 10;
 
+        [Header("3번(스킬) 파츠를 파트너가 들고 있을 때 (반환 전 시너지)")]
+        [Tooltip("발동 중 파트너가 적을 처치할 때마다 늘어나는 지속 시간 (0이면 없음)")]
+        public float extendPerPartnerKill;
+        [Tooltip("한 번 발동에서 늘어날 수 있는 최대 시간")]
+        public float extendMax = 4f;
+
         public virtual float DamageMultiplier => 1f;
         public virtual float AttackSpeedMultiplier => 1f;
         public virtual float MoveSpeedMultiplier => 1f;

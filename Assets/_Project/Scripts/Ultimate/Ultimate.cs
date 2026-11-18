@@ -45,8 +45,8 @@ namespace OnYourMark
         public float DamageMultiplier => IsActive ? data.DamageMultiplier : 1f;
         public float AttackSpeedMultiplier => IsActive ? data.AttackSpeedMultiplier : 1f;
         public float MoveSpeedMultiplier => IsActive ? data.MoveSpeedMultiplier : 1f;
-        /// <summary>유도탄 발사 수 배율 (P20 각성에서 +50%)</summary>
-        public float HomingRateMultiplier { get; set; } = 1f;
+        /// <summary>유도탄 발사 수 배율 (3번 파츠 반환 각성에서 +50%)</summary>
+        public float HomingRateMultiplier => GetComponent<AwakeningSet>().HomingRateMultiplier;
 
         void Awake() => me = GetComponent<Player>();
 
@@ -81,6 +81,11 @@ namespace OnYourMark
 
         void OnEnemyKilled(Player killer)
         {
+            // 시너지: 파트너가 내 스킬 파츠를 들고 있으면 발동 중 파트너의 처치마다 지속 시간 연장
+            if (killer != null && killer == me.Partner && IsActive && data.extendPerPartnerKill > 0f
+                && hud != null && !hud.IsReturned(HudPart.Skill))
+                Extend(data.extendPerPartnerKill, data.extendMax);
+
             if (killer != me || IsActive) return;   // 발동 중 처치는 누적하지 않는다
             kills.Value = Mathf.Min(kills.Value + 1, data.killsRequired);
         }

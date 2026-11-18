@@ -22,6 +22,10 @@ namespace OnYourMark
         public bool IsActive(Awakening a) => hud != null && hud.IsReturned(a.part);
         public Awakening[] Active => All.Where(IsActive).ToArray();
         public float ReloadMultiplier => Active.Aggregate(1f, (m, a) => m * a.ReloadMultiplier);
+        public float ParryCooldownMultiplier => Active.Aggregate(1f, (m, a) => m * a.ParryCooldownMultiplier);
+        public float HomingRateMultiplier => Active.Aggregate(1f, (m, a) => m * a.HomingRateMultiplier);
+        /// <summary>켜진 각성 중 무기 전환 선딜레이를 정한 것이 있으면 그 값, 없으면 -1</summary>
+        public float SwitchWindupOverride => Active.Select(a => a.SwitchWindupOverride).Where(v => v > 0f).DefaultIfEmpty(-1f).Min();
 
         void Awake() => me = GetComponent<Player>();
 
