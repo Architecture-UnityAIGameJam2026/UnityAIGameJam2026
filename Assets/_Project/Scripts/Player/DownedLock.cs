@@ -31,7 +31,13 @@ namespace OnYourMark
             if (downed == wasDowned) return;
             wasDowned = downed;
 
-            if (IsOwner) foreach (var b in disableWhileDowned) b.enabled = !downed;
+            if (IsOwner && NetworkObject.IsPlayerObject) foreach (var b in disableWhileDowned) b.enabled = !downed;
+            if (IsServer && !NetworkObject.IsPlayerObject && TryGetComponent<PlayerMotor>(out var motor))
+            {
+                motor.BotJump = motor.BotDash = motor.BotHover = false;
+                motor.BotDirection = Vector3.zero;
+                motor.enabled = !downed;
+            }
             body.localRotation = downed ? Quaternion.Euler(90f, 0f, 0f) : Quaternion.identity;
             body.localPosition = downed ? new Vector3(0f, 0.4f, 0f) : standingPosition;
             downedEffect.SetActive(downed);

@@ -23,6 +23,12 @@ namespace OnYourMark
             if (panel.activeSelf != show) panel.SetActive(show);
             if (!show) return;
             Refresh(net.LocalClientId);
+            if (net.IsHost && net.ConnectedClients.Count == 1 && selection.HasChosen(net.LocalClientId))
+            {
+                status.text += $"\nAI partner in {selection.SoloSecondsLeft}s · B to start now";
+                if (UnityEngine.InputSystem.Keyboard.current?.bKey.wasPressedThisFrame == true || LaunchArgs.Has("-bot"))
+                    selection.FillWithBot();
+            }
 
             // 실행 인자 -role 로 자동 선택 (빌드 테스트용)
             if (LaunchArgs.Get("-role") is { } r && int.TryParse(r, out int role) && !selection.HasChosen(net.LocalClientId)

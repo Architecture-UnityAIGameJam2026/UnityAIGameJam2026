@@ -19,6 +19,7 @@ namespace OnYourMark
         readonly NetworkVariable<Vector3> aimPoint = new();
 
         float readyTime;
+        public bool Charging => charging.Value;
         bool flashing;   // 발사 순간 굵은 레이저 연출 중
 
         protected override EnemyData Data => data;

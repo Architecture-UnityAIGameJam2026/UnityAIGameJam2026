@@ -38,7 +38,7 @@ namespace OnYourMark
         void Update()
         {
             ConsumedTrigger = false;
-            if (!IsOwner || !CursorLock.IsLocked || !trigger.action.WasPressedThisFrame()) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !trigger.action.WasPressedThisFrame()) return;
 
             var partner = me.Partner;
             if (partner != null && partner.Requests.Any && IsAimedAt(partner))
@@ -83,11 +83,26 @@ namespace OnYourMark
                 // 요청이 켜져 있고, 내가 그 파츠를 아직 들고 있고(반환 전), 쿨타임이 끝났을 때만
                 if (!target.Requests.Has(part) || hud.IsReturned(part) || now < readyAt[i]) continue;
 
-                var effect = target.Stats.SupportFor(part);
-                effect.Apply(me, target);
-                readyAt[i] = now + effect.cooldown;
-                target.Requests.Fulfill(part);
+                Give(part, target, now);
             }
+        }
+
+        public bool BotGive(HudPart part)
+        {
+            var target = me.Partner;
+            if (!IsServer || !me.IsBot || !target || target.Health.IsDead || !target.Requests.Has(part) || hud.IsReturned(part) || CooldownLeft(part) > 0 || Vector3.Distance(transform.position,target.transform.position) > config.supportRange) return false;
+            Give(part, target, NetworkManager.ServerTime.Time);
+            return true;
+        }
+
+        void Give(HudPart part, Player target, double now)
+        {
+            int i = (int)part;
+            var effect = target.Stats.SupportFor(part);
+            effect.Apply(me, target);
+            readyAt[i] = now + effect.cooldown;
+            target.Requests.Fulfill(part);
+            me.ReportAction(part == HudPart.Bio ? "grant_bio" : part == HudPart.Map ? "share_map" : "grant_resource", part.ToString());
         }
 
         [Rpc(SendTo.Server)]

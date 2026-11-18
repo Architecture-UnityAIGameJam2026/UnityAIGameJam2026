@@ -16,17 +16,18 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
+            bool local = IsOwner && NetworkObject.IsPlayerObject;
             if (components != null)
                 foreach (var c in components)
-                    if (c != null) c.enabled = IsOwner;
+                    if (c != null) c.enabled = local;
 
             if (objects != null)
                 foreach (var o in objects)
-                    if (o != null) o.SetActive(IsOwner);
+                    if (o != null) o.SetActive(local);
 
             if (ownerHiddenRenderers != null)
                 foreach (var r in ownerHiddenRenderers)
-                    if (r != null) r.enabled = !IsOwner;
+                    if (r != null) r.enabled = !local;
         }
     }
 }

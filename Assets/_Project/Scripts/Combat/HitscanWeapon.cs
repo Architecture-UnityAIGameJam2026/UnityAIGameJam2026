@@ -20,7 +20,8 @@ namespace OnYourMark
         [Tooltip("팀원 지원으로 쓰인 클릭이면 쏘지 않는다")]
         [SerializeField] SupportGiver support;
 
-        float readyTime;
+        public static event System.Action<Player> DryFired;
+        float readyTime, nextDryReport;
         Player me;
         AwakeningSet awakening;
 
@@ -33,26 +34,60 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !CursorLock.IsLocked) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
 
             if (reload.action.WasPressedThisFrame() && !magazine.IsFull) ReloadRpc();
 
             if (!fire.action.WasPressedThisFrame() || support.ConsumedTrigger || Time.time < readyTime) return;
             readyTime = Time.time + data.cooldown;
 
-            if (magazine.Current == 0) { audioSource.PlayOneShot(data.dryFireSound); return; }
+            if (magazine.Current == 0)
+            {
+                audioSource.PlayOneShot(data.dryFireSound);
+                ReportDryFireRpc();
+                return;
+            }
 
             var cam = Camera.main.transform;
             FireRpc(cam.position, cam.forward);
         }
 
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Owner)]
+        void ReportDryFireRpc()
+        {
+            if (magazine.Current != 0 || me.Health.IsDead || reloading || Time.time < nextDryReport) return;
+            nextDryReport = Time.time + data.cooldown;
+            DryFired?.Invoke(me);
+        }
+
+        public bool Reloading => reloading;
+        public float Range => data.range;
+        public bool CanBotFire => me.IsBot && IsServer && !me.Health.IsDead && !reloading && magazine.Current > 0 && Time.time >= readyTime;
+        public bool BotShoot(Vector3 direction)
+        {
+            if (!CanBotFire) return false;
+            readyTime = Time.time + data.cooldown;
+            Fire(transform.position + Vector3.up * 1.1f, direction);
+            return true;
+        }
+        public bool BotReload()
+        {
+            if (!IsServer || !me.IsBot || me.Health.IsDead || reloading || magazine.IsFull) return false;
+            StartCoroutine(Reload());
+            return true;
+        }
+
         [Rpc(SendTo.Server)]
         void FireRpc(Vector3 aimOrigin, Vector3 aimDirection)
         {
-            if (reloading || !magazine.TrySpend(1)) return;
-
             // 카메라는 캐릭터 뒤에 있으므로, 캐릭터 위치에 해당하는 지점부터 사거리를 잰다
             Vector3 origin = aimOrigin + aimDirection * Vector3.Dot(transform.position - aimOrigin, aimDirection);
+            Fire(origin, aimDirection);
+        }
+
+        void Fire(Vector3 origin, Vector3 aimDirection)
+        {
+            if (reloading || !magazine.TrySpend(1)) return;
             Vector3 end = origin + aimDirection * data.range;
             if (Physics.Raycast(origin, aimDirection, out var hit, data.range, data.hitMask))
             {

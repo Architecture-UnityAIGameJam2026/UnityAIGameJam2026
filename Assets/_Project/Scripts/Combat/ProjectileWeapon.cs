@@ -15,7 +15,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !CursorLock.IsLocked || !fire.action.WasPressedThisFrame() || Time.time < readyTime) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !fire.action.WasPressedThisFrame() || Time.time < readyTime) return;
             if (resource.Current < data.cost) return;
             readyTime = Time.time + data.cooldown;
 
@@ -23,6 +23,15 @@ namespace OnYourMark
             LaunchRpc(cam.forward);
         }
 
+        public float Range => data.range;
+        public bool BotLaunch(Vector3 direction)
+        {
+            var p = GetComponent<Player>();
+            if (!IsServer || !p.IsBot || p.Health.IsDead || resource.Current < data.cost || Time.time < readyTime) return false;
+            readyTime = Time.time + data.cooldown;
+            LaunchRpc(direction);
+            return true;
+        }
         [Rpc(SendTo.Server)]
         void LaunchRpc(Vector3 direction)
         {

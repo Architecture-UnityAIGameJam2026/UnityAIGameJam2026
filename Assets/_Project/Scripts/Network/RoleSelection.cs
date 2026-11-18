@@ -19,6 +19,15 @@ namespace OnYourMark
 
         readonly NetworkList<ulong> owners = new();
         bool spawnDone;
+        [SerializeField, Min(0)] float soloWaitSeconds = 5f;
+        float soloFillAt = float.PositiveInfinity;
+        public int SoloSecondsLeft => Mathf.Max(0, Mathf.CeilToInt(soloFillAt-Time.unscaledTime));
+
+        void Update()
+        {
+            if (IsHost && !spawnDone && Time.unscaledTime >= soloFillAt &&
+                NetworkManager.ConnectedClients.Count == 1) FillWithBot();
+        }
 
         public RoleDefinition[] Roles => roles;
         public ulong OwnerOf(int role) => role < owners.Count ? owners[role] : Nobody;
@@ -32,6 +41,7 @@ namespace OnYourMark
             owners.Clear();
             foreach (var _ in roles) owners.Add(Nobody);
             NetworkManager.OnClientDisconnectCallback += ReleaseRole;
+            NetworkManager.OnClientConnectedCallback += TakeBotSeat;
             roundReset.Raised += ClearRoles;
         }
 
@@ -39,12 +49,17 @@ namespace OnYourMark
         {
             for (int i = 0; i < owners.Count; i++) owners[i] = Nobody;
             spawnDone = false;
+            soloFillAt = float.PositiveInfinity;
         }
 
         public override void OnNetworkDespawn()
         {
             if (!IsServer) return;
-            if (NetworkManager != null) NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
+            if (NetworkManager != null)
+            {
+                NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
+                NetworkManager.OnClientConnectedCallback -= TakeBotSeat;
+            }
             roundReset.Raised -= ClearRoles;
         }
 
@@ -59,7 +74,18 @@ namespace OnYourMark
             if (OwnerOf(role) != Nobody || HasChosen(sender)) return;
 
             owners[role] = sender;
+            if (IsHost && sender == NetworkManager.LocalClientId) soloFillAt = Time.unscaledTime+soloWaitSeconds;
             if (!owners.Contains(Nobody)) SpawnPlayers();
+        }
+
+        public const ulong BotSlot = ulong.MaxValue - 1;
+
+        public void FillWithBot()
+        {
+            if (!IsHost || spawnDone || NetworkManager.ConnectedClients.Count != 1 || !HasChosen(NetworkManager.LocalClientId)) return;
+            for (int i = 0; i < owners.Count; i++)
+                if (owners[i] == Nobody) owners[i] = BotSlot;
+            SpawnPlayers();
         }
 
         void SpawnPlayers()
@@ -69,17 +95,59 @@ namespace OnYourMark
             {
                 var point = SpawnPoint.For(roles[i]);
                 var player = Instantiate(roles[i].playerPrefab, point.position, point.rotation);
-                player.SpawnAsPlayerObject(owners[i]);
+                if (owners[i] == BotSlot)
+                {
+                    player.Spawn(destroyWithScene: true);
+                    player.gameObject.AddComponent<RadioCompanion>();
+                }
+                else player.SpawnAsPlayerObject(owners[i]);
             }
             playersSpawned.Raise();
+        }
+
+        // A joining player inherits the AI's role, location, health and ammunition.
+        void TakeBotSeat(ulong clientId)
+        {
+            if (!spawnDone || HasChosen(clientId)) return;
+            var bot = System.Linq.Enumerable.FirstOrDefault(Player.All, p => p.IsBot);
+            if (!bot) return;
+            for (int i = 0; i < owners.Count; i++)
+            {
+                if (owners[i] != BotSlot) continue;
+                var replacement = Instantiate(roles[i].playerPrefab, bot.transform.position, bot.transform.rotation);
+                owners[i] = clientId;
+                replacement.SpawnAsPlayerObject(clientId);
+                var human = replacement.GetComponent<Player>();
+                human.Health.Inherit(bot.Health);
+                human.Ammo.TrySpend(human.Ammo.Current);
+                human.Ammo.Add(bot.Ammo.Current);
+                bot.NetworkObject.Despawn();
+                return;
+            }
         }
 
         // 고르는 도중 나간 플레이어의 자리를 비운다
         void ReleaseRole(ulong clientId)
         {
-            if (spawnDone) return;
             for (int i = 0; i < owners.Count; i++)
-                if (owners[i] == clientId) owners[i] = Nobody;
+            {
+                if (owners[i] != clientId) continue;
+                if (!spawnDone) { owners[i] = Nobody; continue; }
+                if (!IsHost || NetworkManager.ShutdownInProgress || clientId == NetworkManager.LocalClientId || !Player.Local) return;
+                var departing = System.Linq.Enumerable.FirstOrDefault(Player.All, p => p.OwnerClientId == clientId);
+                var at = departing ? departing.transform : SpawnPoint.For(roles[i]).transform;
+                var replacement = Instantiate(roles[i].playerPrefab, at.position, at.rotation);
+                owners[i] = BotSlot;
+                replacement.Spawn(destroyWithScene: true);
+                var ai = replacement.GetComponent<Player>();
+                if (departing)
+                {
+                    ai.Health.Inherit(departing.Health);
+                    ai.Ammo.TrySpend(ai.Ammo.Current);
+                    ai.Ammo.Add(departing.Ammo.Current);
+                }
+                replacement.gameObject.AddComponent<RadioCompanion>();
+            }
         }
     }
 }

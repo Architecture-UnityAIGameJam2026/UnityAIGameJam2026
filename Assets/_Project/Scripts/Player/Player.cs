@@ -11,8 +11,17 @@ namespace OnYourMark
         readonly NetworkVariable<int> dashStacks = new(0,
             NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+        // Confirmed server-side outcomes shared by human and companion gameplay.
+        public static event System.Action<Player, string, string> ActionResolved;
+        public void ReportAction(string action, string detail)
+        {
+            if (IsServer && IsSpawned) ActionResolved?.Invoke(this, action, detail);
+        }
+
         public static IReadOnlyList<Player> All => all;
-        public static Player Local => all.Find(p => p.IsOwner);
+        public bool IsBot => IsSpawned && !NetworkObject.IsPlayerObject;
+        public static Player Local => all.Find(p => p.IsOwner && !p.IsBot);
+        public string Role => Stats.CanZoom ? "ranged" : "melee";
         public Player Partner => all.Find(p => p != this);
 
         public PlayerMotor Motor { get; private set; }

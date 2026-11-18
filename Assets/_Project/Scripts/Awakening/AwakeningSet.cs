@@ -42,7 +42,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (IsOwner && CursorLock.IsLocked && activate.action.WasPressedThisFrame())
+            if (IsOwner && NetworkObject.IsPlayerObject && CursorLock.IsLocked && activate.action.WasPressedThisFrame())
                 ActivateRpc(Camera.main.transform.forward);
         }
 

@@ -11,6 +11,7 @@ namespace OnYourMark
         [SerializeField] GameObject fuseWarning;
         [SerializeField] GameObject blastEffect;
 
+        public bool Fusing => fusing;
         bool fusing;
 
         protected override EnemyData Data => data;

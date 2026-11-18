@@ -21,7 +21,12 @@ namespace OnYourMark
 
         public PlayerStats Stats => stats;
         public int DashStacks { get; private set; }
-        public bool IsZooming => stats.CanZoom && Held(zoom);
+        public bool BotDriven { get; set; }
+        public bool BotZoom { get; set; }
+        public Vector3 BotDirection { get; set; }
+        public bool BotJump, BotDash, BotHover;
+        public bool Grounded => body.isGrounded;
+        public bool IsZooming => stats.CanZoom && (BotDriven ? BotZoom : Held(zoom));
         public float HoverLeft01 => 1f - hoverTime / stats.hoverMaxTime;
 
         // 커서가 풀려 있으면(Esc) 조작 입력을 무시한다. 중력은 계속 적용된다
@@ -45,13 +50,14 @@ namespace OnYourMark
 
         void Update()
         {
-            if (cam == null) cam = Camera.main.transform;
+            if (!BotDriven && cam == null) cam = Camera.main.transform;
             float dt = Time.deltaTime;
 
-            Vector2 stick = CursorLock.IsLocked ? move.action.ReadValue<Vector2>() : Vector2.zero;
-            Vector3 input = CameraRelative(stick);
+            Vector2 stick = !BotDriven && CursorLock.IsLocked ? move.action.ReadValue<Vector2>() : Vector2.zero;
+            Vector3 input = BotDriven ? Vector3.ClampMagnitude(BotDirection, 1) : CameraRelative(stick);
             RechargeDash(dt);
-            if (Pressed(dash)) TryDash(input);
+            if (BotDriven ? BotDash : Pressed(dash)) TryDash(input);
+            BotDash = false;
 
             Vector3 step;
             if (dashTimeLeft > 0f)
@@ -69,6 +75,7 @@ namespace OnYourMark
             }
 
             body.Move(step);
+            BotJump = false;
         }
 
         /// <summary>이번 프레임의 수직 이동량. 프레임 간격이 길어도 점프 높이가 변하지 않도록 평균 속도로 적분한다.</summary>
@@ -77,7 +84,7 @@ namespace OnYourMark
             if (body.isGrounded)
             {
                 hoverTime = 0f;
-                if (!Pressed(jump)) { verticalSpeed = -2f; return verticalSpeed * dt; }
+                if (!(BotDriven ? BotJump : Pressed(jump))) { verticalSpeed = -2f; return verticalSpeed * dt; }
                 verticalSpeed = stats.JumpVelocity;
             }
 
@@ -85,7 +92,7 @@ namespace OnYourMark
             verticalSpeed += stats.gravity * dt;
 
             // 호버링: 공중에서 Space를 누르고 있으면 낙하 속도를 hoverFallSpeed로 제한
-            bool hovering = Held(jump)
+            bool hovering = (BotDriven ? BotHover : Held(jump))
                             && verticalSpeed < -stats.hoverFallSpeed
                             && hoverTime < stats.hoverMaxTime;
             if (hovering)

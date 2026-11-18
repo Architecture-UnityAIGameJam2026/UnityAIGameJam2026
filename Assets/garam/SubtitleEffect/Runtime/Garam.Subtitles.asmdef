@@ -1,0 +1,5 @@
+{
+    "name": "Garam.Subtitles",
+    "rootNamespace": "Garam.Subtitles",
+    "references": ["UnityEngine.UI"]
+}

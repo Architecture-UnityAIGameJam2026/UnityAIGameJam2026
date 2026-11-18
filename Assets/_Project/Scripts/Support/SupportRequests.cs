@@ -34,7 +34,7 @@ namespace OnYourMark
         void Update()
         {
             if (IsServer && IsSpawned) UpdateAutomatic();
-            if (!IsOwner || !CursorLock.IsLocked) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
 
             var q = request.action;
             if (q.WasPressedThisFrame()) pressTime = Time.time;

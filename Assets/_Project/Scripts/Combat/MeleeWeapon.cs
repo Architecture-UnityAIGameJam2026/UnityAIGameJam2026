@@ -29,9 +29,18 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
             readyTime = Time.time + data.windup + data.recovery;
             SlashRpc();
+        }
+
+        public float Reach => data.boxSize.z;
+        public bool BotSlash()
+        {
+            if (!IsServer || !me.IsBot || me.Health.IsDead || Time.time < readyTime) return false;
+            readyTime = Time.time + data.windup + data.recovery;
+            StartCoroutine(Slash());
+            return true;
         }
 
         [Rpc(SendTo.Server)]
@@ -47,8 +56,18 @@ namespace OnYourMark
             foreach (var c in Physics.OverlapBox(center, data.boxSize * 0.5f, transform.rotation, data.hitMask))
                 if (Health.Of(c) is { IsDead: false } h) targets.Add(h);
 
-            foreach (var h in targets) h.Damage(data.damage, me);
+            int before = gauge.Current;
+            bool groundKill = false;
+            foreach (var h in targets)
+            {
+                bool ground = h.GetComponent<Rusher>();
+                h.Damage(data.damage, me);
+                if (ground && (!h || h.IsDead)) groundKill = true;
+            }
             gauge.Add(targets.Count * data.gaugePerHit);
+            if (gauge.Current > before) me.ReportAction("slash", "gain");
+            if (targets.Count == 2 && gauge.Current - before == 2 * data.gaugePerHit) me.ReportAction("slash", "double");
+            if (groundKill) me.ReportAction("slash", "ground kill");
             awakening.NotifyBasicAttack();
             ShowSlashRpc();
         }

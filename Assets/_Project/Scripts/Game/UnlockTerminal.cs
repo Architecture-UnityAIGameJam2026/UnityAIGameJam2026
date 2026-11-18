@@ -50,16 +50,26 @@ namespace OnYourMark
             progress.Value = EveryoneHolding() ? progress.Value + Time.deltaTime : 0f;
             if (progress.Value >= config.terminalHoldTime)
             {
+                bool restoredBio = !state.IsReturned(HudPart.Bio);
                 for (int i = 0; i < 3; i++) state.Return((HudPart)i);
+                if (restoredBio)
+                    foreach (var player in Player.All) player.ReportAction("return_hud", "Bio");
                 progress.Value = 0f;
             }
+        }
+
+        public void SetBotHolding(bool hold)
+        {
+            if (!IsServer) return;
+            if (hold) holders.Add(RoleSelection.BotSlot);
+            else holders.Remove(RoleSelection.BotSlot);
         }
 
         bool EveryoneHolding()
         {
             if (!IsAvailable || Player.All.Count < 2) return false;
             foreach (var p in Player.All)
-                if (!holders.Contains(p.OwnerClientId) || !IsInside(p)) return false;
+                if (!holders.Contains(p.IsBot ? RoleSelection.BotSlot : p.OwnerClientId) || !IsInside(p)) return false;
             return true;
         }
 
