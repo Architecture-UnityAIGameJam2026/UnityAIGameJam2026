@@ -854,6 +854,7 @@ GameObject:
   - component: {fileID: 7915972274993269332}
   - component: {fileID: 1835494151136315763}
   - component: {fileID: 460439955930557494}
+  - component: {fileID: 639847117943148603}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1188,3 +1189,20 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   config: {fileID: 11400000, guid: 4e9f3d15311064b2f9a694decf50db66, type: 2}
   reload: {fileID: -1726813000163922418, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+--- !u!114 &639847117943148603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836470251196452801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d8e2cdfde7241c5986b659de69dbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.Ultimate
+  ShowTopMostFoldoutHeaderGroup: 1
+  data: {fileID: 11400000, guid: a60e92c0da4d54537b6dfbdf83d758dd, type: 2}
+  enemyKilled: {fileID: 11400000, guid: 734eb9cffdc214f548fcf958cee15254, type: 2}
+  activate: {fileID: -6485207036837334892, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
+  tracerMaterial: {fileID: 2100000, guid: f3fbfa288bf1f42829c9167059643693, type: 2}

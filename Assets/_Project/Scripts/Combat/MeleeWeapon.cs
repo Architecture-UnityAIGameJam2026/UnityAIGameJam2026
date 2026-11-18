@@ -28,7 +28,8 @@ namespace OnYourMark
         void Update()
         {
             if (!IsOwner || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
-            readyTime = Time.time + data.windup + data.recovery;
+            // 나노 강화제: 공격 속도 배율만큼 선딜 · 후딜이 짧아진다
+            readyTime = Time.time + (data.windup + data.recovery) / me.Ultimate.AttackSpeedMultiplier;
             SlashRpc();
         }
 
@@ -37,7 +38,7 @@ namespace OnYourMark
 
         IEnumerator Slash()
         {
-            yield return new WaitForSeconds(data.windup);
+            yield return new WaitForSeconds(data.windup / me.Ultimate.AttackSpeedMultiplier);
 
             // 박스 중심: 가슴 높이에서 전방으로 박스 길이의 절반
             Vector3 center = transform.position + Vector3.up * 1f + transform.forward * (data.boxSize.z * 0.5f);
@@ -45,7 +46,8 @@ namespace OnYourMark
             foreach (var c in Physics.OverlapBox(center, data.boxSize * 0.5f, transform.rotation, data.hitMask))
                 if (Health.Of(c) is { IsDead: false } h) targets.Add(h);
 
-            foreach (var h in targets) h.Damage(data.damage, me);
+            float damage = data.damage * me.Ultimate.DamageMultiplier;
+            foreach (var h in targets) h.Damage(damage, me);
             awakening.NotifyBasicAttack();
             ShowSlashRpc();
         }

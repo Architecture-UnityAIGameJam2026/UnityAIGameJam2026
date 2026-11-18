@@ -34,6 +34,8 @@ namespace OnYourMark
         public bool DashLocked { get; set; }
         /// <summary>0 이상이면 이동 속도를 이 값으로 고정 (P2 무기 변형 중 감속)</summary>
         public float SpeedOverride { get; set; } = -1f;
+        /// <summary>궁극기 등에서 곱하는 이동 속도 배율 (비행 포함)</summary>
+        public float ExternalSpeedMultiplier { get; set; } = 1f;
         public bool IsFlying => flying;
         /// <summary>대쉬가 시간이 지나면 저절로 차는지. 2번 파츠를 돌려받기 전에는 꺼진다 (ResourceReload)</summary>
         public bool AutoRechargeDash { get; set; } = true;
@@ -83,12 +85,12 @@ namespace OnYourMark
             else if (UpdateFlight(dt))
             {
                 // 추진 비행: 중력 없이 카메라가 바라보는 3D 방향으로 날아간다 (위를 보면 상승, 아래를 보면 급강하)
-                step = cam.forward * (stats.hoverSpeed * buffs.SpeedMultiplier * dt);
+                step = cam.forward * (stats.hoverSpeed * buffs.SpeedMultiplier * ExternalSpeedMultiplier * dt);
             }
             else
             {
                 float speed = SpeedOverride >= 0f ? SpeedOverride : IsZooming ? stats.zoomMoveSpeed : stats.moveSpeed;
-                step = input * (speed * buffs.SpeedMultiplier * dt);
+                step = input * (speed * buffs.SpeedMultiplier * ExternalSpeedMultiplier * dt);
                 step.y = VerticalStep(dt);
             }
 

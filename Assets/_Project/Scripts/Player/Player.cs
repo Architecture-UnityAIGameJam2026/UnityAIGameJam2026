@@ -21,6 +21,7 @@ namespace OnYourMark
         public Health Health { get; private set; }
         public AmmoPool Ammo { get; private set; }
         public PlayerBuffs Buffs { get; private set; }
+        public Ultimate Ultimate { get; private set; }
         public PlayerStats Stats => Motor.Stats;
         public int DashStacks => IsOwner ? Motor.DashStacks : dashStacks.Value;
         /// <summary>지금의 최대 대쉬 횟수 (스킬로 늘어날 수 있다)</summary>
@@ -32,6 +33,7 @@ namespace OnYourMark
             Health = GetComponent<Health>();
             Ammo = GetComponent<AmmoPool>();
             Buffs = GetComponent<PlayerBuffs>();
+            Ultimate = GetComponent<Ultimate>();
         }
 
         public override void OnNetworkSpawn()
