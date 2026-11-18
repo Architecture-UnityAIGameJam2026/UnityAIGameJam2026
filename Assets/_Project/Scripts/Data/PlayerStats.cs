@@ -6,6 +6,10 @@ namespace OnYourMark
     [CreateAssetMenu(menuName = "On Your Mark/Player Stats")]
     public class PlayerStats : ScriptableObject
     {
+        [Header("HUD 표시")]
+        public string displayName = "P1";
+        public Color color = Color.white;
+
         [Header("이동 (m/s)")]
         public float moveSpeed = 7.5f;
         [Tooltip("우클릭 줌 중 이동 속도. 0이면 줌 없음")]

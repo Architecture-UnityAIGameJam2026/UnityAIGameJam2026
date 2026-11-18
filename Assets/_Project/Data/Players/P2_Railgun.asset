@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9480a99c54241ff8d7de3b7238b16e, type: 3}
   m_Name: P2_Railgun
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.PlayerStats
+  displayName: P2 RAILGUN
+  color: {r: 0.25, g: 0.85, b: 0.95, a: 1}
   moveSpeed: 5
   zoomMoveSpeed: 2.5
   zoomMagnification: 2.5
