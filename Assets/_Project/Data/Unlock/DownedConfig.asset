@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1abfa69780b44cdc8805fb37047652e, type: 3}
+  m_Name: DownedConfig
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.DownedConfig
+  reviveRange: 2
+  reviveHoldTime: 2.5
+  reviveHealthRatio: 0.5

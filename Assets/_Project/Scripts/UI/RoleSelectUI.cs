@@ -19,7 +19,7 @@ namespace OnYourMark
         void Update()
         {
             var net = NetworkManager.Singleton;
-            bool show = selection.IsSpawned && net.IsConnectedClient && net.LocalClient.PlayerObject == null;
+            bool show = selection.IsSpawned && net.IsConnectedClient && net.LocalClient.PlayerObject == null && !selection.AllChosen;
             if (panel.activeSelf != show) panel.SetActive(show);
             if (show) Refresh(net.LocalClientId);
         }

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace OnYourMark
@@ -42,6 +43,10 @@ namespace OnYourMark
         [SerializeField] TMP_Text promptLabel;
         [SerializeField] Image promptFill;
 
+        [Header("빈사")]
+        [Tooltip("HP 0일 때 켜는 붉은 비네팅 (내 화면만)")]
+        [SerializeField] Volume downedVolume;
+
         [Header("요청 휠 (Q 홀드)")]
         [SerializeField] GameObject wheel;
         [SerializeField] TMP_Text[] wheelOptions;   // HudPart 순서
@@ -53,6 +58,8 @@ namespace OnYourMark
             me = Player.Local;
             partner = me ? me.Partner : null;
             root.SetActive(me != null);
+            float vignette = me != null && me.Health.IsDead ? 1f : 0f;
+            downedVolume.weight = Mathf.MoveTowards(downedVolume.weight, vignette, Time.deltaTime * 3f);
             if (me == null) return;
 
             ShowBio(Subject(HudPart.Bio));
@@ -129,6 +136,18 @@ namespace OnYourMark
                     ? $"SWAP {key}: WAITING FOR PARTNER"
                     : $"PARTNER WANTS TO SWAP {key}: PRESS {(int)exchange.OfferPart + 1}";
                 fill = exchange.TimeLeft01;
+            }
+            else if (me.Health.IsDead)
+            {
+                float revive = partner ? partner.GetComponent<Reviver>().Progress01 : 0f;
+                text = revive > 0f ? "<color=#7CFC9A>BEING REVIVED...</color>" : "<color=#FF6B6B>DOWNED</color>: WAIT FOR YOUR PARTNER";
+                fill = revive;
+            }
+            else if (me.GetComponent<Reviver>().CanRevive(partner))
+            {
+                float revive = me.GetComponent<Reviver>().Progress01;
+                text = revive > 0f ? "REVIVING..." : "HOLD E TO REVIVE PARTNER";
+                fill = revive;
             }
             else if (terminal.IsAvailable && terminal.IsInside(me))
             {

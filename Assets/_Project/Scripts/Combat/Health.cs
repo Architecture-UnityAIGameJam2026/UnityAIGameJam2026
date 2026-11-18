@@ -42,13 +42,24 @@ namespace OnYourMark
             Died?.Invoke(this);
         }
 
+        /// <summary>살아 있을 때만 회복된다. 쓰러진 플레이어는 소생(Revive)으로만 일어난다.</summary>
         public void Heal(float amount)
         {
-            if (!IsServer) return;
+            if (!IsServer || IsDead) return;
             current.Value = Mathf.Min(data.maxHealth, current.Value + amount);
         }
 
-        public void Restore() => Heal(data.maxHealth);
+        /// <summary>죽었든 살았든 가득 채운다 (테스트 더미 부활 등).</summary>
+        public void Restore()
+        {
+            if (IsServer) current.Value = data.maxHealth;
+        }
+
+        /// <summary>쓰러진 상태에서 최대 체력의 ratio만큼으로 일어난다.</summary>
+        public void Revive(float ratio)
+        {
+            if (IsServer && IsDead) current.Value = data.maxHealth * ratio;
+        }
 
         public void AddShield(float amount, float duration)
         {

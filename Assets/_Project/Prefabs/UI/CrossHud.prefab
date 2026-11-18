@@ -588,6 +588,55 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1412541494287753219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6310572909154098425}
+  - component: {fileID: 168398732993607920}
+  m_Layer: 0
+  m_Name: DownedVolume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6310572909154098425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412541494287753219}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5020877164811396175}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &168398732993607920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412541494287753219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 10
+  blendDistance: 0
+  weight: 0
+  sharedProfile: {fileID: 11400000, guid: a407ccaa377f141978c9fb373477ca48, type: 2}
 --- !u!1 &1843799954784039873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2413,6 +2462,7 @@ Transform:
   m_Children:
   - {fileID: 5135414525064847490}
   - {fileID: 3430312916805279743}
+  - {fileID: 6310572909154098425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3696859721288241073
@@ -2455,6 +2505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.CrossHudState
   ShowTopMostFoldoutHeaderGroup: 1
+  roundReset: {fileID: 11400000, guid: 6e97eb483d61e48a482c12e8c7239e2f, type: 2}
 --- !u!114 &5742175525289437239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2487,6 +2538,7 @@ MonoBehaviour:
   prompt: {fileID: 5637042274451218338}
   promptLabel: {fileID: 6768218629861887479}
   promptFill: {fileID: 4876821900792568021}
+  downedVolume: {fileID: 168398732993607920}
   wheel: {fileID: 2171513816368079585}
   wheelOptions:
   - {fileID: 1528163620520428792}

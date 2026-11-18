@@ -275,6 +275,14 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: 534fd891dfdd24efb96ab8e98d30bc1e, type: 2}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: disableWhileDowned.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835494151136315763, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
+      propertyPath: 'disableWhileDowned.Array.data[3]'
+      value: 
+      objectReference: {fileID: 6247795060014951029}
     - target: {fileID: 3063893716798316700, guid: 1a8a882005fe642d1bfd6e7869c27116, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

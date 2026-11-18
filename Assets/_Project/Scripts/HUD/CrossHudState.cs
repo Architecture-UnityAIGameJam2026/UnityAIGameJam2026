@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using UnityEngine;
 
 namespace OnYourMark
 {
@@ -11,7 +12,22 @@ namespace OnYourMark
     /// </summary>
     public class CrossHudState : NetworkBehaviour
     {
+        [Tooltip("재시작 시 Raise: 모든 파츠를 다시 상대가 들고 시작")]
+        [SerializeField] GameEvent roundReset;
+
         readonly NetworkVariable<byte> returnedParts = new();
+
+        public override void OnNetworkSpawn()
+        {
+            if (IsServer) roundReset.Raised += ResetParts;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (IsServer) roundReset.Raised -= ResetParts;
+        }
+
+        void ResetParts() => returnedParts.Value = 0;
 
         public bool IsReturned(HudPart part) => (returnedParts.Value & Bit(part)) != 0;
         public bool AllReturned => returnedParts.Value == 0b111;

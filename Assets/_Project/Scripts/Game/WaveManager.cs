@@ -18,6 +18,7 @@ namespace OnYourMark
         [SerializeField] GameEvent playersSpawned;
         [SerializeField] GameEvent waveCleared;
         [SerializeField] GameEvent allWavesCleared;
+        [SerializeField] GameEvent roundReset;
 
         readonly NetworkVariable<int> waveIndex = new(-1);
         readonly NetworkVariable<int> alive = new();
@@ -34,12 +35,27 @@ namespace OnYourMark
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer) playersSpawned.Raised += Begin;
+            if (!IsServer) return;
+            playersSpawned.Raised += Begin;
+            roundReset.Raised += Stop;
         }
 
         public override void OnNetworkDespawn()
         {
-            if (IsServer) playersSpawned.Raised -= Begin;
+            if (!IsServer) return;
+            playersSpawned.Raised -= Begin;
+            roundReset.Raised -= Stop;
+        }
+
+        /// <summary>서버: 진행 중인 웨이브를 멈추고 남은 적을 치운다 (게임 종료 / 재시작).</summary>
+        public void Stop()
+        {
+            StopAllCoroutines();
+            foreach (var enemy in FindObjectsByType<EnemyBase>(FindObjectsSortMode.None))
+                if (enemy.IsSpawned) enemy.NetworkObject.Despawn();
+            alive.Value = 0;
+            waveIndex.Value = -1;
+            betweenWaves.Value = false;
         }
 
         void Begin() => StartCoroutine(Run());
