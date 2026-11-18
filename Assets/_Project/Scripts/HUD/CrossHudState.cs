@@ -14,6 +14,7 @@ namespace OnYourMark
         readonly NetworkVariable<byte> returnedParts = new();
 
         public bool IsReturned(HudPart part) => (returnedParts.Value & Bit(part)) != 0;
+        public bool AllReturned => returnedParts.Value == 0b111;
 
         /// <summary>서버 전용. P9(교환 / 단말기)에서 호출한다.</summary>
         public void Return(HudPart part)

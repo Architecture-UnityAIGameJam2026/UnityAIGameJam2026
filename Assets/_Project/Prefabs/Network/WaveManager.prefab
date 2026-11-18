@@ -78,7 +78,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7183acc01d77d4ef79b87aefbe179cc2, type: 2}
   - {fileID: 11400000, guid: fb2f7180eaeb440fa9473785c3526a8b, type: 2}
   firstWaveDelay: 3
-  intermission: 6
+  intermission: 12
   playersSpawned: {fileID: 11400000, guid: 377844f8dc0774543b0a018541533a28, type: 2}
   waveCleared: {fileID: 11400000, guid: 62b42caaff9464d3095d8105e6809c22, type: 2}
   allWavesCleared: {fileID: 11400000, guid: e18a36d04ee424f1f88b0d272961ef8c, type: 2}

@@ -377,6 +377,10 @@ PrefabInstance:
       propertyPath: waves
       value: 
       objectReference: {fileID: 284928232}
+    - target: {fileID: 5742175525289437239, guid: 9911fc75e85b44b51873709d77f6bf26, type: 3}
+      propertyPath: terminal
+      value: 
+      objectReference: {fileID: 1722081832}
     - target: {fileID: 8486881882367307771, guid: 9911fc75e85b44b51873709d77f6bf26, type: 3}
       propertyPath: m_Name
       value: CrossHud
@@ -568,11 +572,34 @@ PrefabInstance:
       propertyPath: m_NavMeshData
       value: 
       objectReference: {fileID: 23800000, guid: 773cbdca8c3ee423bb22bc7df8247830, type: 2}
+    - target: {fileID: 7535261179831813878, guid: 3c6ad0e0114f243c8a71f617997e60a2, type: 3}
+      propertyPath: m_InScenePlaced
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7535261179831813878, guid: 3c6ad0e0114f243c8a71f617997e60a2, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 124251723
+      objectReference: {fileID: 0}
+    - target: {fileID: 7535261179831813878, guid: 3c6ad0e0114f243c8a71f617997e60a2, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c6ad0e0114f243c8a71f617997e60a2, type: 3}
+--- !u!114 &1722081832 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2946750003462981857, guid: 3c6ad0e0114f243c8a71f617997e60a2, type: 3}
+  m_PrefabInstance: {fileID: 1722081831}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b739864a7824b45ad72dca124e9a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.UnlockTerminal
 --- !u!1001 &1760462157
 PrefabInstance:
   m_ObjectHideFlags: 0

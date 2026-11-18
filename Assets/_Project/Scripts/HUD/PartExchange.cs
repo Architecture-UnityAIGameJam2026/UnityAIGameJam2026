@@ -1,0 +1,58 @@
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace OnYourMark
+{
+    /// <summary>
+    /// 5초 부분 합의 교환. 한 명이 1/2/3 중 하나를 누르면 상대 화면에 제안이 뜨고,
+    /// 제한 시간 안에 상대도 같은 키를 누르면 그 파츠만 서로 돌려받는다.
+    /// 다른 키를 누르면 새 제안으로 바뀌고, 시간이 지나면 취소된다.
+    /// </summary>
+    public class PartExchange : NetworkBehaviour
+    {
+        [SerializeField] UnlockConfig config;
+        [SerializeField] CrossHudState state;
+        [Tooltip("HudPart 순서 (1 생체, 2 지도, 3 소모품)")]
+        [SerializeField] InputActionReference[] swapKeys;
+
+        readonly NetworkVariable<int> offerPart = new(-1);
+        readonly NetworkVariable<ulong> offerFrom = new();
+        readonly NetworkVariable<double> offerUntil = new();
+
+        public bool HasOffer => offerPart.Value >= 0 && TimeLeft > 0f;
+        public HudPart OfferPart => (HudPart)offerPart.Value;
+        public ulong OfferFrom => offerFrom.Value;
+        public float TimeLeft => IsSpawned ? Mathf.Max(0f, (float)(offerUntil.Value - NetworkManager.ServerTime.Time)) : 0f;
+        public float TimeLeft01 => TimeLeft / config.offerDuration;
+
+        void Update()
+        {
+            if (!IsSpawned) return;
+            if (IsServer && offerPart.Value >= 0 && TimeLeft <= 0f) offerPart.Value = -1;   // 시간 초과: 취소
+
+            if (Player.Local == null || !CursorLock.IsLocked) return;
+            for (int i = 0; i < swapKeys.Length; i++)
+                if (swapKeys[i].action.WasPressedThisFrame()) OfferRpc(i);
+        }
+
+        [Rpc(SendTo.Server)]
+        void OfferRpc(int part, RpcParams rpc = default)
+        {
+            ulong sender = rpc.Receive.SenderClientId;
+            if (state.IsReturned((HudPart)part)) return;
+
+            bool partnerOfferedSame = HasOffer && offerPart.Value == part && offerFrom.Value != sender;
+            if (partnerOfferedSame)
+            {
+                state.Return((HudPart)part);   // 합의 성립: 그 파츠만 서로 돌려받는다
+                offerPart.Value = -1;
+                return;
+            }
+
+            offerPart.Value = part;
+            offerFrom.Value = sender;
+            offerUntil.Value = NetworkManager.ServerTime.Time + config.offerDuration;
+        }
+    }
+}

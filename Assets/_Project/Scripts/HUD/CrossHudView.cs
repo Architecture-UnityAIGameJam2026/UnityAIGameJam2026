@@ -12,7 +12,9 @@ namespace OnYourMark
     public class CrossHudView : MonoBehaviour
     {
         [SerializeField] CrossHudState state;
+        [SerializeField] PartExchange exchange;
         [SerializeField] WaveManager waves;
+        [SerializeField] UnlockTerminal terminal;
         [SerializeField] GameObject root;
 
         [Header("1 생체")]
@@ -35,6 +37,11 @@ namespace OnYourMark
         [SerializeField] TMP_Text partsLabel;
         [SerializeField] TMP_Text statusLabel;
 
+        [Header("교환 / 단말기 안내")]
+        [SerializeField] GameObject prompt;
+        [SerializeField] TMP_Text promptLabel;
+        [SerializeField] Image promptFill;
+
         [Header("요청 휠 (Q 홀드)")]
         [SerializeField] GameObject wheel;
         [SerializeField] TMP_Text[] wheelOptions;   // HudPart 순서
@@ -53,6 +60,7 @@ namespace OnYourMark
             ShowConsumable(Subject(HudPart.Consumable));
             ShowSelf();
             ShowWheel();
+            ShowPrompt();
         }
 
         /// <summary>그 파츠로 누구의 정보를 보는지. 상대가 아직 없으면 비워 둔다.</summary>
@@ -84,9 +92,11 @@ namespace OnYourMark
             dashLabel.text = $"DASH {me.Motor.DashStacks}/{me.Stats.dashMaxStacks}";
             hoverFill.fillAmount = me.Motor.HoverLeft01;
 
-            waveLabel.text = waves.WaveNumber == 0
-                ? "GET READY"
-                : $"WAVE {waves.WaveNumber}/{waves.TotalWaves}   ENEMIES {waves.Alive}";
+            waveLabel.text =
+                waves.WaveNumber == 0 ? "GET READY" :
+                waves.AllCleared ? "ALL WAVES CLEAR" :
+                waves.BetweenWaves ? $"WAVE {waves.WaveNumber} CLEAR   NEXT IN {waves.SecondsToNextWave:F0}s{(terminal.IsAvailable ? "   <color=#F08045>TERMINAL OPEN</color>" : "")}" :
+                $"WAVE {waves.WaveNumber}/{waves.TotalWaves}   ENEMIES {waves.Alive}";
 
             partsLabel.text = $"{Key(HudPart.Bio, "1")}  {Key(HudPart.Map, "2")}  {Key(HudPart.Consumable, "3")}  SWAP";
 
@@ -103,6 +113,39 @@ namespace OnYourMark
             for (int i = 0; i < wheelOptions.Length; i++)
                 wheelOptions[i].color = me.Requests.WheelChoice == (HudPart)i ? new Color(1f, 0.82f, 0.4f) : Color.white;
         }
+
+        // S4 교환 제안 / S5 단말기 해금 진행
+        void ShowPrompt()
+        {
+            string text = null;
+            float fill = 0f;
+
+            if (exchange.HasOffer)
+            {
+                string key = $"[{(int)exchange.OfferPart + 1}] {PartName(exchange.OfferPart)}";
+                text = exchange.OfferFrom == me.OwnerClientId
+                    ? $"SWAP {key}: WAITING FOR PARTNER"
+                    : $"PARTNER WANTS TO SWAP {key}: PRESS {(int)exchange.OfferPart + 1}";
+                fill = exchange.TimeLeft01;
+            }
+            else if (terminal.IsAvailable && terminal.IsInside(me))
+            {
+                text = terminal.Progress01 > 0f ? "UNLOCKING..." : "HOLD E TOGETHER TO UNLOCK";
+                fill = terminal.Progress01;
+            }
+
+            prompt.SetActive(text != null);
+            if (text == null) return;
+            promptLabel.text = text;
+            promptFill.fillAmount = fill;
+        }
+
+        static string PartName(HudPart part) => part switch
+        {
+            HudPart.Bio => "BIO",
+            HudPart.Map => "MAP",
+            _ => "AMMO",
+        };
 
         // 반환 전 파츠: 이 파츠로 상대를 지원할 수 있으니 쿨타임을 보여 준다
         string Cooldown(HudPart part)
