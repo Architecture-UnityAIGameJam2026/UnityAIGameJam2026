@@ -15,6 +15,17 @@ namespace OYM
         [Tooltip("legacy (OYMGifCapture)")]
         public float walkSpeed = 1.6f, runSpeed = 4.5f, aimSpeed = 1.4f;
 
+        [Header("Magazine")]
+        [Tooltip("railgun rounds per magazine: one per shot, shown on the visor HUD (crossed: on the partner's screen)")]
+        public int magazine = 8;
+        [Tooltip("seconds to refill once the magazine runs dry (no shots meanwhile)")]
+        public float reloadTime = 1.6f;
+
+        /// rounds left in the magazine
+        public int Ammo { get; private set; }
+        public bool Reloading => _reloadAt >= 0f;
+        float _reloadAt = -1f;
+
         static readonly int AimId = Animator.StringToHash("Aim");
         bool _aim;
         float _aimZoom;
@@ -24,6 +35,7 @@ namespace OYM
         protected override void Awake()
         {
             base.Awake();
+            Ammo = Mathf.Max(1, magazine);
             foreach (var r in new[] { railgun, fpRailgun })
             {
                 if (!r) continue;
@@ -41,8 +53,11 @@ namespace OYM
         protected override void Tick(float dt, Quaternion aim)
         {
             var gun = Active;
-            if (input.fire && gun && !gun.Charging)
+            if (Ammo <= 0 && _reloadAt < 0f) _reloadAt = Time.time + reloadTime;
+            if (_reloadAt >= 0f && Time.time >= _reloadAt) { _reloadAt = -1f; Ammo = Mathf.Max(1, magazine); }
+            if (input.fire && gun && !gun.Charging && Ammo > 0)
             {
+                Ammo--;
                 gun.Fire();
                 if (flightCam) flightCam.FovKick(-35f);                         // the view tightens while the coils charge
             }

@@ -303,69 +303,33 @@ namespace OYM.Net
             var me = Me;
             var mate = Partner;
             _hud.localHealth = e ? Mathf.Clamp01(e.PlayerHP01) : 1f;
-            Reserves(me, me && me.Dashing, out int ammo, out int cap, out bool dash);
+            Reserves(me, null, out int ammo, out int cap, out bool dash);
             _hud.localAmmo = ammo; _hud.localAmmoCapacity = cap; _hud.localResourceIsDash = dash;
             var g = CoopGame.Current;
-            bool partnerDashing = g && g.Puppet && g.Puppet.HasState && g.Puppet.State.Has(PilotState.FlagDash);
-            Reserves(mate, partnerDashing, out int pa, out int pc, out bool pd);
+            bool packets = Coop && g.Puppet && g.Puppet.HasState;                 // co-op: the partner's numbers come from its packets
+            Reserves(mate, packets ? g.Puppet.State : (PilotState?)null, out int pa, out int pc, out bool pd);
             float php = Coop ? (g.PartnerDown ? 0f : g.PartnerHP01) : 1f;
             _hud.SetPartnerTelemetry(php, pa, pc, pd);
             if (_skills) _skills.SetTelemetry(default, !_crossed || _back[3]);  // no Q / E skills here: dim tiles, crossed with the rest
-            PartnerDash(me, mate, g);
         }
 
-        // 총잡이(ORBIT FRAME) 화면에만: 소모품 칸 오른쪽에 칼잡이(KESTREL)의 Shift 돌진 충전 상태를 항상 띄운다 (HUD 교차와 무관).
-        // 싱글: 같은 씬의 KESTREL에서 남은 초를 읽는다. 코옵: 상대 패킷의 FlagStrikeReady (준비 / 충전 중).
-        UnityEngine.UI.Text _dashText;
-        static readonly Color DashReadyInk = new Color32(0xF3, 0xEE, 0xDD, 255), DashChargingInk = new Color32(0xFF, 0x6B, 0x5E, 255);
-
-        void PartnerDash(ZeroGFlight me, ZeroGFlight mate, CoopGame g)
-        {
-            bool remote = Coop && g.Puppet && g.Puppet.HasState;
-            var kestrel = mate as KestrelController;
-            bool show = me && !(me is KestrelController) && kestrel;
-            if (!_dashText)
-            {
-                if (!show) return;
-                var reserves = _go.transform.Find("Reserves");
-                if (!reserves) return;
-                var rt = OnYourMarkHud.Rect("Partner dash", reserves, 236f, 6f, 110f, 70f);
-                rt.gameObject.layer = reserves.gameObject.layer;
-                _dashText = rt.gameObject.AddComponent<UnityEngine.UI.Text>();
-                _dashText.font = _hud.monoFont ? _hud.monoFont : _hud.displayFont ? _hud.displayFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                _dashText.fontSize = 16;
-                _dashText.lineSpacing = 1.1f;
-                _dashText.alignment = TextAnchor.UpperLeft;
-                _dashText.horizontalOverflow = HorizontalWrapMode.Overflow;
-                _dashText.verticalOverflow = VerticalWrapMode.Overflow;
-                _dashText.raycastTarget = false;
-            }
-            _dashText.enabled = show;
-            if (!show) return;
-            bool ready;
-            string state;
-            if (remote)
-            {
-                ready = g.Puppet.State.Has(PilotState.FlagStrikeReady);
-                state = ready ? "READY" : "CHARGING";
-            }
-            else
-            {
-                float left = kestrel.StrikeArmed ? kestrel.StrikeCooldownLeft : 0f;
-                ready = left <= 0f;
-                state = ready ? "READY" : $"{left:0.0}s";
-            }
-            string text = "KESTREL DASH\n" + state;
-            if (_dashText.text != text) _dashText.text = text;
-            _dashText.color = ready ? DashReadyInk : DashChargingInk;
-        }
-
-        /// reserves module: KESTREL = dash charges, ORBIT FRAME = railgun rounds (no ammo system in this build: full)
-        static void Reserves(ZeroGFlight f, bool dashing, out int ammo, out int cap, out bool isDash)
+        /// reserves module (crossed: the partner's, so its shots / dashes tick down on this screen; back: this pilot's own):
+        /// ORBIT FRAME = railgun rounds left in the magazine, KESTREL = the Shift strike charge (1 = ready, 0 = recharging).
+        /// state: the partner's latest packet in co-op (its pilot object here is only a puppet), null = read the pilot itself.
+        static void Reserves(ZeroGFlight f, PilotState? state, out int ammo, out int cap, out bool isDash)
         {
             isDash = f is KestrelController;
-            cap = isDash ? 3 : 8;
-            ammo = isDash && dashing ? cap - 1 : cap;
+            if (f is OrbitFrameController o)
+            {
+                cap = Mathf.Max(1, o.magazine);
+                ammo = Mathf.Clamp(state.HasValue ? state.Value.ammo : o.Ammo, 0, cap);
+            }
+            else if (f is KestrelController k)
+            {
+                cap = 1;
+                ammo = (state.HasValue ? state.Value.Has(PilotState.FlagStrikeReady) : !k.StrikeArmed || k.StrikeReady) ? 1 : 0;
+            }
+            else { cap = 0; ammo = 0; }
         }
 
         // ------------------------------------------------------------------------------------------------ notice + hint

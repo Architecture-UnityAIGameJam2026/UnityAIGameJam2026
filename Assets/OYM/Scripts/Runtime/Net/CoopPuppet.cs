@@ -18,6 +18,8 @@ namespace OYM.Net
         public int flags;
         /// ORBIT FRAME: +1 per railgun shot; any pilot: +1 per dash
         public int shotSeq, dashSeq;
+        /// ORBIT FRAME: rounds left in the magazine (the crossed visor shows the partner's)
+        public int ammo;
 
         public const int FlagCombat = 1, FlagAim = 2, FlagTrail = 4, FlagDash = 8, FlagCruise = 16, FlagDown = 32, FlagStrikeReady = 64;
         public bool Has(int f) => (flags & f) != 0;
@@ -25,7 +27,7 @@ namespace OYM.Net
         public byte[] Write() => new CoopMsg.W(CoopMsg.Pilot)
             .V3(pos).Q(rot).Q(lean).V3(vel).V3(aim)
             .F(speed).F(slash).F(upper).F(thrust).F(hp)
-            .U8(attack + 1).U8(flags).U8(shotSeq & 255).U8(dashSeq & 255).Done();
+            .U8(attack + 1).U8(flags).U8(shotSeq & 255).U8(dashSeq & 255).U8(Mathf.Clamp(ammo, 0, 255)).Done();
 
         public static PilotState Read(CoopMsg.R r)
         {
@@ -34,7 +36,7 @@ namespace OYM.Net
                 pos = r.V3(), rot = r.Q(), lean = r.Q(), vel = r.V3(), aim = r.V3(),
                 speed = r.F(), slash = r.F(), upper = r.F(), thrust = r.F(), hp = r.F()
             };
-            s.attack = r.U8() - 1; s.flags = r.U8(); s.shotSeq = r.U8(); s.dashSeq = r.U8();
+            s.attack = r.U8() - 1; s.flags = r.U8(); s.shotSeq = r.U8(); s.dashSeq = r.U8(); s.ammo = r.U8();
             return s;
         }
 
@@ -136,6 +138,7 @@ namespace OYM.Net
                 bool charging = (_o.railgun && _o.railgun.Charging) || (_o.fpRailgun && _o.fpRailgun.Charging);
                 if (charging && !_wasCharge) _shotSeq++;
                 _wasCharge = charging;
+                s.ammo = _o.Ammo;
                 var fc = FlightCamera.Main;
                 s.aim = fc && fc.target == t ? fc.AimPoint(_o.range, t, out _, out _) : t.position + t.forward * 100f;
             }
