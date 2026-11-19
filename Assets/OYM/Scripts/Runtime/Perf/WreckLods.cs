@@ -44,9 +44,10 @@ namespace OYM
             return true;
         }
 
-        static void Apply(Scene scene)
+        /// Adds the LOD groups to one scene (also usable from edit-mode tools; returns how many were added).
+        public static int Apply(Scene scene)
         {
-            if (!scene.isLoaded || !LoadTable()) return;
+            if (!scene.isLoaded || !LoadTable()) return 0;
             int added = 0;
             var filters = new List<MeshFilter>();
             foreach (var root in scene.GetRootGameObjects())
@@ -72,6 +73,7 @@ namespace OYM
                 }
             }
             if (added > 0) Debug.Log($"[WreckLods] {scene.name}: LODs on {added} wreck fragments");
+            return added;
         }
 
         static MeshRenderer MakeLod(GameObject owner, MeshRenderer src, Mesh mesh, string suffix)

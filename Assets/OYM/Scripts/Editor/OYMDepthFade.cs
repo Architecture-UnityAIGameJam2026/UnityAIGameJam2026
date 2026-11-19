@@ -5,7 +5,7 @@
 //          OYM > Look > Reset Depth Focus Fade         (re-applies the constants below)
 //          OYM > Look > Capture Depth Fade Compare     (Screenshots/depthfade/)
 //   batch: Unity.exe -batchmode -projectPath <proj> -executeMethod OYM.EditorTools.OYMDepthFade.BatchCompare -quit
-// OYMSetup.CreateVolumeProfile calls AddTo(), so Rebuild Everything keeps the effect.
+// OYMSetup.CreateVolumeProfile calls AddTo(), so Rebuild Everything keeps the effect (and the fog look, OYMFogLook.Final).
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,12 +31,20 @@ namespace OYM.EditorTools
         public const float StartDistance = 80f;       // m, untouched inside
         public const float EndDistance = 1600f;       // m, full fade (log ramp in between)
         public const float SkyWeight = 0.5f;          // stars / nebula get half the fade
-        public const float Desaturation = 0.75f;
-        public const float DarkenEV = 1.5f;
+        public const float Desaturation = 0.6f;
+        public const float DarkenEV = 1f;
         public const float HighlightLimit = 0.5f;     // pre-exposed; hot hull cuts are ~2-11 before this
         public const float HighlightCompress = 1f;
         public static readonly Color HazeColor = new Color(0.19f, 0.22f, 0.26f);   // sRGB swatch ~ linear (0.03, 0.04, 0.055)
-        public const float Haze = 0.4f;
+        public const float Haze = 0.6f;
+        // EVE-style: far hulls dissolve into the blurred nebula behind them rather than into a flat colour
+        public const float HazeSkyMix = 0.85f;
+        public const float HazeSkyBlur = 3f;          // mip of the convolved sky cubemap
+        public const float HazeSkyGain = 1.25f;
+        // depth glow: backdrop + far-layer light blurred wide, laid over far pixels by distance ("glow eats the layer behind")
+        public const float Glow = 0.6f;
+        public const float GlowSize = 0.08f;          // fraction of screen height
+        public const float GlowSourceLimit = 3f;      // pre-exposed luminance cap of glow sources (sun, flares)
 
         static OYMDepthFade()
         {
@@ -70,7 +78,12 @@ namespace OYM.EditorTools
         {
             Apply();
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(ProfilePath);
-            if (profile != null && profile.TryGet(out DepthFocusFade c)) { Configure(c); EditorUtility.SetDirty(c); AssetDatabase.SaveAssets(); }
+            if (profile != null && profile.TryGet(out DepthFocusFade c))
+            {
+                Configure(c);
+                OYMFogLook.Write(profile, OYMFogLook.Final);
+                EditorUtility.SetDirty(c); AssetDatabase.SaveAssets();
+            }
         }
 
         /// Adds the component to a profile (configured from the constants when newly added). Works for profiles that
@@ -84,6 +97,7 @@ namespace OYM.EditorTools
                 c.name = nameof(DepthFocusFade);
                 if (AssetDatabase.Contains(profile)) AssetDatabase.AddObjectToAsset(c, profile);
                 Configure(c);
+                OYMFogLook.Write(profile, OYMFogLook.Final);     // arena fog + brightness (11-19), also on rebuilds
             }
             EditorUtility.SetDirty(c);
             EditorUtility.SetDirty(profile);
@@ -103,6 +117,12 @@ namespace OYM.EditorTools
             c.highlightCompress.Override(HighlightCompress);
             c.hazeColor.Override(HazeColor);
             c.haze.Override(Haze);
+            c.hazeSkyMix.Override(HazeSkyMix);
+            c.hazeSkyBlur.Override(HazeSkyBlur);
+            c.hazeSkyGain.Override(HazeSkyGain);
+            c.glow.Override(Glow);
+            c.glowSize.Override(GlowSize);
+            c.glowSourceLimit.Override(GlowSourceLimit);
             c.debugView.Override(false);
         }
 

@@ -222,7 +222,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 13
   compensation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   limitMin:
     m_OverrideState: 0
@@ -347,6 +347,28 @@ MonoBehaviour:
   proceduralSoftness:
     m_OverrideState: 0
     m_Value: 0.5
+--- !u!114 &-3449140025446469145
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5ab44aadfb1804db5fd470983ac1b8, type: 3}
+  m_Name: LiftGammaGain
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LiftGammaGain
+  active: 1
+  lift:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
+  gamma:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: 0.08}
+  gain:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
 --- !u!114 &-3101130734589611252
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -481,7 +503,7 @@ MonoBehaviour:
   active: 1
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 7
   indirectDiffuseLightingLayers:
     m_OverrideState: 0
     m_Value: 65535
@@ -527,6 +549,7 @@ MonoBehaviour:
   - {fileID: -2583175604806962462}
   - {fileID: -8482257096028548265}
   - {fileID: 6959827287843225378}
+  - {fileID: -3449140025446469145}
 --- !u!114 &931282934079756235
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1076,12 +1099,18 @@ MonoBehaviour:
   skyWeight:
     m_OverrideState: 1
     m_Value: 0.5
+  skyLayerDistance:
+    m_OverrideState: 0
+    m_Value: 15000
+  skyLayerWeight:
+    m_OverrideState: 0
+    m_Value: 0
   desaturation:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.6
   darkenEV:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 0.25
   highlightLimit:
     m_OverrideState: 1
     m_Value: 0.5
@@ -1093,7 +1122,73 @@ MonoBehaviour:
     m_Value: {r: 0.19, g: 0.22, b: 0.26, a: 1}
   haze:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.15
+  hazeSkyMix:
+    m_OverrideState: 0
+    m_Value: 0.85
+  hazeSkyBlur:
+    m_OverrideState: 0
+    m_Value: 3
+  hazeSkyGain:
+    m_OverrideState: 0
+    m_Value: 1.25
+  glow:
+    m_OverrideState: 0
+    m_Value: 0.6
+  glowSize:
+    m_OverrideState: 0
+    m_Value: 0.08
+  glowSourceLimit:
+    m_OverrideState: 0
+    m_Value: 3
+  fog:
+    m_OverrideState: 1
+    m_Value: 1
+  fogStart:
+    m_OverrideState: 1
+    m_Value: 25
+  fogDistance:
+    m_OverrideState: 1
+    m_Value: 1100
+  fogMaxOpacity:
+    m_OverrideState: 1
+    m_Value: 0.88
+  fogSkyOpacity:
+    m_OverrideState: 1
+    m_Value: 0.3
+  fogBackdropOpacity:
+    m_OverrideState: 1
+    m_Value: 0.18
+  fogColor:
+    m_OverrideState: 1
+    m_Value: {r: 0.36, g: 0.42, b: 0.48, a: 1}
+  fogNebulaTint:
+    m_OverrideState: 1
+    m_Value: 0.5
+  fogNebulaBlur:
+    m_OverrideState: 1
+    m_Value: 5
+  fogNebulaGain:
+    m_OverrideState: 1
+    m_Value: 2.5
+  fogSunScatter:
+    m_OverrideState: 1
+    m_Value: 0.03
+  fogSunAnisotropy:
+    m_OverrideState: 1
+    m_Value: 0.65
+  fogSilhouette:
+    m_OverrideState: 1
+    m_Value: 0.45
+  fogCulling:
+    m_OverrideState: 1
+    m_Value: 1
+  cullSilhouetteOpacity:
+    m_OverrideState: 1
+    m_Value: 0.5
+  cullPixels:
+    m_OverrideState: 1
+    m_Value: 1.5
   debugView:
     m_OverrideState: 1
     m_Value: 0
