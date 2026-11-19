@@ -142,6 +142,10 @@ namespace OYM.Net
                 case CoopMsg.Pilot:
                     _puppet.Push(PilotState.Read(r));
                     break;
+                case CoopMsg.SkillInput:
+                    if (ShowcaseSkillInput.Current && PartnerInGame)
+                        ShowcaseSkillInput.Current.FromPartner(_local, (ShowcaseSkillInput.Edge)r.U8());
+                    break;
                 case CoopMsg.PilotHit:
                 {
                     float amount = r.F(); Vector3 from = r.V3(); float knock = r.F();

@@ -18,7 +18,7 @@ namespace OnYourMark.UI
     [DisallowMultipleComponent]
     public sealed class HudSkillPanel : MonoBehaviour
     {
-        public enum ESkill { None, Parry, WeaponSwitch }
+        public enum ESkill { None, Parry, WeaponSwitch, SwiftStrike, MissileSalvo }
 
         [Serializable]
         public struct Telemetry
@@ -267,7 +267,7 @@ namespace OnYourMark.UI
             float now = Time.unscaledTime;
 
             // Q 궁극기
-            if (!t.valid) Paint(_q, "bolt", null, 0f, _dim, _dim, 0.25f, false);
+            if (!t.valid || (t.killsRequired == 0 && !t.ultActive && !t.ultReady)) Paint(_q, "bolt", null, 0f, _dim, _dim, 0.25f, false);
             else if (t.ultActive)
                 Paint(_q, null, Two[Mathf.Clamp(Mathf.CeilToInt(t.ultLeft), 0, 99)], Mathf.Clamp01(t.ultLeft / Mathf.Max(0.01f, t.ultDuration)), _accent, _accent, 1f, true);
             else if (t.ultReady)
@@ -282,7 +282,13 @@ namespace OnYourMark.UI
             }
 
             // E 스킬
-            string eIcon = t.eSkill == ESkill.WeaponSwitch ? "relay" : "shield";
+            string eIcon = t.eSkill switch
+            {
+                ESkill.WeaponSwitch => "relay",
+                ESkill.SwiftStrike => "sword",
+                ESkill.MissileSalvo => "grenade",
+                _ => "shield"
+            };
             if (!t.valid || t.eSkill == ESkill.None) Paint(_e, eIcon, null, 0f, _dim, _dim, 0.25f, false);
             else if (t.eActive)
             {

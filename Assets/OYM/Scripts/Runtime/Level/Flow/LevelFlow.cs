@@ -29,7 +29,7 @@ namespace OYM.Flow
         /// the game scene of the flow: the local project's GameSession.GameScene, the team repo's ShowcaseScene.Name
         public const string SceneName = "Showcase_DebrisField";
 
-        /// co-op wire (CoopMsg uses 1-61): H  u8 sector, u8 flags (1 = finished, 2 = finale released), f gimmick clock
+        /// H: sector, finale flags, gimmick clock, waypoint kind and world position
         public const byte MsgState = 70;
         /// co-op wire: B  u8 heal pack of the flow taken (gone on both PCs until it respawns)
         public const byte MsgMed = 71;
@@ -50,6 +50,9 @@ namespace OYM.Flow
         bool _clockSynced;
 
         FlowMarker _marker;
+        enum WaypointKind : byte { Sector, ArenaEntry, ArenaExit }
+        WaypointKind _waypointKind;
+        Vector3 _hostWaypoint;
         HuskZones _zonesCache;
         bool _zonesLooked;
 
@@ -154,10 +157,10 @@ namespace OYM.Flow
                 Init();
             }
             _run?.Tick();
+            Waypoint();
             Coop();
             TickPacks(Time.deltaTime);
             Hud(Time.deltaTime);
-            Waypoint();
         }
 
         void LateUpdate()
@@ -181,7 +184,8 @@ namespace OYM.Flow
             float now = Time.unscaledTime;
             if (sig == _sentSig && now < _sendT) return;
             _sentSig = sig; _sendT = now + 0.5f;
-            _session.Send(new CoopMsg.W(MsgState).U8(_run.Current).U8(flags).F(FlowClock.Now).Done());
+            _session.Send(new CoopMsg.W(MsgState).U8(_run.Current).U8(flags).F(FlowClock.Now)
+                .U8((int)_waypointKind).V3(_marker.target).Done());
         }
 
         void OnCoop(CoopMsg.R r)
@@ -190,6 +194,8 @@ namespace OYM.Flow
             {
                 _hostSector = r.U8(); _hostFlags = r.U8();
                 float target = r.F() - Time.time;
+                _waypointKind = (WaypointKind)r.U8();
+                _hostWaypoint = r.V3();
                 // the guest's gimmicks run on the host's clock: snap the first time / after a hitch, then glide
                 if (!_clockSynced || Mathf.Abs(target - FlowClock.Offset) > 1f) { FlowClock.Offset = target; _clockSynced = true; }
                 else FlowClock.Offset = Mathf.Lerp(FlowClock.Offset, target, 0.2f);
@@ -297,6 +303,18 @@ namespace OYM.Flow
             int flags = _run != null ? (_run.Finished ? 1 : 0) : _hostFlags;
             if (s < 0 || s >= _plan.sectors.Count || (flags & 1) != 0) { _marker.show = false; return; }
             var sp = _plan.sectors[s];
+            string label = string.IsNullOrEmpty(sp.marker) ? sp.objective : sp.marker;
+            if (_guest)
+            {
+                // Only the host advances HuskZones and unlocks waves. Its entry/exit marker
+                // must lead both pilots through the same arena gate.
+                _marker.show = true;
+                _marker.target = _hostWaypoint;
+                _marker.label = _waypointKind == WaypointKind.ArenaEntry ? "아레나 입구" :
+                    _waypointKind == WaypointKind.ArenaExit ? "아레나 출구" : label;
+                return;
+            }
+            _waypointKind = WaypointKind.Sector;
             Vector3 p = sp.anchor;
             if (!_zonesLooked) { _zonesLooked = true; _zonesCache = FindAnyObjectByType<HuskZones>(); }
             if (_zonesCache)
@@ -313,6 +331,7 @@ namespace OYM.Flow
                     if (gate)
                     {
                         // the zone lies past the team arena: show the way through it first
+                        _waypointKind = reached >= 1 ? WaypointKind.ArenaExit : WaypointKind.ArenaEntry;
                         _marker.show = true;
                         _marker.target = gate.position;
                         _marker.label = reached >= 1 ? "아레나 출구" : "아레나 입구";
@@ -323,7 +342,7 @@ namespace OYM.Flow
                 }
             _marker.show = true;
             _marker.target = p;
-            _marker.label = string.IsNullOrEmpty(sp.marker) ? sp.objective : sp.marker;
+            _marker.label = label;
         }
 
         // ------------------------------------------------------------------------------------------------ objective line

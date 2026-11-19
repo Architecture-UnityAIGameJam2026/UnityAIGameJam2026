@@ -92,7 +92,7 @@ namespace OYM
         /// Kills that gave the strike back (since the start).
         public int StrikeResets => _kills;
         /// Shift = swift strike when it is charged (live input, or a scripted run that opted in).
-        public bool StrikeArmed => swiftStrike && (!scripted || strikeWhenScripted);
+        public bool StrikeArmed => swiftStrike && (scripted ? strikeWhenScripted : !Net.CoopHud.Current || Net.CoopHud.Current.OwnSkill);
         public bool StrikeReady => Time.time >= _strikeReadyAt;
         public float StrikeCooldownLeft => Mathf.Max(0f, _strikeReadyAt - Time.time);
         Vector3 Chest => transform.position + Vector3.up * 1.25f;
@@ -210,6 +210,12 @@ namespace OYM
         }
 
         // ------------------------------------------------------------------------------------------------ swift strike
+        internal void CommandStrike()
+        {
+            if (swiftStrike && StrikeReady && !Dashing && !Cruising && Time.time >= dashReady)
+                BeginStrike();
+        }
+
         /// The strike starts from the dash (ZeroGFlight.StartDash -> OnDash): the flight base owns the brake and the
         /// cruise hand-off; this side sets the line, the speed, the cuts and the recharge.
         void BeginStrike()

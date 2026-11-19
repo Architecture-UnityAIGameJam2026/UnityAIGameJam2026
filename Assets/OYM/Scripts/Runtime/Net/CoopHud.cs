@@ -61,6 +61,8 @@ namespace OYM.Net
 
         public bool Crossed => _crossed;
         public bool IsBack(int module) => module >= 0 && module < _back.Length && _back[module];
+        public bool OwnSkill => !_crossed || IsBack(3);
+        internal ZeroGFlight SkillPilot => OwnSkill ? Me : Partner;
 
         // ------------------------------------------------------------------------------------------------ install
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -80,21 +82,22 @@ namespace OYM.Net
         static void OnLoaded(Scene s, LoadSceneMode mode)
         {
             if (Application.isBatchMode || s.name != ShowcaseScene.Name || OtherAutomation()) return;
-            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-oymNoHud") >= 0) return;
             PlayTestDirector d = null;
             foreach (var root in s.GetRootGameObjects()) { d = root.GetComponentInChildren<PlayTestDirector>(true); if (d) break; }
             if (!d || d.controllers == null || d.controllers.Length == 0) return;
             var go = new GameObject("Visor HUD (SenseLink, crossed link)");
             SceneManager.MoveGameObjectToScene(go, s);
             go.AddComponent<CoopHud>()._d = d;
+            go.AddComponent<ShowcaseSkillInput>();
         }
 
         void Awake()
         {
             Current = this;
+            if (SignalInstall.Flag("-oymNoHud")) { _crossed = true; return; }
             var prefab = Resources.Load<GameObject>("SenseLinkHUD");
             if (!prefab) { var r = Resources.Load<CoopHudPrefab>("OYM_CoopHudPrefab"); if (r) prefab = r.hud; }   // team layout: garam/UI/Prefabs
-            if (!prefab) { Debug.LogWarning("[OYM-HUD] Resources/SenseLinkHUD missing (Assets/garam/UI not imported): no visor HUD"); enabled = false; return; }
+            if (!prefab) { _crossed = true; Debug.LogWarning("[OYM-HUD] SenseLinkHUD missing: skill link stays crossed until its relay"); return; }
             _go = Instantiate(prefab);
             _go.name = "SenseLink HUD (visor)";
             SceneManager.MoveGameObjectToScene(_go, gameObject.scene);            // goes with the game scene
@@ -225,11 +228,11 @@ namespace OYM.Net
         /// Before the cross it only marks them (the cross leaves them on this pilot).
         public void Restore(int[] modules, string title, string body)
         {
-            if (!_hud || modules == null) return;
+            if (modules == null) return;
             bool any = false;
             foreach (int m in modules)
                 if (m >= 0 && m < _back.Length && !_back[m]) { _back[m] = true; any = true; }
-            if (!any) return;
+            if (!any || !_hud) return;
             if (_crossed)
             {
                 _hud.SetGameState(_back[0], _back[1], _back[2], -1);
@@ -310,7 +313,23 @@ namespace OYM.Net
             Reserves(mate, partnerDashing, out int pa, out int pc, out bool pd);
             float php = Coop ? (g.PartnerDown ? 0f : g.PartnerHP01) : 1f;
             _hud.SetPartnerTelemetry(php, pa, pc, pd);
-            if (_skills) _skills.SetTelemetry(default, !_crossed || _back[3]);  // no Q / E skills here: dim tiles, crossed with the rest
+            if (_skills)
+            {
+                var skillPilot = OwnSkill ? me : mate;
+                var skill = ShowcaseSkillInput.Telemetry(skillPilot);
+                if (!OwnSkill && g)
+                {
+                    if (g.PartnerInGame && g.Puppet && g.Puppet.HasState)
+                    {
+                        var partner = g.Puppet.State;
+                        skill.eActive = partner.Has(PilotState.FlagSkillActive);
+                        skill.eCooldownLeft = partner.skillCooldownLeft;
+                        skill.eCooldown = partner.skillCooldown;
+                    }
+                    else skill = default;
+                }
+                _skills.SetTelemetry(skill, OwnSkill);
+            }
         }
 
         /// reserves module: KESTREL = dash charges, ORBIT FRAME = railgun rounds (no ammo system in this build: full)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using OYM.Net;
 using OYM.Signal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,7 +21,7 @@ namespace OYM
     /// Hits go through the RG-77's doors (HuskEncounter.RouteHit for the co-op guest, then TakeDamage / Hit) plus a small
     /// splash on other HUSK; no friendly fire. Targets, aim points and sight are LockOn's rules (one source of truth).
     /// Self-installs on the ORBIT FRAME of every scene with a PlayTestDirector (no scene / prefab edits; -oymNoSalvo = off).
-    /// Only the pilot the camera follows reads E; a scripted pilot (demo / check) is driven through scriptedHold.
+    /// In the showcase the skill HUD holder commands the salvo. Standalone play tests use the followed pilot's E.
     /// SalvoOverlay draws the lock box, marks and cooldown; SalvoAudio makes the lock tones and plays the clips.
     [DefaultExecutionOrder(95)]                       // after LockOn (90): this frame's hard lock; before FlightCamera (100)
     public class OrbitSalvo : MonoBehaviour
@@ -105,7 +106,7 @@ namespace OYM
         ZeroGFlight _flight;
         Transform _chest;
         SalvoAudio _audio;
-        bool _locking, _wasHeld, _cooling, _dumb;
+        bool _locking, _wasHeld, _cooling, _dumb, _linkedHeld;
         float _lockStart, _readyAt, _seekT, _nextLaunch;
         int _pending, _index, _seed;
         Mark _seek;
@@ -159,7 +160,7 @@ namespace OYM
 
         void OnDisable()
         {
-            if (_locking) Cancel();
+            CancelInput();
             if (Active == this) Active = null;
         }
 
@@ -176,7 +177,9 @@ namespace OYM
         {
             var fc = FlightCamera.Main;
             bool mine = _flight && _flight.isActiveAndEnabled && fc && fc.target == transform;
-            if (mine) Active = this;
+            bool linked = ShowcaseSkillInput.Current && gameObject.scene.name == ShowcaseScene.Name;
+            bool controls = linked ? CoopHud.Current.SkillPilot == _flight && _flight.isActiveAndEnabled : mine;
+            if (controls) Active = this;
             else if (Active == this) Active = null;
             _audio.Volumes(toneVolume, launchVolume, blastVolume);
 
@@ -192,12 +195,31 @@ namespace OYM
             if (Time.timeScale <= 0f) return;                                  // paused
 
             var e = HuskEncounter.Current;
-            bool canAct = mine && SignalInstall.PlayerView(e) && (!e || e.PlayerAlive);
-            bool held = canAct && Held(fc);
+            bool canAct = (linked ? _flight && _flight.isActiveAndEnabled && fc : mine) && SignalInstall.PlayerView(e) && (!e || e.PlayerAlive);
+            if (!canAct) { CancelInput(); return; }
+            PollInput(fc, linked ? _linkedHeld : Held(fc));
+        }
+
+        internal void Command(ShowcaseSkillInput.Edge edge)
+        {
+            var fc = FlightCamera.Main;
+            if (!fc || edge == ShowcaseSkillInput.Edge.Cancel) { CancelInput(); return; }
+            _linkedHeld = edge == ShowcaseSkillInput.Edge.Press;
+            // TCP may deliver a quick tap's press and release during the same frame.
+            PollInput(fc, _linkedHeld);
+        }
+
+        void CancelInput()
+        {
+            _linkedHeld = _wasHeld = false;
+            if (_locking) Cancel();
+        }
+
+        void PollInput(FlightCamera fc, bool held)
+        {
             if (_locking)
             {
-                if (!canAct) Cancel();                                         // cutscene / downed / Tab: no salvo, no cooldown
-                else if (!held) Fire(fc);
+                if (!held) Fire(fc);
                 else TickLocks(fc);
             }
             else if (held && Ready) BeginLock();                               // also when E was held through the cooldown
@@ -208,6 +230,7 @@ namespace OYM
         bool Held(FlightCamera fc)
         {
             if (_flight.scripted) return scriptedHold;
+            if (gameObject.scene.name == ShowcaseScene.Name) return false;
             if (fc && !fc.InputLive) return false;                             // mouse not captured: no game input
 #if ENABLE_INPUT_SYSTEM
             var k = Keyboard.current;

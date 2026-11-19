@@ -8,7 +8,7 @@ namespace OYM.Net
     /// H = host -> guest, G = guest -> host, B = both ways.
     public static class CoopMsg
     {
-        public const byte Version = 4;
+        public const byte Version = 5;
 
         // title / session
         public const byte Hello = 1;        // G  u8 version, u8 preferred pilot
@@ -23,6 +23,7 @@ namespace OYM.Net
         // pilots
         public const byte Pilot = 10;       // B  PilotState
         public const byte PilotHit = 11;    // H  f amount, v3 from, f knock (an enemy hit the guest's pilot)
+        public const byte SkillInput = 12;  // B  u8 E-key edge for the partner's pilot while skill HUDs are crossed
 
         // HUSK
         public const byte Spawn = 20;       // H  u16 id, u8 kind, v3 pos, q rot

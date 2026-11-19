@@ -12,6 +12,7 @@ namespace OYM.Net
         public Vector3 pos, vel, aim;
         public Quaternion rot, lean;
         public float speed, slash, upper, thrust, hp;
+        public float skillCooldownLeft, skillCooldown;
         /// KESTREL: the slash in progress (0..2), -1 none
         public int attack;
         /// FlagCombat / FlagAim / FlagTrail / FlagDash / FlagCruise / FlagDown
@@ -19,13 +20,13 @@ namespace OYM.Net
         /// ORBIT FRAME: +1 per railgun shot; any pilot: +1 per dash
         public int shotSeq, dashSeq;
 
-        public const int FlagCombat = 1, FlagAim = 2, FlagTrail = 4, FlagDash = 8, FlagCruise = 16, FlagDown = 32;
+        public const int FlagCombat = 1, FlagAim = 2, FlagTrail = 4, FlagDash = 8, FlagCruise = 16, FlagDown = 32, FlagSkillActive = 64;
         public bool Has(int f) => (flags & f) != 0;
 
         public byte[] Write() => new CoopMsg.W(CoopMsg.Pilot)
             .V3(pos).Q(rot).Q(lean).V3(vel).V3(aim)
             .F(speed).F(slash).F(upper).F(thrust).F(hp)
-            .U8(attack + 1).U8(flags).U8(shotSeq & 255).U8(dashSeq & 255).Done();
+            .U8(attack + 1).U8(flags).U8(shotSeq & 255).U8(dashSeq & 255).F(skillCooldownLeft).F(skillCooldown).Done();
 
         public static PilotState Read(CoopMsg.R r)
         {
@@ -35,6 +36,7 @@ namespace OYM.Net
                 speed = r.F(), slash = r.F(), upper = r.F(), thrust = r.F(), hp = r.F()
             };
             s.attack = r.U8() - 1; s.flags = r.U8(); s.shotSeq = r.U8(); s.dashSeq = r.U8();
+            s.skillCooldownLeft = r.F(); s.skillCooldown = r.F();
             return s;
         }
 
@@ -109,6 +111,10 @@ namespace OYM.Net
         public PilotState Sample(HuskEncounter e)
         {
             var s = new PilotState { attack = -1, lean = Quaternion.identity };
+            var skill = ShowcaseSkillInput.Telemetry(_f);
+            if (skill.eActive) s.flags |= PilotState.FlagSkillActive;
+            s.skillCooldownLeft = skill.eCooldownLeft;
+            s.skillCooldown = skill.eCooldown;
             var t = _f.transform;
             s.pos = t.position; s.rot = t.rotation;
             if (_lean) s.lean = _lean.localRotation;

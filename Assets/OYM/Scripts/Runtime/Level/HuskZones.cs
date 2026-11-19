@@ -49,7 +49,7 @@ namespace OYM
             AdvanceSection(enc);
             foreach (var z in zones)
             {
-                if (z == null || z.section > reached || !z.sleepers || z.spawned != null) continue;
+                if (z == null || z.radius <= 0f || z.section > reached || !z.sleepers || z.spawned != null) continue;
                 // either pilot (co-op) close enough wakes the zone
                 if (!enc.AnyPilotWithin(z.center, z.radius, out Vector3 p)) continue;
                 Wake(enc, z, p);
