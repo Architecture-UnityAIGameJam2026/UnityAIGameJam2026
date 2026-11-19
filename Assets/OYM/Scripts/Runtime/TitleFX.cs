@@ -36,6 +36,12 @@ namespace OYM
         [Header("Launch")]
         public float launchFov = 16f, launchLens = 0.35f, launchBloom = 0.9f;
 
+        // MARK: calm-pace
+        [Header("Pace")]
+        [Tooltip("scales the boost / push-back camera whip, FOV, blur and lens pulses (strike and launch unchanged). "
+               + "1 = the original AC6 whip; user 11-19 asked for a calmer title")]
+        [Range(0f, 1f)] public float boostPace = 0.6f;
+
         [Header("Springs")]
         public float freq = 3.0f, damping = 0.42f;
 
@@ -111,15 +117,15 @@ namespace OYM
             float w = 2f * Mathf.PI * freq;                                   // impulses in deg/s scaled by the spring
             if (s == TitleCharacter.Slot.Front)
             {
-                float side = SideOf(p);
-                _rotV += new Vector3(-boostPitch, side * boostYaw, -side * boostRoll) * w;
-                _fovV += boostFov * w;
-                _pBlur = 1f; _pLens = 1f;
-                _pBloom = Mathf.Max(_pBloom, 1f); _pChroma = Mathf.Max(_pChroma, 1f);
+                float side = SideOf(p), k = boostPace;
+                _rotV += new Vector3(-boostPitch, side * boostYaw, -side * boostRoll) * (w * k);
+                _fovV += boostFov * w * k;
+                _pBlur = k; _pLens = k;
+                _pBloom = Mathf.Max(_pBloom, k); _pChroma = Mathf.Max(_pChroma, k);
             }
             else if (s == TitleCharacter.Slot.Back)
             {
-                _rotV += new Vector3(0.4f, 0f, SideOf(p) * 1.5f) * w;
+                _rotV += new Vector3(0.4f, 0f, SideOf(p) * 1.5f) * (w * boostPace);
             }
             else if (s == TitleCharacter.Slot.Launch)
             {

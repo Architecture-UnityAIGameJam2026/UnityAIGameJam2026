@@ -11336,6 +11336,10 @@ GameObject:
   - component: {fileID: 3091368494341915172}
   - component: {fileID: 1609594599417489776}
   - component: {fileID: 4467201938576612093}
+  - component: {fileID: 7351902846150237411}
+  - component: {fileID: 7351902846150237412}
+  - component: {fileID: 7351902846150237413}
+  - component: {fileID: 7351902846150237414}
   m_Layer: 0
   m_Name: SenseLinkHUD
   m_TagString: Untagged
@@ -11461,6 +11465,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a3ed1a3ed04b3f83beb5adf6fdd5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.UI.HudSwapGlitch
+  hud: {fileID: 1609594599417489776}
+--- !u!114 &7351902846150237411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755713357314116039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c844b36bca34ebc8d1217e47f658a2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.UI.HudSkillPanel
+  hud: {fileID: 1609594599417489776}
+--- !u!114 &7351902846150237412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755713357314116039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b735b4947e460982e1bdbc4e1d587a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.UI.HudBreak
+  hud: {fileID: 1609594599417489776}
+  swapGlitch: {fileID: 4467201938576612093}
+  hotEmission: 4
+  screenFlashEmission: 1
+  screenFlashPeak: 0.1
+--- !u!114 &7351902846150237413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755713357314116039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b351c46b32e44baa7191af1d0e494c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.UI.HudPerspective
+--- !u!114 &7351902846150237414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755713357314116039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb382940d5854e82b6eaf6786d23f17d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.UI.HudArrangement
   hud: {fileID: 1609594599417489776}
 --- !u!114 &1609594599417489776
 MonoBehaviour:
