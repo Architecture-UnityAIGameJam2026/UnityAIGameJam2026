@@ -10,8 +10,10 @@ namespace OYM
 {
     /// Keeps the game at or above 45 fps (title and gameplay) without touching any scene.
     ///
-    /// 1. Dynamic resolution: every game camera gets HDRP dynamic resolution (DLSS on RTX, STP elsewhere, see the
-    ///    HDRP asset) and this guard feeds the render scale from the measured GPU time. Scale drops quickly when the
+    /// 1. Dynamic resolution: every game camera gets HDRP dynamic resolution, upscaled by STP, and this guard feeds
+    ///    the render scale from the measured GPU time. DLSS stays off (11-19: with it on, an RTX 4060 editor play
+    ///    session went to a black game view about 4 s in, at full scale; STP has no such problem). -oymDlss turns
+    ///    it back on for a test. Scale drops quickly when the
     ///    GPU frame goes over budget and climbs back slowly when there is headroom, so a still title renders at
     ///    full resolution and only heavy fights pay with a softer image.
     /// 2. Quality tiers: if the render scale is already at its floor and frames are still too slow, a top-priority
@@ -62,6 +64,7 @@ namespace OYM
         }
 
         static bool HasArg(string a) => System.Array.IndexOf(System.Environment.GetCommandLineArgs(), a) >= 0;
+        static readonly bool s_dlss = HasArg("-oymDlss");
 
         static string ArgValue(string a)
         {
@@ -127,7 +130,8 @@ namespace OYM
                 if (!c.TryGetComponent(out HDAdditionalCameraData hd)) continue;
                 _setupCams.Add(c.GetInstanceID());
                 hd.allowDynamicResolution = true;
-                hd.allowDeepLearningSuperSampling = true;
+                // DLSS first in the HDRP assets' upscaler list turned the game view black on RTX (11-19): STP upscales
+                hd.allowDeepLearningSuperSampling = s_dlss;
             }
         }
 
