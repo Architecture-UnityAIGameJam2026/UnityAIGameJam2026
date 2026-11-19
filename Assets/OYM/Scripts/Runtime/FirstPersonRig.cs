@@ -35,6 +35,7 @@ namespace OYM
         public float kickBack = 0.07f, kickPitch = 9f, kickFreq = 7.5f, kickDamping = 0.42f;
 
         [HideInInspector] public ZeroGFlight flight;
+        public Transform ViewCamera { get; set; }
 
         Quaternion _lag = Quaternion.identity;
         Vector3 _drift, _kick, _kickV;          // kick: x = back (m), y = pitch (deg), z = roll (deg)
@@ -60,11 +61,10 @@ namespace OYM
 
         void LateUpdate()
         {
-            var cam = FlightCamera.Main;
-            if (!cam || !animator) return;
+            Transform ct = ViewCamera ? ViewCamera : FlightCamera.Main ? FlightCamera.Main.transform : null;
+            if (!ct || !animator) return;
             animator.SetLayerWeight(1, 1f);
             float dt = Mathf.Min(GameFeel.RealDt, 0.05f);
-            Transform ct = cam.transform;
             Quaternion camRot = ct.rotation;
 
             // body rides on the camera

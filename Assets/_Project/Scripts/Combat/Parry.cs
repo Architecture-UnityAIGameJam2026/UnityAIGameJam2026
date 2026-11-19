@@ -45,7 +45,7 @@ namespace OnYourMark
         void Update()
         {
             if (shieldEffect) shieldEffect.SetActive(IsActive);
-            if (!IsOwner || !IsSpawned) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !IsSpawned) return;
 
             if (IsActive) aim.Value = Camera.main.transform.forward;
             if (!CursorLock.IsLocked) return;
@@ -64,7 +64,7 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void StartRpc(Vector3 aimDirection)
         {
-            if (CooldownLeft > 0f || me.Health.IsDead) return;
+            if (CooldownLeft > 0f) return;
             activeUntil.Value = Now + data.duration;
             readyAt.Value = Now + Cooldown;
             rewarded = false;

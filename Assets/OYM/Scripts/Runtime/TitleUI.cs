@@ -13,8 +13,7 @@ namespace OYM
     ///   bottom left  GAME START / OPTION / EXIT (mouse hover or W/S + ENTER), OPTIONS panel, quit dialog
     ///   bottom       a line with the team logo (Team Architecture, AI chip mark)
     /// The 3D side (pilot swap, camera, deploy) is TitleDirector: it forwards keys (Navigate / Submit / Cancel /
-    /// ToggleFriend) and listens to DeployClicked / PilotClicked. No Buttons (their runtime theme fights the look):
-    /// clickable things are VisualElements with the "pick" class and ClickEvent callbacks.
+    /// ToggleFriend) and listens for pilot choices and match requests. The mode menu uses text-only buttons.
     /// Font: Bahnschrift from the OS when it is there, else Segoe UI, else Unity's built-in font.
     [RequireComponent(typeof(UIDocument))]
     public class TitleUI : MonoBehaviour
@@ -29,7 +28,7 @@ namespace OYM
             [Range(0f, 1f)] public float[] stats = { 0.5f, 0.5f, 0.5f, 0.5f };
         }
 
-        public enum Mode { Intro, Main, Options, Friend, Exit, Deploy }
+        public enum Mode { Intro, Main, SelectMode, Options, Friend, Exit, Deploy }
 
         public PilotInfo[] pilots;
         public string[] statNames = { "MOBILITY", "POWER", "RANGE", "ARMOR" };
@@ -41,6 +40,8 @@ namespace OYM
         public string discordUrl = "";
 
         public event System.Action DeployClicked;
+        public event System.Action HostClicked;
+        public event System.Action<string> JoinClicked;
         public event System.Action<int> PilotClicked;
 
         /// scripted demo: the real mouse over the editor window (hover or a click on a pilot icon) must not change
@@ -50,7 +51,7 @@ namespace OYM
 
         public Mode CurrentMode => _mode;
         /// may a click on a pilot in the 3D scene switch pilots right now
-        public bool AllowsPilotPick => _mode == Mode.Main;
+        public bool AllowsPilotPick => (_mode is Mode.Main or Mode.SelectMode or Mode.Friend) && (!OnYourMark.TitleMatch.Active || OnYourMark.TitleMatch.Active.CanChoosePilot);
         /// the friend-code field has the keyboard (also true for the frame after it let go, so its ESC / ENTER is not
         /// read a second time by the director)
         public bool IsTyping => FieldFocused || Time.frameCount - _typingFrame <= 1;
@@ -72,8 +73,11 @@ namespace OYM
         readonly List<OptRow> _rows = new List<OptRow>();
         Mode _mode = Mode.Intro;
         int _shown = -2, _menuSel, _optSel, _exitSel = 1, _typingFrame = -10;
-        string _myCode = "";
-        IVisualElementScheduledItem _toastJob, _joinJob, _copyJob;
+        string _myCode;
+        VisualElement _playModes;
+
+
+        IVisualElementScheduledItem _toastJob, _copyJob;
         bool _ready;
 
         static FontDefinition? s_font;
@@ -120,6 +124,10 @@ namespace OYM
             if (team != null && teamLogo) { team.style.backgroundImage = new StyleBackground(teamLogo); _root.Q("hints-mark")?.AddToClassList("hidden-mark"); }
             else team?.AddToClassList("hidden-mark");
             AddIcons();
+            _playModes = _root.Q("play-modes");
+            _root.Q<Button>("btn-single").clicked += () => { if (_mode == Mode.SelectMode) DeployClicked?.Invoke(); };
+            _root.Q<Button>("btn-multi").clicked += OpenFriend;
+            _root.Q<Button>("btn-modes-back").clicked += CloseModes;
             BuildMenu();
             BuildCards();
             BuildOptions();
@@ -186,7 +194,7 @@ namespace OYM
             Pulse(_cursor, "menu-cursor--press", 170);
             switch (i)
             {
-                case 0: DeployClicked?.Invoke(); break;
+                case 0: OpenModes(); break;
                 case 1: OpenOptions(); break;
                 default: OpenExit(); break;
             }
@@ -209,7 +217,7 @@ namespace OYM
                 else icon.Add(L(p.name, "card-name"));                          // no icon yet: the name stands in
                 b.Add(icon);
                 b.Add(El("card-bar"));
-                b.RegisterCallback<ClickEvent>(_ => { if (_mode == Mode.Main || _mode == Mode.Friend) PilotClicked?.Invoke(idx); });
+                b.RegisterCallback<ClickEvent>(_ => { if (AllowsPilotPick) PilotClicked?.Invoke(idx); });
                 Place(b, false, i);
                 _cards.Add(b);
                 _cardList.Add(c);
@@ -347,8 +355,8 @@ namespace OYM
         // ------------------------------------------------------------------------------------------------ friend code
         void BindFriend()
         {
-            _myCode = GameSettings.FriendCode;
-            SetText(_fpCode, FormatCode(_myCode));
+            _root.Q<Button>("btn-back").clicked += CloseFriend;
+            SetText(_fpCode, "------");
             if (_friendBtn != null)
             {
                 _friendBtn.RegisterCallback<ClickEvent>(_ => ToggleFriend());
@@ -358,12 +366,9 @@ namespace OYM
             _copy?.RegisterCallback<ClickEvent>(_ => CopyCode());
             _join?.RegisterCallback<ClickEvent>(_ => Join());
             if (_field == null) return;
-            _field.maxLength = GameSettings.CodeLength + 1;
             _field.RegisterValueChangedCallback(e =>
             {
-                string f = FormatCode(CleanCode(e.newValue));
-                if (f != e.newValue) { _field.SetValueWithoutNotify(f); _field.SelectRange(f.Length, f.Length); }
-                if (_fpPlaceholder != null) _fpPlaceholder.style.display = f.Length == 0 ? DisplayStyle.Flex : DisplayStyle.None;
+                if (_fpPlaceholder != null) _fpPlaceholder.style.display = string.IsNullOrEmpty(e.newValue) ? DisplayStyle.Flex : DisplayStyle.None;
             });
             _field.RegisterCallback<KeyDownEvent>(e =>
             {
@@ -373,21 +378,10 @@ namespace OYM
             }, TrickleDown.TrickleDown);
         }
 
-        static string CleanCode(string s)
-        {
-            if (string.IsNullOrEmpty(s)) return "";
-            var sb = new System.Text.StringBuilder(GameSettings.CodeLength);
-            foreach (char ch in s.ToUpperInvariant())
-                if (((ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')) && sb.Length < GameSettings.CodeLength) sb.Append(ch);
-            return sb.ToString();
-        }
-
-        static string FormatCode(string c) => c.Length > 4 ? c.Substring(0, 4) + "-" + c.Substring(4) : c;
-
         void CopyCode()
         {
-            if (_mode != Mode.Friend) return;
-            GUIUtility.systemCopyBuffer = FormatCode(_myCode);
+            if (_mode != Mode.Friend || string.IsNullOrEmpty(_myCode)) return;
+            GUIUtility.systemCopyBuffer = _myCode;
             if (_copy is Label l)
             {
                 l.text = "COPIED"; l.AddToClassList("sbtn--done");
@@ -399,13 +393,18 @@ namespace OYM
         void Join()
         {
             if (_mode != Mode.Friend) return;
-            string code = CleanCode(_field != null ? _field.value : "");
-            _joinJob?.Pause();
-            if (!GameSettings.IsValidCode(code)) { SetStatus("ENTER ALL 8 CHARACTERS OF YOUR FRIEND'S CODE", "fp-status--err"); return; }
-            if (code == _myCode) { SetStatus("THAT IS YOUR OWN CODE", "fp-status--err"); return; }
-            SetStatus("CONNECTING TO " + FormatCode(code) + " ...", "fp-status--busy");
-            if (_fpStatus != null)
-                _joinJob = _fpStatus.schedule.Execute(() => SetStatus("CO-OP SERVICE IS NOT CONNECTED IN THIS BUILD", "fp-status--err")).StartingIn(1600);
+            string code = _field?.value.Trim();
+            if (!OnYourMark.RoomCode.TryDecode(code, out _)) { SetStatus("ENTER THE HOST'S 6-CHARACTER CODE (CASE-SENSITIVE)", "fp-status--err"); return; }
+            JoinClicked?.Invoke(code);
+        }
+
+        public void ShowMatch(string message, bool error = false, string code = null)
+        {
+            _myCode = code;
+            SetText(_fpCode, code ?? "------");
+            _copy?.SetEnabled(code != null);
+            if (_mode == Mode.Friend) SetStatus(message, error ? "fp-status--err" : "fp-status--busy");
+            else if (error && !string.IsNullOrEmpty(message)) Toast(message, 4500);
         }
 
         void SetStatus(string s, string cls)
@@ -464,6 +463,8 @@ namespace OYM
         void SetMode(Mode m)
         {
             _mode = m;
+            _playModes.Query<Button>().ForEach(button => button.focusable = m == Mode.SelectMode);
+            _root.Q<Button>("btn-back").focusable = m == Mode.Friend;
             RefreshPicking();
         }
 
@@ -474,6 +475,7 @@ namespace OYM
             _root.pickingMode = PickingMode.Ignore;
             if (_mode == Mode.Intro || _mode == Mode.Deploy || _scripted) { SetPickTree(_chrome, false); SetPickTree(_modal, false); return; }
             if (_mode != Mode.Main) SetPickTree(_menu, false);
+            if (_mode != Mode.SelectMode) SetPickTree(_playModes, false);
             if (_mode != Mode.Options) SetPickTree(_options, false);
             if (_mode != Mode.Friend) SetPickTree(_friendPanel, false);
             if (_mode != Mode.Exit) SetPickTree(_modal, false);
@@ -516,23 +518,40 @@ namespace OYM
             SetMode(Mode.Main);
         }
 
+        void OpenModes()
+        {
+            Toggle(_menu, "menu--offstage", true);
+            Toggle(_playModes, "play-modes--open", true);
+            SetMode(Mode.SelectMode);
+            _root.schedule.Execute(() => { if (_mode == Mode.SelectMode) _root.Q<Button>("btn-single").Focus(); }).StartingIn(80);
+        }
+
+        void CloseModes()
+        {
+            Toggle(_playModes, "play-modes--open", false);
+            Toggle(_menu, "menu--offstage", false);
+            SetMode(Mode.Main);
+        }
+
         void OpenFriend()
         {
-            if (_mode != Mode.Main) return;
+            if (_mode != Mode.SelectMode) return;
+            Toggle(_playModes, "play-modes--open", false);
             Toggle(_friend, "friend--open", true);
-            SetStatus("", null);
+            In(_friend);
             SetMode(Mode.Friend);
-            _field?.schedule.Execute(() => { if (_mode == Mode.Friend) _field.Focus(); }).StartingIn(80);
+            ShowMatch("");
+            HostClicked?.Invoke();
         }
 
         void CloseFriend()
         {
             if (_mode != Mode.Friend) return;
+            if (OnYourMark.TitleMatch.Active) OnYourMark.TitleMatch.Active.Close();
             Toggle(_friend, "friend--open", false);
             _field?.Blur();
             _typingFrame = Time.frameCount;
-            _joinJob?.Pause();
-            SetMode(Mode.Main);
+            OpenModes();
         }
 
         void OpenExit()
@@ -600,6 +619,7 @@ namespace OYM
             switch (_mode)
             {
                 case Mode.Main: OpenExit(); break;
+                case Mode.SelectMode: CloseModes(); break;
                 case Mode.Options: CloseOptions(); break;
                 case Mode.Friend: CloseFriend(); break;
                 case Mode.Exit: CloseExit(); break;
@@ -609,7 +629,9 @@ namespace OYM
         public void ToggleFriend()
         {
             if (!Init()) return;
-            if (_mode == Mode.Friend) CloseFriend(); else OpenFriend();
+            if (_mode == Mode.Friend) CloseFriend();
+            else if (_mode == Mode.SelectMode) OpenFriend();
+            else if (_mode == Mode.Main) { OpenModes(); OpenFriend(); }
         }
 
         /// Logo wipe, then the corners and the menu come in one after another; the menu takes input at the end.
@@ -624,7 +646,18 @@ namespace OYM
             for (int i = 0; i < _menuItems.Count; i++) { var it = _menuItems[i]; Later(420 + 90 * i, () => it.AddToClassList("mi--in")); }
             Later(500, () => In(_pilotsBox));
             Later(700, () => { In(_hints); SelectMenu(_menuSel); _cursor?.AddToClassList("menu-cursor--on"); });
-            Later(780, () => { if (_mode == Mode.Intro) SetMode(Mode.Main); });
+            Later(780, () =>
+            {
+                if (_mode != Mode.Intro) return;
+                SetMode(Mode.Main);
+                if (!string.IsNullOrEmpty(GameSession.ReturnMessage))
+                {
+                    OpenModes();
+                    OpenFriend();
+                    SetStatus(GameSession.ReturnMessage, "fp-status--err");
+                    GameSession.ReturnMessage = null;
+                }
+            });
         }
 
         void Later(long ms, System.Action a) => _root.schedule.Execute(a).StartingIn(ms);
@@ -651,6 +684,7 @@ namespace OYM
             Toggle(_modal, "modal--open", false);
             Toggle(_friend, "friend--open", false);
             _field?.Blur();
+            Toggle(_playModes, "play-modes--open", false);
             SetMode(Mode.Deploy);
             _chrome?.AddToClassList("chrome--out");
             BuildDeployName(pilot);

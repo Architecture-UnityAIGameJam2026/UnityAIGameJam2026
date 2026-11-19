@@ -48,11 +48,20 @@ namespace OnYourMark
             magazine.SetMagazine(modes[0].magazine, stored[0]);
         }
 
+        public void Inherit(WeaponModes previous)
+        {
+            mode.Value = previous.mode.Value;
+            previous.stored.CopyTo(stored, 0);
+            readyAt.Value = previous.readyAt.Value;
+            switchEndsAt.Value = previous.switchEndsAt.Value;
+            pending = previous.pending;
+        }
+
         void Update()
         {
             if (!IsSpawned) return;
 
-            if (IsOwner)
+            if (IsOwner && NetworkObject.IsPlayerObject)
             {
                 bool switching = IsSwitching;
                 me.Motor.ZoomAllowed = Current.allowZoom && !switching;
@@ -69,7 +78,7 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void SwitchRpc()
         {
-            if (pending || CooldownLeft > 0f || me.Health.IsDead) return;
+            if (pending || CooldownLeft > 0f) return;
             pending = true;
             switchEndsAt.Value = Now + Windup;
         }

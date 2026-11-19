@@ -313,3 +313,30 @@ TextField.fp-field:focus .unity-base-text-field__input { border-color: rgb(111, 
 /* ---------------------------------------------------------------- states that must win over the block offsets above */
 .intro.in { opacity: 1; translate: 0 0; }
 .menu.menu--away { opacity: 0; translate: -70px 0; }
+
+/* The home list and the mode list occupy the same title-menu slot. */
+.menu.menu--offstage { translate: -760px 0; opacity: 1; }
+.play-modes {
+    position: absolute; left: 72px; bottom: 124px; width: 600px;
+    translate: -760px 0; opacity: 0;
+    transition-property: translate, opacity; transition-duration: .36s, .22s;
+    transition-timing-function: ease-out-cubic;
+}
+.play-modes--open {
+    translate: 0 0; opacity: 1;
+    transition-delay: .2s, .2s;
+}
+.text-control {
+    background-color: rgba(0, 0, 0, 0); background-image: none;
+    border-width: 0; border-radius: 0; margin: 0; padding: 0;
+    -unity-text-align: middle-left;
+}
+.mode-item { height: 70px; align-self: flex-start; }
+.mode-item:hover, .mode-item:focus {
+    color: rgb(246, 249, 251); translate: 18px 0; letter-spacing: 12px;
+}
+.room-back {
+    align-self: flex-start; margin-top: 14px; height: 36px; font-size: 18px;
+    letter-spacing: 4px; -unity-font-style: bold; color: rgb(186, 196, 205);
+}
+.room-back:hover, .room-back:focus { color: white; }

@@ -13,8 +13,31 @@ namespace OnYourMark
         readonly NetworkVariable<int> dashCapacity = new(0,
             NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+        // Confirmed server-side outcomes shared by human and companion gameplay.
+        public static event System.Action<Player, string, string> ActionResolved;
+        public void ReportAction(string action, string detail)
+        {
+            if (IsServer && IsSpawned) ActionResolved?.Invoke(this, action, detail);
+        }
+
         public static IReadOnlyList<Player> All => all;
-        public static Player Local => all.Find(p => p.IsOwner);
+        byte requestedSupport;
+        public void RequestSupport(HudPart part) { if (IsServer) requestedSupport |= (byte)(1 << (int)part); }
+        public void FulfillSupport(HudPart part) { if (IsServer) requestedSupport &= (byte)~(1 << (int)part); }
+        public bool NeedsSupport(HudPart part)
+        {
+            if ((requestedSupport & (1 << (int)part)) != 0) return true;
+            return part switch
+            {
+                HudPart.Vitals => !Health.IsDead && Health.Ratio <= 0.4f,
+                HudPart.Resource => Stats.showDashOnHud ? DashStacks == 0 : Ammo.Ratio <= 0.15f,
+                _ => false
+            };
+        }
+
+        public bool IsBot => IsSpawned && !NetworkObject.IsPlayerObject;
+        public static Player Local => all.Find(p => p.IsOwner && !p.IsBot);
+        public string Role => Stats.CanZoom ? "ranged" : "melee";
         public Player Partner => all.Find(p => p != this);
 
         public PlayerMotor Motor { get; private set; }
@@ -48,6 +71,18 @@ namespace OnYourMark
             if (!IsSpawned || !IsOwner) return;
             if (dashStacks.Value != Motor.DashStacks) dashStacks.Value = Motor.DashStacks;
             if (dashCapacity.Value != Motor.DashCapacity) dashCapacity.Value = Motor.DashCapacity;
+        }
+
+        public void MoveToCheckpoint(UnityEngine.Vector3 position)
+        {
+            if (IsServer) WarpOwnerRpc(position);
+        }
+
+        [Rpc(SendTo.Owner)]
+        void WarpOwnerRpc(UnityEngine.Vector3 position)
+        {
+            Motor.ResetMotion(position);
+            GetComponent<Unity.Netcode.Components.NetworkTransform>().Teleport(position, transform.rotation, transform.localScale);
         }
 
         public override void OnNetworkDespawn() => all.Remove(this);

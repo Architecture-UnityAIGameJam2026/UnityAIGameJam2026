@@ -61,6 +61,14 @@ namespace OnYourMark
             if (IsServer && IsDead) current.Value = data.maxHealth * ratio;
         }
 
+        public void Inherit(Health previous)
+        {
+            if (!IsServer) return;
+            current.Value = Mathf.Min(Max, previous.Current);
+            shield.Value = previous.Shield;
+            shieldUntil.Value = previous.shieldUntil.Value;
+        }
+
         public void AddShield(float amount, float duration)
         {
             if (!IsServer) return;

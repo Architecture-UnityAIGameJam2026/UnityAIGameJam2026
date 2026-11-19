@@ -69,7 +69,7 @@ namespace OnYourMark
         }
 
         // 따옴표로 감싼 칸(쉼표 포함)을 처리하는 최소 CSV 파서
-        static List<List<string>> SplitCsv(string text)
+        internal static List<List<string>> SplitCsv(string text)
         {
             var rows = new List<List<string>>();
             var row = new List<string>();

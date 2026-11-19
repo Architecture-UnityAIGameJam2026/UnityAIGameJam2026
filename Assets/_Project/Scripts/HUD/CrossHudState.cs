@@ -31,6 +31,8 @@ namespace OnYourMark
         void ResetParts() => returnedParts.Value = 0;
 
         public bool IsReturned(HudPart part) => (returnedParts.Value & Bit(part)) != 0;
+        public byte Ownership => returnedParts.Value;
+        public void SetOwnership(byte mask) { if (IsServer) returnedParts.Value = (byte)(mask & 7); }
         public bool AllReturned => returnedParts.Value == 0b111;
 
         /// <summary>서버 전용. P9(교환 / 단말기)에서 호출한다.</summary>

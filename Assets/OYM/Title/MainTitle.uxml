@@ -33,12 +33,13 @@
                     <ui:VisualElement class="fp-rule" />
                     <ui:VisualElement class="fp-row">
                         <ui:VisualElement class="fp-field-wrap">
-                            <ui:TextField name="fp-field" class="fp-field" />
-                            <ui:Label name="fp-placeholder" text="FRIEND CODE" class="fp-placeholder" />
+                            <ui:TextField name="fp-field" max-length="6" class="fp-field" />
+                            <ui:Label name="fp-placeholder" picking-mode="Ignore" text="ROOM CODE" class="fp-placeholder" />
                         </ui:VisualElement>
                         <ui:Label name="btn-join" text="JOIN" class="sbtn sbtn--accent pick" />
                     </ui:VisualElement>
                     <ui:Label name="fp-status" class="fp-status" />
+                    <ui:Button name="btn-back" text="BACK" class="room-back text-control pick" />
                 </ui:VisualElement>
                 <ui:VisualElement name="btn-friend" class="friend-btn pick">
                     <ui:VisualElement name="friend-icon-slot" class="friend-icon-slot" />
@@ -66,6 +67,12 @@
                 <ui:VisualElement name="mi-2" class="menu-item pick">
                     <ui:Label text="EXIT" class="mi-label" />
                 </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="play-modes" class="play-modes pick">
+                <ui:Button name="btn-single" text="SINGLE PLAYER" class="mi-label mode-item text-control pick" />
+                <ui:Button name="btn-multi" text="MULTIPLAYER" class="mi-label mode-item text-control pick" />
+                <ui:Button name="btn-modes-back" text="BACK" class="mi-label mode-item text-control pick" />
             </ui:VisualElement>
 
             <!-- bottom left: options (replaces the menu) -->

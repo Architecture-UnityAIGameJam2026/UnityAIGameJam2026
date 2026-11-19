@@ -27,7 +27,8 @@ namespace OnYourMark
         [Tooltip("팀원 지원으로 쓰인 클릭이면 쏘지 않는다")]
         [SerializeField] SupportGiver support;
 
-        float readyTime;
+        public static event System.Action<Player> DryFired;
+        float readyTime, nextDryReport;
         bool triggerUsedForSupport;   // 지원으로 쓴 클릭은 뗄 때까지 연사하지 않는다
         Player me;
         AwakeningSet awakening;
@@ -40,7 +41,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !CursorLock.IsLocked) return;
+            if (WaveManager.TakesCombatInput || !IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
 
             var weapon = Weapon;
             if (support.ConsumedTrigger) triggerUsedForSupport = true;
@@ -50,7 +51,15 @@ namespace OnYourMark
             if (!pulled || triggerUsedForSupport || Time.time < readyTime || (modes && modes.IsSwitching)) return;
             readyTime = Time.time + weapon.cooldown;
 
-            if (magazine.Current == 0) { if (fire.action.WasPressedThisFrame()) audioSource.PlayOneShot(weapon.dryFireSound); return; }
+            if (magazine.Current == 0)
+            {
+                if (fire.action.WasPressedThisFrame())
+                {
+                    audioSource.PlayOneShot(weapon.dryFireSound);
+                    ReportDryFireRpc();
+                }
+                return;
+            }
 
             var cam = Camera.main.transform;
             FireRpc(cam.position, cam.forward);
@@ -58,8 +67,34 @@ namespace OnYourMark
 
         HitscanData Weapon => modes ? modes.Current : data;
 
+        public float Range => Weapon.range;
+        public bool CanBotFire => IsServer && me.IsBot && !me.Health.IsDead && magazine.Current > 0
+            && (!modes || !modes.IsSwitching) && Time.time >= readyTime;
+
+        public bool BotShoot(Vector3 direction)
+        {
+            if (!CanBotFire) return false;
+            readyTime = Time.time + Weapon.cooldown;
+            Fire(transform.position + Vector3.up * 1.1f, direction.normalized);
+            return true;
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Owner)]
+        void ReportDryFireRpc()
+        {
+            if (magazine.Current > 0 || me.Health.IsDead || Time.time < nextDryReport) return;
+            nextDryReport = Time.time + Weapon.cooldown;
+            DryFired?.Invoke(me);
+        }
+
         [Rpc(SendTo.Server)]
         void FireRpc(Vector3 aimOrigin, Vector3 aimDirection)
+        {
+            Vector3 origin = aimOrigin + aimDirection * Vector3.Dot(transform.position - aimOrigin, aimDirection);
+            Fire(origin, aimDirection);
+        }
+
+        void Fire(Vector3 origin, Vector3 aimDirection)
         {
             if (modes && modes.IsSwitching) return;
             bool overchargedRound = magazine.Overcharged;   // 장탄수를 넘는 탄 = 오버차지 탄환
@@ -67,8 +102,6 @@ namespace OnYourMark
             var weapon = Weapon;
             float damage = weapon.damage * (overchargedRound && reloadConfig ? 1f + reloadConfig.overchargeDamageBonus : 1f);
 
-            // 카메라 위치가 아니라 캐릭터 위치에 해당하는 지점부터 사거리를 잰다
-            Vector3 origin = aimOrigin + aimDirection * Vector3.Dot(transform.position - aimOrigin, aimDirection);
             Vector3 end = origin + aimDirection * weapon.range;
 
             if (!weapon.pierce)
@@ -101,6 +134,7 @@ namespace OnYourMark
         [Rpc(SendTo.ClientsAndHost)]
         void ShowTracerRpc(Vector3 end)
         {
+            if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Recoil(Weapon.automatic);
             tracer.SetPosition(0, muzzle.position);
             tracer.SetPosition(1, end);
             StartCoroutine(MeleeWeapon.Flash(tracer.gameObject, 0.08f));

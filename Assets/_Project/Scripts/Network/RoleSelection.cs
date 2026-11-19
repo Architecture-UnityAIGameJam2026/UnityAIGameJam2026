@@ -14,52 +14,65 @@ namespace OnYourMark
         [SerializeField] RoleDefinition[] roles;
         [Tooltip("두 플레이어가 모두 스폰되면 Raise (웨이브 시작 등)")]
         [SerializeField] GameEvent playersSpawned;
-        [Tooltip("재시작 시 Raise: 포지션을 다시 고른다")]
+        [Tooltip("재시작 시 배정된 포지션으로 다시 스폰")]
         [SerializeField] GameEvent roundReset;
 
         readonly NetworkList<ulong> owners = new();
         bool spawnDone;
-
+        Player[] pilots;
         public RoleDefinition[] Roles => roles;
         public ulong OwnerOf(int role) => role < owners.Count ? owners[role] : Nobody;
         public bool HasChosen(ulong clientId) => owners.Contains(clientId);
         /// <summary>두 역할이 모두 정해짐 (진행 중이거나 결과 화면). 재시작하면 다시 false.</summary>
         public bool AllChosen => owners.Count > 0 && !owners.Contains(Nobody);
 
+        void Start()
+        {
+            if (!TitleMatch.Active) OYM.GameSession.ReturnToTitle();
+        }
+
         public override void OnNetworkSpawn()
         {
             if (!IsServer) return;
             owners.Clear();
+            pilots = new Player[roles.Length];
+            spawnDone = false;
             foreach (var _ in roles) owners.Add(Nobody);
             NetworkManager.OnClientDisconnectCallback += ReleaseRole;
-            roundReset.Raised += ClearRoles;
+            NetworkManager.OnClientConnectedCallback += TakeBotSeat;
+            roundReset.Raised += RestartRound;
         }
 
-        void ClearRoles()
+        void RestartRound() => StartCoroutine(RespawnAfterReset());
+
+        System.Collections.IEnumerator RespawnAfterReset()
         {
-            for (int i = 0; i < owners.Count; i++) owners[i] = Nobody;
+            // Let the other round-reset listeners stop the previous wave before spawning the new pair.
+            yield return null;
+            if (!IsSpawned || !TitleMatch.Active) yield break;
             spawnDone = false;
+            StartMatchedPlayers(TitleMatch.Active.HostRole, TitleMatch.Active.Guest);
         }
 
         public override void OnNetworkDespawn()
         {
             if (!IsServer) return;
-            if (NetworkManager != null) NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
-            roundReset.Raised -= ClearRoles;
+            if (NetworkManager != null)
+            {
+                NetworkManager.OnClientDisconnectCallback -= ReleaseRole;
+                NetworkManager.OnClientConnectedCallback -= TakeBotSeat;
+            }
+            roundReset.Raised -= RestartRound;
         }
 
-        public void Choose(int role) => ChooseRpc(role);
+        public const ulong BotSlot = ulong.MaxValue - 1;
 
-        [Rpc(SendTo.Server)]
-        void ChooseRpc(int role, RpcParams rpc = default)
+        public void StartMatchedPlayers(int hostRole, ulong? guest)
         {
-            ulong sender = rpc.Receive.SenderClientId;
-            // 먼저 도착한 요청만 인정: 이미 찼거나, 이미 고른 사람이면 무시
-            if (spawnDone || role < 0 || role >= roles.Length) return;
-            if (OwnerOf(role) != Nobody || HasChosen(sender)) return;
-
-            owners[role] = sender;
-            if (!owners.Contains(Nobody)) SpawnPlayers();
+            if (!IsServer || spawnDone) return;
+            owners[hostRole] = Unity.Netcode.NetworkManager.ServerClientId;
+            owners[1 - hostRole] = guest ?? BotSlot;
+            SpawnPlayers();
         }
 
         void SpawnPlayers()
@@ -69,17 +82,67 @@ namespace OnYourMark
             {
                 var point = SpawnPoint.For(roles[i]);
                 var player = Instantiate(roles[i].playerPrefab, point.position, point.rotation);
-                player.SpawnAsPlayerObject(owners[i]);
+                pilots[i] = player.GetComponent<Player>();
+                if (owners[i] == BotSlot)
+                {
+                    player.Spawn(destroyWithScene: true);
+                    player.gameObject.AddComponent<RadioCompanion>();
+                }
+                else { player.DontDestroyWithOwner = true; player.SpawnAsPlayerObject(owners[i], true); }
             }
             playersSpawned.Raise();
+        }
+
+        // A joining player inherits the AI's role, location, health and ammunition.
+        static void InheritPilot(Player next, Player previous)
+        {
+            next.Health.Inherit(previous.Health);
+            if (next.TryGetComponent<WeaponModes>(out var modes)) modes.Inherit(previous.GetComponent<WeaponModes>());
+            next.Ammo.SetMagazine(previous.Ammo.Capacity, previous.Ammo.Current);
+        }
+
+        void TakeBotSeat(ulong clientId)
+        {
+            if (!spawnDone || HasChosen(clientId)) return;
+            var bot = System.Linq.Enumerable.FirstOrDefault(Player.All, p => p.IsBot);
+            if (!bot) return;
+            for (int i = 0; i < owners.Count; i++)
+            {
+                if (owners[i] != BotSlot) continue;
+                var replacement = Instantiate(roles[i].playerPrefab, bot.transform.position, bot.transform.rotation);
+                owners[i] = clientId;
+                replacement.DontDestroyWithOwner = true;
+                replacement.SpawnAsPlayerObject(clientId, true);
+                var human = replacement.GetComponent<Player>();
+                pilots[i] = human;
+                InheritPilot(human, bot);
+                bot.NetworkObject.Despawn();
+                return;
+            }
         }
 
         // 고르는 도중 나간 플레이어의 자리를 비운다
         void ReleaseRole(ulong clientId)
         {
-            if (spawnDone) return;
             for (int i = 0; i < owners.Count; i++)
-                if (owners[i] == clientId) owners[i] = Nobody;
+            {
+                if (owners[i] != clientId) continue;
+                if (!spawnDone) { owners[i] = Nobody; continue; }
+                if (!IsHost || NetworkManager.ShutdownInProgress || clientId == NetworkManager.LocalClientId || !Player.Local) return;
+                var departing = pilots[i];
+                var at = departing ? departing.transform : SpawnPoint.For(roles[i]).transform;
+                var replacement = Instantiate(roles[i].playerPrefab, at.position, at.rotation);
+                owners[i] = BotSlot;
+                replacement.Spawn(destroyWithScene: true);
+                var ai = replacement.GetComponent<Player>();
+                pilots[i] = ai;
+                if (departing && departing.IsSpawned)
+                {
+                    InheritPilot(ai, departing);
+                    departing.NetworkObject.Despawn();
+                }
+                replacement.gameObject.AddComponent<RadioCompanion>();
+            }
         }
     }
 }

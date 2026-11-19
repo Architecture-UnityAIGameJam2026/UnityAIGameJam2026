@@ -70,12 +70,12 @@ namespace OnYourMark
         {
             if (!IsSpawned) return;
 
-            if (IsOwner)
+            if (IsOwner && NetworkObject.IsPlayerObject)
             {
                 aim.Value = Camera.main.transform.forward;
                 me.Motor.ExternalSpeedMultiplier = MoveSpeedMultiplier;
                 // 반환 전에는 Q가 파트너의 궁극기를 발동시킨다 (판정은 서버)
-                if (CursorLock.IsLocked && activate.action.WasPressedThisFrame()) ActivateRpc();
+                if (!WaveManager.TakesCombatInput && CursorLock.IsLocked && activate.action.WasPressedThisFrame()) ActivateRpc();
             }
 
             if (!IsServer) return;
@@ -109,7 +109,6 @@ namespace OnYourMark
         [Rpc(SendTo.Server)]
         void ActivateRpc()
         {
-            if (me.Health.IsDead) return;
             var target = Crossed ? (me.Partner ? me.Partner.Ultimate : null) : this;
             if (target != null) target.TryActivate();
         }

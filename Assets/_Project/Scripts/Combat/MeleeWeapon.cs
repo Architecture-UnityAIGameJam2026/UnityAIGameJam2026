@@ -27,10 +27,19 @@ namespace OnYourMark
 
         void Update()
         {
-            if (!IsOwner || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
+            if (WaveManager.TakesCombatInput || !IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !attack.action.WasPressedThisFrame() || Time.time < readyTime) return;
             // 나노 강화제: 공격 속도 배율만큼 선딜 · 후딜이 짧아진다
             readyTime = Time.time + (data.windup + data.recovery) / me.Ultimate.AttackSpeedMultiplier;
             SlashRpc();
+        }
+
+        public float Reach => data.boxSize.z;
+        public bool BotSlash()
+        {
+            if (!IsServer || !me.IsBot || me.Health.IsDead || Time.time < readyTime) return false;
+            readyTime = Time.time + (data.windup + data.recovery) / me.Ultimate.AttackSpeedMultiplier;
+            StartCoroutine(Slash());
+            return true;
         }
 
         [Rpc(SendTo.Server)]
@@ -47,13 +56,23 @@ namespace OnYourMark
                 if (Health.Of(c) is { IsDead: false } h) targets.Add(h);
 
             float damage = data.damage * me.Ultimate.DamageMultiplier;
-            foreach (var h in targets) h.Damage(damage, me);
+            foreach (var h in targets)
+            {
+                bool rusher = h.GetComponent<Rusher>();
+                h.Damage(damage, me);
+                if (rusher && h.IsDead) me.ReportAction("slash", "ground kill");
+            }
+            if (targets.Count >= 2) me.ReportAction("slash", "double");
             awakening.NotifyBasicAttack();
             ShowSlashRpc();
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        void ShowSlashRpc() => StartCoroutine(Flash(slashEffect, 0.12f));
+        void ShowSlashRpc()
+        {
+            if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Slash();
+            else if (slashEffect) StartCoroutine(Flash(slashEffect, 0.12f));
+        }
 
         public static IEnumerator Flash(GameObject effect, float seconds)
         {

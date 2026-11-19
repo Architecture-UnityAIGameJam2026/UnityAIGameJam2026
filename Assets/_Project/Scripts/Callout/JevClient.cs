@@ -17,16 +17,16 @@ namespace OnYourMark
         public struct Result
         {
             public bool ok;
-            public string choice, model, error;
+            public string choice, model, error, focus;
             public float confidence;
         }
 
         [Serializable] class Response { public string model; public Answers answers; }
-        [Serializable] class Answers { public Clip clip; }
+        [Serializable] class Answers { public Clip clip, focus; }
         [Serializable] class Clip { public string choice; public float confidence = -1f; }
 
         public static IEnumerator Choose(JevSettings settings, string state, string instructions,
-            IReadOnlyDictionary<string, string> criteria, Action<Result> done)
+            IReadOnlyDictionary<string, string> criteria, Action<Result> done, bool selectFocus = false)
         {
             var json = new StringBuilder();
             json.Append("{\"model\":").Append(Quote(settings.model))
@@ -40,22 +40,30 @@ namespace OnYourMark
                 json.Append(Quote(kv.Key)).Append(':').Append(Quote(kv.Value));
                 first = false;
             }
-            json.Append("}}}}");
+            json.Append("}}");
+            if (selectFocus)
+                json.Append(",\"focus\":{\"type\":\"choice\",\"instructions\":\"Where should the mediator relay hover to assist this conversation?\",\"criteria\":{\"melee\":\"Near Sword\",\"ranged\":\"Near Railgun\",\"both\":\"Between the partners\"}}");
+            json.Append("}}");
 
-            if (settings.logRequests) Debug.Log($"[Jev] 요청\n{state}");
+            if (settings.logRequests) Debug.Log($"[Jev] Request: {criteria.Count} options");
 
+            if (!settings.TryGetApiKey(out var key))
+            {
+                done(new Result { error = "OpenRouter 키 설정을 읽을 수 없습니다." });
+                yield break;
+            }
             using var req = new UnityWebRequest(settings.endpoint, UnityWebRequest.kHttpVerbPOST);
             req.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json.ToString()));
             req.downloadHandler = new DownloadHandlerBuffer();
             req.SetRequestHeader("Content-Type", "application/json");
-            req.SetRequestHeader("Authorization", "Bearer " + settings.apiKey.Trim());
+            req.SetRequestHeader("Authorization", "Bearer " + key);
             req.timeout = Mathf.CeilToInt(settings.timeoutSeconds);
             yield return req.SendWebRequest();
 
             var result = new Result();
             if (req.result != UnityWebRequest.Result.Success)
             {
-                result.error = $"{req.responseCode} {req.error} {req.downloadHandler?.text}";
+                result.error = $"{req.responseCode} {req.error}";
             }
             else
             {
@@ -63,10 +71,11 @@ namespace OnYourMark
                 {
                     var res = JsonUtility.FromJson<Response>(req.downloadHandler.text);
                     result.model = res?.model;
+                    result.focus = res?.answers?.focus?.choice;
                     result.choice = res?.answers?.clip?.choice;
                     result.confidence = res?.answers?.clip?.confidence ?? -1f;
                     result.ok = !string.IsNullOrEmpty(result.choice);
-                    if (!result.ok) result.error = "응답에 answers.clip.choice가 없음: " + req.downloadHandler.text;
+                    if (!result.ok) result.error = "응답에 answers.clip.choice가 없음";
                 }
                 catch (Exception e) { result.error = "응답 해석 실패: " + e.Message; }
             }
