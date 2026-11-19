@@ -49,9 +49,32 @@ namespace OYM
         [Tooltip("slash arc on between these clip times (KESTREL)")]
         public BladeTrail trail;
         public Vector2 trailWindow = new Vector2(-1f, -1f);
-        [Tooltip("hold pose: turn the right arm (and the weapon in its hand) by this many degrees in the screen plane, "
-               + "counter-clockwise as the camera sees it (KESTREL: blade lowered toward the bottom-left corner, user sketch 11-18)")]
-        public float frontArmRoll = 0f;
+        [Tooltip("the title cut throws its arc well past the tip (user 11-19: \"자기 검 길이보다 더 큰 이펙트\"): outer and inner "
+               + "edge of the trail ribbon in blade lengths from the hilt, and how long it lingers. Set on the trail at start")]
+        public float slashReach = 2.2f, slashInner = 0.45f, slashLife = 0.24f;
+        [Header("Hold arm (front pose, weapon arm re-solved on top of the clip)")]
+        [Tooltip("KESTREL: the held Slash_Left frame bends the wrist ~60 deg to put the blade in line with the arm, which "
+               + "reads as a broken wrist (user 11-19). The sword sits at ~92 deg to the hand in a fist grip, so the wrist is "
+               + "kept at its rest angle plus a little ulnar deviation, and the forearm (direction + twist) and the elbow are "
+               + "solved so the blade points along holdBlade. Needs the blade sockets (trail). Directions: the pilot's own "
+               + "frame (x right, y up, z forward).")]
+        public bool holdArm = true;
+        public Vector3 holdBlade = new Vector3(0.80f, -0.53f, 0.28f);       // KESTREL: blade into the bottom-left corner of the focus shot
+        [Tooltip("preferred forearm direction: the forearm lands on the cone around the blade nearest to it (this rolls the "
+               + "fist about the blade; with the elbow a hinge it also places the upper arm)")]
+        public Vector3 holdFore = new Vector3(0.36f, -0.29f, 0.89f);        // KESTREL: fist up in front of the shoulder, blade across the frame
+        [Tooltip("ulnar deviation of the wrist (deg): tilts the blade toward the forearm line")]
+        public float holdWristDev = 25f;
+        [Tooltip("elbow bend (deg), about the elbow's own hinge")]
+        public float holdElbow = 20f;
+        [Tooltip("forearm roll against the elbow hinge (deg). No twist bones, so keep it small: the shoulder carries the rest")]
+        public float holdPronation = -20f;
+        [Tooltip("the solved arm comes in over the last this-many seconds of the clip before frontHold, ease-in: the cut "
+               + "accelerates into the hold and stops dead (the snap), so the slash itself still swings")]
+        public float holdArmIn = 0.25f;
+        [Tooltip("sword wrist limit (deg), every slot: the Hover idle loop bends it to ~43 deg once a loop (the waiting screen, "
+               + "user 11-19 \"대기화면\") and the slash clip to ~60 deg mid-swing. Rest idle sits at 14-19, the hold at holdWristDev")]
+        public float holdWristMax = 28f;
         [Tooltip("fired once when this pilot comes to the front (ORBIT FRAME)")]
         public RailgunFX railgun;
         public float fireDelay = 0.12f;
@@ -98,8 +121,9 @@ namespace OYM
         Vector2 _lean, _leanV, _look;
         float _hero, _thrustT, _seed, _time, _frontT, _frontW, _fireT = -1f, _flash;
         bool _struck, _shotHooked;
-        Transform _head, _neck, _armR;
-        Vector3 _headAxis, _neckAxis;
+        Transform _head, _neck, _armR, _foreR, _handR;
+        Vector3 _headAxis, _neckAxis, _upperAxis, _foreAxis;
+        Quaternion _wristRest = Quaternion.identity, _elbowRest = Quaternion.identity;
         bool _ready;
         PlayableGraph _graph;
         AnimationMixerPlayable _mix;
@@ -118,10 +142,21 @@ namespace OYM
                 _head = animator.GetBoneTransform(HumanBodyBones.Head);
                 _neck = animator.GetBoneTransform(HumanBodyBones.Neck);
                 _armR = animator.GetBoneTransform(HumanBodyBones.RightUpperArm);
+                _foreR = animator.GetBoneTransform(HumanBodyBones.RightLowerArm);
+                _handR = animator.GetBoneTransform(HumanBodyBones.RightHand);
                 // the saved scene holds the rest pose: the face points along the root's forward
                 if (_head) _headAxis = Quaternion.Inverse(_head.rotation) * transform.forward;
                 if (_neck) _neckAxis = Quaternion.Inverse(_neck.rotation) * transform.forward;
+                // ... and the arm is straight: bone axes, the straight wrist and the rest elbow
+                if (_armR && _foreR && _handR)
+                {
+                    _upperAxis = (Quaternion.Inverse(_armR.rotation) * (_foreR.position - _armR.position)).normalized;
+                    _foreAxis = (Quaternion.Inverse(_foreR.rotation) * (_handR.position - _foreR.position)).normalized;
+                    _wristRest = Quaternion.Inverse(_foreR.rotation) * _handR.rotation;
+                    _elbowRest = Quaternion.Inverse(_armR.rotation) * _foreR.rotation;
+                }
             }
+            if (trail) { trail.reach = slashReach; trail.inner = slashInner; trail.life = slashLife; }
             _seed = (displayName.GetHashCode() & 1023) * 0.0173f;
             _ready = true;
             Snap(_slot);
@@ -325,11 +360,59 @@ namespace OYM
         // ------------------------------------------------------------------------------------------------ head look
         void LateUpdate() { ApplyArm(); ApplyLook(Time.deltaTime); }
 
-        /// After the animation: lower the weapon arm of the hold pose in the screen plane (rotates about the shoulder).
+        /// After the animation: re-solve the weapon arm of the hold pose (see holdArm). The hand frame is rigid with the
+        /// blade, so with the wrist fixed at rest + ulnar deviation the forearm must sit at a fixed angle to the blade:
+        /// it is put on that cone around the wanted blade direction (nearest holdFore), the hand rotation follows from
+        /// (blade, forearm), the forearm rotation from the wrist, and the upper arm from the forearm through the elbow hinge.
         public void ApplyArm()
         {
-            if (!_armR || frontArmRoll == 0f || !frontClip || _frontW <= 0f || !lookTarget) return;
-            _armR.rotation = Quaternion.AngleAxis(frontArmRoll * _frontW, lookTarget.forward) * _armR.rotation;
+            // sword pilots only (ORBIT FRAME's hands stay on its RG-77)
+            if (!holdArm || !_handR || _foreAxis == Vector3.zero || !trail || !trail.tipSocket || !trail.baseSocket) return;
+            // wrist limit in every slot: the idle loop and the swing bend the sword wrist past what reads as a wrist
+            Vector3 handAxis = Quaternion.Inverse(_wristRest) * _foreAxis;          // forearm axis seen from a straight hand
+            Vector3 fo = _foreR.rotation * _foreAxis, hx = _handR.rotation * handAxis;
+            float bend = Vector3.Angle(fo, hx);
+            if (bend > holdWristMax)
+                _handR.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(hx, fo), (bend - holdWristMax) / bend) * _handR.rotation;
+            if (!frontClip || _frontW <= 0f) return;
+
+            Quaternion body = transform.rotation;
+            Vector3 D = (body * holdBlade).normalized;
+            Vector3 bl = (Quaternion.Inverse(_handR.rotation) * (trail.tipSocket.position - trail.baseSocket.position)).normalized;
+            Vector3 ha = handAxis;
+            Vector3 hinge = Vector3.Cross(ha, bl);
+            Quaternion dev = hinge.sqrMagnitude > 1e-8f ? Quaternion.AngleAxis(holdWristDev, hinge.normalized) : Quaternion.identity;
+            Vector3 fa = dev * ha;                                                    // ... with the deviation
+            Vector3 F = OnCone(D, Vector3.Angle(fa, bl), body * holdFore);
+            Quaternion hand = Quaternion.LookRotation(D, F) * Quaternion.Inverse(Quaternion.LookRotation(bl, fa));
+            Quaternion fore = hand * dev * Quaternion.Inverse(_wristRest);
+            // the elbow is a hinge: the rest elbow bent to holdElbow about its own axis, the forearm rolled by
+            // holdPronation, and the upper arm follows from the forearm (the shoulder carries the rest of the twist).
+            // Picking the upper arm by direction instead bent the elbow sideways, which reads as a forearm twisted to
+            // twice its limit and a crushed fist (humanoid muscle check 11-19)
+            Vector3 fl = _elbowRest * _foreAxis, eh = Vector3.Cross(_upperAxis, fl);
+            Quaternion elbow = (eh.sqrMagnitude > 1e-8f ? Quaternion.AngleAxis(holdElbow - Vector3.Angle(_upperAxis, fl), eh.normalized) : Quaternion.identity)
+                               * _elbowRest * Quaternion.AngleAxis(holdPronation, _foreAxis);
+            Quaternion upper = fore * Quaternion.Inverse(elbow);
+
+            float k = holdArmIn > 0f ? Mathf.Clamp01(1f - (frontHold - _frontT) / holdArmIn) : 1f;
+            float w = _frontW * k * k;
+            if (w <= 0f) return;
+            Quaternion u0 = _armR.rotation, f0 = _foreR.rotation, h0 = _handR.rotation;
+            _armR.rotation = Quaternion.Slerp(u0, upper, w);
+            _foreR.rotation = Quaternion.Slerp(f0, fore, w);
+            // the hand blends in the forearm's frame: both ends are limited wrists, so every blend step is one too
+            _handR.rotation = _foreR.rotation * Quaternion.Slerp(Quaternion.Inverse(f0) * h0, Quaternion.Inverse(fore) * hand, w);
+        }
+
+        /// the direction at `deg` from `axis`, toward `pref`
+        static Vector3 OnCone(Vector3 axis, float deg, Vector3 pref)
+        {
+            Vector3 perp = Vector3.ProjectOnPlane(pref, axis);
+            if (perp.sqrMagnitude < 1e-8f) perp = Vector3.ProjectOnPlane(Vector3.up, axis);
+            if (perp.sqrMagnitude < 1e-8f) perp = Vector3.ProjectOnPlane(Vector3.right, axis);
+            float r = deg * Mathf.Deg2Rad;
+            return Mathf.Cos(r) * axis + Mathf.Sin(r) * perp.normalized;
         }
 
         /// After the animation: turn neck + head toward the slot's look direction (front: into the camera).

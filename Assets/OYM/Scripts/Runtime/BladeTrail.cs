@@ -15,6 +15,10 @@ namespace OYM
         public int subdiv = 5;
         public Color color = new Color(0.72f, 0.93f, 1f);
         public bool emitting;
+        [Tooltip("outer edge of the ribbon in blade lengths from the base: > 1 throws the arc past the tip")]
+        public float reach = 1f;
+        [Tooltip("inner edge of the ribbon in blade lengths from the base")]
+        public float inner = 0f;
 
         struct S { public Vector3 a, b; public float t; }
         readonly List<S> _s = new List<S>();
@@ -31,6 +35,14 @@ namespace OYM
 
         void OnEnable()
         {
+            Ensure();
+            _go.SetActive(true);
+            _s.Clear();
+            if (tipSocket) _lastTip = tipSocket.position;
+        }
+
+        void Ensure()
+        {
             if (!_go)
             {
                 _go = new GameObject(name + "_Trail");
@@ -42,20 +54,21 @@ namespace OYM
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false;
                 _go.layer = gameObject.layer;
             }
-            _go.SetActive(true);
-            _s.Clear();
-            if (tipSocket) _lastTip = tipSocket.position;
         }
 
         void OnDisable() { if (_go) _go.SetActive(false); }
         void OnDestroy() { if (_go) Destroy(_go); }
 
-        void LateUpdate()
+        void LateUpdate() { Tick(Time.time); }
+
+        /// Sample the blade and rebuild the ribbon (LateUpdate; batch tools call it with their own clock).
+        public void Tick(float now)
         {
             if (!tipSocket || !baseSocket) return;
-            float now = Time.time;
+            Ensure();
             TipDelta = tipSocket.position - _lastTip; _lastTip = tipSocket.position;
-            if (emitting) _s.Add(new S { a = baseSocket.position, b = tipSocket.position, t = now });
+            Vector3 a = baseSocket.position, d = tipSocket.position - a;
+            if (emitting) _s.Add(new S { a = a + d * inner, b = a + d * reach, t = now });
             while (_s.Count > 0 && now - _s[0].t > life) _s.RemoveAt(0);
             Build(now);
         }
