@@ -129,12 +129,14 @@ namespace OYM.Net
             map.ReadLayout(hud, size);
             s_live = map;
             Debug.Log($"[OYM-MAP] live minimap on the visor: circle r {map.circleRadius:F0} px = {map.rangeMeters:F0} m, {off} mock map pieces off");
+#if OYM_MINIMAP_TEST                                   // the test drives the co-op HUD + arrival cutscene (not in team main yet)
             if (VisorMinimapTest.Asked)
             {
                 var t = new GameObject("Minimap test");
                 UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(t, hud.gameObject.scene);
                 t.AddComponent<VisorMinimapTest>();
             }
+#endif
             return map;
         }
 
@@ -250,21 +252,49 @@ namespace OYM.Net
             Transform t = fc ? fc.target : null;
             if (t != _meT) { _meT = t; _me = t ? t.GetComponent<ZeroGFlight>() : null; }
             if (_me) return _me;
-            var g = CoopGame.Current;
-            if (g && g.LocalFlight) return g.LocalFlight;
+            var lf = CoopLocal();
+            if (lf) return lf;
             var d = Director();
             return d && d.controllers != null && d.controllers.Length > 0 ? d.controllers[0] : null;
         }
 
         ZeroGFlight Mate(ZeroGFlight me)
         {
-            var g = CoopGame.Current;
-            if (g && g.RemoteFlight) return g.RemoteFlight;
+            var rf = CoopRemote();
+            if (rf) return rf;
             var d = Director();
             if (d && d.controllers != null)
                 foreach (var c in d.controllers) if (c && c != me && c.gameObject.activeInHierarchy) return c;
             return null;
         }
+
+        // co-op (OYM.Net.CoopGame) is its own module and is not in every build (team main 11-19 has the map, not the
+        // co-op): looked up by name once; without it the map follows this pilot and the director's other pilot
+        static bool s_coopLooked;
+        static PropertyInfo s_coopCurrent, s_coopLocal, s_coopRemote, s_coopLost;
+
+        static UnityEngine.Object CoopNow()
+        {
+            if (!s_coopLooked)
+            {
+                s_coopLooked = true;
+                foreach (var asm in System.AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    var t = asm.GetType("OYM.Net.CoopGame");
+                    if (t == null) continue;
+                    s_coopCurrent = t.GetProperty("Current", BindingFlags.Public | BindingFlags.Static);
+                    s_coopLocal = t.GetProperty("LocalFlight", BindingFlags.Public | BindingFlags.Instance);
+                    s_coopRemote = t.GetProperty("RemoteFlight", BindingFlags.Public | BindingFlags.Instance);
+                    s_coopLost = t.GetProperty("Lost", BindingFlags.Public | BindingFlags.Instance);
+                    break;
+                }
+            }
+            return s_coopCurrent != null ? s_coopCurrent.GetValue(null) as UnityEngine.Object : null;
+        }
+
+        static ZeroGFlight CoopLocal() { var g = CoopNow(); return g && s_coopLocal != null ? s_coopLocal.GetValue(g) as ZeroGFlight : null; }
+        static ZeroGFlight CoopRemote() { var g = CoopNow(); return g && s_coopRemote != null ? s_coopRemote.GetValue(g) as ZeroGFlight : null; }
+        static bool CoopRunning() { var g = CoopNow(); return g && (s_coopLost == null || !(bool)s_coopLost.GetValue(g)); }
 
         static Vector3 Chest(ZeroGFlight f) => f.transform.position + Vector3.up * (f.bodyCenter + 0.15f);
 
@@ -276,8 +306,7 @@ namespace OYM.Net
             var fc = FlightCamera.Main;
             var me = Me(fc);
             var mate = Mate(me);
-            var g = CoopGame.Current;
-            bool coop = g && !g.Lost;
+            bool coop = CoopRunning();
             bool own = !coop || !mate || _hud == null || _hud.returned == null || _hud.returned.Length < 2 || _hud.returned[1];
             var subject = own ? me : mate;
             if (!subject) { _owner = ""; return; }
