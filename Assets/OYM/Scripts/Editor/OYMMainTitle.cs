@@ -52,7 +52,8 @@ namespace OYM.EditorTools
         // mask to the camera (mirrors the RG-77 shot; picked from the skinned PoseSheet renders 11-18, pose 16)
         public static float KFrom = 0.3f, KHold = 0.75f;
         public static Vector2 KTrail = new Vector2(0.42f, 0.74f);
-        public static float KArmRoll = 18f;                                       // blade lowered ~30 deg toward bottom-left
+        // the hold arm (blade lowered toward the bottom-left corner, user sketch 11-18) is TitleCharacter.holdArm: its
+        // defaults are KESTREL's (wrist kept natural, user 11-19 "팔 꺾이는데")
 
         // logo: image-gen variants a-d (design/title/logo_*.png -> pipeline/title/logo_alpha.py -> Title/Logo)
         public const string LogoDir = Dir + "/Logo";
@@ -87,7 +88,7 @@ namespace OYM.EditorTools
             var o = Pilot(OYMOrbitFrame.PrefabPath, "ORBIT FRAME", root);
             Setup(k, KHome, KFront, KBack, new Vector3(0.6f, 8f, -14f));
             Setup(o, OHome, OFront, OBack, new Vector3(-0.6f, 8f, -14f));
-            k.idleClip = Clip(k, "Hover"); k.frontClip = Clip(k, KFrontClip); k.frontFrom = KFrom; k.frontHold = KHold; k.trailWindow = KTrail; k.frontArmRoll = KArmRoll;
+            k.idleClip = Clip(k, "Hover"); k.frontClip = Clip(k, KFrontClip); k.frontFrom = KFrom; k.frontHold = KHold; k.trailWindow = KTrail;
             k.trail = k.GetComponentInChildren<OYM.BladeTrail>(true);
             o.idleClip = Clip(o, "AimIdle") ?? Clip(o, "Hover"); o.frontClip = null;
             o.railgun = o.GetComponentInChildren<OYM.RailgunFX>(true);
