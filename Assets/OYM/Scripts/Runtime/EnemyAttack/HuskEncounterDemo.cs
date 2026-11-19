@@ -75,7 +75,6 @@ namespace OYM
                 RenderTexture.active = prev;
                 // the letterbox bars are screen UI (not in the camera image): draw them into the recording
                 float bars = 0f;
-                if (_lv && _lv.InCutaway) bars = 0.105f;
                 if (_e.boss && _e.boss.Playing) bars = Mathf.Max(bars, 0.11f * BossEntrance.Letterbox(_e.boss.Clock));
                 int bh = Mathf.RoundToInt(size.y * bars);
                 if (bh > 0) { _tex.SetPixels32(0, 0, size.x, bh, black); _tex.SetPixels32(0, size.y - bh, size.x, bh, black); }
@@ -105,9 +104,9 @@ namespace OYM
             _fireCool -= Time.deltaTime; _dodgeCool -= Time.deltaTime;
             if (_lv && _lv.beat == HuskLevel.Beat.Boss && _e.boss && _e.boss.Done && _bossLiveAt < 0f) { _bossLiveAt = _t; Note("boss entrance done"); }
             Bookkeeping();
-            // hands off during cutaways / the entrance / the arrival cutscene
-            if (!_e.Gate || (_lv && _lv.InCutaway)) { _pilot.scriptedInput = default; return; }
-            if (!_pilot.scripted) _pilot.scripted = true;               // a cutaway restored the previous state
+            // hands off during the arrival and boss entrance
+            if (!_e.Gate) { _pilot.scriptedInput = default; return; }
+            if (!_pilot.scripted) _pilot.scripted = true;
             if (!_fc.scripted) _fc.scripted = true;
 
             Vector3 chest = _e.PlayerChest;

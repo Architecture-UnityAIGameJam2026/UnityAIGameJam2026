@@ -56,7 +56,7 @@ namespace OnYourMark
             if (gun && reload.SelfManaged && me.Ammo.Current == 0 && reload.TryReload()) Record("reload completed");
             TickState(partner, visible);
             var mission = WaveManager.Current;
-            if (mission && mission.HasMission && mission.Phase > 0 && !mission.InQte && !mission.MissionSilent &&
+            if (mission && mission.HasMission && mission.Phase > 0 && !mission.MissionSilent &&
                 (State == CompanionState.Guard || State == CompanionState.Reload) && order == "")
             {
                 Vector3 target = mission.Objective(me);

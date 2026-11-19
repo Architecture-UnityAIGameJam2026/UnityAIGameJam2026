@@ -75,7 +75,7 @@ namespace OnYourMark
                 aim.Value = Camera.main.transform.forward;
                 me.Motor.ExternalSpeedMultiplier = MoveSpeedMultiplier;
                 // 반환 전에는 Q가 파트너의 궁극기를 발동시킨다 (판정은 서버)
-                if (!WaveManager.TakesCombatInput && CursorLock.IsLocked && activate.action.WasPressedThisFrame()) ActivateRpc();
+                if (CursorLock.IsLocked && activate.action.WasPressedThisFrame()) ActivateRpc();
             }
 
             if (!IsServer) return;

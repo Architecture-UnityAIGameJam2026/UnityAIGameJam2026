@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 4779460605492490614}
   - component: {fileID: 6261626354826626285}
   - component: {fileID: 7020186338082597597}
+  - component: {fileID: 8283412341783445190}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -239,6 +240,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8283412341783445190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770264930600882950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0541471cb74a288bfd9c581fb6e827, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::OYM.ShowcaseEnding
+  panel: {fileID: 5941503956708023761}
+  title: {fileID: 2421178382225389332}
+  detail: {fileID: 1898206425464017877}
+  returnLabel: {fileID: 8352110030259926517}
+  returnButton: {fileID: 2394479929123224104}
 --- !u!1 &1787688101727311560
 GameObject:
   m_ObjectHideFlags: 0

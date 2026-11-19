@@ -10,6 +10,7 @@ namespace OYM
     /// nearest first. Only HuskEncounter's public API is used; with -oymNoHusk (no encounter) the sleepers stay decor.
     public class HuskZones : MonoBehaviour
     {
+        public static HuskZones Current { get; private set; }
         public enum Section { Approach, Arena, AfterArena }
 
         [System.Serializable]
@@ -20,17 +21,25 @@ namespace OYM
             [Tooltip("parent of the sleeping WICK_* / PRISM_* models of this zone")] public Transform sleepers;
             public Vector3 center;
             [Tooltip("the zone wakes when the player is this close to its centre (m)")] public float radius = 60f;
+            [System.NonSerialized] internal List<HuskEnemy> spawned;
+            public bool Cleared => spawned != null && !spawned.Exists(enemy => enemy && enemy.Alive);
         }
 
         public List<Zone> zones = new List<Zone>();
         [Tooltip("First and last walkable decks of the inserted arena. Either lane advances the team.")]
         public Transform arenaEntry, arenaExit;
+        public Transform fieldStones;
+        public ShowcaseEnding ending;
+        public OnYourMark.PlayerStats kestrelMobility, orbitMobility;
         [Tooltip("seconds between the WICKs of a zone waking (nearest first)")] public float wickStagger = 0.7f;
         [Tooltip("PRISMs wake after this many seconds, then one every prismStagger")] public float prismDelay = 1.6f;
         public float prismStagger = 3.5f;
 
-        readonly HashSet<Zone> _woken = new HashSet<Zone>();
         Section reached;
+
+        // The guest keeps this layout even though only the host runs the zone spawners.
+        void Awake() => Current = this;
+        void OnDestroy() { if (Current == this) Current = null; }
 
         void Update()
         {
@@ -40,10 +49,9 @@ namespace OYM
             AdvanceSection(enc);
             foreach (var z in zones)
             {
-                if (z == null || z.section > reached || !z.sleepers || _woken.Contains(z)) continue;
+                if (z == null || z.section > reached || !z.sleepers || z.spawned != null) continue;
                 // either pilot (co-op) close enough wakes the zone
                 if (!enc.AnyPilotWithin(z.center, z.radius, out Vector3 p)) continue;
-                _woken.Add(z);
                 Wake(enc, z, p);
             }
         }
@@ -58,6 +66,7 @@ namespace OYM
 
         void Wake(HuskEncounter enc, Zone z, Vector3 from)
         {
+            z.spawned = new List<HuskEnemy>();
             var list = new List<Transform>();
             foreach (Transform ch in z.sleepers) if (ch.gameObject.activeSelf) list.Add(ch);
             list.Sort((a, b) => (a.position - from).sqrMagnitude.CompareTo((b.position - from).sqrMagnitude));
@@ -67,7 +76,7 @@ namespace OYM
                 bool wick = ch.name.StartsWith("WICK");
                 if (!wick && !ch.name.StartsWith("PRISM")) continue;
                 float delay = wick ? w++ * wickStagger : prismDelay + pr++ * prismStagger;
-                enc.Spawn(wick ? HuskEnemy.Kind.Wick : HuskEnemy.Kind.Prism, ch.position, ch.rotation, delay);
+                z.spawned.Add(enc.Spawn(wick ? HuskEnemy.Kind.Wick : HuskEnemy.Kind.Prism, ch.position, ch.rotation, delay));
                 ch.gameObject.SetActive(false);
             }
             Debug.Log($"[OYM-LEVEL] zone '{z.name}' wakes: {w} WICK, {pr} PRISM");

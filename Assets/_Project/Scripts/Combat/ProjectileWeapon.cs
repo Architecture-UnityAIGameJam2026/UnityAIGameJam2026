@@ -20,7 +20,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (WaveManager.TakesCombatInput || !IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !fire.action.WasPressedThisFrame() || Time.time < readyTime) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked || !fire.action.WasPressedThisFrame() || Time.time < readyTime) return;
             if (resource.Current < data.cost) return;
             readyTime = Time.time + data.cooldown;
 

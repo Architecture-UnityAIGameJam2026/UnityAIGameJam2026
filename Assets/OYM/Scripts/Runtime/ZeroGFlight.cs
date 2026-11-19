@@ -99,6 +99,8 @@ namespace OYM
 
         protected Vector3 velocity;
         Vector3 arenaVelocity;
+        readonly OnYourMark.ArenaFlightLimiter arenaFlight = new();
+        public bool FlightLimited => arenaFlight.Active;
         float arenaRideLeft, arenaGravity;
         protected Transform leanPivot, model;
         protected FlightCamera flightCam;
@@ -218,11 +220,17 @@ namespace OYM
             }
             else input = ReadInput();
 
-            bool fp = flightCam && flightCam.firstPerson && flightCam.target == transform;
-            if (fp != firstPersonActive) SetFirstPerson(fp);
+            // External shots frame the pilot's full suit, even when the pilot flies in first person.
+            var encounter = HuskEncounter.Current;
+            bool externalShot = (Cine.CineCamera.Main && Cine.CineCamera.Main.Active) ||
+                                (encounter && (encounter.hold || (encounter.boss && encounter.boss.Playing)));
+            RefreshView(externalShot);
 
             Quaternion aim = AimRotation();
             Vector3 wish = aim * Vector3.forward * input.move.z + aim * Vector3.right * input.move.x + Vector3.up * input.move.y;
+            bool limited = OwnsCamera && arenaFlight.CheckSurface(this, encounter);
+            if (limited && !scripted) wish = Vector3.ProjectOnPlane(aim * Vector3.right, Vector3.up).normalized * input.move.x +
+                                             Vector3.ProjectOnPlane(aim * Vector3.forward, Vector3.up).normalized * input.move.z;
             if (wish.sqrMagnitude > 1f) wish.Normalize();
             wish *= ThrustScale();
 
@@ -237,7 +245,7 @@ namespace OYM
                 if (jetpack) jetpack.SetThrust(1f);
                 if (dashLeft <= 0f)
                 {
-                    if (input.boost && CanCruise()) StartCruise();          // Shift still held, nobody around: the burn carries on
+                    if (!limited && input.boost && CanCruise()) StartCruise();
                     else EndDash();
                 }
             }
@@ -251,6 +259,8 @@ namespace OYM
             }
 
             Tick(dt, aim);
+            if (limited && !RidingArenaDevice)
+                velocity = scripted ? Vector3.zero : arenaFlight.Step(this, input, aim, wish, velocity, dt);
             _bumped = false;
             if (!RidingArenaDevice) Move(velocity * dt);
             else if (scripted) velocity = Vector3.zero;     // hold the ride while either pilot's cutaway is playing
@@ -306,6 +316,7 @@ namespace OYM
 
         protected void StartDash(Vector3 dir)
         {
+            if (FlightLimited) dir = Vector3.ProjectOnPlane(dir, Vector3.up);
             dashDir = dir.normalized; dashLeft = dashTime; dashReady = Time.time + dashTime + dashCooldown;
             brakeLeft = 0f;
             velocity = dashDir * dashSpeed;
@@ -520,6 +531,12 @@ namespace OYM
         }
 
         // ------------------------------------------------------------------------------------------------ first person
+        internal void RefreshView(bool externalShot)
+        {
+            bool show = !externalShot && flightCam && flightCam.firstPerson && flightCam.target == transform;
+            if (show != firstPersonActive) SetFirstPerson(show);
+        }
+
         void SetFirstPerson(bool on)
         {
             firstPersonActive = on;

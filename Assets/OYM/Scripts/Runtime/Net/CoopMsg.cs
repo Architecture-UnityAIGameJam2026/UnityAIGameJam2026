@@ -32,10 +32,9 @@ namespace OYM.Net
         public const byte HitEnemy = 24;    // G  u16 id, f dmg, v3 dir, f power
 
         // level presentation
-        public const byte Level = 30;       // H  u8 beat, u8 flags (1 engaged, 2 hold, 4 cutaway, 8 hostile)
+        public const byte Level = 30;       // H  u8 beat, u8 flags (1 engaged, 8 hostile)
         public const byte Bark = 31;        // H  string speaker, string line
-        public const byte CamPose = 32;     // H  v3 pos, q rot, f fov (while the host is in a cutaway)
-        public const byte ArenaDeckCut = 33; // H  begin the arena's laser sweep and deck separation
+        public const byte ArenaDeckCut = 33; // H  laser start on the shared level clock (f, absent on older hosts)
 
         // the CITADEL
         public const byte BossStart = 40;   // H  u8 actors (1 = host pilot, 2 = guest pilot)
@@ -46,6 +45,7 @@ namespace OYM.Net
         public const byte HitWeak = 45;     // G  u8 index, f dmg, v3 p, v3 n
         public const byte HitPod = 46;      // G  u8 pod, f dmg, v3 p, v3 n
         public const byte Victory = 47;     // H  u8 phase (0 sinks, 1 gone)
+        public const byte ReturnTitle = 48; // H  both leave the mission result
         public const byte Dart = 50;        // H  v3 tube, v3 dir, u8 target (0 host pilot, 1 guest pilot), f flight, v3 off, i32 seed, f blast, f trail
 
         // the field kit (OYM.Field.FieldKit): whichever PC's pilot used one tells the other
@@ -76,6 +76,7 @@ namespace OYM.Net
         {
             readonly BinaryReader _r;
             public readonly byte Type;
+            public long Remaining => _r.BaseStream.Length - _r.BaseStream.Position;
             public R(byte[] frame) { _r = new BinaryReader(new MemoryStream(frame), Encoding.UTF8); Type = _r.ReadByte(); }
             public int U8() => _r.ReadByte();
             public int U16() => _r.ReadUInt16();

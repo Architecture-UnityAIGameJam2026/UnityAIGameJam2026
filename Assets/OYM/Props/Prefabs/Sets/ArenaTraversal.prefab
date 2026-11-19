@@ -6214,6 +6214,7 @@ MonoBehaviour:
   lowerMesh: {fileID: -8670151273213183110, guid: 6551d75b8c9842c42b0ac4384a7e5797, type: 3}
   intactHull: {fileID: 55372234116934797}
   upperCollider: {fileID: 218093811314763435}
+  approachSleepers: {fileID: 3287760188278315852}
   takeoffGuides:
   - {fileID: 1577796438383204340}
   - {fileID: 3385118137805029498}
@@ -6221,6 +6222,8 @@ MonoBehaviour:
   - {fileID: 5835336270763491682}
   cutStart: {x: -5.603071, y: -1.7466601, z: 8.834098}
   cutEnd: {x: 5.358082, y: -1.7544839, z: -10.877212}
+  upperFooting: {x: -3.4759326, y: -1.7500005, z: -1.1919456}
+  lowerFooting: {x: 1.6359687, y: -1.7500002, z: 2.0170484}
   travel: {x: -4.8, y: 1.1, z: 1.5}
   beamMaterial: {fileID: 2100000, guid: f64b4d8b891d8c44ba71908c1e3a3269, type: 2}
 --- !u!1 &1924064534110185134

@@ -17,9 +17,9 @@ namespace OYM.Cine
     ///
     /// Installs itself: when Showcase_DebrisField (ShowcaseScene.Name) loads with a PlayTestDirector, an
     /// ArrivalCutscene object is added — no scene edits, so scene rebuilds keep it. It plays on its own when the game is
-    /// entered from the title (GAME START); a scene opened straight in the editor waits for F8; runs with any other
+    /// entered from the title (GAME START); a scene opened straight in the editor stays playable; runs with any other
     /// -oym* automation flag (other recorders) and batch mode get nothing. ArrivalCutscene.PlayOnGameStart = false turns
-    /// the automatic start off. Hold Space / Enter / Esc to skip, click / Space for the next line, F8 (re)plays it.
+    /// the automatic start off. Hold Space / Enter / Esc to skip, click / Space for the next line.
     /// -oymCineDemo records a take to Screenshots/cine/arrival/ and quits the editor.
     [DefaultExecutionOrder(-40)]
     public class ArrivalCutscene : MonoBehaviour
@@ -37,7 +37,7 @@ namespace OYM.Cine
         public PlayTestDirector director;
         public string dialogue = "arrival_dialogue";
         public bool record;
-        [Tooltip("start on its own (entered from the title / -oymCineDemo); otherwise F8 plays it")]
+        [Tooltip("start on its own (entered from the title / -oymCineDemo)")]
         public bool autoPlay = true;
 
         [Header("Timing (s)")]
@@ -99,7 +99,7 @@ namespace OYM.Cine
             bool demo = Flag("-oymCineDemo");
             if (Application.isBatchMode || s.name != ShowcaseScene.Name) return;
             // plays when the game is entered from the title (GAME START); a scene opened straight in the editor and
-            // other recorders' runs stay untouched (F8 still plays it there)
+            // other recorders' runs stay untouched
             bool fromTitle = PlayOnGameStart && !string.IsNullOrEmpty(ShowcaseSession.SelectedPilot) && !OtherAutomation();
             if (!demo && !fromTitle && OtherAutomation()) return;
             PlayTestDirector d = null;
@@ -122,7 +122,7 @@ namespace OYM.Cine
 
         void Start()
         {
-            if (!autoPlay) return;                 // F8 plays it
+            if (!autoPlay) return;
             Setup();
             if (record) StartCoroutine(Record());
             Begin();
@@ -455,16 +455,15 @@ namespace OYM.Cine
             return sun ? -sun.transform.forward : Vector3.zero;
         }
 
-        // ------------------------------------------------------------------------------------------------ skip / replay
+        // ------------------------------------------------------------------------------------------------ skip
         void Update()
         {
-            bool hold = false, replay = false;
+            bool hold = false;
 #if ENABLE_INPUT_SYSTEM
             var k = Keyboard.current;
-            if (k != null) { hold = k.spaceKey.isPressed || k.enterKey.isPressed || k.escapeKey.isPressed; replay = k.f8Key.wasPressedThisFrame; }
+            if (k != null) hold = k.spaceKey.isPressed || k.enterKey.isPressed || k.escapeKey.isPressed;
 #else
             hold = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.Escape);
-            replay = Input.GetKeyDown(KeyCode.F8);
 #endif
             if (_running && !_skipping && !record && SkipInput)
             {
@@ -473,7 +472,6 @@ namespace OYM.Cine
                 if (_hold >= skipHold) StartCoroutine(Skip());
             }
             else if (_ui) _ui.SetSkip(0f);
-            if (!_running && replay) Replay();
         }
 
         /// Skip now (co-op: the host skipped).
@@ -496,15 +494,6 @@ namespace OYM.Cine
             _running = false;
             _skipping = false;
             Note("skipped");
-        }
-
-        /// Fly them in again (F8 in play mode).
-        public void Replay()
-        {
-            if (_running) return;
-            Setup();
-            foreach (var p in _p) { p.flight.ResetMotion(); }
-            Begin();
         }
 
         // ------------------------------------------------------------------------------------------------ recording (-oymCineDemo)

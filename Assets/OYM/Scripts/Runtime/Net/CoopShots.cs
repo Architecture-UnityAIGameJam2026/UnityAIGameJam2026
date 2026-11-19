@@ -46,7 +46,7 @@ namespace OYM.Net
             var e = HuskEncounter.Current;
             var lv = e ? e.Level : null;
             if (!CoopSession.Active || !CoopSession.Active.IsHost || !lv) { _bossAt = -1f; return; }
-            if (!e.Gate || lv.InCutaway || lv.beat == HuskLevel.Beat.Boss || lv.beat == HuskLevel.Beat.Victory) { _bossAt = Time.unscaledTime + 1f; return; }
+            if (!e.Gate || lv.beat == HuskLevel.Beat.Boss || lv.beat == HuskLevel.Beat.Victory) { _bossAt = Time.unscaledTime + 1f; return; }
             e.Engaged = true;
             if (s_startBoss == null) s_startBoss = typeof(HuskLevel).GetMethod("StartBoss", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             s_startBoss?.Invoke(lv, null);

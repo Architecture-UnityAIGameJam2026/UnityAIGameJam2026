@@ -7400,6 +7400,10 @@ MonoBehaviour:
     radius: 12
   arenaEntry: {fileID: 934579682}
   arenaExit: {fileID: 934579681}
+  fieldStones: {fileID: 1847215464}
+  ending: {fileID: 8283412341783445190, guid: 62fd454d6cfa342b9849d3bc7903116d, type: 3}
+  kestrelMobility: {fileID: 11400000, guid: 106c15b7482b2493c9eaaa302236f758, type: 2}
+  orbitMobility: {fileID: 11400000, guid: 534fd891dfdd24efb96ab8e98d30bc1e, type: 2}
   wickStagger: 0.7
   prismDelay: 1.6
   prismStagger: 3.5
@@ -20128,7 +20132,7 @@ MonoBehaviour:
   fov: 55
   eyeOffset: {x: 0, y: 1.6120014, z: 0.14100006}
   fpFov: 68
-  firstPerson: 0
+  firstPerson: 1
   sensitivity: 0.11
   zoomSpeed: 0.002
   scripted: 0

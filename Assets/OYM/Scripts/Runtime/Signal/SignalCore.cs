@@ -49,13 +49,11 @@ namespace OYM.Signal
             if (demo) go.AddComponent<SignalDemo>();
         }
 
-        /// the player has the controls: no arrival cutscene, no boss entrance, no level cutaway
+        /// the player has the controls: no arrival cutscene, no boss entrance
         public static bool PlayerView(HuskEncounter e)
         {
             if (!e) return !HuskEncounter.CutsceneRunning();
-            if (!e.Gate) return false;
-            var l = e.Level;
-            return !(l && l.InCutaway) && !e.hold;
+            return e.Gate && !e.hold;
         }
     }
 

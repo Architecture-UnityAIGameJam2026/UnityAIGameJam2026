@@ -2,9 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace OYM
 {
@@ -373,6 +370,7 @@ namespace OYM
                 {
                     var c = director.controllers[i]; if (!c) continue;
                     _wasScripted[i] = c.scripted; c.scripted = true; c.scriptedInput = default;
+                    c.RefreshView(true);
                     if (actors == null || actors.Length == 0 || System.Array.IndexOf(actors, c.transform) >= 0) c.ResetMotion();
                 }
             }
@@ -385,19 +383,18 @@ namespace OYM
         {
             Playing = false; Done = true;
             if (director && director.controllers != null && _wasScripted != null)
-                for (int i = 0; i < director.controllers.Length; i++) if (director.controllers[i]) director.controllers[i].scripted = _wasScripted[i];
+                for (int i = 0; i < director.controllers.Length; i++)
+                {
+                    var pilot = director.controllers[i];
+                    if (!pilot) continue;
+                    pilot.scripted = _wasScripted[i];
+                    pilot.RefreshView(false);
+                }
             if (flightCamera) flightCamera.scripted = _camWasScripted;
         }
 
         void Update()
         {
-            bool key = false;
-#if ENABLE_INPUT_SYSTEM
-            if (Keyboard.current != null) key = Keyboard.current.bKey.wasPressedThisFrame;
-#else
-            key = Input.GetKeyDown(KeyCode.B);
-#endif
-            if (key) Play();
             if (_startAt > 0f && Time.unscaledTime >= _startAt) Play();
         }
 

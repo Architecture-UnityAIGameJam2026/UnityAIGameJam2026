@@ -27,10 +27,13 @@ namespace OYM.Net
         CoopCurtain _curtain;
         bool _localReady, _remoteReady, _cineStarted, _lost, _waiting = true;
         float _sendT, _readyT, _waitStart, _lostAt = -1f;
+        double _startedAt;
+        bool _returning;
 
         public bool IsHost => _s && _s.IsHost;
         /// both scenes are in (the host sends the world from then on)
         public bool PartnerInGame => _remoteReady && !_lost;
+        public double LevelTime => Time.unscaledTimeAsDouble - _startedAt;
         public bool Lost => _lost;
         public ZeroGFlight LocalFlight => _local;
         public ZeroGFlight RemoteFlight => _remote;
@@ -133,6 +136,9 @@ namespace OYM.Net
                 case CoopMsg.SkipCine:
                     if (!IsHost && ArrivalCutscene.Current) ArrivalCutscene.Current.RequestSkip();
                     break;
+                case CoopMsg.ReturnTitle:
+                    if (!IsHost && !_returning) StartCoroutine(LeaveResult());
+                    break;
                 case CoopMsg.Pilot:
                     _puppet.Push(PilotState.Read(r));
                     break;
@@ -196,6 +202,7 @@ namespace OYM.Net
         {
             if (!_waiting) return;
             _waiting = false;
+            _startedAt = Time.unscaledTimeAsDouble;
             _curtain.Hide(0.15f);
             var cine = ArrivalCutscene.Current;
             if (cine && !cine.Running)
@@ -214,10 +221,9 @@ namespace OYM.Net
         // ------------------------------------------------------------------------------------------------ dropped
         void OnLost(string why)
         {
-            if (_lost) return;
+            if (_lost || _returning) return;
             _lost = true;
             if (_e) { _e.Remote = null; }
-            if (_world) _world.PartnerGone();
             if (IsHost)
             {
                 _curtain.Toast("PARTNER DISCONNECTED  ·  FLYING ON ALONE", "파트너 연결이 끊겼습니다. 혼자 계속합니다", 4.5f);
@@ -228,6 +234,20 @@ namespace OYM.Net
                 _curtain.Show("HOST DISCONNECTED", "호스트 연결이 끊겼습니다. 타이틀로 돌아갑니다");
                 _lostAt = Time.unscaledTime;
             }
+        }
+
+        public void ReturnTeamToTitle()
+        {
+            if (!IsHost || _returning) return;
+            _s.Send(CoopMsg.Simple(CoopMsg.ReturnTitle));
+            StartCoroutine(LeaveResult());
+        }
+
+        System.Collections.IEnumerator LeaveResult()
+        {
+            _returning = true;
+            yield return new WaitForSecondsRealtime(IsHost ? .35f : .1f);
+            GameSession.ReturnToTitle();
         }
     }
 
