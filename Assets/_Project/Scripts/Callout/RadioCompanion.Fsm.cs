@@ -54,8 +54,23 @@ namespace OnYourMark
             if (!active) return;
 
             if (gun && reload.SelfManaged && me.Ammo.Current == 0 && reload.TryReload()) Record("reload completed");
-            TickState(partner, visible);
             var mission = WaveManager.Current;
+            // 착지 QTE와 장치 이동 중에는 이전 점프 목표를 비운다
+            if (mission && mission.HasMission && (mission.Stage == MissionStage.Land || me.Motor.IsLeaping))
+            {
+                jumpLanding = null;
+                me.Motor.BotDirection = Vector3.zero; me.Motor.BotHover = false; me.Motor.BotJump = false;
+                return;
+            }
+            // 먼저 도착한 동료는 자기 집결점에서 엄호한다. 합류 갑판으로 건너는 시점은 각자의 QTE가 정한다.
+            if (mission && mission.WaitingAtSplitRally(me))
+            {
+                jumpLanding = null;
+                me.Motor.BotJump = me.Motor.BotHover = false;
+                if (State is CompanionState.Fire or CompanionState.MeleeAttack) TickState(partner, visible);
+                return;
+            }
+            TickState(partner, visible);
             if (mission && mission.HasMission && mission.Phase > 0 && !mission.InQte && !mission.MissionSilent &&
                 (State == CompanionState.Guard || State == CompanionState.Reload) && order == "")
             {

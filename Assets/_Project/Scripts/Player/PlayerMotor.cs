@@ -18,6 +18,13 @@ namespace OnYourMark
         CharacterController body;
         PlayerBuffs buffs;
         Transform cam;
+        MovingPlatform ground;
+        Vector3 routeVelocity;
+        float routeTimeLeft, routeGravity;
+        int environmentMask;
+        public bool IsLeaping => routeTimeLeft > 0f;
+        public Vector3 Velocity => IsLeaping ? routeVelocity : body.velocity;
+        public void RefillHover() => hoverTime = 0f;
         float verticalSpeed, hoverTime, groundedTime, dashTimeLeft, dashRecharge;
         bool flying, jumpPressedInAir;
         int bonusDashStacks;
@@ -58,6 +65,7 @@ namespace OnYourMark
         {
             body = GetComponent<CharacterController>();
             buffs = GetComponent<PlayerBuffs>();
+            environmentMask = LayerMask.GetMask("Default", "Environment");
             DashStacks = stats.dashMaxStacks;
             lastGroundedPosition = transform.position;
         }
@@ -79,11 +87,22 @@ namespace OnYourMark
             Vector3 input = BotDriven ? Vector3.ClampMagnitude(BotDirection, 1f) : CameraRelative(stick);
             RechargeDash(dt);
             RechargeHover(dt);
-            if (BotDriven ? BotDash : Pressed(dash)) TryDash(input);
+            if (!IsLeaping && (BotDriven ? BotDash : Pressed(dash))) TryDash(input);
             BotDash = false;
 
             Vector3 step;
-            if (dashTimeLeft > 0f)
+            // 발사대와 짚라인은 지정된 도착점까지 기존 CharacterController로 이동한다.
+            if (!IsLeaping && !BotDriven && body.isGrounded && dashTimeLeft <= 0f && Pressed(jump))
+                TryRouteJump(input);
+            if (IsLeaping)
+            {
+                float t = Mathf.Min(dt, routeTimeLeft);
+                routeTimeLeft -= t;
+                step = routeVelocity * t + Vector3.up * (.5f * routeGravity * t * t);
+                routeVelocity.y += routeGravity * t;
+                verticalSpeed = routeVelocity.y;
+            }
+            else if (dashTimeLeft > 0f)
             {
                 // 대쉬 중에는 중력 무시. 마지막 프레임은 남은 시간만큼만 이동해 거리를 정확히 맞춘다
                 float t = Mathf.Min(dt, dashTimeLeft);
@@ -104,13 +123,90 @@ namespace OnYourMark
                 step.y = VerticalStep(dt);
             }
 
+            if (ground && ground.isActiveAndEnabled && body.isGrounded)
+            {
+                Physics.SyncTransforms();
+                step += ground.Delta;
+            }
+            ground = null;
             body.Move(step);
             BotJump = false;
             RecoverFromFall();
         }
 
+        void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            if (hit.normal.y > .6f && MovingPlatform.Of(hit.collider) is MovingPlatform platform)
+                ground = platform;
+        }
+
+        public void Zip(Vector3 end, float duration)
+        {
+            float t = Mathf.Max(.05f, duration);
+            Launch((end - transform.position) / t, t);
+            routeGravity = 0f;
+        }
+
+        public void Leap(Vector3 target, float duration)
+        {
+            float t = Mathf.Max(.2f, duration);
+            Launch((target - transform.position) / t - Vector3.up * (.5f * stats.gravity * t), t);
+        }
+
+        public void Launch(Vector3 velocity, float duration)
+        {
+            routeVelocity = velocity;
+            routeGravity = stats.gravity;
+            routeTimeLeft = duration;
+            verticalSpeed = velocity.y;
+            dashTimeLeft = 0f;
+            ground = null;
+            flying = jumpPressedInAir = false;
+        }
+
+        void TryRouteJump(Vector3 input)
+        {
+            var mission = WaveManager.Current;
+            if (!mission || !mission.Route) return;
+            var heading = input.sqrMagnitude > .01f ? input : transform.forward;
+            var target = mission.Route.AssistJump(transform.position, heading);
+            if (!target.HasValue) return;
+            float distance = Vector3.ProjectOnPlane(target.Value - transform.position, Vector3.up).magnitude;
+            if (ClearArc(target.Value, Mathf.Clamp(distance / 11f, .55f, 1.35f), out float duration))
+                Leap(target.Value, duration);
+        }
+
+        bool ClearArc(Vector3 target, float baseTime, out float time)
+        {
+            Vector3 start = transform.position;
+            float half = Mathf.Max(0f, body.height * .5f - body.radius);
+            Vector3 c = body.center;
+            foreach (float k in new[] { 1f, 1.25f, 1.5f })
+            {
+                time = baseTime * k;
+                Vector3 v = (target - start) / time - .5f * stats.gravity * time * Vector3.up;
+                bool clear = true;
+                Vector3 prev = start;
+                for (int i = 1; i <= 14 && clear; i++)
+                {
+                    float s = time * i / 14f;
+                    Vector3 p = start + v * s + .5f * stats.gravity * s * s * Vector3.up;
+                    Vector3 d = p - prev;
+                    // 처음과 끝은 발판 위라 닿는 게 정상이다
+                    if (i > 1 && i < 14 && Physics.CapsuleCast(prev + c + Vector3.up * half, prev + c - Vector3.up * half, body.radius * .85f,
+                            d.normalized, d.magnitude, environmentMask, QueryTriggerInteraction.Ignore)) clear = false;
+                    prev = p;
+                }
+                if (clear) return true;
+            }
+            time = 0f;
+            return false;
+        }
+
         public void ResetMotion(Vector3 position)
         {
+            routeTimeLeft = 0f;
+            ground = null;
             transform.position = lastGroundedPosition = position;
             verticalSpeed = dashTimeLeft = hoverTime = groundedTime = 0;
             flying = jumpPressedInAir = false;
@@ -121,6 +217,8 @@ namespace OnYourMark
         {
             if (body.isGrounded) lastGroundedPosition = transform.position;
             if (transform.position.y >= fallLimitY) return;
+            routeTimeLeft = 0f;
+            ground = null;
             transform.position = lastGroundedPosition + Vector3.up * 0.5f;
             verticalSpeed = 0f;
             flying = false;

@@ -67,6 +67,8 @@ namespace OnYourMark
         public void Stop()
         {
             StopAllCoroutines();
+            encounters.Clear();
+            stuckSince.Clear();
             foreach (var enemy in FindObjectsByType<EnemyBase>(FindObjectsSortMode.None))
                 if (enemy.IsSpawned) enemy.NetworkObject.Despawn();
             alive.Value = 0;
@@ -107,7 +109,7 @@ namespace OnYourMark
                 for (int k = 0; k < group.count; k++)
                 {
                     var point = points[k % points.Count];
-                    var enemy = NetworkObjectPool.Get(group.enemy.prefab, EncounterSpawn(k, point.position), point.rotation);
+                    var enemy = NetworkObjectPool.Get(group.enemy.prefab, point.position, point.rotation);
                     var health = enemy.GetComponent<Health>();
                     health.Died -= OnEnemyDied;   // 재사용된 인스턴스에 이전 구독이 남아 있으면 두 번 세지 않게
                     health.Died += OnEnemyDied;
