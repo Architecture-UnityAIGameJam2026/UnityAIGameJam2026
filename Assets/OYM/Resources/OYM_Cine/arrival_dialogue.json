@@ -1,0 +1,10 @@
+{
+  "lines": [
+    { "speaker": "ORBIT FRAME", "text": "Touchdown. Deck's holding.", "sub": "착지 완료. 발판은 버틸 만하네.", "voice": "", "shot": "two", "look": "partner", "hold": 0.1 },
+    { "speaker": "KESTREL", "text": "Orbit. My visor's showing your vitals, not mine.", "sub": "오빗, 잠깐. 내 바이저에 네 상태가 떠.", "voice": "", "shot": "ots", "look": "partner", "hold": 0 },
+    { "speaker": "ORBIT FRAME", "text": "Same here. The link got crossed on the drop.", "sub": "나도 그래. 강하하다가 링크가 꼬였나 봐.", "voice": "", "shot": "ots", "look": "partner", "hold": 0 },
+    { "speaker": "KESTREL", "text": "Then we talk. You call my numbers, I call yours.", "sub": "그럼 말로 맞추자. 내 상태는 네가 불러 주고, 네 건 내가 불러 줄게.", "voice": "", "shot": "ots", "look": "partner", "hold": 0 },
+    { "speaker": "ORBIT FRAME", "text": "Copy. Contacts in the wreck, dead ahead.", "sub": "알았어. 정면 잔해 속에 적 반응 있다.", "voice": "", "shot": "ots", "look": "ahead", "hold": 0 },
+    { "speaker": "KESTREL", "text": "Stay on me. On your mark.", "sub": "떨어지지 마. 네 신호에 맞춰 간다.", "voice": "", "shot": "close", "look": "ahead", "hold": 0.3 }
+  ]
+}
