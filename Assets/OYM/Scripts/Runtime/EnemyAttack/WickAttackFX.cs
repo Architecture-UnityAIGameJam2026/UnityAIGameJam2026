@@ -46,6 +46,17 @@ namespace OYM
         // more than this share of the screen height (at ~3 m the old 2 / 6 / 9 m sprites flooded the whole view)
         const float FlashDotView = 0.12f, FlashGlowView = 0.35f, FlashGlintView = 0.4f;
 
+        // 11-19 (5th pass) "저거 뒤에 완전히 하얗게 돼 / 섬광도 안 고쳐졌어": the four passes above tamed the BLAST and left the
+        // FUSE alone. In the co-op first-person shots (06:44) the view stayed full white for 3-5 s while a pod sat latched
+        // 1.25 m off the pilot's chest: the blinking core (AdditiveHDR draws rgb x a, so Heat(0.92) * 9.9 is ~100x white)
+        // and its 2 m pink glow covered the whole view - in third person too whenever the pod latched on the camera side.
+        // Every sprite of this rig now goes through HuskFX.Safe: dots <= 7 % of the view height and 6x white, glows
+        // <= 20 % and 0.6x, glints <= 30 % and 1.5x, streaks <= 4x, all dimmed close to the lens; the fuse core peaks hot
+        // pink (heat 0.8), never white. Comfort = false restores the old look (A/B bench OYMFlashRepro).
+        public static bool Comfort = true;
+        const float DotView = 0.07f, DotMax = 6f, GlowView = 0.2f, GlowMax = 0.6f, GlintView = 0.3f, GlintMax = 1.5f, StreakMax = 4f;
+        const float HotPink = 0.8f;
+
         // ---------------------------------------------------------------- state
         bool _rush;
         float _rushK, _rushClock;
@@ -242,6 +253,37 @@ namespace OYM
         }
 
         // ---------------------------------------------------------------- evaluation
+        // every sprite of the rig passes the comfort clamp (see Comfort)
+        void Dot(Vector3 p, float size, Color col)
+        {
+            if (Comfort) col = HuskFX.Safe(p, ref size, col, DotView, DotMax);
+            _fx.dot.Sprite(p, size, col);
+        }
+
+        void Glow(Vector3 p, float size, Color col)
+        {
+            if (Comfort) col = HuskFX.Safe(p, ref size, col, GlowView, GlowMax);
+            _fx.glow.Sprite(p, size, col);
+        }
+
+        void Glint(Vector3 p, float w, float h, Color col)
+        {
+            if (Comfort) { float w0 = w; col = HuskFX.Safe(p, ref w, col, GlintView, GlintMax); h *= w / Mathf.Max(1e-4f, w0); }
+            _fx.glint.Flare(p, w, h, col);
+        }
+
+        void Streak(Vector3 a, Vector3 b, float width, Color tail, Color head)
+        {
+            if (Comfort)
+            {
+                Vector3 m = (a + b) * 0.5f;
+                float free = 1e4f;
+                tail = HuskFX.Safe(m, ref free, tail, 1e4f, StreakMax);
+                head = HuskFX.Safe(m, ref free, head, 1e4f, StreakMax);
+            }
+            _fx.streak.Streak(a, b, width, tail, head);
+        }
+
         /// Fuse phase (cycles) of the accelerating blink: f0 at arm -> f1 at the end of the fuse.
         float Phase(float a)
         {
@@ -283,10 +325,10 @@ namespace OYM
                 Vector3 back = -pivot.forward;
                 float flick = 1f + 0.18f * HuskFX.N(r * 30f, seed + 4) + 0.1f * HuskFX.N(r * 71f, seed + 5);
                 float len = (0.55f + 0.45f * k) * flick;
-                _fx.streak.Streak(nozzle + back * len, nozzle, 0.36f * k, HuskFX.Heat(0.45f) * 0.0f, HuskFX.Heat(0.6f) * (1.0f * k));
-                _fx.streak.Streak(nozzle + back * (len * 0.6f), nozzle, 0.13f * k, HuskFX.Heat(0.8f) * 0.0f, HuskFX.Heat(0.85f) * (3f * k * flick));
-                _fx.dot.Sprite(nozzle, 0.22f, HuskFX.Heat(0.85f) * (2.5f * k * flick));
-                _fx.glow.Sprite(nozzle + back * 0.15f, 1.1f, HuskFX.Heat(0.58f) * (0.35f * k * flick));
+                Streak(nozzle + back * len, nozzle, 0.36f * k, HuskFX.Heat(0.45f) * 0.0f, HuskFX.Heat(0.6f) * (1.0f * k));
+                Streak(nozzle + back * (len * 0.6f), nozzle, 0.13f * k, HuskFX.Heat(0.8f) * 0.0f, HuskFX.Heat(0.85f) * (3f * k * flick));
+                Dot(nozzle, 0.22f, HuskFX.Heat(0.85f) * (2.5f * k * flick));
+                Glow(nozzle + back * 0.15f, 1.1f, HuskFX.Heat(0.58f) * (0.35f * k * flick));
                 thrLumen = 1200f * k * flick;
                 // motion streak behind it
                 float sp = _vel.magnitude;
@@ -294,7 +336,7 @@ namespace OYM
                 {
                     Vector3 vd = _vel / sp;
                     float tl = Mathf.Min(3.5f, sp * 0.16f);
-                    _fx.streak.Streak(nozzle - vd * tl, nozzle, 0.22f, Color.clear, HuskFX.Heat(0.55f) * (0.45f * k));
+                    Streak(nozzle - vd * tl, nozzle, 0.22f, Color.clear, HuskFX.Heat(0.55f) * (0.45f * k));
                 }
                 // side-thruster puffs on the jinks: where the lateral motion pushes hardest
                 float dx = HuskFX.N((r + 0.02f) * 1.3f, seed + 1) - HuskFX.N(r * 1.3f, seed + 1);
@@ -307,15 +349,15 @@ namespace OYM
                     Vector3 p = pivot.TransformPoint(side * 0.5f);
                     Vector3 pd = pivot.TransformDirection(side);
                     float pk = Mathf.Exp(-kp / 0.04f) * k;
-                    _fx.streak.Streak(p, p + pd * 0.45f, 0.14f, HuskFX.Heat(0.85f) * (2.5f * pk), HuskFX.Heat(0.6f) * 0f);
-                    _fx.glow.Sprite(p, 0.6f, HuskFX.Heat(0.7f) * (0.8f * pk));
+                    Streak(p, p + pd * 0.45f, 0.14f, HuskFX.Heat(0.85f) * (2.5f * pk), HuskFX.Heat(0.6f) * 0f);
+                    Glow(p, 0.6f, HuskFX.Heat(0.7f) * (0.8f * pk));
                 }
                 // sensor slit
                 if (closed)
                 {
                     Vector3 sensor = pivot.TransformPoint(sensorLocal);
-                    _fx.dot.Sprite(sensor, 0.1f, HuskFX.Heat(0.8f) * (2.5f * k * flick));
-                    _fx.glow.Sprite(sensor, 0.55f, HuskFX.Heat(0.55f) * (0.35f * k));
+                    Dot(sensor, 0.1f, HuskFX.Heat(0.8f) * (2.5f * k * flick));
+                    Glow(sensor, 0.55f, HuskFX.Heat(0.55f) * (0.35f * k));
                 }
             }
 
@@ -326,9 +368,9 @@ namespace OYM
                 float flick = 1f + 0.15f * HuskFX.N(r * 13f, seed + 21);
                 float pop = _pingT >= 0f ? Mathf.Exp(-_pingT / 0.07f) : 0f;
                 float lit = _alert * (1f - k);
-                _fx.dot.Sprite(sensor, 0.1f + 0.25f * pop, HuskFX.Heat(0.78f + 0.1f * pop) * (2f * lit * flick + 6f * pop));
-                _fx.glow.Sprite(sensor, 0.5f + 0.9f * pop, HuskFX.Heat(0.58f) * (0.25f * lit + 0.8f * pop));
-                if (pop > 0.01f) _fx.glint.Flare(sensor, 2.2f * pop + 0.3f, 0.12f, HuskFX.Heat(0.75f) * (2f * pop));
+                Dot(sensor, 0.1f + 0.25f * pop, HuskFX.Heat(Mathf.Min(Comfort ? HotPink : 1f, 0.78f + 0.1f * pop)) * (2f * lit * flick + 6f * pop));
+                Glow(sensor, 0.5f + 0.9f * pop, HuskFX.Heat(0.58f) * (0.25f * lit + 0.8f * pop));
+                if (pop > 0.01f) Glint(sensor, 2.2f * pop + 0.3f, 0.12f, HuskFX.Heat(0.75f) * (2f * pop));
                 coreLumen += 600f * lit + 3500f * pop;
             }
 
@@ -349,7 +391,7 @@ namespace OYM
                     for (int i = -1; i <= 1; i += 2)
                     {
                         Vector3 p = front + pivot.right * (0.22f * i);
-                        _fx.streak.Streak(p, p + (fd + pivot.right * (0.35f * i)).normalized * (0.8f * rb + 0.2f), 0.18f, HuskFX.Heat(0.85f) * (3f * rb), Color.clear);
+                        Streak(p, p + (fd + pivot.right * (0.35f * i)).normalized * (0.8f * rb + 0.2f), 0.18f, HuskFX.Heat(0.85f) * (3f * rb), Color.clear);
                     }
                     thrLumen += 1500f * rb;
                 }
@@ -364,21 +406,21 @@ namespace OYM
                 }
                 if (pop > 0.005f)
                 {
-                    _fx.dot.Sprite(core, 1.0f, HuskFX.Heat(0.9f) * (6f * pop));
-                    _fx.glow.Sprite(core, 2.0f, HuskFX.Heat(0.62f) * (0.9f * pop));
-                    _fx.glint.Flare(core, 2.6f, 0.18f, HuskFX.Heat(0.75f) * (2f * pop));
+                    Dot(core, 1.0f, HuskFX.Heat(Comfort ? HotPink : 0.9f) * (6f * pop));
+                    Glow(core, 2.0f, HuskFX.Heat(0.62f) * (0.9f * pop));
+                    Glint(core, 2.6f, 0.18f, HuskFX.Heat(0.75f) * (2f * pop));
                     coreLumen += 7000f * pop;
                 }
 
                 // the chirp
                 float ph = Phase(a);
                 float pulse = Mathf.Pow(0.5f + 0.5f * Mathf.Cos(ph * Mathf.PI * 2f), 4f);
-                float heat = Mathf.Min(0.92f, 0.45f + 0.4f * h + 0.15f * pulse);
+                float heat = Mathf.Min(Comfort ? HotPink : 0.92f, 0.45f + 0.4f * h + 0.15f * pulse);
                 float I = (1f + 4.5f * pulse * (0.35f + 0.65f * h)) * (1f + 0.8f * h) * live;
                 if (open)
                 {
-                    _fx.dot.Sprite(core, (0.3f + 0.22f * pulse) * (1f + 0.3f * h) * (1f - 0.3f * inhale), HuskFX.Heat(heat) * I);
-                    _fx.glow.Sprite(core, 0.8f + 1.3f * pulse * h, HuskFX.Heat(0.5f + 0.2f * heat) * ((0.2f + 0.8f * pulse * h) * live));
+                    Dot(core, (0.3f + 0.22f * pulse) * (1f + 0.3f * h) * (1f - 0.3f * inhale), HuskFX.Heat(heat) * I);
+                    Glow(core, 0.8f + 1.3f * pulse * h, HuskFX.Heat(0.5f + 0.2f * heat) * ((0.2f + 0.8f * pulse * h) * live));
                 }
                 coreLumen += (400f + 4000f * pulse * (0.3f + 0.7f * h)) * live;
                 coreCol = Color.Lerp(HuskFX.LightMagenta, new Color(1f, 0.82f, 0.9f), h * pulse);
@@ -406,8 +448,8 @@ namespace OYM
                     Vector3 p0 = core + d * 0.45f;
                     float travel = 4.5f * life * (1f - Mathf.Exp(-3f * u)) / 3f;
                     Vector3 p = p0 + d * travel;
-                    Color c = HuskFX.Heat(1f - 0.5f * u) * (3.5f * (1f - u));
-                    _fx.streak.Streak(p - d * Mathf.Min(travel, 0.18f), p, 0.018f, c * 0.1f, c);
+                    Color c = HuskFX.Heat((Comfort ? HotPink : 1f) - 0.5f * u) * (3.5f * (1f - u));
+                    Streak(p - d * Mathf.Min(travel, 0.18f), p, 0.018f, c * 0.1f, c);
                 }
             }
             else if (!armed || _blasted) _emOpen?.Set(1f);
@@ -420,10 +462,10 @@ namespace OYM
                 float fl = Mathf.Exp(-b / 0.035f);
                 float view = ViewHeight(_blastPos);
                 // 11-19 "완전 흰색 하지 말고 울렁울렁": no white in the blast either - hot pink at most (heat <= 0.72)
-                _fx.dot.Sprite(_blastPos, Mathf.Min(0.8f * s * (1f + b * 4f), FlashDotView * view), HuskFX.Heat(0.72f) * (3f * fl));
-                _fx.glow.Sprite(_blastPos, Mathf.Min(2.6f * s, FlashGlowView * view), HuskFX.Heat(0.62f) * (1.2f * Mathf.Exp(-b / 0.1f)));
+                Dot(_blastPos, Mathf.Min(0.8f * s * (1f + b * 4f), FlashDotView * view), HuskFX.Heat(0.72f) * (3f * fl));
+                Glow(_blastPos, Mathf.Min(2.6f * s, FlashGlowView * view), HuskFX.Heat(0.62f) * (1.2f * Mathf.Exp(-b / 0.1f)));
                 float gw = Mathf.Min(4f * s, FlashGlintView * view);
-                _fx.glint.Flare(_blastPos, gw, gw * 0.045f, HuskFX.Heat(0.7f) * (1.5f * Mathf.Exp(-b / 0.05f)));
+                Glint(_blastPos, gw, gw * 0.045f, HuskFX.Heat(0.7f) * (1.5f * Mathf.Exp(-b / 0.05f)));
                 coreLumen = 40000f * CoreLight * Mathf.Exp(-b / 0.05f);
                 coreCol = new Color(1f, 0.7f, 0.85f);
             }

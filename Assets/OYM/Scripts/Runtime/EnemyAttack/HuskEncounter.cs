@@ -392,6 +392,12 @@ namespace OYM
         // ---------------------------------------------------------------- the player
         static FieldInfo s_vel;
 
+        /// The pilot's own hit glow (HitFlash). 11-19 WICK white-out pass: it was (7, 0.6, 2.4) x 0.9 m with a 0.55 body
+        /// flash, and the overlay's white-hot centre is peak x SpotGain = ~10x white on the pilot's back, right in the middle
+        /// of a third-person view, on every WICK / dart hit. Now a hot-pink scorch that stays under ~2x white.
+        public static Color PlayerHitColor = new Color(1.3f, 0.11f, 0.45f);
+        public static float PlayerHitSize = 0.6f, PlayerHitFlash = 0.2f;
+
         public void DamagePlayer(float amount, Vector3 from, float knock)
         {
             if (_downed || amount <= 0.01f || !Engaged) return;
@@ -408,7 +414,7 @@ namespace OYM
                     hf = p.gameObject.AddComponent<HitFlash>();
                     hf.renderers = p.GetComponentsInChildren<SkinnedMeshRenderer>(true);
                 }
-                hf.AddHit(PlayerChest, new Color(7f, 0.6f, 2.4f), 0.9f, 0.55f);
+                hf.AddHit(PlayerChest, PlayerHitColor, PlayerHitSize, PlayerHitFlash);
                 Knock(from, knock);
             }
             PlayerDamaged?.Invoke(amount, from);

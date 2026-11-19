@@ -24,7 +24,9 @@ namespace OYM.Signal
             var root = _doc.rootVisualElement;
             _box = new VisualElement { pickingMode = PickingMode.Ignore };
             _box.style.position = Position.Absolute;
-            _box.style.left = 64; _box.style.bottom = 168; _box.style.width = 760;
+            // 11-19 "겹쳐서 살짝 올려야": at bottom 168 the English line sat on the visor's health module (HP number +
+            // bar, top edge ~212 units up at 16:10, ~201-224 at 16:9) - 240 clears it with a small gap
+            _box.style.left = 64; _box.style.bottom = 240; _box.style.width = 760;
             _box.style.flexDirection = FlexDirection.Row;
             _box.style.opacity = 0f;
             _accent = new VisualElement { pickingMode = PickingMode.Ignore };

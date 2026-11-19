@@ -77,6 +77,35 @@ namespace OYM
         /// Fixed exposure to scale lights for (captures set it once; NaN = read the scene's global volume).
         public static float ExposureEV = float.NaN;
 
+        /// Comfort clamp for FxBatch sprites (11-19 "저거 뒤에 완전히 하얗게 돼"). OYM/FX/AdditiveHDR is screen-relative
+        /// (1 = white on screen in any map) and draws rgb x a, so `Heat(k) * s` shows s^2 bright: a WICK fuse blinking
+        /// 1-2 m from the lens (~100x white, 2 m glow) whited the whole view out through bloom. Returns the colour with
+        /// the alpha folded in (a = 1) and `size` capped to `maxView` x the view height at the sprite's depth. Brightness
+        /// works as an energy budget (bloom spreads intensity x area): at that full size the brightest channel may be
+        /// `maxI`, a sprite smaller on screen proportionally more (up to 8x), so far-off pings and glints look as before
+        /// and only what covers the view gets tamed. Dimmed toward `nearFloor` as it reaches the lens (full from `near` m).
+        public static Color Safe(Vector3 p, ref float size, Color col, float maxView, float maxI, float near = 3f, float nearFloor = 0.4f)
+        {
+            var c = new Color(col.r * col.a, col.g * col.a, col.b * col.a, 1f);
+            var cam = ViewCam;
+            float allowed = maxI, dim = 1f;
+            if (cam)
+            {
+                Vector3 cp = cam.transform.position;
+                float depth = Vector3.Dot(p - cp, cam.transform.forward);
+                float view = cam.orthographic ? 2f * cam.orthographicSize
+                                              : 2f * Mathf.Max(0.05f, depth) * Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+                size = Mathf.Min(size, maxView * view);
+                float frac = size / Mathf.Max(1e-4f, view);
+                allowed = maxI * Mathf.Min(8f, maxView * maxView / Mathf.Max(1e-6f, frac * frac));
+                dim = Mathf.Lerp(nearFloor, 1f, Smooth(0.5f, near, Vector3.Distance(p, cp)));
+            }
+            float m = Mathf.Max(c.r, Mathf.Max(c.g, c.b));
+            float k = (m > allowed ? allowed / m : 1f) * dim;
+            c.r *= k; c.g *= k; c.b *= k;
+            return c;
+        }
+
         /// Sets a point light in lumens at the reference exposure. Same comfort cap as HitFXInstance (11-19 "섬광탄 그대로 /
         /// 계속 완전 흰색으로 가려"): the light may throw at most HitFXInstance.NearCameraLux at the view camera, so a WICK
         /// fuse blinking on your chest (or a dart / rocket passing the lens) glows instead of flooding the view pink-white.
