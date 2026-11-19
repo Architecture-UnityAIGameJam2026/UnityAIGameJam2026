@@ -43,6 +43,9 @@ namespace OYM
 
         [Header("Animation")]
         public AnimationClip idleClip;
+        [Tooltip("idle clip speed and the float bob / sway: 0.5 = twice as slow (user 11-19: \"주인공 2명 아이들 2배 늦춰\"); "
+               + "boosts, springs, lean and the strike keep their own timing")]
+        [Range(0.2f, 1f)] public float idlePace = 0.5f;
         [Tooltip("hero move when this pilot comes to the front (null = stay on the idle clip)")]
         public AnimationClip frontClip;
         public float frontFrom = 1.0f, frontHold = 1.6f, frontSpeed = 1f;
@@ -234,6 +237,7 @@ namespace OYM
             if (!_graph.IsValid()) return;
             _mix.SetInputWeight(0, 1f - _frontW);
             if (_front.IsValid()) { _mix.SetInputWeight(1, _frontW); _front.SetTime(_frontT); }
+            _idle.SetSpeed(idlePace);                                         // idle clip only (the front clip is set by time)
             _graph.Evaluate(dt);
         }
 
@@ -304,7 +308,7 @@ namespace OYM
 
         void ApplyTransform()
         {
-            float t = Application.isPlaying ? _time : 0f;
+            float t = Application.isPlaying ? _time * idlePace : 0f;          // float bob / sway at the idle pace
             float bob = bobAmp * Mathf.Sin(2f * Mathf.PI * bobFreq * t + _seed * 6f);
             Vector2 tilt = _lean + new Vector2(swayDeg * 0.6f * Mathf.Sin(2f * Mathf.PI * 0.17f * t + 1f + _seed), swayDeg * Mathf.Sin(2f * Mathf.PI * 0.21f * t + _seed * 2f));
             float ang = tilt.magnitude;
