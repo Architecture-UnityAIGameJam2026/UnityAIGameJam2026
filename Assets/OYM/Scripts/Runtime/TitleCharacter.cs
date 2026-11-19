@@ -75,6 +75,16 @@ namespace OYM
         public float bobAmp = 0.035f, bobFreq = 0.21f, swayDeg = 1.8f;
         public float boostTime = 0.4f;
 
+        // MARK: calm-pace
+        [Header("Pace")]
+        [Tooltip("time scale of the title motion: idle clip, bob / sway, the slot springs, lean, head turns, the boost burn. "
+               + "1 = the original snappy timing; 0.6 = calm idle (user 11-19: \"성급하게 빠른거같아, 천천히 아이들하게\")")]
+        [Range(0.3f, 1f)] public float pace = 0.6f;
+        [Tooltip("speed of the hero move clip (KESTREL's cut into the held pose), multiplies frontSpeed")]
+        [Range(0.3f, 1f)] public float strikePace = 0.8f;
+        [Tooltip("ORBIT FRAME: title-motion seconds it settles at the front before the RG-77 fires (added to fireDelay)")]
+        public float settleBeforeFire = 0.75f;
+
         [Header("Choreography")]
         [Tooltip("world velocity kick (m/s) when it boosts to the front: the path bows out instead of a straight line "
                + "(both focus shots put the pilot on the right third, so +X bows toward the frame edge)")]
@@ -143,7 +153,7 @@ namespace OYM
             {
                 Boost(boostTime);
                 if (prev != Slot.Launch) { _frontT = frontFrom; _frontW = 0f; }
-                if (railgun) _fireT = fireDelay;
+                if (railgun) _fireT = fireDelay + settleBeforeFire;
                 _struck = false;
                 // swoop: bow the path outward and up, the spring pulls it back in -> a curved boost with an overshoot
                 _v += swoopKick;
@@ -246,26 +256,28 @@ namespace OYM
             float dt = Time.deltaTime;
             if (dt <= 0f) return;
             Step(dt);
-            EvaluatePose(dt);
+            EvaluatePose(dt * pace);
         }
 
         public void Step(float dt)
         {
             Init();
+            float rdt = dt;                                                   // real time: flashes stay quick
+            dt *= pace;                                                       // title motion time (calm pace)
             _time += dt;
             int n = Mathf.Max(1, Mathf.CeilToInt(dt / 0.01f));
             float h = dt / n;
             for (int i = 0; i < n; i++) Integrate(h);
 
             // front move: play from frontFrom, freeze on frontHold (the snap is in the clip's own timing)
-            if (InFront) _frontT = Mathf.Min(_frontT + dt * frontSpeed, frontHold);
+            if (InFront) _frontT = Mathf.Min(_frontT + rdt * frontSpeed * strikePace, frontHold);
             if (_slot == Slot.Front && frontClip && !_struck && _frontT >= frontHold - 1e-4f) Strike();
             float wT = InFront && frontClip ? 1f : 0f;
             _frontW = Mathf.MoveTowards(_frontW, wT, dt / (wT > _frontW ? 0.1f : 0.4f));
             if (trail) trail.emitting = InFront && _frontW > 0.5f && _frontT >= trailWindow.x && _frontT <= trailWindow.y;
             if (_fireT >= 0f) { _fireT -= dt; if (_fireT < 0f && railgun && _slot == Slot.Front) railgun.Fire(); }
 
-            _flash *= Mathf.Exp(-dt / 0.2f);
+            _flash *= Mathf.Exp(-rdt / 0.2f);
             float heroT = InFront ? 1f : Hovered && _slot == Slot.Home ? 0.25f : 0f;
             _hero = Mathf.MoveTowards(_hero, heroT, dt / (heroT > _hero ? 0.3f : 0.6f));
 
@@ -327,7 +339,7 @@ namespace OYM
         }
 
         // ------------------------------------------------------------------------------------------------ head look
-        void LateUpdate() { ApplyArm(); ApplyLook(Time.deltaTime); }
+        void LateUpdate() { ApplyArm(); ApplyLook(Time.deltaTime * pace); }
 
         /// After the animation: lower the weapon arm of the hold pose in the screen plane (rotates about the shoulder).
         public void ApplyArm()
