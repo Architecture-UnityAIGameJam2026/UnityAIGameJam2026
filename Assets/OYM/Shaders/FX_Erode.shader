@@ -100,6 +100,15 @@ Shader "OYM/FX/Erode"
 
             float4 Frag(Varyings i) : SV_Target
             {
+                // Invisible fragments leave first (11-19 particle pass): faded out near the camera (_NearFade, e.g. the
+                // fireballs within 2 m) or by the particle's own alpha. They used to run every texture fetch for an
+                // output of 0; additive and premultiplied blending both keep the target unchanged for a zero output,
+                // so discarding them is pixel-identical.
+                float fragZ = i.positionCS.w;
+                float nearF = saturate((fragZ - _NearFade.x) / max(1e-3, _NearFade.y));
+                float vis = i.color.a * nearF;
+                [branch] if (vis <= 0.0) { discard; }
+
                 float erosion = i.uv0.z;
                 float heat = i.uv0.w;
                 float2 nuv = i.uv0.xy * _NoiseScale + i.seed * float2(3.71, 7.13);
@@ -123,13 +132,13 @@ Shader "OYM/FX/Erode"
                 float3 ramp = SAMPLE_TEXTURE2D_LOD(_Ramp, sampler_Ramp, float2(u, 0.5), 0).rgb;
                 float3 emission = ramp * _Intensity * saturate((u - _EmissionFloor) / max(1e-3, 1.0 - _EmissionFloor));
 
-                // soft particles + near-camera fade
+                // soft particles (the near-camera fade is in `vis` above)
                 float sceneZ = LinearEyeDepth(LoadCameraDepth(uint2(i.positionCS.xy)), _ZBufferParams);
-                float fragZ = i.positionCS.w;
                 float soft = saturate((sceneZ - fragZ) / max(1e-3, _SoftFade));
-                float nearF = saturate((fragZ - _NearFade.x) / max(1e-3, _NearFade.y));
 
-                float cov = a * i.color.a * soft * nearF;
+                float cov = a * vis * soft;
+                // outside the (eroded) shape: nothing to blend, skip the read-modify-write of the colour buffer
+                if (cov <= 0.0) discard;
                 float3 baseC = _BaseColor.rgb * lerp(1.0, shade, _BaseShade);
                 float3 rgb = (emission * i.color.rgb + baseC * _Opacity) * cov;
                 return float4(rgb, cov * _Opacity);

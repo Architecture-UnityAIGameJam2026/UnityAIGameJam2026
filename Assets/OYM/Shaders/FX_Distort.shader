@@ -71,6 +71,8 @@ Shader "OYM/FX/Distort"
             #pragma fragment FragGlow
             float4 FragGlow(Varyings i) : SV_Target
             {
+                // refraction-only materials (_Glow 0: the shock rings, heat haze) add nothing here (11-19 particle pass)
+                [branch] if (_Glow <= 0.0 || i.color.a <= 0.0) { discard; }
                 float m = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv * _MainTex_ST.xy + _MainTex_ST.zw).a;
                 float3 c = SAMPLE_TEXTURE2D_LOD(_Ramp, sampler_Ramp, float2(saturate(m * 0.9), 0.5), 0).rgb;
                 return float4(c * m * _Glow * i.color.rgb * i.color.a * SoftFade(i.positionCS), 0);
@@ -96,6 +98,9 @@ Shader "OYM/FX/Distort"
             {
                 float2 uv = i.uv * _MainTex_ST.xy + _MainTex_ST.zw;
                 float m = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv).a;
+                // no push and no blur here (outside the ring / faded out): leave the pixel unmarked so ApplyDistortion
+                // skips it - the same picture as a zero offset, minus the full-screen pass work (11-19 particle pass)
+                if (m * i.color.a <= 0.0) discard;
                 float2 radial = float2(i.uv.x - 0.5, 0.5 - i.uv.y);   // quad v is up, pixel y is down
                 float rl = length(radial);
                 radial = rl > 1e-4 ? radial / rl : 0;
