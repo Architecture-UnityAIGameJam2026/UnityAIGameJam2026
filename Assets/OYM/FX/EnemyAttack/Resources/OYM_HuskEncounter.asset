@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 377756a4363546b41b36da7bf229ce18, type: 3}
+  m_Name: OYM_HuskEncounter
+  m_EditorClassIdentifier: Assembly-CSharp::OYM.HuskEncounterConfig
+  prismPrefab: {fileID: 8367675945202420789, guid: ee78abffcd2a8ee4bb250e3b1589ea13, type: 3}
+  wickPrefab: {fileID: 1451375460020080782, guid: 31925cccaad046847aa0f06abc021ab1, type: 3}
+  dartPrefab: {fileID: 5996912175838928241, guid: 1b9078537fca8d04689682fc1c55e63b, type: 3}
+  engageDelay: 2
+  wakeStagger: 2.2
+  maxWicks: 3
+  maxPrisms: 2
+  wickRespawn: 5
+  prismRespawn: 12
+  spawnDistance: 65
+  salvoFirst: 35
+  salvoEvery: 22
+  salvoCount: 5
+  salvoDamage: 14
+  salvoRadius: 3
+  playerHP: 150
+  regenDelay: 4
+  regenRate: 15
+  slashDamage: 40
+  railDamage: 75
+  wickHP: 30
+  wickSpeed: 13
+  wickAccel: 20
+  wickTrigger: 2.6
+  wickFuse: 1.2
+  wickLatchSpeed: 7.5
+  wickBlastRadius: 4.2
+  wickDamage: 32
+  prismHP: 90
+  prismSpeed: 7
+  prismDistance: 21
+  prismRange: 45
+  prismCharge: 2.3
+  prismCooldown: 3.2
+  prismTracking: 32
+  prismDamage: 24
+  prismHitRadius: 0.75
+  prismWeakMul: 2
+  cutaways: 1
+  contactDelay: 3
+  contactProgress: 8
+  snipersProgress: 40
+  snipersTimeout: 45
+  ambushProgress: 120
+  ambushTimeout: 60
+  bossProgress: 200
+  bossTimeout: 70
+  bossSalvoEvery: 9
+  bossHatchEvery: 12
+  bossSalvoDarts: 8
+  bossHatchWicks: 3
+  barkContactBy: ORBIT FRAME
+  barkContact: "\uC811\uCD09. WICK, \uC815\uBA74!"
+  barkSnipersBy: KESTREL
+  barkSnipers: "\uC800\uACA9\uC218\uC57C. \uCDA9\uC804\uD560 \uB54C \uB80C\uC988\uB97C
+    \uB178\uB824."
+  barkAmbushBy: ORBIT FRAME
+  barkAmbush: "\uBC1C\uBC11\uC774\uB2E4!"
+  barkBossBy: KESTREL
+  barkBoss: "\uC800\uAC8C\u2026 CITADEL\uC774\uC57C."
+  barkSalvoBy: ORBIT FRAME
+  barkSalvo: "\uBBF8\uC0AC\uC77C! \uD769\uC5B4\uC838!"
+  zoneBarkBy:
+  - KESTREL
+  - ORBIT FRAME
+  - KESTREL
+  - ORBIT FRAME
+  zoneBarks:
+  - "\uAE30\uC9C0 \uC704\uC5D0 \uC800\uACA9\uC218. \uCDA9\uC804\uD560 \uB54C \uB80C\uC988\uB97C
+    \uB178\uB824."
+  - "\uAC70\uC8FC \uBAA8\uB4C8\uC5D0\uC11C \uC3DF\uC544\uC838 \uB098\uC628\uB2E4!"
+  - "\uAC8C\uC774\uD2B8 \uC704\uC544\uB798, \uC591\uCABD \uB2E4 \uBD10."
+  - "\uB465\uC9C0\uB2E4\u2026 \uC804\uBD80 \uAE68\uC5B4\uB09C\uB2E4!"
+  contactAfter: 4
+  contactRange: 60
+  bossAfterNest: 3.5
+  bossNestTimeout: 80
+  barkQuietBy: KESTREL
+  barkQuiet: "\u2026\uC870\uC6A9\uD574. \uB108\uBB34 \uC870\uC6A9\uD574."
+  podHP: 300
+  barkObjectiveBy: ORBIT FRAME
+  barkObjective: "\uB7F0\uCC98 \uD3EC\uB4DC\uB97C \uB178\uB824. \uB808\uC77C\uAC74\uC73C\uB85C!"
+  barkPodBy: ORBIT FRAME
+  barkPodFirst: "\uD3EC\uB4DC \uD558\uB098 \uB0A0\uB838\uB2E4!"
+  barkPodSecond: "\uB450 \uBC88\uC9F8\uB3C4 \uB05D\uB0AC\uC5B4!"
+  barkVictoryBy: KESTREL
+  barkVictory: "\uBB3C\uB7EC\uB09C\uB2E4\u2026!"
+  barkVictory2By: ORBIT FRAME
+  barkVictory2: "\uC0B4\uC558\uB2E4. \uC228 \uC880 \uB3CC\uB9AC\uC790."

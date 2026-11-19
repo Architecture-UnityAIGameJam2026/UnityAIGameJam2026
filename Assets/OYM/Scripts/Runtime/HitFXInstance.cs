@@ -8,6 +8,7 @@ namespace OYM
     /// (bursts at t = 0, some delayed) and fires a light flash that decays exponentially (lumens at the reference
     /// exposure, scaled to the scene's fixed exposure like RailgunFX so it floods equally in any map).
     /// Looping effects (laser burn) run until Stop(); SetSustain(0..1) scales their emission + light.
+    /// ScaleLight(k) right after Play() dims the light of that one play (the next Play() resets it).
     public class HitFXInstance : MonoBehaviour
     {
         public ParticleSystem[] systems;
@@ -21,7 +22,12 @@ namespace OYM
 
         [HideInInspector] public HitFXInstance prefabKey;
 
-        float _t, _flash, _sustain = 1f, _flickerSeed;
+        /// Comfort cap (11-19 "조명이 너무 쎄서 눈아파"): the flash may light the camera position with at most this many lux
+        /// at the reference exposure (x2^(EV - referenceEV) like the lumens), so a hit or blast right at the camera / the
+        /// player glows instead of flooding the whole view. Far effects keep their full, size-scaled light. 0 = off.
+        public static float NearCameraLux = 20f;
+
+        float _t, _flash, _sustain = 1f, _flickerSeed, _lightK = 1f;
         bool _playing, _stopping;
         float[] _baseRates;
 
@@ -52,7 +58,7 @@ namespace OYM
         public void Play()
         {
             if (_baseRates == null || _baseRates.Length != (systems?.Length ?? 0)) CacheRates();
-            _t = 0f; _flash = 1f; _playing = true; _stopping = false; _sustain = 1f;
+            _t = 0f; _flash = 1f; _playing = true; _stopping = false; _sustain = 1f; _lightK = 1f;
             _flickerSeed = Random.value * 100f;
             for (int i = 0; i < systems.Length; i++)
             {
@@ -70,6 +76,13 @@ namespace OYM
             if (!_playing || _stopping) return;
             _stopping = true; _t = 0f;
             foreach (var p in systems) if (p) p.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+        }
+
+        /// This play only (call right after Play(); the next Play() resets it): the flash light x `k`.
+        public void ScaleLight(float k)
+        {
+            _lightK = Mathf.Max(0f, k);
+            UpdateLight(SceneEV());
         }
 
         public void SetSustain(float k)
@@ -118,16 +131,25 @@ namespace OYM
         void UpdateLight(float ev)
         {
             if (!flashLight) return;
-            float k = Mathf.Pow(2f, ev - referenceEV) * transform.lossyScale.x * transform.lossyScale.x;
+            float expo = Mathf.Pow(2f, ev - referenceEV);
+            float k = expo * transform.lossyScale.x * transform.lossyScale.x;
             float sustain = 0f;
             if (loop && !_stopping)
             {
                 float f = Mathf.PerlinNoise(_flickerSeed, (Application.isPlaying ? Time.time : _t) * 18f);
                 sustain = sustainLumen * _sustain * (0.65f + 0.7f * f);
             }
-            float lm = flashLumen * _flash + sustain;
-            flashLight.intensity = lm * k;
-            flashLight.enabled = lm > flashLumen * 0.004f + 1f;
+            float lm = (flashLumen * _flash + sustain) * _lightK;
+            float intensity = lm * k;
+            var cam = NearCameraLux > 0f ? Camera.main : null;
+            if (cam)
+            {
+                // point light: lux at distance d = lumens / (4 pi d^2)
+                float d = Mathf.Max(0.5f, Vector3.Distance(cam.transform.position, flashLight.transform.position));
+                intensity = Mathf.Min(intensity, NearCameraLux * expo * 4f * Mathf.PI * d * d);
+            }
+            flashLight.intensity = intensity;
+            flashLight.enabled = lm > (flashLumen * 0.004f + 1f) * _lightK;
         }
     }
 }
