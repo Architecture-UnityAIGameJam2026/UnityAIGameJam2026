@@ -21,7 +21,13 @@ namespace OnYourMark
         [Tooltip("LOD를 이만큼 일찍 낮춘다 (1 = 기본)")]
         public float lodBias = 0.5f;
 
+        [Header("렌더 파이프라인")]
+        [Tooltip("저사양일 때만 실행 중에 바꿔 끼우는 HDRP 에셋 (SSAO · 굴절 · 렌즈 플레어 끄기, 그림자 요청 32, 그림자 아틀라스 2048, 반사 캐시 1024). 프로젝트 품질 설정은 건드리지 않는다")]
+        public UnityEngine.Rendering.RenderPipelineAsset pipeline;
+
         [Header("메모리")]
+        [Tooltip("하늘 큐브맵 면 해상도 상한. 더 크면 실행 중에 작은 밉으로 복사해 바꿔 끼우고 원본은 내린다 (4096 → 2048: 약 256MB → 64MB). 0이면 끔")]
+        public int skyMaxSize = 2048;
         [Tooltip("텍스처 해상도를 2^n분의 1로 (1 = 절반: 2048 → 1024). M1처럼 메모리를 GPU와 함께 쓰는 기기에서 효과가 크다")]
         [Range(0, 3)] public int textureMipLimit = 1;
 

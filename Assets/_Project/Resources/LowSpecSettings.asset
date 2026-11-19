@@ -19,6 +19,9 @@ MonoBehaviour:
     m_Bits: 1024
   cullDistance: 700
   lodBias: 0.5
+  pipeline: {fileID: 11400000, guid: e55b6ff3a6df14699b89ed54b7c4e1ed, type: 2}
+  textureMipLimit: 1
+  skyMaxSize: 2048
   shadowDistance: 80
   disableHeavyEffects: 1
   targetFrameRate: 60

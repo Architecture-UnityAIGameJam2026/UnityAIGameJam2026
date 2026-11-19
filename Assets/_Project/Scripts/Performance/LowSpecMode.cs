@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.SceneManagement;
 
 namespace OnYourMark
 {
@@ -9,6 +12,8 @@ namespace OnYourMark
     /// - 먼 잔해 · 운석: 레이어별 컬링 거리, LOD 일찍 낮추기
     /// - 그림자: 최대 거리 축소 (전역 볼륨 덮어쓰기)
     /// - 카메라 화면 효과: 반사 · SSGI · 볼류메트릭 · 접촉 그림자 · AO · 투과 · SSS · 모션 블러 · 피사계 심도 끄기
+    /// - 렌더 파이프라인: 저사양용 HDRP 에셋으로 바꿔 끼우기 (프로젝트 품질 설정은 다른 브랜치와 같게 둔다)
+    /// - 하늘 큐브맵: 작은 밉으로 복사한 사본으로 바꾸고 원본을 메모리에서 내리기
     /// 켜고 끄기와 수치는 Resources/LowSpecSettings.asset.
     /// </summary>
     public class LowSpecMode : MonoBehaviour
@@ -25,6 +30,8 @@ namespace OnYourMark
         LowSpecSettings settings;
         Camera lastCamera;
         float savedLodBias; int savedMipLimit, savedFrameRate;
+        RenderPipelineAsset savedPipeline; bool pipelineSwapped;
+        readonly Dictionary<Cubemap, Cubemap> smallSkies = new();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Boot()
@@ -49,6 +56,17 @@ namespace OnYourMark
             QualitySettings.globalTextureMipmapLimit = settings.textureMipLimit;   // 텍스처 메모리 약 1/4
             if (settings.targetFrameRate > 0) Application.targetFrameRate = settings.targetFrameRate;
 
+            // 품질 단계는 그대로 두고, 이 단계의 파이프라인 에셋만 실행 중에 바꾼다
+            if (settings.pipeline)
+            {
+                savedPipeline = QualitySettings.renderPipeline;
+                QualitySettings.renderPipeline = settings.pipeline;
+                pipelineSwapped = true;
+            }
+
+            ShrinkSkies();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
             // 그림자 거리: 우선순위가 높은 전역 볼륨으로 모든 씬의 볼륨 위에 덮어쓴다
             var volume = host.AddComponent<Volume>();
             volume.isGlobal = true; volume.priority = 1000f;
@@ -62,9 +80,54 @@ namespace OnYourMark
         void OnDestroy()
         {
             if (!settings) return;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            if (pipelineSwapped) QualitySettings.renderPipeline = savedPipeline;
+            foreach (var small in smallSkies.Values) if (small) Destroy(small);
+            smallSkies.Clear();
             QualitySettings.lodBias = savedLodBias;
             QualitySettings.globalTextureMipmapLimit = savedMipLimit;
             Application.targetFrameRate = savedFrameRate;
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) => ShrinkSkies();
+
+        // 하늘 큐브맵이 skyMaxSize보다 크면 그 볼륨의 프로필 사본(volume.profile)에 작은 사본을 넣는다. 에셋 파일은 건드리지 않는다
+        void ShrinkSkies()
+        {
+            if (settings.skyMaxSize <= 0 || (SystemInfo.copyTextureSupport & CopyTextureSupport.Basic) == 0) return;
+            var replaced = new HashSet<Cubemap>();
+            foreach (var volume in FindObjectsByType<Volume>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                var profile = volume.HasInstantiatedProfile() ? volume.profile : volume.sharedProfile;
+                if (!profile || !profile.TryGet<HDRISky>(out var sky) || sky.hdriSky.value is not Cubemap big || big.width <= settings.skyMaxSize) continue;
+                var small = Shrink(big);
+                if (!small) continue;
+                volume.profile.TryGet<HDRISky>(out var own);   // 처음 읽을 때 볼륨 전용 사본이 만들어진다
+                own.hdriSky.value = small;
+                replaced.Add(big);
+            }
+            // 이제 아무 볼륨도 원본을 쓰지 않는다. 다른 곳에서 다시 쓰면 자동으로 다시 올라온다
+            foreach (var big in replaced) Resources.UnloadAsset(big);
+        }
+
+        Cubemap Shrink(Cubemap big)
+        {
+            if (smallSkies.TryGetValue(big, out var cached) && cached) return cached;
+            int skip = 0, size = big.width;
+            while (size > settings.skyMaxSize) { size >>= 1; skip++; }
+            int mips = big.mipmapCount - skip;
+            if (mips < 1) return null;
+            var small = new Cubemap(size, big.graphicsFormat, mips > 1 ? TextureCreationFlags.MipChain : TextureCreationFlags.None, mips)
+            {
+                name = big.name + " (low spec)", wrapMode = big.wrapMode, filterMode = big.filterMode, anisoLevel = big.anisoLevel,
+            };
+            small.Apply(false, true);   // CPU 사본을 버리고 GPU에만 둔다. 내용은 아래에서 GPU끼리 복사
+            for (int face = 0; face < 6; face++)
+                for (int m = 0; m < mips; m++)
+                    Graphics.CopyTexture(big, face, m + skip, small, face, m);
+            smallSkies[big] = small;
+            Debug.Log($"[LowSpec] sky {big.name}: {big.width} → {size}");
+            return small;
         }
 
         // 씬이 바뀌거나 카메라가 새로 생기면 그 카메라에 다시 적용한다
@@ -82,7 +145,6 @@ namespace OnYourMark
             for (int i = 0; i < 32; i++)
                 if ((settings.sceneryLayers.value & (1 << i)) != 0) distances[i] = settings.cullDistance;
             cam.layerCullDistances = distances;
-            cam.layerCullSpherical = true;
 
             if (!settings.disableHeavyEffects) return;
             var hd = cam.GetComponent<HDAdditionalCameraData>() ?? cam.gameObject.AddComponent<HDAdditionalCameraData>();
