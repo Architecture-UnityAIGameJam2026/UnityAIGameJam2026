@@ -1,3 +1,6 @@
+// Disabled in team main until the co-op (Net/CoopGame, CoopHud) and arrival-cutscene modules are merged: it drives
+// both. Define OYM_MINIMAP_TEST (Player Settings > Scripting Define Symbols) to bring it back.
+#if OYM_MINIMAP_TEST
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -330,3 +333,4 @@ namespace OYM.Net
         }
     }
 }
+#endif
