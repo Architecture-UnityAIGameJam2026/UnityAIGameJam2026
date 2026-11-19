@@ -26,8 +26,8 @@ namespace OnYourMark.UI
     public sealed class HudSwapGlitch : MonoBehaviour
     {
         [SerializeField] OnYourMarkHud hud;
-        [Tooltip("채널 순서의 모듈 이름: 0 생체, 1 지도, 2 소모품")]
-        [SerializeField] string[] moduleNames = { "Vitals", "Spatial", "Reserves" };
+        [Tooltip("채널 순서의 모듈 이름: 0 생체, 1 지도, 2 소모품, 3 스킬 (HudSkillPanel이 런타임에 만든다)")]
+        [SerializeField] string[] moduleNames = { "Vitals", "Spatial", "Reserves", HudSkillPanel.ModuleName };
 
         [Header("타이밍 (초, unscaled)")]
         [SerializeField, Min(0.2f)] float duration = 0.56f;
@@ -424,7 +424,8 @@ namespace OnYourMark.UI
         void SnapshotToGhost(Module m)
         {
             if (!m.ghost) return;
-            m.ghost.anchoredPosition = m.root.anchoredPosition;
+            m.ghost.anchoredPosition3D = m.root.anchoredPosition3D;   // HudPerspective가 3D로 기울인 모듈에도 그대로 겹친다
+            m.ghost.localRotation = m.root.localRotation;
             m.ghost.sizeDelta = m.root.sizeDelta;
             m.ghost.localScale = m.root.localScale;
             if (m.ghostGroup) m.ghostGroup.alpha = m.group ? m.group.alpha : 1f;
