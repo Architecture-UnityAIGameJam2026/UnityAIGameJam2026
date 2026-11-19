@@ -36,7 +36,7 @@ namespace OYM.Net
 
         static readonly string[] OffGroups =
         {
-            "Reticle", "AllyMarker", "ToggleChannels", "ToggleSupport", "QuickShield", "QuickScan", "Channels", "SupportWheel",
+            "Reticle", "AllyMarker", "Channels", "SupportWheel",   // 하단 단축 슬롯 4개(ToggleChannels · ToggleSupport · QuickShield · QuickScan)는 보인다
             "Channel0", "Channel1", "Channel2", "Support0", "Support1", "Support2", "CloseTray", "Exchange", "CancelExchange",
             "Awakened", "Toast"
         };
@@ -311,6 +311,53 @@ namespace OYM.Net
             float php = Coop ? (g.PartnerDown ? 0f : g.PartnerHP01) : 1f;
             _hud.SetPartnerTelemetry(php, pa, pc, pd);
             if (_skills) _skills.SetTelemetry(default, !_crossed || _back[3]);  // no Q / E skills here: dim tiles, crossed with the rest
+            PartnerDash(me, mate, g);
+        }
+
+        // 총잡이(ORBIT FRAME) 화면에만: 소모품 칸 오른쪽에 칼잡이(KESTREL)의 Shift 돌진 충전 상태를 항상 띄운다 (HUD 교차와 무관).
+        // 싱글: 같은 씬의 KESTREL에서 남은 초를 읽는다. 코옵: 상대 패킷의 FlagStrikeReady (준비 / 충전 중).
+        UnityEngine.UI.Text _dashText;
+        static readonly Color DashReadyInk = new Color32(0xF3, 0xEE, 0xDD, 255), DashChargingInk = new Color32(0xFF, 0x6B, 0x5E, 255);
+
+        void PartnerDash(ZeroGFlight me, ZeroGFlight mate, CoopGame g)
+        {
+            bool remote = Coop && g.Puppet && g.Puppet.HasState;
+            var kestrel = mate as KestrelController;
+            bool show = me && !(me is KestrelController) && kestrel;
+            if (!_dashText)
+            {
+                if (!show) return;
+                var reserves = _go.transform.Find("Reserves");
+                if (!reserves) return;
+                var rt = OnYourMarkHud.Rect("Partner dash", reserves, 236f, 6f, 110f, 70f);
+                rt.gameObject.layer = reserves.gameObject.layer;
+                _dashText = rt.gameObject.AddComponent<UnityEngine.UI.Text>();
+                _dashText.font = _hud.monoFont ? _hud.monoFont : _hud.displayFont ? _hud.displayFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                _dashText.fontSize = 16;
+                _dashText.lineSpacing = 1.1f;
+                _dashText.alignment = TextAnchor.UpperLeft;
+                _dashText.horizontalOverflow = HorizontalWrapMode.Overflow;
+                _dashText.verticalOverflow = VerticalWrapMode.Overflow;
+                _dashText.raycastTarget = false;
+            }
+            _dashText.enabled = show;
+            if (!show) return;
+            bool ready;
+            string state;
+            if (remote)
+            {
+                ready = g.Puppet.State.Has(PilotState.FlagStrikeReady);
+                state = ready ? "READY" : "CHARGING";
+            }
+            else
+            {
+                float left = kestrel.StrikeArmed ? kestrel.StrikeCooldownLeft : 0f;
+                ready = left <= 0f;
+                state = ready ? "READY" : $"{left:0.0}s";
+            }
+            string text = "KESTREL DASH\n" + state;
+            if (_dashText.text != text) _dashText.text = text;
+            _dashText.color = ready ? DashReadyInk : DashChargingInk;
         }
 
         /// reserves module: KESTREL = dash charges, ORBIT FRAME = railgun rounds (no ammo system in this build: full)

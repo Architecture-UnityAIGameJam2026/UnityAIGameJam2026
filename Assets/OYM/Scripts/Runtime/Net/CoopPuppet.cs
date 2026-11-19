@@ -14,12 +14,12 @@ namespace OYM.Net
         public float speed, slash, upper, thrust, hp;
         /// KESTREL: the slash in progress (0..2), -1 none
         public int attack;
-        /// FlagCombat / FlagAim / FlagTrail / FlagDash / FlagCruise / FlagDown
+        /// FlagCombat / FlagAim / FlagTrail / FlagDash / FlagCruise / FlagDown / FlagStrikeReady (KESTREL: Shift 돌진 충전됨)
         public int flags;
         /// ORBIT FRAME: +1 per railgun shot; any pilot: +1 per dash
         public int shotSeq, dashSeq;
 
-        public const int FlagCombat = 1, FlagAim = 2, FlagTrail = 4, FlagDash = 8, FlagCruise = 16, FlagDown = 32;
+        public const int FlagCombat = 1, FlagAim = 2, FlagTrail = 4, FlagDash = 8, FlagCruise = 16, FlagDown = 32, FlagStrikeReady = 64;
         public bool Has(int f) => (flags & f) != 0;
 
         public byte[] Write() => new CoopMsg.W(CoopMsg.Pilot)
@@ -129,6 +129,7 @@ namespace OYM.Net
             {
                 s.attack = _k.CurrentAttack;
                 if ((_k.trail && _k.trail.emitting) || (_k.fpTrail && _k.fpTrail.emitting)) s.flags |= PilotState.FlagTrail;
+                if (!_k.StrikeArmed || _k.StrikeReady) s.flags |= PilotState.FlagStrikeReady;   // 총잡이 HUD의 칼잡이 돌진 표시
             }
             if (_o)
             {
