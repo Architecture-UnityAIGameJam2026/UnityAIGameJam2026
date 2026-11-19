@@ -52,6 +52,7 @@ namespace OnYourMark
             {
                 bool restoredBio = !state.IsReturned(HudPart.Vitals);
                 for (int i = 0; i < 3; i++) state.Return((HudPart)i);
+                SoundRelay.All(SoundId.TerminalUnlock, transform.position + Vector3.up);
                 if (restoredBio)
                     foreach (var player in Player.All) player.ReportAction("return_hud", "Bio");
                 progress.Value = 0f;

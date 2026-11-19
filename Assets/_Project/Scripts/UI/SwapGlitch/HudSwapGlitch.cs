@@ -151,6 +151,7 @@ namespace OnYourMark.UI
             Apply(m, 0f);   // 같은 프레임에 새 데이터가 그려지기 전에 가린다
 
             if (withSound && sfxSource && swapClip) sfxSource.PlayOneShot(swapClip);
+            else if (withSound) Sfx.Play(SoundId.HudSwap);
             SwapStarted?.Invoke(channel, toSelf);
         }
 

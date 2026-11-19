@@ -26,6 +26,8 @@ namespace OnYourMark
 
         /// <summary>대쉬를 시작할 때 (내 클라이언트)</summary>
         public event System.Action Dashed;
+        /// <summary>맵 밖으로 떨어져 마지막으로 서 있던 자리로 돌아왔을 때</summary>
+        public event System.Action Recovered;
         public bool InfiniteDash => Time.time < infiniteDashUntil;
 
         public PlayerStats Stats => stats;
@@ -125,6 +127,7 @@ namespace OnYourMark
             verticalSpeed = 0f;
             flying = false;
             Physics.SyncTransforms();
+            Recovered?.Invoke();
         }
 
         /// <summary>

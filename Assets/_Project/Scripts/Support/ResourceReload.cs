@@ -58,6 +58,9 @@ namespace OnYourMark
                 target.Ammo.Fill();
 
             readyAt.Value = NetworkManager.ServerTime.Time + config.cooldown;
+            SoundRelay.All(SoundId.RemoteReload, target.transform.position + Vector3.up);
+            if (overcharge && target.Stats.showDashOnHud && config.infiniteDashSeconds > 0f)
+                SoundRelay.All(SoundId.InfiniteStep, target.transform.position + Vector3.up);
             target.FulfillSupport(HudPart.Resource);
             me.ReportAction(SelfManaged ? "reload" : "grant_resource", "completed");
             return true;

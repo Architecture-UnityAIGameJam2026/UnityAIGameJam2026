@@ -8,6 +8,10 @@ namespace OnYourMark
     {
         public int stacks = 1;
 
-        public override void OnKill(AwakeningSet owner) => owner.AddDashRpc(stacks);
+        public override void OnKill(AwakeningSet owner)
+        {
+            owner.AddDashRpc(stacks);
+            SoundRelay.All(SoundId.DashChargeReload, owner.Me.transform.position + Vector3.up);
+        }
     }
 }

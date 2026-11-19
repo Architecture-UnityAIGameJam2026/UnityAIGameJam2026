@@ -18,7 +18,7 @@ MonoBehaviour:
     volume: 0.8
     fade: 2.5
   - scene: Arena
-    clip: {fileID: 8300000, guid: 3431c07ce2a38e24899f90c9b7153f16, type: 3}
+    clip: {fileID: 8300000, guid: b07078f67a55a42fdb80c35a32867a05, type: 3}
     volume: 0.7
     fade: 1.2
   - scene: Showcase_DebrisField

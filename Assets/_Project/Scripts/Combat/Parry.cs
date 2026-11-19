@@ -103,6 +103,7 @@ namespace OnYourMark
                 rewarded = true;
                 AddDashRpc(data.dashPayback);
             }
+            SoundRelay.All(SoundId.ParrySuccess, transform.position + Vector3.up * 1.2f);
             return true;
         }
 

@@ -128,12 +128,14 @@ namespace OnYourMark
                     awakening.NotifyHit(hit.point);
                 }
             }
-            ShowTracerRpc(end);
+            ShowTracerRpc(end, overchargedRound);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        void ShowTracerRpc(Vector3 end)
+        void ShowTracerRpc(Vector3 end, bool overcharged)
         {
+            Sfx.Play(Weapon.automatic ? SoundId.RapidFire : overcharged ? SoundId.OverchargeFire : SoundId.RailgunFire,
+                muzzle ? muzzle.position : transform.position + Vector3.up * 1.2f);
             if (TryGetComponent<PilotVisuals>(out var visuals)) visuals.Recoil(Weapon.automatic);
             tracer.SetPosition(0, muzzle.position);
             tracer.SetPosition(1, end);

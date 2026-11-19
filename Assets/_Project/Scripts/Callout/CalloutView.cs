@@ -63,6 +63,7 @@ namespace OnYourMark
         public void Show(string subject, Color subjectColor, string speaker, string listener,
             string koreanLine, string englishLine, float seconds)
         {
+            Sfx.Play(SoundId.RadioChirp);   // 무전이 열리는 짧은 비프
             var msg = new Message
             {
                 subject = subject, subjectColor = subjectColor, speaker = speaker, listener = listener,

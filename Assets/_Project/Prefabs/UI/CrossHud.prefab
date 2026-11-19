@@ -1976,6 +1976,8 @@ GameObject:
   - component: {fileID: 5742175525289437239}
   - component: {fileID: 8757523964855817674}
   - component: {fileID: 746730378887341588}
+  - component: {fileID: 7150988607362906525}
+  - component: {fileID: 169696143523013249}
   m_Layer: 0
   m_Name: CrossHud
   m_TagString: Untagged
@@ -2109,6 +2111,34 @@ MonoBehaviour:
   toggle: {fileID: -3256173756181865926, guid: 0d74bf912eb2e445b92f9398aeed1e75, type: 3}
   panel: {fileID: 9085808419122021641}
   opacity: 0.8
+--- !u!114 &7150988607362906525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486881882367307771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f599e98452e94f1ebcf2fd56174ba7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.SoundRelay
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &169696143523013249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486881882367307771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c534057ca81ee449eb9eb61ed5921d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnYourMark.GameSounds
+  waves: {fileID: 0}
+  exchange: {fileID: 0}
+  flow: {fileID: 0}
 --- !u!1 &8577550779057085900
 GameObject:
   m_ObjectHideFlags: 0

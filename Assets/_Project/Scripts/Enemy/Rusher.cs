@@ -13,6 +13,8 @@ namespace OnYourMark
         [SerializeField] GameObject blastEffect;
 
         public bool Fusing => fusing;
+        /// <summary>자폭 카운트다운 표시가 켜졌는지 (모든 클라이언트)</summary>
+        public bool FuseVisible => fuseWarning && fuseWarning.activeSelf;
         bool fusing;
         readonly HashSet<Health> blastTargets = new();
         int coverMask;
@@ -65,6 +67,7 @@ namespace OnYourMark
         [Rpc(SendTo.ClientsAndHost)]
         void ShowBlastRpc(Vector3 position)
         {
+            Sfx.Play(SoundId.RusherExplosion, position + Vector3.up * 0.5f);
             FxPool.Play(blastEffect, position, Quaternion.identity, Vector3.one * data.blastRadius * 2f, 0.3f);
         }
     }

@@ -23,4 +23,4 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 1536
-  dryFireSound: {fileID: 8300000, guid: 424311ceb2a864a5494388b54d44f0a3, type: 3}
+  dryFireSound: {fileID: 8300000, guid: 9715071559b9945c5b36829729c4e28d, type: 3}
