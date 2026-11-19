@@ -64,7 +64,7 @@ namespace OYM
 
             Log("friend code: open, type, join");
             ui.SelectMenuItem(0); ui.Submit(); ui.ToggleFriend(); yield return Wait(0.9f);
-            ui.SetFriendInput(OnYourMark.TitleMatch.Active?.RoomCode ?? ""); yield return Wait(0.5f);
+            ui.SetFriendInput(Net.CoopSession.Active?.RoomCode ?? ""); yield return Wait(0.5f);
             ui.Submit(); yield return Wait(0.4f); yield return Still("ui_03_friend");
             yield return Wait(1.6f); yield return Still("ui_03b_friend_status");
             ui.Cancel(); ui.Cancel(); yield return Wait(0.7f);

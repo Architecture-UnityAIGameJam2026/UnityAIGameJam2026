@@ -103,7 +103,8 @@ namespace OYM
                 for (int i = 0; i < hz.zones.Count; i++)
                 {
                     var z = hz.zones[i];
-                    if (z == null || !z.sleepers) continue;
+                    // Arena squads use the same spawner; the four story zones own the original cutaways and boss.
+                    if (z == null || z.section == HuskZones.Section.Arena || !z.sleepers) continue;
                     int n = 0; foreach (Transform ch in z.sleepers) if (ch.gameObject.activeSelf) n++;
                     if (n == 0) continue;
                     var w = new ZoneWatch { z = z, index = i, initial = n };
@@ -240,6 +241,8 @@ namespace OYM
         {
             foreach (var w in _zones)
             {
+                // Both pilots can wake zones during a reveal. Finish that cut before locking the controls again.
+                if (_e.hold) return;
                 if (w.woken || !w.z.sleepers) continue;
                 bool any = false;
                 foreach (Transform ch in w.z.sleepers) if (ch.gameObject.activeSelf) { any = true; break; }
@@ -403,6 +406,15 @@ namespace OYM
             var be = _e.boss;
             if (!be || !be.boss) { Debug.LogWarning("[OYM-HUSK] no BossEntrance: boss phase without the entrance"); return; }
             var hero = _e.Player;
+            if (_e.Remote != null && _nest != null)
+            {
+                foreach (var pilot in _e.Pilots())
+                    if (_e.AliveOf(pilot) && Vector3.Distance(pilot.position, _nest.z.center) <= _nest.z.radius)
+                    {
+                        hero = pilot;
+                        break;
+                    }
+            }
             Transform partner = null;
             if (_e.director && _e.director.controllers != null)
                 foreach (var c in _e.director.controllers) if (c && c.transform != hero) partner = c.transform;

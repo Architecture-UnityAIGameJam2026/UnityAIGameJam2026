@@ -8,7 +8,7 @@ namespace OYM.Net
     /// H = host -> guest, G = guest -> host, B = both ways.
     public static class CoopMsg
     {
-        public const byte Version = 3;
+        public const byte Version = 4;
 
         // title / session
         public const byte Hello = 1;        // G  u8 version, u8 preferred pilot
@@ -35,6 +35,7 @@ namespace OYM.Net
         public const byte Level = 30;       // H  u8 beat, u8 flags (1 engaged, 2 hold, 4 cutaway, 8 hostile)
         public const byte Bark = 31;        // H  string speaker, string line
         public const byte CamPose = 32;     // H  v3 pos, q rot, f fov (while the host is in a cutaway)
+        public const byte ArenaDeckCut = 33; // H  begin the arena's laser sweep and deck separation
 
         // the CITADEL
         public const byte BossStart = 40;   // H  u8 actors (1 = host pilot, 2 = guest pilot)

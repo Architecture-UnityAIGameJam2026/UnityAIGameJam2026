@@ -281,8 +281,9 @@ namespace OYM
             _F = Vector3.ProjectOnPlane(planetDir, _U).normalized;
             if (_F.sqrMagnitude < 0.5f) _F = Vector3.forward;
             _R = Vector3.Cross(_U, _F);
-            // the shots frame the character the player controls (falls back to the first actor)
-            var hero = flightCamera && flightCamera.target ? flightCamera.target : (actors != null && actors.Length > 0 && actors[0] ? actors[0] : null);
+            // When pilots split up, both screens frame a pilot who actually reached the boss encounter.
+            var hero = flightCamera ? flightCamera.target : null;
+            if (actors != null && actors.Length > 0 && System.Array.IndexOf(actors, hero) < 0) hero = actors[0];
             _hero = hero ? hero.position : _O;
             _bow = HeadPos(THit);
             _D = Vector3.ProjectOnPlane(_bow - _hero, _U).normalized;          // horizontal: hero -> the boss's head
@@ -372,6 +373,7 @@ namespace OYM
                 {
                     var c = director.controllers[i]; if (!c) continue;
                     _wasScripted[i] = c.scripted; c.scripted = true; c.scriptedInput = default;
+                    if (actors == null || actors.Length == 0 || System.Array.IndexOf(actors, c.transform) >= 0) c.ResetMotion();
                 }
             }
             if (flightCamera) { _camWasScripted = flightCamera.scripted; flightCamera.scripted = true; }

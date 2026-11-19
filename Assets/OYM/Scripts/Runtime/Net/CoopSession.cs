@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 namespace OYM.Net
 {
     /// The two-player room (the team build's TitleMatch flow on this project's title): opening the friend panel hosts
-    /// a room on the LAN and shows its 8-character code; JOIN with the partner's code leaves that room and connects
+    /// a room on the LAN and shows its 6-character code; JOIN with the partner's code leaves that room and connects
     /// to the partner's instead. When the guest says hello the host hands out the seats (the host keeps the pilot on
     /// its title, the guest flies the other one) and both titles launch into the game scene together. Survives the
     /// scene load (DontDestroyOnLoad); the game side is CoopGame. Closing the panel, going back to the title or quitting
@@ -33,7 +33,6 @@ namespace OYM.Net
         TitleDirector _title;
         bool _inGame, _helloSent, _welcomed, _lostRaised;
         float _connectAt = -1f;
-        string _joinCode;
 
         const float ConnectTimeout = 8f;
         public const float LostAfter = 12f;
@@ -57,20 +56,20 @@ namespace OYM.Net
         /// JOIN with the partner's code (or a plain IP from the command line).
         public static void JoinRoom(TitleDirector title, string code)
         {
-            if (!CoopCode.TryParseTarget(code, out string ip))
+            if (!OnYourMark.RoomCode.TryDecode(code, out string ip) && !CoopCode.TryParseTarget(code, out ip))
             {
-                Ui(title, null, "THAT CODE DOES NOT LOOK RIGHT. CHECK ALL 8 CHARACTERS", true);
+                Ui(title, null, "THAT CODE DOES NOT LOOK RIGHT. CHECK THE HOST'S ROOM CODE", true);
                 return;
             }
             var s = Active ? Active : Create(title);
             s._title = title;
             if (s._inGame) return;
-            if (s.IsHost && s.RoomCode != null && s.RoomCode == code.Replace("-", "").ToUpperInvariant())
+            if (s.IsHost && OnYourMark.RoomCode.TryDecode(s.RoomCode, out var ownAddress) && ownAddress == ip)
             {
                 s.ShowRoom("THAT IS YOUR OWN CODE. SEND IT TO YOUR PARTNER", true);
                 return;
             }
-            s.StartJoin(ip, code);
+            s.StartJoin(ip);
         }
 
         /// Friend panel closed before anything launched: close the room.
@@ -93,36 +92,9 @@ namespace OYM.Net
             return s;
         }
 
-        // team repo port: the room panel (TitleUI.ShowRoom), DeployCoop and PlayTestDirector.SwitchLocked belong to the
-        // local title / director; the team's versions do not have them. Used when present, skipped otherwise.
-        static readonly System.Reflection.MethodInfo s_showRoom =
-            typeof(TitleUI).GetMethod("ShowRoom", new[] { typeof(string), typeof(string), typeof(bool) });
-        static string s_lastStatus;
-
-        static void Ui(TitleDirector t, string code, string status, bool error)
+        static void Ui(TitleDirector title, string code, string status, bool error)
         {
-            if (!t || !t.ui) return;
-            if (s_showRoom != null) { s_showRoom.Invoke(t.ui, new object[] { code, status, error }); return; }
-            if (string.IsNullOrEmpty(status) || status == s_lastStatus) return;      // team title: no panel, the log says it
-            s_lastStatus = status;
-            Debug.Log($"[OYM-COOP] room {code ?? "-"}: {status}");
-        }
-
-        static bool CallTitle(TitleDirector t, string method, int arg)
-        {
-            var m = t ? typeof(TitleDirector).GetMethod(method, new[] { typeof(int) }) : null;
-            if (m == null) return false;
-            m.Invoke(t, new object[] { arg });
-            return true;
-        }
-
-        static void SetStatic(System.Type type, string name, bool value)
-        {
-            const System.Reflection.BindingFlags F = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static;
-            var f = type.GetField(name, F);
-            if (f != null && f.FieldType == typeof(bool)) { f.SetValue(null, value); return; }
-            var p = type.GetProperty(name, F);
-            if (p != null && p.CanWrite && p.PropertyType == typeof(bool)) p.SetValue(null, value);
+            if (title && title.ui) title.ui.ShowMatch(status, error, code);
         }
 
         void ShowRoom(string status, bool error = false) => Ui(_title, IsHost ? RoomCode : null, status, error);
@@ -140,26 +112,26 @@ namespace OYM.Net
             DropLink();
             IsHost = true; _helloSent = _welcomed = false; _connectAt = -1f;
             string ip = LocalAddress.Get() ?? "127.0.0.1";                   // no LAN: still joinable from this PC
-            RoomCode = CoopCode.Encode(ip);
+            RoomCode = OnYourMark.RoomCode.Encode(ip);
             _link = new CoopLink();
             if (!_link.Listen())
             {
                 // the port is taken: another title on this PC hosts. This one can still join it.
                 Debug.Log($"[OYM-COOP] could not open a room ({_link.Error}): join only");
+                DropLink();
                 RoomCode = null;
                 ShowRoom(note ?? "A ROOM IS ALREADY OPEN ON THIS PC. ENTER ITS CODE TO JOIN", true);
                 return;
             }
-            Debug.Log($"[OYM-COOP] room open on {ip}:{CoopLink.Port}  code {RoomCode}");
+            Debug.Log("[OYM-COOP] room open");
             ShowRoom(note ?? "WAITING FOR YOUR PARTNER  ·  SHARE THIS CODE", noteIsError);
         }
 
         // ------------------------------------------------------------------------------------------------ guest
-        void StartJoin(string ip, string code)
+        void StartJoin(string ip)
         {
             DropLink();
             IsHost = false; RoomCode = null; _helloSent = _welcomed = false;
-            _joinCode = code;
             _link = new CoopLink();
             _link.Connect(ip);
             _connectAt = Time.unscaledTime;
@@ -261,10 +233,7 @@ namespace OYM.Net
             _inGame = true;
             SetGameFlags(true);
             ShowRoom("CONNECTED  ·  DEPLOYING TOGETHER");
-            if (CallTitle(_title, "DeployCoop", LocalPilot)) return;
-            // team title: no DeployCoop - into the showcase with this seat's pilot first (ShowcaseSession puts it in slot 0)
-            ShowcaseSession.SelectedPilot = LocalPilot == 0 ? "KESTREL" : "ORBIT FRAME";
-            ShowcaseSession.LoadScene(ShowcaseScene.Name);
+            _title.DeployCoop(LocalPilot);
         }
 
         void RaiseLost(string why)
@@ -287,7 +256,7 @@ namespace OYM.Net
             OYM.Cine.ArrivalCutscene.PlayOnGameStart = !coop;
             OYM.Cine.ArrivalCutscene.DialogueInput = !coop;
             OYM.Cine.ArrivalCutscene.SkipInput = !coop || (Active && Active.IsHost);
-            SetStatic(typeof(PlayTestDirector), "SwitchLocked", coop);
+            PlayTestDirector.SwitchLocked = coop;
         }
 
         void DropLink()
@@ -330,10 +299,7 @@ namespace OYM.Net
             int j = System.Array.IndexOf(args, "-coopJoin");
             bool host = System.Array.IndexOf(args, "-coopHost") >= 0;
             if (!host && j < 0) return;
-            // the local title's friend panel hosts a room; the team title's friend panel is the team's own NGO room,
-            // so there the LAN room is opened straight
-            if (s_showRoom != null) title.ui.ToggleFriend();
-            else OpenRoom(title);
+            OpenRoom(title);
             if (j >= 0 && j + 1 < args.Length) JoinRoom(title, args[j + 1]);
         }
 

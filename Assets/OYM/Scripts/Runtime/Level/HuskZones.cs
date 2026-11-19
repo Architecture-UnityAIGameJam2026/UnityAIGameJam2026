@@ -10,35 +10,50 @@ namespace OYM
     /// nearest first. Only HuskEncounter's public API is used; with -oymNoHusk (no encounter) the sleepers stay decor.
     public class HuskZones : MonoBehaviour
     {
+        public enum Section { Approach, Arena, AfterArena }
+
         [System.Serializable]
         public class Zone
         {
             public string name;
+            public Section section;
             [Tooltip("parent of the sleeping WICK_* / PRISM_* models of this zone")] public Transform sleepers;
             public Vector3 center;
             [Tooltip("the zone wakes when the player is this close to its centre (m)")] public float radius = 60f;
         }
 
         public List<Zone> zones = new List<Zone>();
+        [Tooltip("First and last walkable decks of the inserted arena. Either lane advances the team.")]
+        public Transform arenaEntry, arenaExit;
         [Tooltip("seconds between the WICKs of a zone waking (nearest first)")] public float wickStagger = 0.7f;
         [Tooltip("PRISMs wake after this many seconds, then one every prismStagger")] public float prismDelay = 1.6f;
         public float prismStagger = 3.5f;
 
         readonly HashSet<Zone> _woken = new HashSet<Zone>();
+        Section reached;
 
         void Update()
         {
             var enc = HuskEncounter.Current;
             if (!enc || enc.Mirror || !enc.Engaged || !enc.Gate || !enc.hostileEnabled) return;   // co-op guest: the host wakes them
             if (!enc.Player) return;
+            AdvanceSection(enc);
             foreach (var z in zones)
             {
-                if (z == null || !z.sleepers || _woken.Contains(z)) continue;
+                if (z == null || z.section > reached || !z.sleepers || _woken.Contains(z)) continue;
                 // either pilot (co-op) close enough wakes the zone
                 if (!enc.AnyPilotWithin(z.center, z.radius, out Vector3 p)) continue;
                 _woken.Add(z);
                 Wake(enc, z, p);
             }
+        }
+
+        void AdvanceSection(HuskEncounter enc)
+        {
+            if (reached == Section.AfterArena || !arenaEntry || !arenaExit) return;
+            var threshold = reached == Section.Approach ? arenaEntry.position : arenaExit.position;
+            if (enc.AnyPilotWithin(threshold, 11f, out _))
+                reached = reached == Section.Approach ? Section.Arena : Section.AfterArena;
         }
 
         void Wake(HuskEncounter enc, Zone z, Vector3 from)

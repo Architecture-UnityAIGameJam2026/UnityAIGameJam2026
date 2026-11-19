@@ -98,6 +98,8 @@ namespace OYM
         public FlightInput scriptedInput;
 
         protected Vector3 velocity;
+        Vector3 arenaVelocity;
+        float arenaRideLeft, arenaGravity;
         protected Transform leanPivot, model;
         protected FlightCamera flightCam;
         protected FlightInput input;
@@ -124,6 +126,7 @@ namespace OYM
         Vector3 _bumpN, _bumpP;
 
         public Vector3 Velocity => velocity;
+        internal bool RidingArenaDevice => arenaRideLeft > 0f;
         public bool Dashing => dashLeft > 0f;
         public bool FirstPerson => firstPersonActive;
         public bool Cruising => cruising;
@@ -249,7 +252,17 @@ namespace OYM
 
             Tick(dt, aim);
             _bumped = false;
-            Move(velocity * dt);
+            if (!RidingArenaDevice) Move(velocity * dt);
+            else if (scripted) velocity = Vector3.zero;     // hold the ride while either pilot's cutaway is playing
+            else
+            {
+                float t = Mathf.Min(dt, arenaRideLeft);
+                velocity = arenaVelocity;
+                Move(arenaVelocity * t + Vector3.up * (.5f * arenaGravity * t * t));
+                arenaVelocity.y += arenaGravity * t;
+                arenaRideLeft -= t;
+                if (arenaRideLeft <= 0f) velocity = Vector3.zero;
+            }
             if (cruising && _bumped) CruiseBump();
             if (cruising && OwnsCamera) flightCam.SetSpeedFx(Cruise01);
             Face(dt, aim, wish);
@@ -266,9 +279,20 @@ namespace OYM
         protected virtual float ExtraThrust() => 0f;
         protected virtual bool FaceCamera() => true;
 
+        // Keep the normal capsule sweep and combat input during a pad launch or cable ride.
+        public void RideArenaDevice(Vector3 landing, float seconds, bool arc)
+        {
+            ResetMotion();
+            arenaRideLeft = Mathf.Max(.05f, seconds);
+            arenaGravity = arc ? -22f : 0f;
+            arenaVelocity = (landing - transform.position) / arenaRideLeft - Vector3.up * (.5f * arenaGravity * arenaRideLeft);
+            if (jetpack) jetpack.Ignite();
+        }
+
         /// Stop all motion (demo / respawn).
         public void ResetMotion()
         {
+            arenaRideLeft = 0f;
             velocity = Vector3.zero; dashLeft = 0f; snapLeft = 0f; lean = leanVel = _leg = _legVel = Vector2.zero;
             cruising = false; cruiseNow = 0f; brakeLeft = 0f; _yawRate = 0f;
         }
@@ -385,7 +409,7 @@ namespace OYM
         }
 
         // ------------------------------------------------------------------------------------------------ motion
-        void Move(Vector3 delta)
+        internal void Move(Vector3 delta)
         {
             Vector3 c = transform.position + Vector3.up * bodyCenter;
             Vector3 top = Vector3.up * 0.6f;                                   // capsule up to the head: the FP eye never pokes into blocks
