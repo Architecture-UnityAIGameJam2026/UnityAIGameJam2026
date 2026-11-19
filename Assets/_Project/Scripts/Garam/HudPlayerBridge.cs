@@ -10,6 +10,8 @@ namespace OnYourMark
     /// 파츠 교환 · 반환은 OnYourMarkHud.SetGameState → ChannelSwapping으로 글리치가 자동 재생된다.
     /// 3번 파츠(스킬): 반환 전에는 Q가 파트너의 궁극기를 발동하므로 파트너 유닛의 Q · E를, 반환 후에는 내 것을 HudSkillPanel에 보여 준다.
     /// 큰 피격: 한 번에 잃은 체력 비율로 HudBreak 고장 세기(약 · 중 · 강)를 고른다.
+    /// 총잡이 화면: 소모품 칸 오른쪽에 칼잡이의 남은 대쉬 횟수를 항상 띄운다 (R 원격 충전 타이밍용, 파츠 교환 상태와 무관).
+    /// 칼잡이가 봇(싱글)이면 호스트가 소유자라 바로, 사람(멀티)이면 Player의 동기화 값으로 읽는다.
     /// </summary>
     [DefaultExecutionOrder(-5)]
     public class HudPlayerBridge : MonoBehaviour
@@ -30,6 +32,8 @@ namespace OnYourMark
         Player linkedPartner;
         Player hitWatch;
         float lastHealth;
+        UnityEngine.UI.Text partnerDash;
+        static readonly Color DashInk = new Color32(0xF3, 0xEE, 0xDD, 255), DashEmpty = new Color32(0xFF, 0x6B, 0x5E, 255);
 
         void Awake()
         {
@@ -99,7 +103,37 @@ namespace OnYourMark
             hitWatch = me;
             lastHealth = hp;
 
+            ShowPartnerDash(me, partner);
+
             if (CursorLock.IsLocked) hud.openPanel = OnYourMarkHud.Panel.Closed;
+        }
+
+        // 총잡이 화면에만: "P1 DASH 2/3" (0이면 빨간색)
+        void ShowPartnerDash(Player me, Player partner)
+        {
+            bool show = !me.Stats.showDashOnHud && partner && partner.Stats.showDashOnHud;
+            if (!partnerDash)
+            {
+                if (!show) return;
+                var reserves = hud.transform.Find("Reserves");
+                if (!reserves) return;
+                var rt = OnYourMarkHud.Rect("Partner dash", reserves, 236f, 6f, 90f, 70f);
+                rt.gameObject.layer = reserves.gameObject.layer;
+                partnerDash = rt.gameObject.AddComponent<UnityEngine.UI.Text>();
+                partnerDash.font = hud.monoFont ? hud.monoFont : hud.displayFont ? hud.displayFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                partnerDash.fontSize = 16;
+                partnerDash.lineSpacing = 1.1f;
+                partnerDash.alignment = TextAnchor.UpperLeft;
+                partnerDash.horizontalOverflow = HorizontalWrapMode.Overflow;
+                partnerDash.verticalOverflow = VerticalWrapMode.Overflow;
+                partnerDash.raycastTarget = false;
+            }
+            partnerDash.enabled = show;
+            if (!show) return;
+            int left = partner.DashStacks, max = partner.DashCapacity;
+            string text = $"{partner.Stats.displayName} DASH\n{left} / {max}";
+            if (partnerDash.text != text) partnerDash.text = text;
+            partnerDash.color = left == 0 ? DashEmpty : DashInk;
         }
 
         static int ResourceCount(Player player) => !player ? 0
