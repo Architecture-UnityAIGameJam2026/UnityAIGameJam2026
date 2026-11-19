@@ -20,7 +20,7 @@
 }
 
 /* ---------------------------------------------------------------- logo (wipe + scan line) */
-.logo { position: absolute; left: 64px; top: 52px; }
+.logo { position: absolute; left: 100px; top: 86px; }              /* user 11-19: a little toward the bottom right */
 .logo-clip {
     width: 0; height: 182px; overflow: hidden;
     transition-property: width; transition-duration: 0.8s; transition-timing-function: ease-out-cubic;
@@ -37,7 +37,7 @@
 
 /* ---------------------------------------------------------------- Discord (top right) */
 .discord { position: absolute; right: 56px; top: 58px; width: 320px; align-items: flex-end; translate: 40px 0; }
-.discord-rule { width: 320px; height: 1px; margin-bottom: 14px; background-color: rgba(220, 235, 245, 0.25); }
+.discord-rule { width: 320px; height: 1px; margin-bottom: 14px; background-color: rgba(220, 235, 245, 0.25); visibility: hidden; }  /* user 11-19: line removed, space kept */
 .discord-rule-accent {
     position: absolute; right: 0; top: 0; width: 56px; height: 1px;
     background-color: rgb(88, 101, 242);
@@ -120,7 +120,7 @@ TextField.fp-field:focus .unity-base-text-field__input { border-color: rgb(111, 
 
 /* ---------------------------------------------------------------- pilot icons (bottom right) */
 .pilots { position: absolute; right: 56px; bottom: 84px; align-items: flex-end; translate: 50px 0; }
-.pilots-rule { width: 300px; height: 1px; margin-right: -56px; margin-bottom: 14px; background-color: rgba(220, 235, 245, 0.32); }
+.pilots-rule { width: 300px; height: 1px; margin-right: -56px; margin-bottom: 14px; background-color: rgba(220, 235, 245, 0.32); visibility: hidden; }  /* user 11-19: line removed */
 .cards { width: 136px; height: 240px; }
 .card {
     position: absolute; left: 0; top: 0; width: 136px; height: 136px; overflow: hidden;
@@ -150,37 +150,37 @@ TextField.fp-field:focus .unity-base-text-field__input { border-color: rgb(111, 
 .card-name { font-size: 14px; letter-spacing: 3px; -unity-font-style: bold; color: rgb(200, 210, 218); -unity-text-align: middle-center; white-space: normal; }
 
 /* ---------------------------------------------------------------- menu (bottom left) */
-.menu { position: absolute; left: 72px; bottom: 124px; width: 600px; translate: -50px 0; }
+.menu { position: absolute; left: 72px; bottom: 124px; width: 420px; translate: -50px 0; }  /* user 11-19: menu at 0.7x */
 .menu-cursor {
-    position: absolute; left: -26px; top: 0; width: 560px; height: 70px; opacity: 0;
+    position: absolute; left: -18px; top: 0; width: 392px; height: 49px; opacity: 0;
     transition-property: top, opacity; transition-duration: 0.24s, 0.3s; transition-timing-function: ease-out-back, linear;
 }
 .menu-cursor--on { opacity: 1; }
 .menu-cursor-bg {
-    position: absolute; left: 0; top: 6px; bottom: 6px; right: 0;
+    position: absolute; left: 0; top: 4px; bottom: 4px; right: 0;
     background-color: rgba(111, 230, 255, 0.07);
     transition-property: background-color; transition-duration: 0.2s;
 }
-.menu-cursor-bar { position: absolute; left: 0; top: 6px; bottom: 6px; width: 4px; background-color: rgb(111, 230, 255); }
+.menu-cursor-bar { position: absolute; left: 0; top: 4px; bottom: 4px; width: 3px; background-color: rgb(111, 230, 255); }
 .theme-orbit .menu-cursor-bg { background-color: rgba(255, 184, 64, 0.08); }
 .theme-orbit .menu-cursor-bar { background-color: rgb(255, 184, 64); }
 .menu-cursor--press .menu-cursor-bg { background-color: rgba(111, 230, 255, 0.34); transition-duration: 0.03s; }
 .theme-orbit .menu-cursor--press .menu-cursor-bg { background-color: rgba(255, 184, 64, 0.34); }
 
 .menu-item {
-    height: 70px; flex-direction: row; align-items: center;
+    height: 49px; flex-direction: row; align-items: center;
     opacity: 0; translate: -30px 0;
     transition-property: opacity, translate; transition-duration: 0.35s, 0.45s; transition-timing-function: ease-out-cubic, ease-out-cubic;
 }
 .menu-item.mi--in { opacity: 1; translate: 0 0; }
 .mi-label {
-    font-size: 40px; letter-spacing: 10px; -unity-font-style: bold; -unity-text-align: middle-left;
+    font-size: 28px; letter-spacing: 7px; -unity-font-style: bold; -unity-text-align: middle-left;
     color: rgba(226, 233, 238, 0.46);
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
     transition-property: color, translate, letter-spacing; transition-duration: 0.2s, 0.24s, 0.24s;
     transition-timing-function: ease-out-cubic, ease-out-back, ease-out-cubic;
 }
-.menu-item--sel .mi-label { color: rgb(246, 249, 251); translate: 18px 0; letter-spacing: 12px; }
+.menu-item--sel .mi-label { color: rgb(246, 249, 251); translate: 13px 0; letter-spacing: 8px; }
 .menu-item--press .mi-label { color: rgb(111, 230, 255); }
 .theme-orbit .menu-item--press .mi-label { color: rgb(255, 184, 64); }
 
@@ -228,7 +228,7 @@ TextField.fp-field:focus .unity-base-text-field__input { border-color: rgb(111, 
     flex-direction: row; justify-content: center; align-items: center;
     translate: 0 16px; bottom: 36px;
 }
-.hints-line { width: 260px; height: 1px; background-color: rgba(220, 235, 245, 0.22); }
+.hints-line { width: 260px; height: 1px; background-color: rgba(220, 235, 245, 0.22); visibility: hidden; }  /* user 11-19: lines removed, team logo stays centred */
 .hints-mark {
     width: 9px; height: 9px; margin: 0 22px 0 22px; rotate: 45deg;
     border-width: 1px; border-color: rgb(111, 230, 255);
@@ -317,7 +317,7 @@ TextField.fp-field:focus .unity-base-text-field__input { border-color: rgb(111, 
 /* The home list and the mode list occupy the same title-menu slot. */
 .menu.menu--offstage { translate: -760px 0; opacity: 1; }
 .play-modes {
-    position: absolute; left: 72px; bottom: 124px; width: 600px;
+    position: absolute; left: 72px; bottom: 124px; width: 420px;   /* 0.7x like the menu */
     translate: -760px 0; opacity: 0;
     transition-property: translate, opacity; transition-duration: .36s, .22s;
     transition-timing-function: ease-out-cubic;
@@ -331,9 +331,9 @@ TextField.fp-field:focus .unity-base-text-field__input { border-color: rgb(111, 
     border-width: 0; border-radius: 0; margin: 0; padding: 0;
     -unity-text-align: middle-left;
 }
-.mode-item { height: 70px; align-self: flex-start; }
+.mode-item { height: 49px; align-self: flex-start; }   /* 0.7x like .menu-item */
 .mode-item:hover, .mode-item:focus {
-    color: rgb(246, 249, 251); translate: 18px 0; letter-spacing: 12px;
+    color: rgb(246, 249, 251); translate: 13px 0; letter-spacing: 8px;   /* = .menu-item--sel at 0.7x */
 }
 .room-back {
     align-self: flex-start; margin-top: 14px; height: 36px; font-size: 18px;
