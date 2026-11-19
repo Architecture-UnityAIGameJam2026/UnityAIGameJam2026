@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 namespace OYM.Net
 {
     /// The two-player room (the team build's TitleMatch flow on this project's title): opening the friend panel hosts
-    /// a room on the LAN and shows its 8-character code; JOIN with the partner's code leaves that room and connects
+    /// a room on the LAN and shows its code (8 characters on the local title, the team's 6-character room code on the
+    /// team title, feature/coop-server); JOIN with the partner's code leaves that room and connects
     /// to the partner's instead. When the guest says hello the host hands out the seats (the host keeps the pilot on
     /// its title, the guest flies the other one) and both titles launch into the game scene together. Survives the
     /// scene load (DontDestroyOnLoad); the game side is CoopGame. Closing the panel, going back to the title or quitting
@@ -54,23 +55,26 @@ namespace OYM.Net
             Create(title).StartHosting();
         }
 
-        /// JOIN with the partner's code (or a plain IP from the command line).
+        /// JOIN with the partner's code: the team title's 6-character room code (OnYourMark.RoomCode), the local title's
+        /// 8-character code, or a plain IP from the command line.
         public static void JoinRoom(TitleDirector title, string code)
         {
-            if (!CoopCode.TryParseTarget(code, out string ip))
+            string c = code?.Trim();
+            string ip = null;
+            if (string.IsNullOrEmpty(c) || (!OnYourMark.RoomCode.TryDecode(c, out ip) && !CoopCode.TryParseTarget(c, out ip)))
             {
-                Ui(title, null, "THAT CODE DOES NOT LOOK RIGHT. CHECK ALL 8 CHARACTERS", true);
+                Ui(title, null, "THAT CODE DOES NOT LOOK RIGHT. CHECK THE HOST'S CODE", true);
                 return;
             }
             var s = Active ? Active : Create(title);
             s._title = title;
             if (s._inGame) return;
-            if (s.IsHost && s.RoomCode != null && s.RoomCode == code.Replace("-", "").ToUpperInvariant())
+            if (s.IsHost && s.RoomCode != null && (s.RoomCode == c || s.RoomCode == c.Replace("-", "").ToUpperInvariant()))
             {
                 s.ShowRoom("THAT IS YOUR OWN CODE. SEND IT TO YOUR PARTNER", true);
                 return;
             }
-            s.StartJoin(ip, code);
+            s.StartJoin(ip, c);
         }
 
         /// Friend panel closed before anything launched: close the room.
@@ -103,7 +107,9 @@ namespace OYM.Net
         {
             if (!t || !t.ui) return;
             if (s_showRoom != null) { s_showRoom.Invoke(t.ui, new object[] { code, status, error }); return; }
-            if (string.IsNullOrEmpty(status) || status == s_lastStatus) return;      // team title: no panel, the log says it
+            // team title (feature/coop-server): its room panel hosts this room, so it shows this room's code and status
+            t.ui.ShowMatch(status ?? "", error, code);
+            if (string.IsNullOrEmpty(status) || status == s_lastStatus) return;
             s_lastStatus = status;
             Debug.Log($"[OYM-COOP] room {code ?? "-"}: {status}");
         }
@@ -140,7 +146,9 @@ namespace OYM.Net
             DropLink();
             IsHost = true; _helloSent = _welcomed = false; _connectAt = -1f;
             string ip = LocalAddress.Get() ?? "127.0.0.1";                   // no LAN: still joinable from this PC
-            RoomCode = CoopCode.Encode(ip);
+            // the team title's room panel takes the team's 6-character code (OnYourMark.RoomCode); the local title shows
+            // the 8-character OYM code. Both carry the host's LAN IPv4, and JoinRoom accepts either.
+            RoomCode = s_showRoom != null ? CoopCode.Encode(ip) : OnYourMark.RoomCode.Encode(ip);
             _link = new CoopLink();
             if (!_link.Listen())
             {
@@ -330,10 +338,10 @@ namespace OYM.Net
             int j = System.Array.IndexOf(args, "-coopJoin");
             bool host = System.Array.IndexOf(args, "-coopHost") >= 0;
             if (!host && j < 0) return;
-            // the local title's friend panel hosts a room; the team title's friend panel is the team's own NGO room,
-            // so there the LAN room is opened straight
-            if (s_showRoom != null) title.ui.ToggleFriend();
-            else OpenRoom(title);
+            // the friend panel hosts the room (local title: FriendOpened; team title on feature/coop-server: HostClicked),
+            // so open it and the code shows; a panel that did not host still gets the room opened straight
+            title.ui.ToggleFriend();
+            if (!Active) OpenRoom(title);
             if (j >= 0 && j + 1 < args.Length) JoinRoom(title, args[j + 1]);
         }
 

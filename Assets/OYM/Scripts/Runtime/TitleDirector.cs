@@ -81,8 +81,11 @@ namespace OYM
             {
                 ui.Bind(this);
                 ui.DeployClicked += Deploy;
-                ui.HostClicked += () => OpenRoom(OnYourMark.TitleMatch.Mode.Host);
-                ui.JoinClicked += code => OpenRoom(OnYourMark.TitleMatch.Mode.Join, code);
+                // feature/coop-server: the friend panel plays together in the OYM level (OYM.Net.CoopSession: LAN room
+                // code -> Showcase_DebrisField, live HUSK / CITADEL run by the host and mirrored to the guest). The
+                // team's NGO match (TitleMatch -> Arena) stays reachable from the command line: -host / -join / -bot.
+                ui.HostClicked += () => OYM.Net.CoopSession.OpenRoom(this);
+                ui.JoinClicked += code => OYM.Net.CoopSession.JoinRoom(this, code);
                 ui.PilotClicked += SetFocus;
                 ui.FadeIn(1.6f);
             }
@@ -110,6 +113,7 @@ namespace OYM
                         OnYourMark.TitleMatch.Mode.Solo : OnYourMark.TitleMatch.Mode.Host, join == null ? null : OnYourMark.RoomCode.FromLaunchArgument(join));
                 }
             }
+            OYM.Net.CoopSession.AutoStart(this);                              // -coopHost / -coopJoin <code|IPv4> [-coopPilot 0|1]
         }
 
         // ------------------------------------------------------------------------------------------------ input
@@ -246,6 +250,9 @@ namespace OYM
                 while (OnYourMark.TitleMatch.Active) yield return null;
                 if (ui && ui.CurrentMode != TitleUI.Mode.SelectMode) yield break;
             }
+            // solo DEPLOY: no open OYM co-op room left behind it (a room that already launched is the co-op game itself)
+            if (OYM.Net.CoopSession.InGame) yield break;
+            OYM.Net.CoopSession.CloseRoom();
             if (_deploying || _focus < 0) yield break;
             string pilot = pilots[_focus] ? pilots[_focus].displayName : null;
             AnimateDeployment();

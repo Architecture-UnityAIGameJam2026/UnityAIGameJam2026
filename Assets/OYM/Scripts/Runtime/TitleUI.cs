@@ -548,6 +548,7 @@ namespace OYM
         {
             if (_mode != Mode.Friend) return;
             if (OnYourMark.TitleMatch.Active) OnYourMark.TitleMatch.Active.Close();
+            OYM.Net.CoopSession.CloseRoom();                   // feature/coop-server: the panel's OYM room (no-op once launched)
             Toggle(_friend, "friend--open", false);
             _field?.Blur();
             _typingFrame = Time.frameCount;
