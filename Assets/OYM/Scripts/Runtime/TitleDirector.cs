@@ -1,4 +1,5 @@
 using System.Collections;
+using OYM.Net;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -12,8 +13,8 @@ namespace OYM
     /// right of the frame) and the menu comes in around it: logo top left, menu bottom left, pilot cards bottom right,
     /// Discord top right, co-op friend code on the right (TitleUI). A / D, Tab, a pilot card or a click on the pilot in
     /// the back swaps pilots (the other one is pushed back into the depth of field); W / S + ENTER drive the menu;
-    /// GAME START opens the mode menu. A solo launch or a matched pair deploys into Arena. The camera drifts a little with
-    /// the mouse. Music comes from BgmPlayer's scene routes.
+    /// GAME START opens the mode menu. Both modes deploy to the same debris field, arena crossing and CITADEL.
+    /// The camera drifts with the mouse. Music comes from BgmPlayer's scene routes.
     [DefaultExecutionOrder(-20)]
     public class TitleDirector : MonoBehaviour
     {
@@ -80,8 +81,8 @@ namespace OYM
             {
                 ui.Bind(this);
                 ui.DeployClicked += Deploy;
-                ui.HostClicked += () => OpenRoom(OnYourMark.TitleMatch.Mode.Host);
-                ui.JoinClicked += code => OpenRoom(OnYourMark.TitleMatch.Mode.Join, code);
+                ui.HostClicked += () => CoopSession.OpenRoom(this);
+                ui.JoinClicked += code => CoopSession.JoinRoom(this, code);
                 ui.PilotClicked += SetFocus;
                 ui.FadeIn(1.6f);
             }
@@ -105,8 +106,9 @@ namespace OYM
                 if (join != null || OnYourMark.LaunchArgs.Has("-host") || OnYourMark.LaunchArgs.Has("-bot"))
                 {
                     if (int.TryParse(OnYourMark.LaunchArgs.Get("-role"), out int role)) SetFocus(Mathf.Clamp(role, 0, 1));
-                    OpenRoom(join != null ? OnYourMark.TitleMatch.Mode.Join : OnYourMark.LaunchArgs.Has("-bot") ?
-                        OnYourMark.TitleMatch.Mode.Solo : OnYourMark.TitleMatch.Mode.Host, join == null ? null : OnYourMark.RoomCode.FromLaunchArgument(join));
+                    if (join != null) CoopSession.JoinRoom(this, join);
+                    else if (OnYourMark.LaunchArgs.Has("-bot")) Deploy();
+                    else CoopSession.OpenRoom(this);
                 }
             }
         }
@@ -221,19 +223,32 @@ namespace OYM
         {
             if (_deploying || i == _focus || i >= pilots.Length) return;
             _focus = i;
-            if (i >= 0 && OnYourMark.TitleMatch.Active) OnYourMark.TitleMatch.Active.PreferPilot(i);
             for (int j = 0; j < pilots.Length; j++)
                 if (pilots[j]) pilots[j].SetSlot(i < 0 ? TitleCharacter.Slot.Home : j == i ? TitleCharacter.Slot.Front : TitleCharacter.Slot.Back);
             if (i >= 0) { _kick = 1f; GameSettings.TitlePilot = i; }               // small push-in with the ignition
             if (ui) ui.ShowFocus(i);
         }
 
-        public void Deploy() => OpenRoom(OnYourMark.TitleMatch.Mode.Solo);
-
-        void OpenRoom(OnYourMark.TitleMatch.Mode mode, string code = null)
+        public void Deploy()
         {
-            if (_deploying || _focus < 0) return;
-            OnYourMark.TitleMatch.Begin(this, mode, _focus, code);
+            if (_deploying || _focus < 0 || CoopSession.InGame) return;
+            CoopSession.CloseRoom();
+            StartCoroutine(DeployShowcase());
+        }
+
+        public void DeployCoop(int seat)
+        {
+            if (_deploying) return;
+            SetFocus(seat);
+            StartCoroutine(DeployShowcase());
+        }
+
+        IEnumerator DeployShowcase()
+        {
+            ShowcaseSession.SelectedPilot = pilots[_focus] ? pilots[_focus].displayName : null;
+            AnimateDeployment();
+            yield return new WaitForSecondsRealtime(deployDelay);
+            ShowcaseSession.LoadScene(ShowcaseScene.Name);
         }
 
         public void AnimateDeployment()

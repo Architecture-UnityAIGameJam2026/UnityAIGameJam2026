@@ -691,7 +691,7 @@ namespace OYM.EditorTools
             var cs = Add<ContactShadows>();
             cs.enable.Override(true);
             var sh = Add<HDShadowSettings>();
-            sh.maxShadowDistance.Override(2600f);
+            sh.maxShadowDistance.Override(1200f); // perf: fight within ~80 m, DepthFocusFade hazes the rest (was 2600)
             sh.cascadeShadowSplitCount.Override(4);
             var sslf = Add<ScreenSpaceLensFlare>();
             sslf.intensity.Override(0.12f);

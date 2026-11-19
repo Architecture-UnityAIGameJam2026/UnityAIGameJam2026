@@ -41,7 +41,7 @@ namespace OnYourMark
 
         void Update()
         {
-            if (WaveManager.TakesCombatInput || !IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
+            if (!IsOwner || !NetworkObject.IsPlayerObject || !CursorLock.IsLocked) return;
 
             var weapon = Weapon;
             if (support.ConsumedTrigger) triggerUsedForSupport = true;

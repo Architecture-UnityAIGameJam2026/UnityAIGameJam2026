@@ -18,6 +18,10 @@ namespace OYM
     {
         public ZeroGFlight[] controllers;
         public string[] names;
+        /// co-op (OYM.Net): each player flies their own pilot, Tab does not swap
+        public static bool SwitchLocked;
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetSwitchLock() { SwitchLocked = false; }
         public FlightCamera flightCamera;
         public Vector3[] pivotOffsets;
         public Vector3[] eyeOffsets;
@@ -105,7 +109,7 @@ namespace OYM
             tab = Input.GetKeyDown(KeyCode.Tab); rec = Input.GetKeyDown(KeyCode.F9); f1 = Input.GetKeyDown(KeyCode.F1);
 #endif
             if (f1) _perf = !_perf;
-            if (tab && !_recording) Activate(_active + 1);
+            if (tab && !_recording && !SwitchLocked) Activate(_active + 1);
             if (rec) { if (_recording) _recording = false; else StartCoroutine(Record(Stamp() + "_" + Name(_active), false)); }
         }
 
@@ -327,6 +331,8 @@ namespace OYM
             }
         }
 
+        string _help, _helpFor;
+
         void OnGUI()
         {
             if (_recording || _demo)
@@ -335,9 +341,15 @@ namespace OYM
                 return;
             }
             string who = names != null && _active < names.Length ? names[_active] : "";
-            string atk = who == "ORBIT FRAME" ? "RMB aim · LMB fire" : "LMB slash (click again to chain) · Q stance";
+            if (!ReferenceEquals(who, _helpFor))
+            {
+                // built once per pilot switch, not on every OnGUI event (OnGUI runs several times a frame)
+                string atk = who == "ORBIT FRAME" ? "RMB aim · LMB fire" : "LMB slash (click again to chain) · Q stance";
+                _help = $"[{who}]  WASD fly · Space/Ctrl up/down · Shift dash (hold = cruise, no enemies) · {atk} · V 1st/3rd person · Tab switch · F9 record · click = mouse look, Esc = release";
+                _helpFor = who;
+            }
             GUI.color = Color.white;
-            GUI.Label(new Rect(12, 8, 1400, 24), $"[{who}]  WASD fly · Space/Ctrl up/down · Shift dash · {atk} · V 1st/3rd person · Tab switch · F9 record · click = mouse look, Esc = release");
+            GUI.Label(new Rect(12, 8, 1400, 24), _help);
             if (_status.Length > 0) GUI.Label(new Rect(12, 30, 1200, 24), _status);
             if (_perf)
                 GUI.Label(new Rect(12, 52, 900, 24), $"{_fps:0} fps  ({1000f / Mathf.Max(_fps, 1f):0.0} ms avg, worst {_worst:0} ms)  ·  " +

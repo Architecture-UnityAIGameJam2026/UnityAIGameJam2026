@@ -84,7 +84,9 @@ namespace OYM.Net
         /// -noVisorMap = off (not -oym*: other modules read those as automation).
         static void OnLoaded(Scene s, LoadSceneMode mode)
         {
-            if (Application.isBatchMode || s.name != GameSession.GameScene) return;
+            // the visor HUD this map lives on is CoopHud's, made in the showcase. Team main's GameSession.GameScene is the
+            // co-op Arena, whose SenseLink HUD already draws the team's own live map: never install there
+            if (Application.isBatchMode || s.name != ShowcaseScene.Name) return;
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-noVisorMap") >= 0) return;
             if (TryInstall()) return;
             var go = new GameObject("Visor minimap (installer)");

@@ -2,9 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace OYM
 {
@@ -281,8 +278,9 @@ namespace OYM
             _F = Vector3.ProjectOnPlane(planetDir, _U).normalized;
             if (_F.sqrMagnitude < 0.5f) _F = Vector3.forward;
             _R = Vector3.Cross(_U, _F);
-            // the shots frame the character the player controls (falls back to the first actor)
-            var hero = flightCamera && flightCamera.target ? flightCamera.target : (actors != null && actors.Length > 0 && actors[0] ? actors[0] : null);
+            // When pilots split up, both screens frame a pilot who actually reached the boss encounter.
+            var hero = flightCamera ? flightCamera.target : null;
+            if (actors != null && actors.Length > 0 && System.Array.IndexOf(actors, hero) < 0) hero = actors[0];
             _hero = hero ? hero.position : _O;
             _bow = HeadPos(THit);
             _D = Vector3.ProjectOnPlane(_bow - _hero, _U).normalized;          // horizontal: hero -> the boss's head
@@ -372,6 +370,8 @@ namespace OYM
                 {
                     var c = director.controllers[i]; if (!c) continue;
                     _wasScripted[i] = c.scripted; c.scripted = true; c.scriptedInput = default;
+                    c.RefreshView(true);
+                    if (actors == null || actors.Length == 0 || System.Array.IndexOf(actors, c.transform) >= 0) c.ResetMotion();
                 }
             }
             if (flightCamera) { _camWasScripted = flightCamera.scripted; flightCamera.scripted = true; }
@@ -383,19 +383,18 @@ namespace OYM
         {
             Playing = false; Done = true;
             if (director && director.controllers != null && _wasScripted != null)
-                for (int i = 0; i < director.controllers.Length; i++) if (director.controllers[i]) director.controllers[i].scripted = _wasScripted[i];
+                for (int i = 0; i < director.controllers.Length; i++)
+                {
+                    var pilot = director.controllers[i];
+                    if (!pilot) continue;
+                    pilot.scripted = _wasScripted[i];
+                    pilot.RefreshView(false);
+                }
             if (flightCamera) flightCamera.scripted = _camWasScripted;
         }
 
         void Update()
         {
-            bool key = false;
-#if ENABLE_INPUT_SYSTEM
-            if (Keyboard.current != null) key = Keyboard.current.bKey.wasPressedThisFrame;
-#else
-            key = Input.GetKeyDown(KeyCode.B);
-#endif
-            if (key) Play();
             if (_startAt > 0f && Time.unscaledTime >= _startAt) Play();
         }
 

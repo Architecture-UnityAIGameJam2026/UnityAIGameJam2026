@@ -51,7 +51,7 @@ namespace OYM
 
         public Mode CurrentMode => _mode;
         /// may a click on a pilot in the 3D scene switch pilots right now
-        public bool AllowsPilotPick => (_mode is Mode.Main or Mode.SelectMode or Mode.Friend) && (!OnYourMark.TitleMatch.Active || OnYourMark.TitleMatch.Active.CanChoosePilot);
+        public bool AllowsPilotPick => (_mode is Mode.Main or Mode.SelectMode or Mode.Friend) && (!Net.CoopSession.Active || Net.CoopSession.Active.IsHost && !Net.CoopSession.InGame);
         /// the friend-code field has the keyboard (also true for the frame after it let go, so its ESC / ENTER is not
         /// read a second time by the director)
         public bool IsTyping => FieldFocused || Time.frameCount - _typingFrame <= 1;
@@ -547,7 +547,7 @@ namespace OYM
         void CloseFriend()
         {
             if (_mode != Mode.Friend) return;
-            if (OnYourMark.TitleMatch.Active) OnYourMark.TitleMatch.Active.Close();
+            Net.CoopSession.CloseRoom();
             Toggle(_friend, "friend--open", false);
             _field?.Blur();
             _typingFrame = Time.frameCount;

@@ -25,7 +25,7 @@ namespace OYM.Signal
             if (!f11) return;
             var e = HuskEncounter.Current;
             var lv = e ? e.Level : null;
-            if (!lv || !e.Gate || lv.InCutaway || lv.beat == HuskLevel.Beat.Boss || lv.beat == HuskLevel.Beat.Victory) return;
+            if (!lv || !e.Gate || lv.beat == HuskLevel.Beat.Boss || lv.beat == HuskLevel.Beat.Victory) return;
             e.Engaged = true;                                        // normally set at first contact: the fight needs it
             if (s_startBoss == null) s_startBoss = typeof(HuskLevel).GetMethod("StartBoss", BindingFlags.NonPublic | BindingFlags.Instance);
             s_startBoss?.Invoke(lv, null);

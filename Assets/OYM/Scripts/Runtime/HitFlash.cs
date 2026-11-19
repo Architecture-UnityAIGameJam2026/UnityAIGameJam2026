@@ -16,6 +16,11 @@ namespace OYM
         public float flashDecay = 0.07f;
         [ColorUsage(false, true)] public Color flashColor = new Color(1.6f, 1.6f, 1.7f);
 
+        /// Comfort cap on the whole-body flash (11-19 "섬광이 그대로야 눈이 너무 아파"): hits on the player asked for 0.55
+        /// (damage) to 0.9 (dart blast), which turned the character in the middle of the screen white. The hot spots and
+        /// waves at the hit points are not affected.
+        public static float MaxBodyFlash = 0.3f;
+
         Material _mat;
         bool _attached;
         readonly Vector4[] _hits = new Vector4[4];
@@ -68,7 +73,7 @@ namespace OYM
             }
             _hits[slot] = new Vector4(worldPos.x, worldPos.y, worldPos.z, 0f);
             _cols[slot] = new Vector4(hdrColor.r, hdrColor.g, hdrColor.b, size);
-            _flash = Mathf.Max(_flash, flash);
+            _flash = Mathf.Max(_flash, Mathf.Min(flash, MaxBodyFlash));
             Attach();
             Push();
         }
