@@ -12,8 +12,9 @@ namespace OYM
     /// right of the frame) and the menu comes in around it: logo top left, menu bottom left, pilot cards bottom right,
     /// Discord top right, co-op friend code on the right (TitleUI). A / D, Tab, a pilot card or a click on the pilot in
     /// the back swaps pilots (the other one is pushed back into the depth of field); W / S + ENTER drive the menu;
-    /// GAME START opens the mode menu. A solo launch or a matched pair deploys into Arena. The camera drifts a little with
-    /// the mouse. Music comes from BgmPlayer's scene routes.
+    /// GAME START opens the mode menu. SINGLE deploys into the OYM showcase (arrival cutscene, then the Showcase_DebrisField
+    /// level); a matched friend pair (and the -bot launch flag) deploys into the co-op Arena. The camera drifts a little
+    /// with the mouse. Music comes from BgmPlayer's scene routes.
     [DefaultExecutionOrder(-20)]
     public class TitleDirector : MonoBehaviour
     {
@@ -228,7 +229,43 @@ namespace OYM
             if (ui) ui.ShowFocus(i);
         }
 
-        public void Deploy() => OpenRoom(OnYourMark.TitleMatch.Mode.Solo);
+        /// SINGLE: straight into the OYM showcase (arrival cutscene, then the level). Friend rooms keep TitleMatch -> Arena.
+        public void Deploy()
+        {
+            if (_deploying || _focus < 0) return;
+            StartCoroutine(DeployShowcase());
+        }
+
+        IEnumerator DeployShowcase()
+        {
+            // a friend room that is still open or closing goes first: TitleMatch sends a title that is already deploying
+            // back to the title scene when its room finishes closing
+            if (OnYourMark.TitleMatch.Active)
+            {
+                OnYourMark.TitleMatch.Active.Close();
+                while (OnYourMark.TitleMatch.Active) yield return null;
+                if (ui && ui.CurrentMode != TitleUI.Mode.SelectMode) yield break;
+            }
+            if (_deploying || _focus < 0) yield break;
+            string pilot = pilots[_focus] ? pilots[_focus].displayName : null;
+            AnimateDeployment();
+            yield return new WaitForSecondsRealtime(deployDelay);
+            LoadShowcase(pilot);
+        }
+
+        /// OYM.ShowcaseSession (feature/arrival-cutscene) carries the pick into the showcase: that pilot takes slot 0 and
+        /// the arrival cutscene plays. Looked up by name, so the title also builds and runs before that module is merged
+        /// (the level then starts with its default pilot and without the cutscene).
+        static void LoadShowcase(string pilot)
+        {
+            const System.Reflection.BindingFlags open = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static;
+            var session = typeof(TitleDirector).Assembly.GetType("OYM.ShowcaseSession");
+            session?.GetField("SelectedPilot", open)?.SetValue(null, pilot);
+            var load = session?.GetMethod("LoadScene", open, null, new[] { typeof(string) }, null);
+            Debug.Log($"[OYM-Title] deploy {pilot} -> {ShowcaseScene.Name}" + (load == null ? " (no ShowcaseSession: no arrival cutscene)" : ""));
+            if (load != null) load.Invoke(null, new object[] { ShowcaseScene.Name });
+            else UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(ShowcaseScene.Name, UnityEngine.SceneManagement.LoadSceneMode.Single);
+        }
 
         void OpenRoom(OnYourMark.TitleMatch.Mode mode, string code = null)
         {
