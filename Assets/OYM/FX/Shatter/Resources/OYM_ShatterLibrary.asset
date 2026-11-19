@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc406a2b0e4310c4d8d3cf5b1dfa8677, type: 3}
+  m_Name: OYM_ShatterLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::OYM.ShatterLibrary
+  shards:
+  - {fileID: 11400000, guid: 8cac672e84ea5724d910e5e7cf31b911, type: 2}
+  - {fileID: 11400000, guid: ec346e6dffc63b04eaa0638ea392232c, type: 2}
+  - {fileID: 11400000, guid: b1f7cf22aafc49c4c9934fd986751008, type: 2}
+  - {fileID: 11400000, guid: 309c2db6ac37ab34ea27fd3f90f461a3, type: 2}
+  - {fileID: 11400000, guid: 9c014e01a59d49744a3b3d21f52925a7, type: 2}
+  - {fileID: 11400000, guid: f8f992d9379616e469dcc665af9fb56d, type: 2}
+  - {fileID: 11400000, guid: 6ab2543e62c79ea41a9b202b6c10dd5e, type: 2}
+  interiorMaterial: {fileID: 2100000, guid: 9bb56c035f92f5e45a16f4023c73170a, type: 2}
+  heatMaterial: {fileID: 2100000, guid: 216a2beccdb6291478d09e0509f23985, type: 2}
+  trailMaterial: {fileID: 2100000, guid: bc720d06aca9e5a43ac4b4029f877900, type: 2}

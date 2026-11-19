@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ae1cefce7024c1bb6675592b2114b86, type: 3}
+  m_Name: OYM_FieldKit
+  m_EditorClassIdentifier: Assembly-CSharp::OYM.Field.FieldKitConfig
+  relayBox: {fileID: 911162023250144879, guid: 41cc91691051f284b8f8b688beb2b862, type: 3}
+  relayMast: {fileID: 8265474603416254809, guid: 600d343e7a295ec4e847a119a324d651, type: 3}
+  medkit: {fileID: 6614341518810755325, guid: e2d50474f47d93c4c9407074dcb7a7e2, type: 3}
+  relayBoxScale: 1.6
+  relayMastScale: 2.6
+  medkitScale: 2.2
+  calibrateLoop: {fileID: 8300000, guid: beb127435d5f4732b6f75bf66c73fe41, type: 3}
+  relayDone: {fileID: 8300000, guid: 1c41da2bc75544ab94bae2b3317e5d00, type: 3}
+  healTaken: {fileID: 8300000, guid: 3c3b577148324ad9a5b00894a1506084, type: 3}
+  calibrateVolume: 0.55
+  relayDoneVolume: 0.9
+  healVolume: 0.6
+  relays:
+  - at: 0.4
+    modules: 01000000
+    title: "\uBBF8\uB2C8\uB9F5\uC774 \uB3CC\uC544\uC654\uB2E4"
+    body: "\uCCB4\uB825\uACFC \uBB34\uAE30 \uC0C1\uD0DC\uB294 \uC544\uC9C1 \uAF2C\uC5EC \uC788\uC2B5\uB2C8\uB2E4"
+  - at: 0.67
+    modules: 0200000003000000
+    title: "\uBB34\uAE30\u00B7\uC2A4\uD0AC \uD45C\uC2DC\uAC00 \uB3CC\uC544\uC654\uB2E4"
+    body: "\uCCB4\uB825\uC740 \uC544\uC9C1 \uC0C1\uB300\uBC29 \uD654\uBA74\uC5D0 \uB739\uB2C8\uB2E4"
+  - at: 0.93
+    modules: 00000000
+    title: "HUD \uB9C1\uD06C \uBCF5\uAD6C \uC644\uB8CC"
+    body: "\uC774\uC81C \uB0B4 \uCCB4\uB825\uC740 \uB0B4 \uD654\uBA74\uC5D0 \uB739\uB2C8\uB2E4"
+  relayRadius: 6
+  relayHold: 1.8
+  relayHintRange: 45
+  healAmount: 60
+  respawn: 20
+  packRadius: 2.6
+  packHover: 1.3
+  packStones: 01000000030000000500000007000000090000000b0000000d0000000f000000

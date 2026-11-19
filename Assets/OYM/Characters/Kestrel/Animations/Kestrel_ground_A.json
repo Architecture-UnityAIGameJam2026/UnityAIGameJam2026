@@ -1,0 +1,33 @@
+{
+ "GroundRun": {
+  "length": 0.5,
+  "loop": true,
+  "speed": 6.588727426639906
+ },
+ "Downed": {
+  "length": 2.25,
+  "loop": false,
+  "impact": 0.7083333333333334
+ },
+ "DownedLoop": {
+  "length": 3.0,
+  "loop": true
+ },
+ "DownedRevive": {
+  "length": 3.0,
+  "loop": true,
+  "pulse_times": [
+   0.25,
+   1.0,
+   1.75,
+   2.5
+  ]
+ },
+ "GetUp": {
+  "arise": "mirrored",
+  "length": 2.125,
+  "loop": false,
+  "jolt": 0.20833333333333334,
+  "rise": 0.5416666666666666
+ }
+}

@@ -21410,6 +21410,9 @@ MonoBehaviour:
   hitImpulse: 9
   combatLinger: 3
   slashTint: {r: 0.72, g: 0.93, b: 1, a: 1}
+  swiftStrike: 1
+  strikeDistance: 20
+  strikeTime: 0.25
 --- !u!114 &3675542617223950855
 MonoBehaviour:
   m_ObjectHideFlags: 0

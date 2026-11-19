@@ -107,7 +107,23 @@ namespace OYM
 
         static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (mode != LoadSceneMode.Single || Application.isBatchMode) return;
+            if (Application.isBatchMode) return;
+            // a single load switches the music; any other load only starts it while nothing plays. Pressing Play in the
+            // editor does not report the scene that is already open as a single load, which left the title silent (11-19)
+            if (mode != LoadSceneMode.Single && Current) return;
+            PlayRoute(scene);
+        }
+
+        /// The first scene, however its load was reported (editor Play, player start). Play() ignores a repeat.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        static void StartFirst()
+        {
+            if (Application.isBatchMode || Current) return;
+            PlayRoute(SceneManager.GetActiveScene());
+        }
+
+        static void PlayRoute(Scene scene)
+        {
             if (!s_routes) s_routes = Resources.Load<BgmRoutes>(BgmRoutes.ResourceName);
             var r = s_routes ? s_routes.Find(scene.name) : null;
             if (r != null && r.clip) Play(r.clip, r.volume, r.fade);

@@ -109,6 +109,10 @@ namespace OYM
         protected bool cruising;
         protected float cruiseNow, brakeLeft;
         protected Vector3 cruiseDir;
+        /// While true, Move() flies through the colliders PassThrough() accepts (KESTREL's swift strike cuts through the
+        /// HUSK on its line instead of stopping on them). Normal flight never sets it: its sweep is unchanged.
+        protected bool passThrough;
+        static readonly RaycastHit[] s_hits = new RaycastHit[24];
         Renderer[] _body;
         ShadowCastingMode[] _bodyShadow;
         Transform _thighL, _thighR;
@@ -388,7 +392,7 @@ namespace OYM
             for (int it = 0; it < 3 && delta.sqrMagnitude > 1e-10f; it++)
             {
                 float len = delta.magnitude; Vector3 dir = delta / len;
-                if (Physics.CapsuleCast(c - Vector3.up * 0.45f, c + top, bodyRadius, dir, out var h, len + 0.03f, ~0, QueryTriggerInteraction.Ignore) && !h.transform.IsChildOf(transform))
+                if (Cast(c - Vector3.up * 0.45f, c + top, dir, len + 0.03f, out var h))
                 {
                     float travel = Mathf.Max(0f, h.distance - 0.03f);
                     transform.position += dir * travel; c += dir * travel;
@@ -403,6 +407,28 @@ namespace OYM
                 else { transform.position += delta; break; }
             }
         }
+
+        /// The body's sweep. Normal flight: the first thing in the way (as always). passThrough: the nearest hit that is
+        /// not ours and not something PassThrough() lets the body fly through.
+        bool Cast(Vector3 p0, Vector3 p1, Vector3 dir, float len, out RaycastHit hit)
+        {
+            if (!passThrough)
+                return Physics.CapsuleCast(p0, p1, bodyRadius, dir, out hit, len, ~0, QueryTriggerInteraction.Ignore) && !hit.transform.IsChildOf(transform);
+            hit = default;
+            float best = float.MaxValue;
+            int n = Physics.CapsuleCastNonAlloc(p0, p1, bodyRadius, dir, s_hits, len, ~0, QueryTriggerInteraction.Ignore);
+            for (int i = 0; i < n; i++)
+            {
+                var h = s_hits[i];
+                if (h.distance <= 0f && h.point == Vector3.zero) continue;      // overlapping at the start: CapsuleCast skips those too
+                if (h.distance >= best || h.transform.IsChildOf(transform) || PassThrough(h.collider)) continue;
+                best = h.distance; hit = h;
+            }
+            return best < float.MaxValue;
+        }
+
+        /// While passThrough is on: may the body fly through this collider?
+        protected virtual bool PassThrough(Collider c) => false;
 
         void Face(float dt, Quaternion aim, Vector3 wish)
         {
