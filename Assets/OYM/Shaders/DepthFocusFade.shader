@@ -1,68 +1,52 @@
-// Depth focus fade (OYM.DepthFocusFade settings, drawn by the HDRP global custom pass OYM.DepthFocusFadePass at
-// Before Pre-Refraction). Far opaque geometry, the sky and the fog in front of them are squashed, desaturated,
-// darkened and dissolved into the blurred nebula behind them, then a luminous dust fog (exponential in distance,
-// thinner veil on the sky and the planet, tinted by the nebula, brighter toward the sun) turns far debris into soft
-// shapes, and a depth glow (the luminous backdrop - planet, nebula, far layers - blurred wide) washes over the far
-// layers in proportion to their distance, so each depth layer is eaten a little more by the light behind it
-// (EVE-style layering) while the foreground fight stays crisp.
-// Works on the pre-exposed HDR colour buffer after the opaque fog composite, before transparents and bloom.
-//   pass 0  DepthFocusFade  full res, _MainTex = copy of the camera colour, _GlowTex = blurred glow (pass 1 output)
-//   pass 1  GlowPrep        half res, writes (far colour * source weight, source weight) for the blur
+// Depth focus fade (OYM.DepthFocusFade settings). HDRP: drawn by the global custom pass OYM.DepthFocusFadePass at
+// Before Pre-Refraction. URP: draw it from a ScriptableRendererFeature after opaques + skybox, before transparents
+// (RenderPassEvent.AfterRenderingSkybox / BeforeRenderingTransparents), with the camera Depth Texture available.
+// Far opaque geometry, the sky and the fog in front of them are squashed, desaturated, darkened and dissolved into the
+// blurred nebula behind them, then a luminous dust fog (exponential in distance, thinner veil on the sky and the planet,
+// tinted by the nebula, brighter toward the sun) turns far debris into soft shapes, and a depth glow (the luminous
+// backdrop - planet, nebula, far layers - blurred wide) washes over the far layers in proportion to their distance, so
+// each depth layer is eaten a little more by the light behind it (EVE-style layering) while the foreground stays crisp.
+// Works on the HDR colour buffer after opaques and the skybox, before transparents and bloom.
+//   pass 0  DepthFocusFade  full res, _BlitTexture = copy of the camera colour, _GlowTex = blurred glow (pass 1 output)
+//   pass 1  GlowPrep        half res, _BlitTexture = copy of the camera colour (full res),
+//                           writes (far colour * source weight, source weight) for the blur
+// Both passes draw a fullscreen triangle from SV_VertexID (Blitter.BlitTexture / BlitCameraTexture, RenderGraph
+// AddBlitPass, or cmd.DrawProcedural(.., Triangles, 3)). They only use pixel positions, never the blit uv, so
+// _BlitScaleBias does not matter. Source pixels are LOADed: the source copy must match the camera depth texture size.
+// URP port: no exposure (multiplier 1), sky = URP's reflection cubemap (_GlossyEnvironmentCubeMap: the convolved
+// skybox / custom reflection) instead of HDRP's sky texture, world space is absolute (no camera-relative rendering).
 Shader "Hidden/OYM/DepthFocusFade"
 {
     Properties
     {
-        // necessary so the source texture binds to _MainTex
-        _MainTex("Main Texture", 2DArray) = "grey" {}
+        // kept for compatibility (HDRP bound the source here); the URP passes read _BlitTexture
+        _MainTex("Main Texture", 2D) = "grey" {}
     }
 
     HLSLINCLUDE
 
-    #pragma target 4.5
-    #pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch switch2
+    #pragma target 3.5
 
-    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
-    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+    // Attributes / Varyings / Vert (SV_VertexID fullscreen triangle), _BlitTexture, sampler_LinearClamp
+    #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
 
-    struct Attributes
-    {
-        uint vertexID : SV_VertexID;
-        UNITY_VERTEX_INPUT_INSTANCE_ID
-    };
-
-    struct Varyings
-    {
-        float4 positionCS : SV_POSITION;
-        float2 texcoord   : TEXCOORD0;
-        UNITY_VERTEX_OUTPUT_STEREO
-    };
-
-    Varyings Vert(Attributes input)
-    {
-        Varyings output;
-        UNITY_SETUP_INSTANCE_ID(input);
-        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-        output.positionCS = GetFullScreenTriangleVertexPosition(input.vertexID);
-        output.texcoord = GetFullScreenTriangleTexCoord(input.vertexID);
-        return output;
-    }
-
-    TEXTURE2D_X(_MainTex);
     TEXTURE2D_X(_GlowTex);
     float4 _FadeRange;    // x start distance (m), y 1/ln(end/start), z sky weight, w master intensity
     float4 _FadeLook;     // x desaturation, y darken multiplier (2^-EV), z highlight limit, w highlight compress
-    float4 _HazeColor;    // rgb flat haze colour (linear, pre-exposed)
+    float4 _HazeColor;    // rgb flat haze colour (linear)
     float4 _FadeMisc;     // x haze amount, y debug view
     float4 _FadeSkyLayer; // x backdrop-layer distance (m), y fade amount there (planet: baked look kept)
     float4 _HazeSky;      // x sky mix (0 flat colour .. 1 blurred sky behind the pixel), y sky mip, z sky haze gain
     float4 _Glow;         // x glow on far layers, y glow-source luminance cap, z 1 = glow texture valid
-    float4 _OYMFogA;         // x max fog opacity on geometry (0 = fog off), y fog start (m), z 1 / fog length (1/m),
+    float4 _OYMFogA;      // x max fog opacity on geometry (0 = fog off), y fog start (m), z 1 / fog length (1/m),
                           // w silhouette (0 = converge to the fog colour .. 1 = to the fogged sky behind the pixel)
-    float4 _OYMFogB;         // x sky veil, y backdrop (planet) veil, z nebula tint, w nebula tint mip
-    float4 _OYMFogColor;     // rgb flat fog colour (linear, pre-exposed), w nebula tint gain
-    float4 _OYMFogSun;       // rgb sunlight scattered by the fog (linear, absolute: x exposure here), w anisotropy g
-    float4 _OYMFogSunDir;    // xyz direction toward the sun (world)
+    float4 _OYMFogB;      // x sky veil, y backdrop (planet) veil, z nebula tint, w nebula tint mip
+    float4 _OYMFogColor;  // rgb flat fog colour (linear), w nebula tint gain
+    float4 _OYMFogSun;    // rgb sunlight scattered by the fog (linear), w anisotropy g
+    float4 _OYMFogSunDir; // xyz direction toward the sun (world)
 
     struct FadeInfo
     {
@@ -73,11 +57,25 @@ Shader "Hidden/OYM/DepthFocusFade"
         float isGeo;  // 1 = arena geometry (fog converges toward the fogged sky behind it), 0 = sky / backdrop
     };
 
-    // camera -> pixel direction (camera-relative rendering: the camera sits at the origin)
+    // full-res camera size in pixels (the depth texture's), valid in the half-res GlowPrep pass too
+    float2 FullResSize()    { return _CameraDepthTexture_TexelSize.zw; }
+    float2 FullResInvSize() { return _CameraDepthTexture_TexelSize.xy; }
+
+    // world position of a full-res pixel (positionSS = pixel centre) at a raw depth-buffer value
+    float3 WorldPosAt(float2 positionSS, float deviceDepth)
+    {
+        float2 uv = positionSS * FullResInvSize();
+    #if !UNITY_REVERSED_Z
+        deviceDepth = lerp(UNITY_NEAR_CLIP_VALUE, 1.0, deviceDepth);   // GL / WebGL: depth texture 0..1 -> clip -1..1
+    #endif
+        return ComputeWorldSpacePosition(uv, deviceDepth, UNITY_MATRIX_I_VP);
+    }
+
+    // camera -> pixel direction
     float3 ViewDirWS(float2 positionSS)
     {
-        float3 p = ComputeWorldSpacePosition(positionSS * _ScreenSize.zw, 0.5, UNITY_MATRIX_I_VP);
-        return normalize(p - GetPrimaryCameraPosition());
+        float3 p = WorldPosAt(positionSS, 0.5);
+        return normalize(p - GetCameraPositionWS());
     }
 
     float FogOpacity(float dist)
@@ -95,8 +93,7 @@ Shader "Hidden/OYM/DepthFocusFade"
         }
         else
         {
-            PositionInputs posInput = GetPositionInput(positionSS, _ScreenSize.zw, deviceDepth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
-            float dist = length(posInput.positionWS - GetPrimaryCameraPosition());
+            float dist = length(WorldPosAt(positionSS, deviceDepth) - GetCameraPositionWS());
             if (_FadeSkyLayer.x > 0.0 && dist > _FadeSkyLayer.x)
             {
                 // backdrop (planet): kept as baked, but it lights the haze
@@ -129,11 +126,12 @@ Shader "Hidden/OYM/DepthFocusFade"
         return c;
     }
 
-    // the blurred sky (nebula) in a direction, pre-exposed. _SkyTexture is HDRP's GGX-convolved sky cubemap (absolute
-    // radiance), the same one the sky-colour fog samples.
+    // the blurred sky (nebula) in a direction. HDRP sampled its GGX-convolved sky texture x exposure; URP: the
+    // convolved reflection cubemap of the skybox (Lighting > Environment), no exposure.
     float3 BlurredSky(float3 V, float mip)
     {
-        return SampleSkyTexture(V, mip, 0).rgb * GetCurrentExposureMultiplier();
+        float4 enc = SAMPLE_TEXTURECUBE_LOD(_GlossyEnvironmentCubeMap, sampler_GlossyEnvironmentCubeMap, V, mip);
+        return DecodeHDREnvironment(enc, _GlossyEnvironmentCubeMap_HDR);
     }
 
     // Light the fog sends to the eye along V: flat colour tinted by the very blurred nebula in that direction, plus
@@ -145,7 +143,7 @@ Shader "Hidden/OYM/DepthFocusFade"
             col = lerp(col, BlurredSky(V, _OYMFogB.w) * _OYMFogColor.w, _OYMFogB.z);
         float g = _OYMFogSun.w;
         float denom = max(1.0 + g * g - 2.0 * g * dot(V, _OYMFogSunDir.xyz), 1e-4);
-        col += _OYMFogSun.rgb * (GetCurrentExposureMultiplier() * (1.0 - g * g) * rsqrt(denom * denom * denom));
+        col += _OYMFogSun.rgb * ((1.0 - g * g) * rsqrt(denom * denom * denom));
         return col;
     }
 
@@ -154,8 +152,8 @@ Shader "Hidden/OYM/DepthFocusFade"
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
         uint2 positionSS = (uint2)input.positionCS.xy;
-        float4 src = LOAD_TEXTURE2D_X(_MainTex, positionSS);
-        FadeInfo f = GetFade(input.positionCS.xy, LoadCameraDepth(positionSS));
+        float4 src = LOAD_TEXTURE2D_X(_BlitTexture, positionSS);
+        FadeInfo f = GetFade(input.positionCS.xy, LoadSceneDepth(positionSS));
         if (_FadeMisc.y > 0.5)
             return float4(f.t, f.fog, 0.0, src.a);
         if (f.t <= 0.0 && f.fog <= 0.0)
@@ -185,8 +183,8 @@ Shader "Hidden/OYM/DepthFocusFade"
         //    proportion to its distance - the further a layer, the more the glow behind it eats into its edges
         if (_Glow.z > 0.5 && f.t > 0.0)
         {
-            float2 uv = min(input.positionCS.xy * _ScreenSize.zw, 1.0 - _ScreenSize.zw) * _RTHandleScale.xy;
-            float4 g = SAMPLE_TEXTURE2D_X_LOD(_GlowTex, s_linear_clamp_sampler, uv, 0);
+            float2 uv = min(input.positionCS.xy * FullResInvSize(), 1.0 - FullResInvSize());
+            float4 g = SAMPLE_TEXTURE2D_X_LOD(_GlowTex, sampler_LinearClamp, uv, 0);
             c += g.rgb / max(g.a, 0.02) * (_Glow.x * f.t);     // weight-normalised: near objects leave no dark halo
         }
 
@@ -199,15 +197,15 @@ Shader "Hidden/OYM/DepthFocusFade"
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-        uint2 base = (uint2)input.positionCS.xy * 2;
-        uint2 maxPx = (uint2)_ScreenSize.xy - 1;
+        uint2 base = (uint2)input.positionCS.xy * 2u;
+        uint2 maxPx = (uint2)FullResSize() - 1u;
         float4 acc = 0.0;
         [unroll]
-        for (uint i = 0; i < 4; i++)
+        for (uint i = 0u; i < 4u; i++)
         {
-            uint2 p = min(base + uint2(i & 1, i >> 1), maxPx);
-            float3 c = LOAD_TEXTURE2D_X(_MainTex, p).rgb;
-            FadeInfo f = GetFade((float2)p + 0.5, LoadCameraDepth(p));
+            uint2 p = min(base + uint2(i & 1u, i >> 1u), maxPx);
+            float3 c = LOAD_TEXTURE2D_X(_BlitTexture, p).rgb;
+            FadeInfo f = GetFade((float2)p + 0.5, LoadSceneDepth(p));
             c = ShapeFar(c, f.t, f.tGeo);
             c *= min(1.0, _Glow.y / max(Luminance(c), 1e-4));
             acc += float4(c * f.src, f.src);
@@ -219,7 +217,7 @@ Shader "Hidden/OYM/DepthFocusFade"
 
     SubShader
     {
-        Tags{ "RenderPipeline" = "HDRenderPipeline" }
+        Tags{ "RenderPipeline" = "UniversalPipeline" }
         Pass
         {
             Name "DepthFocusFade"

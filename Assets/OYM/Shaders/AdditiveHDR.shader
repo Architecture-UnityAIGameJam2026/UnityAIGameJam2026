@@ -1,5 +1,6 @@
-// Additive HDR sprite for particles (HDRP). Output is screen-relative (not multiplied by exposure): a value of 1 is
-// "white on screen" in any map, values above 1 feed bloom. Uses particle vertex colour (colour-over-lifetime fades).
+// Additive HDR sprite for particles (URP). Output is screen-relative (URP has no exposure, so a value of 1 is
+// "white on screen" in any map, values above 1 feed bloom). Uses particle vertex colour (colour-over-lifetime fades).
+// Ported from HDRP (ForwardOnly) to URP (UniversalForward); maths unchanged.
 Shader "OYM/FX/AdditiveHDR"
 {
     Properties
@@ -10,25 +11,23 @@ Shader "OYM/FX/AdditiveHDR"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One One
             ZWrite Off
             ZTest LEqual
             Cull Off
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.5
             #pragma vertex Vert
             #pragma fragment Frag
             #pragma multi_compile_instancing
 
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);

@@ -44,7 +44,7 @@ namespace OnYourMark
         {
             if (label && (label.font == null || !label.font.HasCharacter('한')))
             {
-                var os = Font.CreateDynamicFontFromOSFont(KoreanFonts, label.fontSize);
+                var os = OYM.Web.WebFonts.IsWeb ? OYM.Web.WebFonts.Korean : Font.CreateDynamicFontFromOSFont(KoreanFonts, label.fontSize);
                 if (os) label.font = os;
             }
             if (group) group.alpha = 0f;

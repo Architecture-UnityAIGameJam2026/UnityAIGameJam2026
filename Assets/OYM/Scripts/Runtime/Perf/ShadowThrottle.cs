@@ -26,6 +26,7 @@ namespace OYM
         static void Boot()
         {
             if (Application.isBatchMode) return;
+            if (!(UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline is UnityEngine.Rendering.HighDefinition.HDRenderPipelineAsset)) return;   // web build (URP): HDRP-only tuning
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-oymNoShadowThrottle") >= 0) return;
             var go = new GameObject("~ShadowThrottle") { hideFlags = HideFlags.DontSave };
             DontDestroyOnLoad(go);

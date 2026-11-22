@@ -118,6 +118,7 @@ namespace OYM.Signal
             if (s_font.HasValue) return s_font;
             FontAsset Make(string family)
             {
+                if (OYM.Web.WebFonts.IsWeb) return OYM.Web.WebFonts.For(family);   // no OS fonts in a browser
                 try { return FontAsset.CreateFontAsset(family, "Regular"); }
                 catch (System.Exception e) { Debug.LogWarning($"[OYM-SIGNAL] font {family}: {e.Message}"); return null; }
             }

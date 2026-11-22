@@ -1,4 +1,4 @@
-// Lit billow smoke for cutscene / landing bursts (no HDRP lighting: a cheap, art-directed lighting model so the smoke
+// Lit billow smoke for cutscene / landing bursts (no pipeline lighting: a cheap, art-directed lighting model so the smoke
 // reads the same in any of the dark maps).
 //   * shape: 2x2 grayscale smoke atlas (T_FX_Smoke_2x2, RGB = shade, A = density), the cell picked per particle from
 //     StableRandom, boiled by scrolling tileable noise and eroded by Custom1.x (0 = full, 1 = gone)
@@ -38,24 +38,23 @@ Shader "OYM/FX/SmokeLit"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One OneMinusSrcAlpha
             ZWrite Off
             ZTest LEqual
             Cull Off
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.0
             #pragma vertex Vert
             #pragma fragment Frag
 
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
             TEXTURE2D(_MainTex);  SAMPLER(sampler_MainTex);
             TEXTURE2D(_NoiseTex); SAMPLER(sampler_NoiseTex);
@@ -85,7 +84,7 @@ Shader "OYM/FX/SmokeLit"
                 float3 nW : TEXCOORD2;
                 float3 tW : TEXCOORD3;
                 float3 bW : TEXCOORD4;
-                float3 posRWS : TEXCOORD5;
+                float3 posRWS : TEXCOORD5;   // absolute world space in URP (name kept from HDRP)
             };
 
             Varyings Vert(Attributes v)
@@ -148,7 +147,7 @@ Shader "OYM/FX/SmokeLit"
                 float occl = 1.0 - _Shadow * saturate(dl - dens * 0.35);
 
                 // forward scattering toward the camera when it looks into the light (thin parts glow most)
-                float3 V = normalize(-i.posRWS);                  // camera-relative rendering: camera at the origin
+                float3 V = normalize(_WorldSpaceCameraPos.xyz - i.posRWS);   // URP: absolute world space
                 float fwd = pow(saturate(dot(-V, L)), _ScatterPow) * (1.0 - dens * 0.7);
 
                 float3 lit = _Albedo.rgb * (_Ambient.rgb + _SunColor.rgb * diff * occl) * lerp(0.75, 1.15, shade)
@@ -156,8 +155,8 @@ Shader "OYM/FX/SmokeLit"
                 // thruster wash lighting the cloud from inside (strongest in the dense core)
                 lit += i.color.rgb * glow * _Glow * (0.35 + shade) * dens;
 
-                // soft particles (the near-camera fade is in `vis` above)
-                float sceneZ = LinearEyeDepth(LoadCameraDepth(uint2(i.positionCS.xy)), _ZBufferParams);
+                // soft particles (the near-camera fade is in `vis` above); needs Depth Texture on in the URP asset / camera
+                float sceneZ = LinearEyeDepth(LoadSceneDepth(uint2(i.positionCS.xy)), _ZBufferParams);
                 float soft = saturate((sceneZ - fragZ) / max(1e-3, _SoftFade));
                 float cov = a * vis * soft;
                 // outside the (eroded) cloud: nothing to blend, skip the read-modify-write of the colour buffer

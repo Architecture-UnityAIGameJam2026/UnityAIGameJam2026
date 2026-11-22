@@ -34,7 +34,11 @@ namespace OYM.Net
         bool _inGame, _helloSent, _welcomed, _lostRaised;
         float _connectAt = -1f;
 
+#if OYM_RELAY
+        const float ConnectTimeout = 25f;               // Relay: sign-in + join allocation first
+#else
         const float ConnectTimeout = 8f;
+#endif
         public const float LostAfter = 12f;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -56,7 +60,12 @@ namespace OYM.Net
         /// JOIN with the partner's code (or a plain IP from the command line).
         public static void JoinRoom(TitleDirector title, string code)
         {
+#if OYM_RELAY
+            string ip = (code ?? "").Replace("-", "").Replace(" ", "").Trim().ToUpperInvariant();
+            if (ip.Length < 6)
+#else
             if (!OnYourMark.RoomCode.TryDecode(code, out string ip) && !CoopCode.TryParseTarget(code, out ip))
+#endif
             {
                 Ui(title, null, "THAT CODE DOES NOT LOOK RIGHT. CHECK THE HOST'S ROOM CODE", true);
                 return;
@@ -64,7 +73,11 @@ namespace OYM.Net
             var s = Active ? Active : Create(title);
             s._title = title;
             if (s._inGame) return;
+#if OYM_RELAY
+            if (s.IsHost && s.RoomCode == ip)
+#else
             if (s.IsHost && OnYourMark.RoomCode.TryDecode(s.RoomCode, out var ownAddress) && ownAddress == ip)
+#endif
             {
                 s.ShowRoom("THAT IS YOUR OWN CODE. SEND IT TO YOUR PARTNER", true);
                 return;
@@ -111,8 +124,12 @@ namespace OYM.Net
         {
             DropLink();
             IsHost = true; _helloSent = _welcomed = false; _connectAt = -1f;
+#if OYM_RELAY
+            RoomCode = null;                                                 // the Relay join code arrives in Update
+#else
             string ip = LocalAddress.Get() ?? "127.0.0.1";                   // no LAN: still joinable from this PC
             RoomCode = OnYourMark.RoomCode.Encode(ip);
+#endif
             _link = new CoopLink();
             if (!_link.Listen())
             {
@@ -150,6 +167,18 @@ namespace OYM.Net
         void Update()
         {
             if (_link == null) return;
+#if OYM_RELAY
+            if (IsHost && RoomCode == null && _link.JoinCode != null) { RoomCode = _link.JoinCode; ShowState(); }
+            if (IsHost && RoomCode == null && _link.Current == CoopLink.State.Listening && Time.frameCount % 30 == 0) ShowRoom("OPENING A ROOM ...");
+            if (IsHost && RoomCode == null && _link.Current == CoopLink.State.Closed)
+            {
+                // Relay could not open a room (offline, or the services are not set up): say so once, no retry loop
+                string err = _link.Error;
+                DropLink();
+                ShowRoom("ONLINE ROOMS ARE UNAVAILABLE RIGHT NOW. SINGLE PLAYER STILL WORKS" + (err != null ? "  ·  " + err.ToUpperInvariant() : ""), true);
+                return;
+            }
+#endif
             if (!IsHost && !_welcomed && _connectAt >= 0f)
             {
                 if (_link.Connected && !_helloSent)

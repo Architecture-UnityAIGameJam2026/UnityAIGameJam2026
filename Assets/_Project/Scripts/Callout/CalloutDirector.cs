@@ -374,7 +374,7 @@ namespace OnYourMark
                 foreach (var r in renderers) bounds.Encapsulate(r.bounds);
                 mediator.transform.localScale *= 1.15f / Mathf.Max(.01f,bounds.size.magnitude);
                 var glow = new MaterialPropertyBlock();
-                glow.SetColor("_EmissiveColor",new Color(.05f,1.4f,1.25f));
+                glow.SetColor(OYM.Web.Emissive.Id,new Color(.05f,1.4f,1.25f) * OYM.Web.Emissive.Abs);
                 foreach (var r in renderers) r.SetPropertyBlock(glow);
             }
             mediator.SetActive(true); mediator.transform.position = Vector3.MoveTowards(mediator.transform.position, target, Time.deltaTime * 4);

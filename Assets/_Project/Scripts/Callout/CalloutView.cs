@@ -49,7 +49,7 @@ namespace OnYourMark
 
         void Awake()
         {
-            var font = Font.CreateDynamicFontFromOSFont(KoreanFonts, 32);
+            var font = OYM.Web.WebFonts.IsWeb ? OYM.Web.WebFonts.Korean : Font.CreateDynamicFontFromOSFont(KoreanFonts, 32);
             topPosition = slots[0].rect.anchoredPosition;
             foreach (var s in slots)
             {

@@ -382,6 +382,9 @@ namespace OYM
         {
             if (_mode != Mode.Friend || string.IsNullOrEmpty(_myCode)) return;
             GUIUtility.systemCopyBuffer = _myCode;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            OYM.Net.WebClipboard.Copy(_myCode);
+#endif
             if (_copy is Label l)
             {
                 l.text = "COPIED"; l.AddToClassList("sbtn--done");
@@ -394,7 +397,11 @@ namespace OYM
         {
             if (_mode != Mode.Friend) return;
             string code = _field?.value.Trim();
+#if OYM_RELAY
+            if (string.IsNullOrEmpty(code) || code.Length != 6) { SetStatus("ENTER THE HOST'S 6-CHARACTER CODE", "fp-status--err"); return; }
+#else
             if (!OnYourMark.RoomCode.TryDecode(code, out _)) { SetStatus("ENTER THE HOST'S 6-CHARACTER CODE (CASE-SENSITIVE)", "fp-status--err"); return; }
+#endif
             JoinClicked?.Invoke(code);
         }
 
@@ -781,6 +788,7 @@ namespace OYM
         static FontDefinition? Font()
         {
             if (s_font.HasValue) return s_font;
+            if (OYM.Web.WebFonts.IsWeb && OYM.Web.WebFonts.LatinAsset) { s_font = FontDefinition.FromSDFFont(OYM.Web.WebFonts.LatinAsset); return s_font; }
             foreach (var family in new[] { "Bahnschrift", "Segoe UI" })
             {
                 try

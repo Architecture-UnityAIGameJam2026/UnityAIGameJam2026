@@ -1,10 +1,15 @@
-// Shockwave / heat-haze refraction for HDRP's distortion buffer + an optional faint additive glow.
+// Shockwave / heat-haze refraction + an optional faint additive glow (URP port).
 //   radial: the image-gen shock ring (alpha) pushes the scene outward along the billboard's radius (camera-facing
 //           particle, no rotation, so quad u/v = screen x/y);
 //   turbulent: scrolling tileable noise wobbles the scene (heat shimmer over a laser burn, after a blast).
 // Strength is in pixels at 1080p for a particle 10 m away (scaled with resolution and 1 / depth).
 // Vertex colour alpha = strength over life (fade the ring as it expands).
 // Particle vertex streams: Position, Color, UV  (TEXCOORD0.xy).
+//
+// URP has no distortion buffer: the "DistortionVectors" pass refracts directly, sampling the URP Opaque Texture
+// (_CameraOpaqueTexture) at the displaced position and alpha-blending it over the pixel. Blur (HDRP: colour pyramid mip)
+// is approximated with a 5-tap kernel. Requires "Opaque Texture" and "Depth Texture" on the URP asset / camera.
+// Draw order inside the transparent queue, per particle: SRPDefaultUnlit (refraction) then UniversalForward (glow).
 Shader "OYM/FX/Distort"
 {
     Properties
@@ -23,13 +28,13 @@ Shader "OYM/FX/Distort"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
 
         HLSLINCLUDE
-        #pragma target 4.5
-        #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-        #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-        #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+        #pragma target 3.5
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
 
         TEXTURE2D(_MainTex);  SAMPLER(sampler_MainTex);
         TEXTURE2D(_NoiseTex); SAMPLER(sampler_NoiseTex);
@@ -53,7 +58,7 @@ Shader "OYM/FX/Distort"
 
         float SoftFade(float4 positionCS)
         {
-            float sceneZ = LinearEyeDepth(LoadCameraDepth(uint2(positionCS.xy)), _ZBufferParams);
+            float sceneZ = LinearEyeDepth(LoadSceneDepth(uint2(positionCS.xy)), _ZBufferParams);
             return saturate((sceneZ - positionCS.w) / max(1e-3, _SoftFade));
         }
         ENDHLSL
@@ -61,7 +66,7 @@ Shader "OYM/FX/Distort"
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One One
             ZWrite Off
             ZTest LEqual
@@ -83,11 +88,8 @@ Shader "OYM/FX/Distort"
         Pass
         {
             Name "DistortionVectors"
-            Tags { "LightMode" = "DistortionVectors" }
-            // StencilUsage.DistortionVectors = 1 << 2 (HDRP 17): ApplyDistortion only runs where this bit is set
-            Stencil { WriteMask 4 Ref 4 Comp Always Pass Replace }
-            Blend One One, One One
-            BlendOp Add, Add
+            Tags { "LightMode" = "SRPDefaultUnlit" }
+            Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
             ZTest LEqual
             Cull Off
@@ -98,17 +100,39 @@ Shader "OYM/FX/Distort"
             {
                 float2 uv = i.uv * _MainTex_ST.xy + _MainTex_ST.zw;
                 float m = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv).a;
-                // no push and no blur here (outside the ring / faded out): leave the pixel unmarked so ApplyDistortion
-                // skips it - the same picture as a zero offset, minus the full-screen pass work (11-19 particle pass)
+                // no push and no blur here (outside the ring / faded out): leave the pixel untouched
                 if (m * i.color.a <= 0.0) discard;
                 float2 radial = float2(i.uv.x - 0.5, 0.5 - i.uv.y);   // quad v is up, pixel y is down
                 float rl = length(radial);
-                radial = rl > 1e-4 ? radial / rl : 0;
+                radial = rl > 1e-4 ? radial / rl : float2(0.0, 0.0);
                 float2 n = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, i.uv * _NoiseScale + _Time.y * _NoiseSpeed * float2(0.3, 1.0)).rg * 2.0 - 1.0;
-                float px = (_ScreenSize.y / 1080.0) * saturate(_RefDepth / max(i.positionCS.w, 0.5)) * i.color.a * SoftFade(i.positionCS);
-                float2 d = (radial * _Radial + n * _Turbulence) * m * px;
-                // HDRP EncodeDistortion layout: (offset px xy, source valid, blur)
-                return float4(d, 1.0, saturate(_Blur * m * i.color.a));
+                float resScale = _ScaledScreenParams.y / 1080.0;
+                float px = resScale * saturate(_RefDepth / max(i.positionCS.w, 0.5)) * i.color.a * SoftFade(i.positionCS);
+                float2 d = (radial * _Radial + n * _Turbulence) * m * px;   // pixels, y down (HDRP convention)
+                float blur = saturate(_Blur * m * i.color.a);
+
+                // URP normalised screen uv is y-up on every platform: flip the y-down pixel offset
+                float2 invSize = rcp(_ScaledScreenParams.xy);
+                float2 suv = GetNormalizedScreenSpaceUV(i.positionCS) + float2(d.x, -d.y) * invSize;
+
+                // HDRP picked colour-pyramid mip (lodCount - 1) * blur; approximate its footprint with 5 taps
+                float rPx = min(0.5 * (exp2(blur * 10.0) - 1.0), 24.0) * resScale;
+                float3 c = SampleSceneColor(suv) * 0.4;
+                [branch] if (rPx > 0.25)
+                {
+                    float2 o = rPx * invSize;
+                    c += SampleSceneColor(suv + float2( o.x,  o.y)) * 0.15;
+                    c += SampleSceneColor(suv + float2(-o.x,  o.y)) * 0.15;
+                    c += SampleSceneColor(suv + float2( o.x, -o.y)) * 0.15;
+                    c += SampleSceneColor(suv + float2(-o.x, -o.y)) * 0.15;
+                }
+                else
+                    c *= 2.5;
+
+                // sub-pixel offsets fade in, so the ring's soft edge does not replace transparents behind it
+                float alpha = saturate(max(length(d), rPx));
+                if (alpha <= 0.0) discard;
+                return float4(c, alpha);
             }
             ENDHLSL
         }

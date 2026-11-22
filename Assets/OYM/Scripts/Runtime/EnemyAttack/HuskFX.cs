@@ -234,7 +234,7 @@ namespace OYM
         /// appended as an extra slot is left alone). `baseEmission` is read once from the shared material.
         public sealed class Emission
         {
-            static readonly int EmissiveId = Shader.PropertyToID("_EmissiveColor");
+            static readonly int EmissiveId = OYM.Web.Emissive.Id;
             readonly Renderer[] _r;
             readonly Color[] _base;
             readonly MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
