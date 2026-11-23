@@ -5,6 +5,11 @@
 //                    meshes) and a soft halo falling off a few pixels out - from the nearest masked pixel
 //                    (8 directions x 6 radii), strength = the mask's alpha, colour = _FocusContourColor
 // Light on the target only: no rings, no screen markers.
+//
+// URP port: a plain fullscreen pass (index 0, "FocusOutline") for a ScriptableRendererFeature. Draw it with
+// CoreUtils.DrawFullScreen / cmd.DrawProcedural(3 verts) / Blitter.BlitTexture: the vertex shader builds the fullscreen
+// triangle from SV_VertexID. The mask is read with integer pixel loads at the target's pixel position, so the mask RT
+// must have the same pixel size as the colour target it is composited onto (_ScreenSize.xy is the clamp bound).
 Shader "Hidden/OYM/FocusOutline"
 {
     Properties
@@ -14,11 +19,9 @@ Shader "Hidden/OYM/FocusOutline"
 
     HLSLINCLUDE
 
-    #pragma target 4.5
-    #pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch switch2
+    #pragma target 3.5
 
-    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
     struct Attributes
     {
@@ -41,6 +44,7 @@ Shader "Hidden/OYM/FocusOutline"
         return output;
     }
 
+    // TEXTURE2D_X = Texture2D when XR single-pass instancing is off (always on WebGL), Texture2DArray otherwise.
     TEXTURE2D_X(_FocusMask);
     float4 _FocusContourColor;   // rgb contour colour (linear HDR, screen-relative)
     float4 _FocusShape;          // x contour core (px at 1080p), y halo sigma (px at 1080p), z halo gain, w px scale (height / 1080)
@@ -76,7 +80,7 @@ Shader "Hidden/OYM/FocusOutline"
 
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Opaque" }
         Pass
         {
             Name "FocusOutline"

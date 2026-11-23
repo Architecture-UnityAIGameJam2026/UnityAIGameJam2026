@@ -26,7 +26,7 @@ namespace OnYourMark
             glow.GetPropertyBlock(block);
             float pulse = 1.2f + Mathf.Sin(Time.time * 5f) * .6f;
             // 원판이 화면을 넓게 덮으면 블룸이 화면 전체로 번진다: 바위보다 확실히 밝은 정도로만 (노출 EV 11.9 기준)
-            block.SetColor("_EmissiveColor", new Color(.3f, 1f, .85f) * pulse * 150f);
+            block.SetColor(OYM.Web.Emissive.Id, new Color(.3f, 1f, .85f) * pulse * 150f * OYM.Web.Emissive.Abs);
             glow.SetPropertyBlock(block);
         }
 

@@ -105,7 +105,7 @@ namespace OYM
         static Material BodyMaterial()
         {
             if (s_mat) return s_mat;
-            var sh = Shader.Find("HDRP/Lit");
+            var sh = Shader.Find(OYM.Web.WebLightAdapter.IsUrp ? "Universal Render Pipeline/Lit" : "HDRP/Lit");
             if (!sh) return null;
             s_mat = new Material(sh) { name = "OYM_SalvoMissile (runtime)" };
             s_mat.SetColor("_BaseColor", new Color(0.28f, 0.29f, 0.3f));

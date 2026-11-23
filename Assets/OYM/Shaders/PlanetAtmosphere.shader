@@ -1,11 +1,13 @@
-// Atmosphere of the arena's giant planet, seen from outside (HDRP, unlit, premultiplied alpha).
+// Atmosphere of the arena's giant planet, seen from outside (URP, unlit, premultiplied alpha).
 // Draw it on a shell a few scale heights above the surface (front faces). The baked surface (OYMPlanet, HDRP/Unlit,
 // pipeline/planet/bake_planet.py) carries everything view-independent; this shader adds what depends on the viewer:
 //   * over the disc: aerial haze whose column grows toward the limb (tau / mu) - adds sky colour AND hides the
 //     surface behind it (alpha = 1 - transmittance), lit by the sun at that point, warm along the terminator;
 //   * off the disc: the limb glow, optical depth of the grazing ray ~ exp(-altitude / H);
 //   * the sun's glint on open water (equirect mask from the bake), dimmed by the haze in front of it.
-// Output is screen-relative HDR like HDRP/Unlit (1 = white on screen, above 1 blooms).
+// Output is screen-relative HDR (1 = white on screen, above 1 blooms; URP has no exposure, values go out as-is).
+// URP port: positions are made camera-relative by hand in the vertex shader (the maths below was written for HDRP
+// camera-relative rendering and keeps float precision at planet scale this way).
 Shader "OYM/Env/PlanetAtmosphere"
 {
     Properties
@@ -31,24 +33,22 @@ Shader "OYM/Env/PlanetAtmosphere"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One OneMinusSrcAlpha
             ZWrite Off
             ZTest LEqual
             Cull Back
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.0
             #pragma vertex Vert
             #pragma fragment Frag
 
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             TEXTURE2D(_GlintMap);
             SAMPLER(sampler_GlintMap);
@@ -79,9 +79,9 @@ Shader "OYM/Env/PlanetAtmosphere"
             Varyings Vert(Attributes v)
             {
                 Varyings o;
-                float3 positionRWS = TransformObjectToWorld(v.positionOS);     // camera-relative in HDRP
-                o.positionRWS = positionRWS;
-                o.positionCS = TransformWorldToHClip(positionRWS);
+                float3 positionWS = TransformObjectToWorld(v.positionOS);      // absolute in URP
+                o.positionCS = TransformWorldToHClip(positionWS);
+                o.positionRWS = positionWS - _WorldSpaceCameraPos.xyz;          // camera-relative, as in HDRP
                 return o;
             }
 
@@ -90,7 +90,7 @@ Shader "OYM/Env/PlanetAtmosphere"
             float4 Frag(Varyings i) : SV_Target
             {
                 float4x4 m = GetObjectToWorldMatrix();
-                float3 C = float3(m._m03, m._m13, m._m23);                      // planet centre, camera-relative
+                float3 C = float3(m._m03, m._m13, m._m23) - _WorldSpaceCameraPos.xyz;   // planet centre, camera-relative
                 float3 v = normalize(i.positionRWS);                            // camera -> pixel
                 float3 s = normalize(_SunDir.xyz);
                 float R = _PlanetRadius;

@@ -35,6 +35,10 @@ namespace OnYourMark
         {
             if (!IsClient || !Player.Local || !Player.Local.Partner || Keyboard.current == null) { StopMic(); return; }
             var key = Keyboard.current.vKey;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (key.wasPressedThisFrame) Notice("웹 버전에서는 음성 무전을 쓸 수 없습니다.");
+            return;
+#else
             if (!recording && !sending && key.wasPressedThisFrame)
             {
                 if (Microphone.devices.Length == 0) { Notice("사용 가능한 마이크가 없습니다."); return; }
@@ -60,11 +64,15 @@ namespace OnYourMark
                 }
                 StartCoroutine(SendMic(bytes));
             }
+#endif
         }
         void StopMic()
         {
             if (!recording) return;
-            Microphone.End(device); Destroy(recording); recording = null;
+#if !(UNITY_WEBGL && !UNITY_EDITOR)
+            Microphone.End(device);
+#endif
+            Destroy(recording); recording = null;
         }
         void Notice(string text) { micStatus = text; statusUntil = Time.unscaledTime + 4; }
         void OnGUI()

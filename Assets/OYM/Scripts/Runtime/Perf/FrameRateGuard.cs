@@ -57,6 +57,7 @@ namespace OYM
         static void Boot()
         {
             if (Application.isBatchMode || Instance != null) return;
+            if (!(UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline is UnityEngine.Rendering.HighDefinition.HDRenderPipelineAsset)) return;   // web build (URP): HDRP-only tuning
             if (HasArg("-oymNoGuard")) return;
             var go = new GameObject("~FrameRateGuard") { hideFlags = HideFlags.DontSave };
             DontDestroyOnLoad(go);

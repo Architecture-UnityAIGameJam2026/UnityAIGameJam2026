@@ -11,6 +11,8 @@
 //
 // Particle vertex streams (set by OYMHitFX): Position, Color, UV, Custom1.xy, StableRandom.x
 //   -> TEXCOORD0 = (uv.xy, erosion, heat), TEXCOORD1.x = seed.
+//
+// URP port: soft particles read _CameraDepthTexture (URP asset / camera "Depth Texture" must be on).
 Shader "OYM/FX/Erode"
 {
     Properties
@@ -39,24 +41,23 @@ Shader "OYM/FX/Erode"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend [_SrcBlend] [_DstBlend]
             ZWrite Off
             ZTest LEqual
             Cull Off
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.5
             #pragma vertex Vert
             #pragma fragment Frag
 
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
             TEXTURE2D(_MainTex);  SAMPLER(sampler_MainTex);
             TEXTURE2D(_Ramp);     SAMPLER(sampler_Ramp);
@@ -90,8 +91,8 @@ Shader "OYM/FX/Erode"
             Varyings Vert(Attributes v)
             {
                 Varyings o;
-                float3 positionRWS = TransformObjectToWorld(v.positionOS);
-                o.positionCS = TransformWorldToHClip(positionRWS);
+                float3 positionWS = TransformObjectToWorld(v.positionOS);
+                o.positionCS = TransformWorldToHClip(positionWS);
                 o.color = v.color;
                 o.uv0 = float4(v.uv0.xy * _MainTex_ST.xy + _MainTex_ST.zw, v.uv0.zw);
                 o.seed = v.seed;
@@ -101,9 +102,8 @@ Shader "OYM/FX/Erode"
             float4 Frag(Varyings i) : SV_Target
             {
                 // Invisible fragments leave first (11-19 particle pass): faded out near the camera (_NearFade, e.g. the
-                // fireballs within 2 m) or by the particle's own alpha. They used to run every texture fetch for an
-                // output of 0; additive and premultiplied blending both keep the target unchanged for a zero output,
-                // so discarding them is pixel-identical.
+                // fireballs within 2 m) or by the particle's own alpha. Additive and premultiplied blending both keep
+                // the target unchanged for a zero output, so discarding them is pixel-identical.
                 float fragZ = i.positionCS.w;
                 float nearF = saturate((fragZ - _NearFade.x) / max(1e-3, _NearFade.y));
                 float vis = i.color.a * nearF;
@@ -128,12 +128,12 @@ Shader "OYM/FX/Erode"
                 float edge = a * (1.0 - saturate((dens - thr) / (w * 2.5)));   // band right at the eroding edge
 
                 // gradient map by heat
-                float u = saturate(pow(shade, _HeatContrast) * heat + _HeatBias + edge * _EdgeGlow * heat);
+                float u = saturate(pow(max(shade, 0.0), _HeatContrast) * heat + _HeatBias + edge * _EdgeGlow * heat);
                 float3 ramp = SAMPLE_TEXTURE2D_LOD(_Ramp, sampler_Ramp, float2(u, 0.5), 0).rgb;
                 float3 emission = ramp * _Intensity * saturate((u - _EmissionFloor) / max(1e-3, 1.0 - _EmissionFloor));
 
                 // soft particles (the near-camera fade is in `vis` above)
-                float sceneZ = LinearEyeDepth(LoadCameraDepth(uint2(i.positionCS.xy)), _ZBufferParams);
+                float sceneZ = LinearEyeDepth(LoadSceneDepth(uint2(i.positionCS.xy)), _ZBufferParams);
                 float soft = saturate((sceneZ - fragZ) / max(1e-3, _SoftFade));
 
                 float cov = a * vis * soft;

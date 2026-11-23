@@ -1,9 +1,11 @@
-// Atmosphere limb glow for a planet seen from orbit (HDRP, additive, unlit). Draw it on a shell around the planet that
+// Atmosphere limb glow for a planet seen from orbit (URP, additive, unlit). Draw it on a shell around the planet that
 // reaches a few scale heights above the surface (any mesh covering the limb region works; front faces only).
 // Per pixel the view ray's closest approach to the planet centre gives the altitude the ray grazes: above the limb the
 // glow follows the air density exp(-alt / H) (a thin bright line), over the disc it is only a faint haze that fades
 // inwards. Sunward limb bright, night side dim; warm forward scattering in a narrow lobe round the sun.
 // Output is screen-relative HDR like OYM/FX/AdditiveHDR: 1 = white on screen, values above 1 feed bloom.
+// URP port: positions are made camera-relative by hand (the maths was written for HDRP camera-relative rendering and
+// keeps float precision at planet scale this way).
 Shader "OYM/Cine/AtmosphereRim"
 {
     Properties
@@ -23,24 +25,22 @@ Shader "OYM/Cine/AtmosphereRim"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One One
             ZWrite Off
             ZTest LEqual
             Cull Back
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.0
             #pragma vertex Vert
             #pragma fragment Frag
 
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _DayColor;
@@ -63,16 +63,16 @@ Shader "OYM/Cine/AtmosphereRim"
             Varyings Vert(Attributes v)
             {
                 Varyings o;
-                float3 positionRWS = TransformObjectToWorld(v.positionOS);     // camera-relative in HDRP
-                o.positionRWS = positionRWS;
-                o.positionCS = TransformWorldToHClip(positionRWS);
+                float3 positionWS = TransformObjectToWorld(v.positionOS);      // absolute in URP
+                o.positionCS = TransformWorldToHClip(positionWS);
+                o.positionRWS = positionWS - _WorldSpaceCameraPos.xyz;          // camera-relative, as in HDRP
                 return o;
             }
 
             float4 Frag(Varyings i) : SV_Target
             {
                 float4x4 m = GetObjectToWorldMatrix();
-                float3 C = float3(m._m03, m._m13, m._m23);                      // planet centre, camera-relative
+                float3 C = float3(m._m03, m._m13, m._m23) - _WorldSpaceCameraPos.xyz;   // planet centre, camera-relative
                 float3 v = normalize(i.positionRWS);                            // camera -> pixel
                 float3 P = v * dot(C, v) - C;                                    // closest point of the ray, from the centre
                 float b = length(P);

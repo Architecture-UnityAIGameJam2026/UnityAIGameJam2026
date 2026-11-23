@@ -14,7 +14,7 @@ namespace OYM
         Rigidbody _rb;
         MaterialPropertyBlock _mpb;
         float _flash;
-        static readonly int EmissiveId = Shader.PropertyToID("_EmissiveColor");
+        static readonly int EmissiveId = OYM.Web.Emissive.Id;
 
         void Awake()
         {
@@ -53,7 +53,7 @@ namespace OYM
             {
                 if (!r) continue;
                 r.GetPropertyBlock(_mpb);
-                _mpb.SetColor(EmissiveId, flashColor * (flashIntensity * f * near));
+                _mpb.SetColor(EmissiveId, flashColor * (flashIntensity * f * near * OYM.Web.Emissive.Abs));
                 r.SetPropertyBlock(_mpb);
             }
         }

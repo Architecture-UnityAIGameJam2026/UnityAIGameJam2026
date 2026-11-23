@@ -14,19 +14,19 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.01
+  m_Fog: 1
+  m_FogColor: {r: 0.013732911, g: 0.015563967, b: 0.01739502, a: 0.018310547}
+  m_FogMode: 2
+  m_FogDensity: 0.000022222222
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
-  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
-  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientSkyColor: {r: 0.34505603, g: 0.427607, b: 0.44845504, a: 6.7007394}
+  m_AmbientEquatorColor: {r: 0.37288237, g: 0.46460384, b: 0.49721807, a: 6.7007394}
+  m_AmbientGroundColor: {r: 0.28708723, g: 0.3551797, b: 0.38892275, a: 6.7007394}
+  m_AmbientIntensity: 7
+  m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8091a208fe48c5e41a3d2ddf98da619a, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -10589,6 +10589,7 @@ GameObject:
   - component: {fileID: 58463685}
   - component: {fileID: 58463684}
   - component: {fileID: 58463683}
+  - component: {fileID: 58463687}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -10810,6 +10811,50 @@ Transform:
   - {fileID: 673617281}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &58463687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58463681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 1
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &58954183
 GameObject:
   m_ObjectHideFlags: 0
@@ -124048,6 +124093,7 @@ MonoBehaviour:
   launchFov: 16
   launchLens: 0.35
   launchBloom: 0.9
+  boostPace: 0.6
   freq: 3
   damping: 0.42
 --- !u!114 &745496022
@@ -411936,6 +411982,8 @@ MonoBehaviour:
   subdiv: 5
   color: {r: 0.72, g: 0.93, b: 1, a: 1}
   emitting: 0
+  reach: 1
+  inner: 0
 --- !u!114 &7654110540325045752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417114,13 +417162,24 @@ MonoBehaviour:
     look: {x: 22, y: 2}
   launchVelocity: {x: 0.6, y: 8, z: -14}
   idleClip: {fileID: -623603649343465320, guid: 1f092e8e0c39e9a46a81832c00d3e8ad, type: 3}
+  idlePace: 0.5
   frontClip: {fileID: -623603649343465320, guid: a5ff0db98652d8a4d90d7481bf45484e, type: 3}
   frontFrom: 0.3
   frontHold: 0.75
   frontSpeed: 1
   trail: {fileID: 7619179219322939805}
   trailWindow: {x: 0.42, y: 0.74}
-  frontArmRoll: 18
+  slashReach: 2.2
+  slashInner: 0.45
+  slashLife: 0.24
+  holdArm: 1
+  holdBlade: {x: 0.8, y: -0.53, z: 0.28}
+  holdFore: {x: 0.36, y: -0.29, z: 0.89}
+  holdWristDev: 25
+  holdElbow: 20
+  holdPronation: -20
+  holdArmIn: 0.25
+  holdWristMax: 28
   railgun: {fileID: 0}
   fireDelay: 0.12
   lookTarget: {fileID: 58463686}
@@ -417144,6 +417203,9 @@ MonoBehaviour:
   bobFreq: 0.21
   swayDeg: 1.8
   boostTime: 0.4
+  pace: 0.6
+  strikePace: 0.8
+  settleBeforeFire: 0.75
   swoopKick: {x: 2.2, y: 1.1, z: 0}
   retroKick: 2.6
   retroSpin: 240
@@ -427464,13 +427526,24 @@ MonoBehaviour:
     look: {x: -8, y: -4}
   launchVelocity: {x: -0.6, y: 8, z: -14}
   idleClip: {fileID: -623603649343465320, guid: 8e3345352e8e0f74ebbc93848b4eedc2, type: 3}
+  idlePace: 0.5
   frontClip: {fileID: 0}
   frontFrom: 1
   frontHold: 1.6
   frontSpeed: 1
   trail: {fileID: 0}
   trailWindow: {x: -1, y: -1}
-  frontArmRoll: 0
+  slashReach: 2.2
+  slashInner: 0.45
+  slashLife: 0.24
+  holdArm: 1
+  holdBlade: {x: 0.8, y: -0.53, z: 0.28}
+  holdFore: {x: 0.36, y: -0.29, z: 0.89}
+  holdWristDev: 25
+  holdElbow: 20
+  holdPronation: -20
+  holdArmIn: 0.25
+  holdWristMax: 28
   railgun: {fileID: 5063305391210204897}
   fireDelay: 0.32
   lookTarget: {fileID: 58463686}
@@ -427494,6 +427567,9 @@ MonoBehaviour:
   bobFreq: 0.21
   swayDeg: 1.8
   boostTime: 0.4
+  pace: 0.6
+  strikePace: 0.8
+  settleBeforeFire: 0.75
   swoopKick: {x: 2.2, y: 1.1, z: 0}
   retroKick: 2.6
   retroSpin: 240

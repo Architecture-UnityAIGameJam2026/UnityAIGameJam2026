@@ -1,3 +1,4 @@
+#if !OYM_RELAY
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -222,3 +223,4 @@ namespace OYM.Net
         }
     }
 }
+#endif

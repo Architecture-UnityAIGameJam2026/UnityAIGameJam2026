@@ -30,7 +30,7 @@ namespace OYM
         public int Left { get { int n = 0; foreach (var p in Points) if (p && !p.Broken) n++; return n; } }
 
         static readonly string[] Parts = { "citadel_head", "citadel_claw_L1", "citadel_claw_R1", "citadel_claw_L2", "citadel_claw_R2" };
-        static readonly int EmissiveId = Shader.PropertyToID("_EmissiveColor");
+        static readonly int EmissiveId = OYM.Web.Emissive.Id;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetStatics() { Current = null; Broke = null; }

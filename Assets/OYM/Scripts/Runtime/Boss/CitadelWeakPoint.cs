@@ -33,7 +33,7 @@ namespace OYM
         // angle except straight through the claw from underneath; the head's eyes face forward
         float _minFacing = -0.35f;
         static FieldInfo s_flashField;
-        static readonly int EmissiveId = Shader.PropertyToID("_EmissiveColor");
+        static readonly int EmissiveId = OYM.Web.Emissive.Id;
 
         static float MaxScale(Transform t) { var s = t.lossyScale; return Mathf.Max(Mathf.Abs(s.x), Mathf.Max(Mathf.Abs(s.y), Mathf.Abs(s.z))); }
 

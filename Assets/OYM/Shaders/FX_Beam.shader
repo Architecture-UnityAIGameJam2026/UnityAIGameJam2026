@@ -2,6 +2,7 @@
 // A guaranteed gaussian white-hot core + the image-gen beam strip scrolled along the beam in two layers at different
 // speeds (the sheath "flows" toward the target), broken up by noise, flickered, then gradient-mapped (HUSK magenta /
 // player cyan). Vertex colour = tint, alpha = on/off envelope from BeamFX. Screen-relative HDR like OYM/FX/AdditiveHDR.
+// Ported from HDRP (ForwardOnly) to URP (UniversalForward); maths unchanged.
 Shader "OYM/FX/Beam"
 {
     Properties
@@ -20,22 +21,20 @@ Shader "OYM/FX/Beam"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One One
             ZWrite Off
             ZTest LEqual
             Cull Off
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.5
             #pragma vertex Vert
             #pragma fragment Frag
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             TEXTURE2D(_MainTex);  SAMPLER(sampler_MainTex);
             TEXTURE2D(_NoiseTex); SAMPLER(sampler_NoiseTex);
@@ -64,7 +63,8 @@ Shader "OYM/FX/Beam"
                 float metres = i.uv.x;
                 float v = i.uv.y;
                 float across = abs(v - 0.5) * 2.0;
-                float core = exp(-pow(across / _CoreWidth, 2.0));
+                float cw = across / _CoreWidth;
+                float core = exp(-cw * cw);
 
                 float u = metres * _Tile;
                 float s1 = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, float2(u - t * _Scroll, v)).a;

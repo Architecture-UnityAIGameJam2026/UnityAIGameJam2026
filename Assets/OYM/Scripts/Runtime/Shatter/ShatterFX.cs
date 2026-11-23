@@ -26,7 +26,7 @@ namespace OYM
         const float LightsDieTime = 0.35f;
         const float ShrinkTime = 0.55f;
 
-        static readonly int EmissiveId = Shader.PropertyToID("_EmissiveColor");
+        static readonly int EmissiveId = OYM.Web.Emissive.Id;
         static readonly int HeatId = Shader.PropertyToID("_Heat");
         static readonly int FlashId = Shader.PropertyToID("_Flash");
 
@@ -420,7 +420,7 @@ namespace OYM
                     p.mr.SetPropertyBlock(mpb, m);
                 }
                 mpb.Clear();
-                mpb.SetVector(EmissiveId, (Vector4)(Blackbody(heat * HeatCap) * (InteriorGain * heat * Mathf.Sqrt(heat))));
+                mpb.SetVector(EmissiveId, (Vector4)(Blackbody(heat * HeatCap) * (InteriorGain * heat * Mathf.Sqrt(heat) * OYM.Web.Emissive.Abs)));
                 p.mr.SetPropertyBlock(mpb, p.extCount);
                 mpb.Clear();
                 mpb.SetFloat(HeatId, heat * HeatCap);

@@ -20,24 +20,22 @@ Shader "OYM/FX/ShatterHeat"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent+5" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent+5" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One One
             ZWrite Off
             ZTest LEqual
             Cull Back
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.0
             #pragma vertex Vert
             #pragma fragment Frag
             #pragma multi_compile_instancing
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             TEXTURE2D(_RampTex);  SAMPLER(sampler_RampTex);
             TEXTURE2D(_NoiseTex); SAMPLER(sampler_NoiseTex);
@@ -56,7 +54,7 @@ Shader "OYM/FX/ShatterHeat"
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
-                float3 positionRWS : TEXCOORD0;
+                float3 positionRWS : TEXCOORD0;  // absolute world space in URP (name kept from HDRP)
                 float3 normalWS : TEXCOORD1;
                 float3 noisePos : TEXCOORD2;   // object space x scale: the pattern sticks to the piece
                 float3 normalOS : TEXCOORD3;
@@ -65,7 +63,7 @@ Shader "OYM/FX/ShatterHeat"
 
             Varyings Vert(Attributes v)
             {
-                Varyings o;
+                Varyings o = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(v);
                 float3 nWS = TransformObjectToWorldNormal(v.normalOS);
                 float3 pRWS = TransformObjectToWorld(v.positionOS) + nWS * _Inflate;

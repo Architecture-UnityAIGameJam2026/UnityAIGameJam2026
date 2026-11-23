@@ -36,24 +36,22 @@ Shader "OYM/FX/HitOverlay"
     }
     SubShader
     {
-        Tags { "RenderPipeline" = "HDRenderPipeline" "RenderType" = "Transparent" "Queue" = "Transparent+10" "IgnoreProjector" = "True" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Transparent" "Queue" = "Transparent+10" "IgnoreProjector" = "True" }
         Pass
         {
             Name "ForwardOnly"
-            Tags { "LightMode" = "ForwardOnly" }
+            Tags { "LightMode" = "UniversalForward" }
             Blend One One
             ZWrite Off
             ZTest LEqual
             Cull Back
 
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.0
             #pragma vertex Vert
             #pragma fragment Frag
             #pragma multi_compile_instancing
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             TEXTURE2D(_NoiseTex);  SAMPLER(sampler_NoiseTex);
             TEXTURE2D(_PlasmaTex); SAMPLER(sampler_PlasmaTex);
@@ -74,7 +72,7 @@ Shader "OYM/FX/HitOverlay"
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
-                float3 positionRWS : TEXCOORD0;
+                float3 positionRWS : TEXCOORD0;  // absolute world space in URP (name kept from HDRP)
                 float3 normalWS : TEXCOORD1;
                 float3 hexPos : TEXCOORD2;    // object space x object scale (hex sticks to the hull)
                 float3 normalOS : TEXCOORD3;
@@ -82,7 +80,7 @@ Shader "OYM/FX/HitOverlay"
 
             Varyings Vert(Attributes v)
             {
-                Varyings o;
+                Varyings o = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(v);
                 float3 nWS = TransformObjectToWorldNormal(v.normalOS);
                 float3 pRWS = TransformObjectToWorld(v.positionOS) + nWS * _Inflate;
@@ -126,7 +124,7 @@ Shader "OYM/FX/HitOverlay"
                 float age = hit.w;
                 float alive = step(0.0, age) * step(age, _Life);
                 float size = max(col.a, 0.05);
-                float d = distance(pRWS, GetCameraRelativePositionWS(hit.xyz));
+                float d = distance(pRWS, hit.xyz);                    // URP: world space is absolute
                 float life = saturate(1.0 - age / _Life);
                 float r = age * _WaveSpeed * size;
                 float ring = exp(-HSq((d - r) / (_WaveWidth * size))) * life * life;
