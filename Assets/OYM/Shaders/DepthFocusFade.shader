@@ -8,7 +8,7 @@
 // each depth layer is eaten a little more by the light behind it (EVE-style layering) while the foreground stays crisp.
 // Works on the HDR colour buffer after opaques and the skybox, before transparents and bloom.
 //   pass 0  DepthFocusFade  full res, _BlitTexture = copy of the camera colour, _GlowTex = blurred glow (pass 1 output)
-//   pass 1  GlowPrep        half res, _BlitTexture = copy of the camera colour (full res),
+//   pass 1  GlowPrep        half (web: quarter) res, _BlitTexture = copy of the camera colour (full res),
 //                           writes (far colour * source weight, source weight) for the blur
 // Both passes draw a fullscreen triangle from SV_VertexID (Blitter.BlitTexture / BlitCameraTexture, RenderGraph
 // AddBlitPass, or cmd.DrawProcedural(.., Triangles, 3)). They only use pixel positions, never the blit uv, so
@@ -41,7 +41,8 @@ Shader "Hidden/OYM/DepthFocusFade"
     float4 _FadeMisc;     // x haze amount, y debug view
     float4 _FadeSkyLayer; // x backdrop-layer distance (m), y fade amount there (planet: baked look kept)
     float4 _HazeSky;      // x sky mix (0 flat colour .. 1 blurred sky behind the pixel), y sky mip, z sky haze gain
-    float4 _Glow;         // x glow on far layers, y glow-source luminance cap, z 1 = glow texture valid
+    float4 _Glow;         // x glow on far layers, y glow-source luminance cap, z 1 = glow texture valid,
+                          // w full-res pixels per glow-source pixel (0 = 2, half res)
     float4 _OYMFogA;      // x max fog opacity on geometry (0 = fog off), y fog start (m), z 1 / fog length (1/m),
                           // w silhouette (0 = converge to the fog colour .. 1 = to the fogged sky behind the pixel)
     float4 _OYMFogB;      // x sky veil, y backdrop (planet) veil, z nebula tint, w nebula tint mip
@@ -211,13 +212,17 @@ Shader "Hidden/OYM/DepthFocusFade"
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-        uint2 base = (uint2)input.positionCS.xy * 2u;
+        // _Glow.w = full-res pixels per glow pixel (2 = half res, 4 = quarter res on the web build; 0 = 2). Always
+        // 4 taps: at quarter res they are spread 2 px apart over the 4x4 block (the result is blurred heavily anyway)
+        uint scale = _Glow.w > 0.5 ? (uint)_Glow.w : 2u;
+        uint tapStride = max(1u, scale / 2u);
+        uint2 base = (uint2)input.positionCS.xy * scale;
         uint2 maxPx = (uint2)FullResSize() - 1u;
         float4 acc = 0.0;
         [unroll]
         for (uint i = 0u; i < 4u; i++)
         {
-            uint2 p = min(base + uint2(i & 1u, i >> 1u), maxPx);
+            uint2 p = min(base + uint2(i & 1u, i >> 1u) * tapStride, maxPx);
             float3 c = LOAD_TEXTURE2D_X(_BlitTexture, p).rgb;
             FadeInfo f = GetFade((float2)p + 0.5, LoadSceneDepth(p));
             c = ShapeFar(c, f.t, f.tGeo);

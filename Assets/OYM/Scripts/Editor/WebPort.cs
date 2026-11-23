@@ -217,6 +217,10 @@ namespace OYM.WebTools
             a.shadowCascadeCount = 2;
             a.maxAdditionalLightsCount = 4;
             a.colorGradingMode = ColorGradingMode.HighDynamicRange;
+            // the opaque texture only feeds the hit FX heat haze (OYM/FX/Distort): a quarter-res copy is plenty
+            var so = new SerializedObject(a);
+            so.FindProperty("m_OpaqueDownsampling").intValue = (int)Downsampling._4xBilinear;
+            so.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(a);
             AssetDatabase.SaveAssets();
             return a;
@@ -516,6 +520,7 @@ namespace OYM.WebTools
             PlayerSettings.WebGL.maximumMemorySize = 4096;
             PlayerSettings.WebGL.memoryGrowthMode = WebGLMemoryGrowthMode.Geometric;
             PlayerSettings.WebGL.showDiagnostics = false;
+            PlayerSettings.WebGL.template = "PROJECT:OYM";   // Assets/WebGLTemplates/OYM: Default + devicePixelRatio cap
             PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.WebGL, false);
             PlayerSettings.SetGraphicsAPIs(BuildTarget.WebGL, new[] { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 });
             PlayerSettings.runInBackground = true;

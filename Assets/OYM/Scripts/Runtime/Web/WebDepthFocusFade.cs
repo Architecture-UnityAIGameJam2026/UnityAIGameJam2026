@@ -10,10 +10,13 @@ namespace OYM.Web
 {
     /// Web build (URP): the game's depth haze / space fog (OYM.DepthFocusFade volume settings), which HDRP draws with
     /// the global custom pass DepthFocusFadePass. Same shader (Hidden/OYM/DepthFocusFade, ported), same parameters,
-    /// enqueued on every game camera before transparents: copy colour -> optional far glow (pass 1 at half res, blurred
+    /// enqueued on every game camera before transparents: copy colour -> optional far glow (pass 1 at quarter res, blurred
     /// by a bilinear down/up chain) -> pass 0 into the camera colour.
     public sealed class WebDepthFocusFade : MonoBehaviour
     {
+        /// full-res pixels per glow-source pixel (shader _Glow.w): quarter res on the web, where fill rate is short
+        const int GlowDownscale = 4;
+
         static WebDepthFocusFade _it;
         Material _mat;
         FadePass _pass;
@@ -101,7 +104,7 @@ namespace OYM.Web
             }
             else m.SetVector("_OYMSkyParams", Vector4.zero);
             bool glowOn = s.glow.value > 0f && !s.debugView.value;
-            m.SetVector("_Glow", new Vector4(s.glow.value, Mathf.Max(0.05f, s.glowSourceLimit.value), glowOn ? 1f : 0f, 0f));
+            m.SetVector("_Glow", new Vector4(s.glow.value, Mathf.Max(0.05f, s.glowSourceLimit.value), glowOn ? 1f : 0f, GlowDownscale));
             _pass.glow = glowOn;
             data.scriptableRenderer.EnqueuePass(_pass);
         }
@@ -136,8 +139,9 @@ namespace OYM.Web
                 TextureHandle glowTex = copy;
                 if (glow)
                 {
-                    // far glow source at half res (pass 1), then a soft blur: down 3 steps, back up to half res
-                    var hd = desc; hd.width = Mathf.Max(1, desc.width / 2); hd.height = Mathf.Max(1, desc.height / 2);
+                    // far glow source at quarter res (pass 1), then a soft blur: down 2 steps, back up to quarter res.
+                    // Same deepest level (1/16) as the HDRP pass's half-res + 3 steps, at a quarter of the fill cost.
+                    var hd = desc; hd.width = Mathf.Max(1, desc.width / GlowDownscale); hd.height = Mathf.Max(1, desc.height / GlowDownscale);
                     hd.name = "OYM_DFF_Glow"; hd.colorFormat = GraphicsFormat.R16G16B16A16_SFloat; hd.filterMode = FilterMode.Bilinear;
                     var half = rg.CreateTexture(hd);
                     using (var b = rg.AddRasterRenderPass<Data>("OYM DFF glow prep", out var d))
@@ -151,7 +155,7 @@ namespace OYM.Web
                     }
                     var chain = new List<TextureHandle> { half };
                     var cd = hd;
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         cd.width = Mathf.Max(1, cd.width / 2); cd.height = Mathf.Max(1, cd.height / 2); cd.name = "OYM_DFF_Down" + i;
                         var t = rg.CreateTexture(cd);
