@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace OYM.Web
 {
@@ -11,6 +12,7 @@ namespace OYM.Web
     /// build stay untouched:
     ///   - LOD groups get a cull height: below <see cref="LodCullHeight"/> of the screen the object is not drawn
     ///   - fog culling drops objects at <see cref="CullPixelsScale"/> x the volume's cullPixels
+    ///   - objects under <see cref="ShadowMinRadius"/> cast no shadow
     public static class WebDrawBudget
     {
         /// screen-relative height under which an environment LOD group culls itself (~6 px at 1080p)
@@ -46,5 +48,27 @@ namespace OYM.Web
         }
 
         public static float CullPixels(float authored) => Active ? authored * CullPixelsScale : authored;
+
+        /// world bounding radius (m) under which an environment object casts no shadow
+        public const float ShadowMinRadius = 1f;
+
+        /// Small debris stops casting: each caster is one more draw call in the shadow pass, and a rock under 2 m across
+        /// throws a few texels at most. `modes` is the object's authored state that FogCulling restores, so it is
+        /// updated too. Returns whether anything changed.
+        public static bool TuneShadows(Transform tr, float localRadius, Renderer[] rs, ShadowCastingMode[] modes)
+        {
+            if (!Active || tr == null) return false;
+            Vector3 ls = tr.lossyScale;
+            float radius = localRadius * Mathf.Max(Mathf.Abs(ls.x), Mathf.Max(Mathf.Abs(ls.y), Mathf.Abs(ls.z)));
+            if (radius >= ShadowMinRadius) return false;
+            bool changed = false;
+            for (int i = 0; i < rs.Length; i++)
+            {
+                if (rs[i] == null || modes[i] == ShadowCastingMode.Off || modes[i] == ShadowCastingMode.ShadowsOnly) continue;
+                rs[i].shadowCastingMode = modes[i] = ShadowCastingMode.Off;
+                changed = true;
+            }
+            return changed;
+        }
     }
 }

@@ -141,6 +141,10 @@ namespace OYM
                     }
                 }
             }
+            int noShadow = 0;
+            foreach (var it in m_Items)
+                if (OYM.Web.WebDrawBudget.TuneShadows(it.tr, it.localRadius, it.renderers, it.shadowModes)) noShadow++;
+            if (noShadow > 0) Debug.Log($"[OYM-WEB] {noShadow} small environment objects cast no shadow");
             foreach (var it in m_Items) foreach (var r in it.renderers) m_ByRenderer[r] = it;
         }
 

@@ -213,8 +213,8 @@ namespace OYM.WebTools
             a.supportsHDR = true;
             a.msaaSampleCount = 1;
             a.renderScale = 1f;
-            a.shadowDistance = 120f;
-            a.shadowCascadeCount = 2;
+            a.shadowDistance = 60f;      // web: one 60 m cascade (each cascade redraws every caster)
+            a.shadowCascadeCount = 1;
             a.maxAdditionalLightsCount = 4;
             a.colorGradingMode = ColorGradingMode.HighDynamicRange;
             // the opaque texture only feeds the hit FX heat haze (OYM/FX/Distort): a quarter-res copy is plenty
