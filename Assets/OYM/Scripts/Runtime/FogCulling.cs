@@ -126,6 +126,7 @@ namespace OYM
                         foreach (var l in lods) foreach (var r in l.renderers) if (r != null && !all.Contains(r)) all.Add(r);
                         if (all.Count == 0 || !AllOpaque(all)) continue;
                         foreach (var r in all) inGroup.Add(r);
+                        lods = OYM.Web.WebDrawBudget.TuneLods(g, lods);   // web (URP): tiny shapes cull themselves
                         int lowest = lods.Length - 1;
                         m_Items.Add(NewItem(g.transform, g.localReferencePoint, g.size * 0.5f, all, g, lowest,
                             lods[lowest].screenRelativeTransitionHeight));
@@ -203,6 +204,9 @@ namespace OYM
             // HDCamera.volumeStack creates the stack lazily, which throws while the VolumeManager is down (play-mode
             // exit, pipeline rebuilds)
             if (cam == null || !VolumeManager.instance.isInitialized) return null;
+            // web build (URP): HDRP never updates an HDCamera's stack there, so it would read the defaults
+            // (fogCulling off) and nothing would ever be culled. URP blends the shared default stack per camera.
+            if (OYM.Web.WebLightAdapter.IsUrp) return VolumeManager.instance.stack?.GetComponent<DepthFocusFade>();
             try
             {
                 var hd = HDCamera.GetOrCreate(cam);
@@ -249,7 +253,7 @@ namespace OYM
                 float near = Mathf.Max(0f, dist - radius);                        // closest surface: conservative
                 float fog = s.FogOpacity(near);
                 float eff = radius / Mathf.Max(dist, 0.01f) * v.pxPerRadian * (1f - fog);
-                float cullPx = s.cullPixels.value * (it.state == State.FadedOut ? UncullFactor : 1f);
+                float cullPx = OYM.Web.WebDrawBudget.CullPixels(s.cullPixels.value) * (it.state == State.FadedOut ? UncullFactor : 1f);
                 float silFrom = s.cullSilhouetteOpacity.value - (it.state == State.Silhouette ? SilhouetteHysteresis : 0f);
                 if (eff < cullPx)
                     next = State.FadedOut;
