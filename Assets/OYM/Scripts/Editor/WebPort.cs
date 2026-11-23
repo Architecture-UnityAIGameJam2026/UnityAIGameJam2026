@@ -90,7 +90,7 @@ namespace OYM.WebTools
                 }
             }
             finally { AssetDatabase.StopAssetEditing(); }
-            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Brotli;
+            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;   // Brotli took ~25 min on the 380 MB data file
             PlayerSettings.WebGL.decompressionFallback = true;
             AssetDatabase.SaveAssets();
             Log($"shrink: {nt} textures, {nm} models");
@@ -101,6 +101,12 @@ namespace OYM.WebTools
 
         /// re-run the scene pass (sky / fog / cameras) and the material pass after a fix, then shrink and build
         public static void RescenesAndBuild() { ConvertScenes(); Shrink(); Build(); }
+
+        /// profiles + scenes again (post-processing / sky / ambient fixes), then shrink and build
+        /// editor look-dev: profiles + scenes only (no build)
+        public static void RefreshOnly() { ConvertProfiles(); ConvertScenes(); AssetDatabase.SaveAssets(); }
+
+        public static void RefreshAndBuild() { ConvertProfiles(); ConvertScenes(); PlayerSetup(); Shrink(); Build(); }
 
         public static void Build()
         {
@@ -163,6 +169,12 @@ namespace OYM.WebTools
             }
             return best;
         }
+
+        /// measured from the source .hdr (cos-weighted mean radiance: up > 30 deg, |lat| <= 30, down < -30), linear
+        static readonly Dictionary<string, Color[]> SkyAverages = new Dictionary<string, Color[]>
+        {
+            ["skybox_equirect_7680_nosun"] = new[] { new Color(0.01456f, 0.02284f, 0.02528f), new Color(0.01711f, 0.02727f, 0.03156f), new Color(0.01000f, 0.01546f, 0.01869f) },
+        };
 
         static void WriteEvAsset(float ev)
         {
@@ -358,8 +370,8 @@ namespace OYM.WebTools
             if (p.TryGet<HD.Bloom>(out var hb) && hb.active)
             {
                 var b = Add<U.Bloom>(p); b.active = true;
-                b.intensity.Override(Mathf.Clamp(hb.intensity.value * 4f, 0f, 3f));
-                b.threshold.Override(hb.threshold.overrideState ? Mathf.Max(0.9f, hb.threshold.value) : 1f);
+                b.intensity.Override(Mathf.Clamp(hb.intensity.value, 0f, 3f));
+                b.threshold.Override(hb.threshold.overrideState ? hb.threshold.value : 1f);
                 b.scatter.Override(hb.scatter.overrideState ? hb.scatter.value : 0.7f);
                 if (hb.tint.overrideState) b.tint.Override(hb.tint.value);
             }
@@ -447,7 +459,20 @@ namespace OYM.WebTools
                     AssetDatabase.CreateAsset(sky, mp);
                     RenderSettings.skybox = sky;
                     RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
-                    RenderSettings.ambientIntensity = 1f;
+                    var ilc = FindInGlobals<HD.IndirectLightingController>();
+                    float mul = ilc ? ilc.indirectDiffuseLightingMultiplier.value : 1f;
+                    // HDRP lit the scene with the sky's own irradiance x the indirect multiplier. URP's skybox ambient
+                    // needs baked lighting these scenes do not have (it falls back to a grey probe), so the ambient is
+                    // the sky's measured average radiance (up / horizon / down, cosine weighted) x sky exposure x mul.
+                    if (SkyAverages.TryGetValue(Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(sky.GetTexture("_Tex"))), out var av))
+                    {
+                        float k = sky.GetFloat("_Exposure") * mul;
+                        RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
+                        RenderSettings.ambientSkyColor = (av[0] * k).gamma;
+                        RenderSettings.ambientEquatorColor = (av[1] * k).gamma;
+                        RenderSettings.ambientGroundColor = (av[2] * k).gamma;
+                    }
+                    else RenderSettings.ambientIntensity = Mathf.Clamp(mul, 0f, 8f);
                 }
 
                 // fog (HDRP volumetric fog -> exponential distance fog)

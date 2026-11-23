@@ -842,7 +842,7 @@ PlayerSettings:
   webGLTemplate: APPLICATION:Default
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
-  webGLCompressionFormat: 0
+  webGLCompressionFormat: 1
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
@@ -960,11 +960,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 26ac50e0-7bc8-4afe-a265-446f839bb664
+  cloudProjectId: bbb76a4a-072e-4fba-94d6-5b34e35534a3
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: OnYourMark
-  organizationId: kimgalam0831
+  organizationId: whitekhs8766
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

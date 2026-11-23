@@ -19,6 +19,7 @@ Shader "Hidden/OYM/DepthFocusFade"
 {
     Properties
     {
+        _OYMSkyCube ("Sky cubemap (web)", Cube) = "black" {}
         // kept for compatibility (HDRP bound the source here); the URP passes read _BlitTexture
         _MainTex("Main Texture", 2D) = "grey" {}
     }
@@ -128,8 +129,21 @@ Shader "Hidden/OYM/DepthFocusFade"
 
     // the blurred sky (nebula) in a direction. HDRP sampled its GGX-convolved sky texture x exposure; URP: the
     // convolved reflection cubemap of the skybox (Lighting > Environment), no exposure.
+    TEXTURECUBE(_OYMSkyCube); SAMPLER(sampler_OYMSkyCube);
+    float4 _OYMSkyCube_HDR;
+    float4 _OYMSkyParams;   // x mip bias (cube size vs HDRP's sky texture), y rotation (deg), z on, w unused
+    float4 _OYMSkyMul;      // rgb skybox tint x exposure
+
     float3 BlurredSky(float3 V, float mip)
     {
+        if (_OYMSkyParams.z > 0.5)
+        {
+            // the scene's own skybox (what HDRP sampled), turned like Skybox/Cubemap's _Rotation
+            float a = radians(-_OYMSkyParams.y), sn = sin(a), cs = cos(a);
+            float3 d = float3(cs * V.x - sn * V.z, V.y, sn * V.x + cs * V.z);
+            float4 e = SAMPLE_TEXTURECUBE_LOD(_OYMSkyCube, sampler_OYMSkyCube, d, mip + _OYMSkyParams.x);
+            return DecodeHDREnvironment(e, _OYMSkyCube_HDR) * _OYMSkyMul.rgb;
+        }
         float4 enc = SAMPLE_TEXTURECUBE_LOD(_GlossyEnvironmentCubeMap, sampler_GlossyEnvironmentCubeMap, V, mip);
         return DecodeHDREnvironment(enc, _GlossyEnvironmentCubeMap_HDR);
     }

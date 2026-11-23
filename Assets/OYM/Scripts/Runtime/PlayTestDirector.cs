@@ -78,7 +78,7 @@ namespace OYM
         }
 
         // F1 perf overlay
-        bool _perf = true;
+        bool _perf = false;   // F1: control help + perf line (hidden by default)
         float _fpsT, _fpsAcc, _fps, _worst, _worstAcc; int _fpsN;
         Unity.Profiling.ProfilerRecorder _tris, _batches;
 
@@ -349,7 +349,7 @@ namespace OYM
                 _helpFor = who;
             }
             GUI.color = Color.white;
-            GUI.Label(new Rect(12, 8, 1400, 24), _help);
+            if (_perf) GUI.Label(new Rect(12, 8, 1400, 24), _help);
             if (_status.Length > 0) GUI.Label(new Rect(12, 30, 1200, 24), _status);
             if (_perf)
                 GUI.Label(new Rect(12, 52, 900, 24), $"{_fps:0} fps  ({1000f / Mathf.Max(_fps, 1f):0.0} ms avg, worst {_worst:0} ms)  ·  " +
