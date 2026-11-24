@@ -36,6 +36,9 @@ namespace OnYourMark
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Boot()
         {
+            // HDRP only: the web build runs URP (it has its own budget in OYM.Web), and swapping in the HDRP LowSpec
+            // asset there throws after the LOD / texture limits were already lowered
+            if (!(GraphicsSettings.currentRenderPipeline is HDRenderPipelineAsset)) { Active = false; return; }
             var s = Resources.Load<LowSpecSettings>("LowSpecSettings");
             Active = s && (s.mode == LowSpecSettings.Mode.On
                            || (s.mode == LowSpecSettings.Mode.Auto && SystemInfo.systemMemorySize <= s.autoMemoryMB));
