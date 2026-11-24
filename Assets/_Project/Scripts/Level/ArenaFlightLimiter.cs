@@ -13,12 +13,24 @@ namespace OnYourMark
         Transform ground, safeSurface;
         Vector3 safePoint;
         float verticalSpeed, fuelUsed, timeOnDeck;
-        bool heldJump, hovering, bossReached;
+        bool heldJump, hovering, bossReached, arenaPassed;
+
+        // Past the arena exit the route is open space again (the crashed bow leg is a Shift cruise lane):
+        // footing, gravity and the hover budget only apply between arenaEntry and arenaExit.
+        const float ExitReach = 11f;   // same reach as HuskZones' section advance
 
         internal bool CheckSurface(ZeroGFlight pilot, HuskEncounter encounter)
         {
             var zones = HuskZones.Current;
-            if (bossReached || !zones || !zones.arenaEntry || !encounter) return false;
+            if (bossReached || arenaPassed || !zones || !zones.arenaEntry || !encounter) return false;
+            if (zones.Reached == HuskZones.Section.AfterArena ||
+                (Active && zones.arenaExit && (pilot.transform.position - zones.arenaExit.position).sqrMagnitude < ExitReach * ExitReach))
+            {
+                // the team (or this pilot, e.g. a co-op guest whose zones never advance) left the arena: free flight again
+                arenaPassed = true;
+                if (Active) { Active = false; pilot.ResetMotion(); }
+                return false;
+            }
             var game = CoopGame.Current;
             if (!(encounter.boss && encounter.boss.Playing) && ((encounter.Level && encounter.Level.BossFightStarted) ||
                 (game && game.World && game.World.BossFightStarted)))

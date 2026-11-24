@@ -36,6 +36,8 @@ namespace OYM
         public float prismStagger = 3.5f;
 
         Section reached;
+        /// how far the team got along the route (host / solo; a co-op guest's copy stays at Approach)
+        public Section Reached => reached;
 
         // The guest keeps this layout even though only the host runs the zone spawners.
         void Awake() => Current = this;
