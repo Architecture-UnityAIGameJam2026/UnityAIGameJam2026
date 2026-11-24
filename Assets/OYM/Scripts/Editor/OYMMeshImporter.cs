@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 namespace OYM.EditorTools
 {
-    [ScriptedImporter(4, "oymmesh")]
+    [ScriptedImporter(5, "oymmesh")]
     public class OYMMeshImporter : ScriptedImporter
     {
         public override void OnImportAsset(AssetImportContext ctx)
@@ -50,6 +50,10 @@ namespace OYM.EditorTools
             if (hasNormals) mesh.SetNormals(nrm); else mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             mesh.RecalculateTangents();
+            // Web build: ~3,100 wreck fragments were ~310 MB of float vertices in the download. Quantize them in the
+            // build data (decompressed on load, like the FBX models' Medium setting); the HDRP / Windows import stays exact.
+            if (ctx.selectedBuildTarget == UnityEditor.BuildTarget.WebGL)
+                UnityEditor.MeshUtility.SetMeshCompression(mesh, UnityEditor.ModelImporterMeshCompression.Medium);
             ctx.AddObjectToAsset("mesh", mesh);
             ctx.SetMainObject(mesh);
         }

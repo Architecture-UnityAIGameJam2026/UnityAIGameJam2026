@@ -54,7 +54,7 @@ namespace OYM.WebTools
         [MenuItem("Tools/On Your Mark/Web/1b Shrink assets for web")]
         public static void Shrink()
         {
-            int nt = 0, nm = 0;
+            int nt = 0, nm = 0, na = 0;
             try
             {
                 AssetDatabase.StartAssetEditing();
@@ -66,7 +66,9 @@ namespace OYM.WebTools
                     bool normal = ti.textureType == TextureImporterType.NormalMap;
                     bool ui = ti.textureType == TextureImporterType.Sprite || ti.textureType == TextureImporterType.GUI || path.Contains("/UI/") || path.Contains("/Title/");
                     bool sky = path.Contains("/Sky/") || ti.textureShape == TextureImporterShape.TextureCube;
-                    int max = sky ? 4096 : normal ? 1024 : ui ? 2048 : 2048;
+                    bool close = path.Contains("/Characters/") || path.Contains("/Weapons/");   // pilots and guns fill the screen
+                    // props / debris / FX at 1024 (half the download of 2048); pilots, UI and the sky keep their size
+                    int max = sky ? 4096 : ui ? 2048 : close ? (normal ? 1024 : 2048) : normal ? 512 : 1024;
                     max = Mathf.Min(max, ti.maxTextureSize);
                     var w = new TextureImporterPlatformSettings
                     {
@@ -88,12 +90,24 @@ namespace OYM.WebTools
                     mi.meshCompression = ModelImporterMeshCompression.Medium;
                     mi.SaveAndReimport(); nm++;
                 }
+                // web audio: one quality step down (music and voice lines are most of the 36 MB of sound)
+                foreach (var guid in AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets" }))
+                {
+                    var path = AssetDatabase.GUIDToAssetPath(guid);
+                    if (!(AssetImporter.GetAtPath(path) is AudioImporter ai)) continue;
+                    var cur = ai.ContainsSampleSettingsOverride("WebGL") ? ai.GetOverrideSampleSettings("WebGL") : ai.defaultSampleSettings;
+                    if (ai.ContainsSampleSettingsOverride("WebGL") && cur.quality <= 0.5f) continue;
+                    var s = ai.defaultSampleSettings;
+                    s.compressionFormat = AudioCompressionFormat.Vorbis; s.quality = 0.5f;
+                    if (!ai.SetOverrideSampleSettings("WebGL", s)) continue;
+                    ai.SaveAndReimport(); na++;
+                }
             }
             finally { AssetDatabase.StopAssetEditing(); }
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;   // Brotli took ~25 min on the 380 MB data file
             PlayerSettings.WebGL.decompressionFallback = true;
             AssetDatabase.SaveAssets();
-            Log($"shrink: {nt} textures, {nm} models");
+            Log($"shrink: {nt} textures, {nm} models, {na} sounds");
         }
 
         [MenuItem("Tools/On Your Mark/Web/2 Build WebGL")]
